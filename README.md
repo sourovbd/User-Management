@@ -5,6 +5,7 @@
 2. sudo add-apt-repository ppa:linuxuprising/java -y
 3. sudo apt update
 4. sudo apt-get install oracle-java17-installer oracle-java17-set-default
+
 another way:
 1. sudo apt install libc6-i386 libc6-x32 curl -y
 2. wget https://download.oracle.com/java/17/latest/jdk-17_linux-x64_bin.deb
