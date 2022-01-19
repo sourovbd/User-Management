@@ -1,4 +1,4 @@
-# Backend developent environment setup
+# Backend development environment setup
 
 ``Install Oracle Java 17``
 1. sudo apt update && sudo apt upgrade -y
