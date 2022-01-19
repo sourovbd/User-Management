@@ -11,3 +11,4 @@ another way:
 2. wget https://download.oracle.com/java/17/latest/jdk-17_linux-x64_bin.deb
 3. sudo dpkg -i jdk-17_linux-x64_bin.deb
 
+To remove: sudo dpkg -r jdk-17
