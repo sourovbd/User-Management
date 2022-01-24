@@ -38,7 +38,7 @@ public class UserController {
             return ResponseEntity.ok("Save Failed");
         }
     }
-        
+
     @PostMapping("/user/create")
     public ResponseEntity<?> createUser(@RequestBody UserDTO userDto) {
         User user = userService.save(userDto.dtoToUser(userDto));
@@ -49,7 +49,7 @@ public class UserController {
         else
             return ResponseEntity.ok(new UserCreationResponseDTO("user creation failed"));
     }
-    
+
     @PutMapping("/user/update/{id}")
     public ResponseEntity<?> updateUser(@RequestBody UserDTO userDto) {
         User user = userDto.dtoToUser(userDto);
@@ -61,7 +61,7 @@ public class UserController {
         else
             return ResponseEntity.ok(new UserCreationResponseDTO("user update failed"));
     }
-    
+
     @PostMapping("users/update-credential")
     public ResponseEntity<?> updateCredential(@RequestBody UserCredentialDTO userCredentialDTO) {
         UserCredential userCredential = userCredentialDTO.to(userCredentialDTO);
@@ -84,7 +84,7 @@ public class UserController {
             return ResponseEntity.ok("Invalid Password");
         }
     }
-    
+
     @GetMapping("get/user/{id}")
     public ResponseEntity<?> getUserDetails(@PathVariable int id) {
         User user = userService.findById(id).orElse(null);
