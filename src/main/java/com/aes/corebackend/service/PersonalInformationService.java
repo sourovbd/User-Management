@@ -20,7 +20,7 @@ public class PersonalInformationService {
 
     public boolean updatePersonalBasicInfo(PersonalBasicInfo basicInfo) {
         try {
-            personalBasicInfoRepository.save(basicInfo);
+            personalBasicInfoRepository.save(basicInfo);// this is how to insert into database
         } catch (Exception e) {
             System.out.println(e);
             return false;
