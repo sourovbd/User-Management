@@ -24,10 +24,6 @@ public class PersonnelManagementController {
         return ResponseEntity.ok(new PersonnelManagementResponseDTO("Update successfull!", success));
     }
 
-    //TODO:
-    // DTOtoEntity
-    //
-
 
     @PostMapping(value = "/users/{id}/update-personal-attributes")
     public ResponseEntity<?> updatePersonalAttributes(@RequestBody PersonalAttributesDTO attributesDTO, @PathVariable String id) {
@@ -40,9 +36,9 @@ public class PersonnelManagementController {
     @PostMapping(value = "/users/{id}/update-personal-family-info")
     public ResponseEntity<?> updatePersonalFamilyInfo(@RequestBody PersonalFamilyInfoDTO familyInfoDTO, @PathVariable String id) {
         //TODO convert dto to entity
-        PersonalFamilyInfo familyInfo = new PersonalFamilyInfo();
-        personalInformationService.updatePersonalFamilyInfo(familyInfo);
-        return ResponseEntity.ok(new PersonnelManagementResponseDTO("Update successfull!", true));
+        PersonalFamilyInfo familyInfo = familyInfoDTO.getPersonalFamilyDTOToEntity(familyInfoDTO);
+        boolean success = personalInformationService.updatePersonalFamilyInfo(familyInfo);
+        return ResponseEntity.ok(new PersonnelManagementResponseDTO("Update successfull!", success));
     }
 
     @PostMapping(value = "/users/{id}/update-personal-identification-info")
