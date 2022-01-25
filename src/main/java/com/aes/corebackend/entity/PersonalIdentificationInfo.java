@@ -8,15 +8,15 @@ import javax.persistence.*;
 @Entity
 @Data
 @NoArgsConstructor
-public class PersonalAddressInfo {
+public class PersonalIdentificationInfo {
     @Id
     @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "presentAddress")
-    private String presentAddress;
+    @Column(name = "nationalID")
+    private String nationalID;
 
-    @Column(name = "permanentAddress")
-    private String permanentAddress;
+    @Column(name = "eTin")
+    private String eTin;
 }

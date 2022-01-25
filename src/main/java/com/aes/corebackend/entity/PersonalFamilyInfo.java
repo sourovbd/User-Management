@@ -1,11 +1,19 @@
 package com.aes.corebackend.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
 
 @Entity
+@Data
+@NoArgsConstructor
 public class PersonalFamilyInfo {
+    @Id
+    @Column(name = "ID")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     @Column(name = "materialStatus")
     private String materialStatus;
 
@@ -17,14 +25,4 @@ public class PersonalFamilyInfo {
 
     @Column(name = "spouseName")
     private String spouseName;
-    @Id
-    private Long id;
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getId() {
-        return id;
-    }
 }
