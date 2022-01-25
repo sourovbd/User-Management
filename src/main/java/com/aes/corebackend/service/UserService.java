@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 public class UserService {
     @Autowired
     private UserRepository userRepository;
-    public User save(UserDTO userDTO) {
-        return userRepository.save(userDTO.dtoToUser(userDTO));
+    public User save(User user) {
+        return userRepository.save(user);
     }
 }
