@@ -11,7 +11,7 @@ public class PersonalAttributesDTO {
     private String birthPlace;
     private String nationality;
 
-    public PersonalAttributes getPersonalAttributesDTOToEntity(PersonalAttributesDTO attributesDTO) {
+    public PersonalAttributes getPersonalAttributesEntity(PersonalAttributesDTO attributesDTO) {
         PersonalAttributes attributesEntity = new PersonalAttributes();
         attributesEntity.setReligion(attributesDTO.getReligion());
         attributesEntity.setBirthPlace(attributesDTO.getBirthPlace());

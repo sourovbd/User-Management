@@ -10,7 +10,7 @@ public class PersonalFamilyInfoDTO {
     private String mothersName;
     private String spouseName;
 
-    public PersonalFamilyInfo getPersonalFamilyDTOToEntity(PersonalFamilyInfoDTO familyInfoDTO) {
+    public PersonalFamilyInfo getPersonalFamilyEntity(PersonalFamilyInfoDTO familyInfoDTO) {
         PersonalFamilyInfo personalFamilyInfoEntity = new PersonalFamilyInfo();
         personalFamilyInfoEntity.setFathersName(familyInfoDTO.getFathersName());
         personalFamilyInfoEntity.setMothersName(familyInfoDTO.getMothersName());

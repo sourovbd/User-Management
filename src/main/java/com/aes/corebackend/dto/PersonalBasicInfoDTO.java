@@ -10,7 +10,7 @@ public class PersonalBasicInfoDTO {
     private String dateOfBirth;
     private String gender;
 
-    public PersonalBasicInfo getPersonalBasicInfoDTOToEntity(PersonalBasicInfoDTO basicInfoDTO) {
+    public PersonalBasicInfo getPersonalBasicInfoEntity(PersonalBasicInfoDTO basicInfoDTO) {
         PersonalBasicInfo basicInfoEntity = new PersonalBasicInfo();
         basicInfoEntity.setFirstName(basicInfoDTO.getFirstName());
         basicInfoEntity.setLastName(basicInfoDTO.getLastName());
