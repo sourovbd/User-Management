@@ -19,15 +19,12 @@ public class UserDTO {
 
     private String department;
 
-    private String role;
-
     public User dtoToUser(UserDTO userDTO){
         User user = new User();
         user.setEmployeeId(userDTO.getEmployeeId());
         user.setEmailAddress(userDTO.getEmailAddress());
         user.setBusinessUnit(userDTO.getBusinessUnit());
         user.setDepartment(userDTO.getDepartment());
-        user.setRole(userDTO.getRole());
         user.setDesignation(userDTO.getDesignation());
         return user;
     }

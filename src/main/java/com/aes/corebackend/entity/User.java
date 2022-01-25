@@ -29,6 +29,4 @@ public class User {
 
     private String department;
 
-    private String role;
-
 }
