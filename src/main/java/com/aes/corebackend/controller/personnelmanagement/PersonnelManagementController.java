@@ -81,4 +81,22 @@ public class PersonnelManagementController {
         boolean success = personalInformationService.updatePersonalEducation(educationInfo);
         return ResponseEntity.ok(new PersonnelManagementResponseDTO("Update successfull!", success));
     }
+
+    @PostMapping(value = "/users/{id}/update-personal-training")
+    public ResponseEntity<?> updatePersonalTraining(@RequestBody PersonalTrainingDTO trainingDTO, @PathVariable String id) {
+        //TODO convert dto to entity
+        PersonalTrainingInfo trainingInfo = trainingDTO.getPersonalTrainingEntity(trainingDTO);
+        boolean success = personalInformationService.updatePersonalTraining(trainingInfo);
+        return ResponseEntity.ok(new PersonnelManagementResponseDTO("Update successfull!", success));
+    }
+
+    @PostMapping(value = "/users/{id}/update-personal-job-experience")
+    public ResponseEntity<?> updateJobExperience(@RequestBody PersonalJobExperienceDTO experienceDTO, @PathVariable String id) {
+        //TODO convert dto to entity
+        PersonalJobExperience experienceInfo = experienceDTO.getPersonalJobExperienceEntity(experienceDTO);
+        boolean success = personalInformationService.updateJobExperience(experienceInfo);
+        return ResponseEntity.ok(new PersonnelManagementResponseDTO("Update successfull!", success));
+    }
+
+    //Will need one more GET request to respond back everything
 }
