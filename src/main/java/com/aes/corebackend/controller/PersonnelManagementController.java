@@ -19,40 +19,41 @@ public class PersonnelManagementController {
     @PostMapping(value = "/users/{id}/update-personal-basic-info")
     public ResponseEntity<?> updatePersonalBasicInfo(@RequestBody PersonalBasicInfoDTO basicInfoDTO, @PathVariable String id) {
         //TODO convert dto to entity
-        PersonalBasicInfo basicInfo = basicInfoDTO.getPersonalBasicInfoDTOToEntity(basicInfoDTO);
+        PersonalBasicInfo basicInfo = basicInfoDTO.getPersonalBasicInfoEntity(basicInfoDTO);
         boolean success = personalInformationService.updatePersonalBasicInfo(basicInfo);
         return ResponseEntity.ok(new PersonnelManagementResponseDTO("Update successfull!", success));
     }
 
+
     @PostMapping(value = "/users/{id}/update-personal-attributes")
     public ResponseEntity<?> updatePersonalAttributes(@RequestBody PersonalAttributesDTO attributesDTO, @PathVariable String id) {
         //TODO convert dto to entity
-        PersonalAttributes attributes = new PersonalAttributes();
-        personalInformationService.updatePersonalAttributes(attributes);
-        return ResponseEntity.ok(new PersonnelManagementResponseDTO("Update successfull!", true));
+        PersonalAttributes attributes = attributesDTO.getPersonalAttributesEntity(attributesDTO);//new PersonalAttributes();//
+        boolean success = personalInformationService.updatePersonalAttributes(attributes);
+        return ResponseEntity.ok(new PersonnelManagementResponseDTO("Update successfull!", success));
     }
 
     @PostMapping(value = "/users/{id}/update-personal-family-info")
     public ResponseEntity<?> updatePersonalFamilyInfo(@RequestBody PersonalFamilyInfoDTO familyInfoDTO, @PathVariable String id) {
         //TODO convert dto to entity
-        PersonalFamilyInfo familyInfo = new PersonalFamilyInfo();
-        personalInformationService.updatePersonalFamilyInfo(familyInfo);
-        return ResponseEntity.ok(new PersonnelManagementResponseDTO("Update successfull!", true));
+        PersonalFamilyInfo familyInfo = familyInfoDTO.getPersonalFamilyEntity(familyInfoDTO);
+        boolean success = personalInformationService.updatePersonalFamilyInfo(familyInfo);
+        return ResponseEntity.ok(new PersonnelManagementResponseDTO("Update successfull!", success));
     }
 
     @PostMapping(value = "/users/{id}/update-personal-identification-info")
     public ResponseEntity<?> updatePersonalIdentificationInfo(@RequestBody PersonalIdentificationInfoDTO identificationInfoDTO, @PathVariable String id) {
         //TODO convert dto to entity
-        PersonalIdentificationInfo identificationInfo = new PersonalIdentificationInfo();
-        personalInformationService.updatePersonalIdentificationInfo(identificationInfo);
-        return ResponseEntity.ok(new PersonnelManagementResponseDTO("Update successfull!", true));
+        PersonalIdentificationInfo identificationInfo = identificationInfoDTO.getPersonalIdentificationEntity(identificationInfoDTO);
+        boolean success = personalInformationService.updatePersonalIdentificationInfo(identificationInfo);
+        return ResponseEntity.ok(new PersonnelManagementResponseDTO("Update successfull!", success));
     }
 
     @PostMapping(value = "/users/{id}/update-personal-address")
     public ResponseEntity<?> updatePersonalAddress(@RequestBody PersonalAddressInfoDTO addressInfoDTO, @PathVariable String id) {
         //TODO convert dto to entity
-        PersonalAddressInfo addressInfo = new PersonalAddressInfo();
-        personalInformationService.updatePersonalAddress(addressInfo);
-        return ResponseEntity.ok(new PersonnelManagementResponseDTO("Update successfull!", true));
+        PersonalAddressInfo addressInfo = addressInfoDTO.getPersonalAddressInfoEntity(addressInfoDTO);
+        boolean success = personalInformationService.updatePersonalAddress(addressInfo);
+        return ResponseEntity.ok(new PersonnelManagementResponseDTO("Update successfull!", success));
     }
 }
