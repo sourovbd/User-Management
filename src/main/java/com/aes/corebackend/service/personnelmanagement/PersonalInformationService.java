@@ -17,6 +17,8 @@ public class PersonalInformationService {
     PersonalIdentificationInfoRepository personalIdentificationInfoRepository;
     @Autowired
     PersonalAddressInfoRepository personalAddressInfoRepository;
+    @Autowired
+    PersonalEducationRepository personalEducationRepository;
 
     public boolean updatePersonalBasicInfo(PersonalBasicInfo basicInfo) {
         try {
@@ -58,6 +60,15 @@ public class PersonalInformationService {
     public boolean updatePersonalAddress(PersonalAddressInfo addressInfo) {
         try {
             personalAddressInfoRepository.save(addressInfo);
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
+    }
+
+    public boolean updatePersonalEducation(PersonalEducationInfo educationInfo) {
+        try {
+            personalEducationRepository.save(educationInfo);
         } catch (Exception e) {
             return false;
         }
