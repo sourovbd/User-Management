@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 public class PersonalFamilyInfoDTO {
-    private String materialStatus;
+    private String maritalStatus;
     private String fathersName;
     private String mothersName;
     private String spouseName;
@@ -14,7 +14,7 @@ public class PersonalFamilyInfoDTO {
         PersonalFamilyInfo personalFamilyInfoEntity = new PersonalFamilyInfo();
         personalFamilyInfoEntity.setFathersName(familyInfoDTO.getFathersName());
         personalFamilyInfoEntity.setMothersName(familyInfoDTO.getMothersName());
-        personalFamilyInfoEntity.setMaterialStatus(familyInfoDTO.getMaterialStatus());
+        personalFamilyInfoEntity.setMaterialStatus(familyInfoDTO.getMaritalStatus());
         personalFamilyInfoEntity.setSpouseName(familyInfoDTO.getSpouseName());
         return personalFamilyInfoEntity;
     }
