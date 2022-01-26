@@ -14,7 +14,7 @@ public class UserCredential {
     @Column(name = "id", nullable = false)
     private long id;
 
-    private long employeeId;
+    private String employeeId;
 
     private String password;
 
