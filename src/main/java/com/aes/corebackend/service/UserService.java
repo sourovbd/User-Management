@@ -10,7 +10,14 @@ import org.springframework.stereotype.Service;
 public class UserService {
     @Autowired
     private UserRepository userRepository;
-    public User save(User user) {
-        return userRepository.save(user);
+    public boolean save(User user) {
+        try{
+            userRepository.save(user);
+        } catch(Exception e)
+        {
+            System.out.println(e);
+            return false;
+        }
+        return true;
     }
 }
