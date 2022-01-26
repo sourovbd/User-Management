@@ -10,7 +10,7 @@ public class UserCredentialDto {
 
     private long id;
 
-    private long employeeId;
+    private String employeeId;
 
     private String password;
 
