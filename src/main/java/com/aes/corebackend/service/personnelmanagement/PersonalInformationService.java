@@ -22,7 +22,16 @@ public class PersonalInformationService {
 
     public boolean updatePersonalBasicInfo(PersonalBasicInfo basicInfo) {
         try {
-            personalBasicInfoRepository.save(basicInfo);// this is how to insert into database
+            PersonalBasicInfo info = personalBasicInfoRepository.findPersonalBasicInfoByUser(basicInfo.getUser());
+            if (info != null) {
+                info.setFirstName(basicInfo.getFirstName());
+                info.setLastName(basicInfo.getLastName());
+                info.setDateOfBirth(basicInfo.getDateOfBirth());
+                info.setGender(basicInfo.getGender());
+                personalBasicInfoRepository.save(info);//this will update the existing data
+            } else {
+                personalBasicInfoRepository.save(basicInfo);// this is how to insert into database
+            }
         } catch (Exception e) {
             System.out.println(e);
             return false;
