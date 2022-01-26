@@ -16,13 +16,13 @@ import javax.persistence.GeneratedValue;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "id", nullable = false)
     private long id;
-    @Column(name = "emailAddress")
+    @Column(name = "emailAddress", unique = true)
     private String emailAddress;
     @Column(name = "designation")
     private String designation;
-    @Column(name = "employeeId")
+    @Column(name = "employeeId", unique = true)
     private long employeeId;
     @Column(name = "businessUnit")
     private String businessUnit;
