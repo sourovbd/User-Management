@@ -1,4 +1,4 @@
-package com.aes.corebackend.entity;
+package com.aes.corebackend.entity.personnelmanagement;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

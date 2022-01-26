@@ -1,16 +1,16 @@
-package com.aes.corebackend.dto;
+package com.aes.corebackend.dto.personnelmanagement;
 
-import com.aes.corebackend.entity.PersonalIdentificationInfo;
+import com.aes.corebackend.entity.personnelmanagement.PersonalIdentificationInfo;
 import lombok.Data;
 
 @Data
 public class PersonalIdentificationInfoDTO {
     private String nationalID;
-    private String eTin;
+    private String etin;// can not create attribute with single lower case first e.g eTin, pTin etc
 
     public PersonalIdentificationInfo getPersonalIdentificationEntity(PersonalIdentificationInfoDTO identificationInfoDTO) {
         PersonalIdentificationInfo personalIdentificationInfoEntity = new PersonalIdentificationInfo();
-        personalIdentificationInfoEntity.setETin(identificationInfoDTO.getETin());
+        personalIdentificationInfoEntity.setETin(identificationInfoDTO.getEtin());
         personalIdentificationInfoEntity.setNationalID(identificationInfoDTO.getNationalID());
         return personalIdentificationInfoEntity;
     }

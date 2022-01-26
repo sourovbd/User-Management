@@ -1,4 +1,4 @@
-package com.aes.corebackend.dto;
+package com.aes.corebackend.dto.personnelmanagement;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
