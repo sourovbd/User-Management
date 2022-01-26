@@ -56,4 +56,12 @@ public class PersonnelManagementController {
         boolean success = personalInformationService.updatePersonalAddress(addressInfo);
         return ResponseEntity.ok(new PersonnelManagementResponseDTO("Update successfull!", success));
     }
+
+    @PostMapping(value = "/users/{id}/update-personal-education")
+    public ResponseEntity<?> updatePersonalEducation(@RequestBody PersonalEducationDTO educationDTO, @PathVariable String id) {
+        //TODO convert dto to entity
+        PersonalEducationInfo educationInfo = educationDTO.getPersonalEducationEntity(educationDTO);
+        boolean success = personalInformationService.updatePersonalEducation(educationInfo);
+        return ResponseEntity.ok(new PersonnelManagementResponseDTO("Update successfull!", success));
+    }
 }
