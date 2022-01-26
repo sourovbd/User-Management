@@ -1,6 +1,6 @@
-package com.aes.corebackend.repository;
+package com.aes.corebackend.repository.personnelmanagement;
 
-import com.aes.corebackend.entity.PersonalIdentificationInfo;
+import com.aes.corebackend.entity.personnelmanagement.PersonalIdentificationInfo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

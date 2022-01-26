@@ -1,6 +1,6 @@
-package com.aes.corebackend.dto;
+package com.aes.corebackend.dto.personnelmanagement;
 
-import com.aes.corebackend.entity.PersonalAddressInfo;
+import com.aes.corebackend.entity.personnelmanagement.PersonalAddressInfo;
 import lombok.Data;
 
 @Data

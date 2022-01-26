@@ -1,7 +1,7 @@
-package com.aes.corebackend.service;
+package com.aes.corebackend.service.personnelmanagement;
 
-import com.aes.corebackend.entity.*;
-import com.aes.corebackend.repository.*;
+import com.aes.corebackend.entity.personnelmanagement.*;
+import com.aes.corebackend.repository.personnelmanagement.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
