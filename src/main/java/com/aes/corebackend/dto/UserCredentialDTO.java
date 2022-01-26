@@ -4,7 +4,7 @@ import com.aes.corebackend.entity.UserCredential;
 import lombok.Data;
 
 @Data
-public class UserCredentialDto {
+public class UserCredentialDTO {
 
     private static final long serialVersionUID = 1L;
 
@@ -16,8 +16,8 @@ public class UserCredentialDto {
 
     private String role;
 
-    public UserCredentialDto from(UserCredential userCredential) {
-        UserCredentialDto dto = new UserCredentialDto();
+    public UserCredentialDTO from(UserCredential userCredential) {
+        UserCredentialDTO dto = new UserCredentialDTO();
         dto.setId(userCredential.getId());
         dto.setEmployeeId(userCredential.getEmployeeId());
         dto.setPassword(userCredential.getPassword());
@@ -25,7 +25,7 @@ public class UserCredentialDto {
         return dto;
     }
 
-    public UserCredential to(UserCredentialDto dto) {
+    public UserCredential to(UserCredentialDTO dto) {
         UserCredential userCredential = new UserCredential();
         userCredential.setId(dto.getId());
         userCredential.setEmployeeId(dto.getEmployeeId());
