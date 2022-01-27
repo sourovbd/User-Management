@@ -10,5 +10,5 @@ import java.util.Optional;
 @AllArgsConstructor
 public class UserFinderResponseDTO {
     String message;
-    Optional<User> user;
+    User user;
 }
