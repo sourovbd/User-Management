@@ -9,4 +9,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     //User save(User user);
     //User getUserBy(long id);
+    //User findOne(int employeeId);
 }

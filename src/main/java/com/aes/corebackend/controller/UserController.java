@@ -3,19 +3,27 @@ package com.aes.corebackend.controller;
 import com.aes.corebackend.dto.UserCredentialDTO;
 import com.aes.corebackend.entity.UserCredential;
 import com.aes.corebackend.service.UserCredentialService;
+import com.aes.corebackend.dto.UserCreationResponseDTO;
+import com.aes.corebackend.dto.UserDTO;
+import com.aes.corebackend.dto.UserFinderResponseDTO;
+import com.aes.corebackend.entity.User;
+import com.aes.corebackend.service.EmailSender;
 import com.aes.corebackend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Objects;
+import java.util.Optional;
+
 @RestController
 public class UserController {
 
     @Autowired
-    private UserService userService;
+    private EmailSender emailSender;
 
     @Autowired
-    private UserCredentialService userCredentialService;
+    private UserService userService;
 
     @PostMapping("users/save-credential")
     public ResponseEntity<?> saveCredential(@RequestBody UserCredentialDTO userCredentialDTO) {
@@ -28,7 +36,30 @@ public class UserController {
             return ResponseEntity.ok("Save Failed");
         }
     }
-
+        
+    @PostMapping("/user/create")
+    public ResponseEntity<?> createUser(@RequestBody UserDTO userDto) {
+        User user = userService.save(userDto.dtoToUser(userDto));
+        if (Objects.nonNull(user)) {
+            emailSender.send(userDto.dtoToUser(userDto).getEmailAddress(),"This is a test email");
+            return ResponseEntity.ok(new UserCreationResponseDTO("user created"));
+        }
+        else
+            return ResponseEntity.ok(new UserCreationResponseDTO("user creation failed"));
+    }
+    
+    @PutMapping("/user/update/{id}")
+    public ResponseEntity<?> updateUser(@RequestBody UserDTO userDto) {
+        User user = userDto.dtoToUser(userDto);
+        boolean success = userService.update(user);
+        if (success) {
+            //emailSender.send(userDto.dtoToUser(userDto).getEmailAddress(),"This is a test email");
+            return ResponseEntity.ok(new UserCreationResponseDTO("user data updated"));
+        }
+        else
+            return ResponseEntity.ok(new UserCreationResponseDTO("user update failed"));
+    }
+    
     @PostMapping("users/update-credential")
     public ResponseEntity<?> updateCredential(@RequestBody UserCredentialDTO userCredentialDTO) {
         UserCredential userCredential = userCredentialDTO.to(userCredentialDTO);
@@ -50,5 +81,11 @@ public class UserController {
         else {
             return ResponseEntity.ok("Invalid Password");
         }
+    }
+    
+    @GetMapping("get/user/{id}")
+    public ResponseEntity<?> getUserDetails(@PathVariable int id) {
+        User user = userService.findById(id).orElse(null);
+        return ResponseEntity.ok(new UserFinderResponseDTO("use fetch ok",user));
     }
 }
