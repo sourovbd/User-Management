@@ -27,9 +27,6 @@ public class UserController {
     @Autowired
     private UserCredentialService userCredentialService;
 
-    @Autowired
-    private UserCredentialService userCredentialService;
-
     @PostMapping("users/save-credential")
     public ResponseEntity<?> saveCredential(@RequestBody UserCredentialDTO userCredentialDTO) {
         UserCredential userCredential = userCredentialDTO.to(userCredentialDTO);
