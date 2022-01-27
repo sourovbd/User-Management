@@ -21,7 +21,7 @@ public class FamilyInformationService {
 
     public boolean updatePersonalFamilyInfo(PersonalFamilyInfo familyInfo) {
         try{
-            PersonalFamilyInfo dbInfo = personalFamilyInfoRepository.findPersonalFamilyInfoByUser(familyInfo.getUser());
+            PersonalFamilyInfo dbInfo = personalFamilyInfoRepository.findPersonalFamilyInfoById(familyInfo.getUser().getId());
             dbInfo.setFathersName(familyInfo.getFathersName());
             dbInfo.setMothersName(familyInfo.getMothersName());
             dbInfo.setMaritalStatus(familyInfo.getMaritalStatus());
@@ -33,4 +33,6 @@ public class FamilyInformationService {
         }
         return true;
     }
+
+    //GET Request
 }
