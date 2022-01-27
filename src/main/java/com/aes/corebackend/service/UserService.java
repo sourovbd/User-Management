@@ -9,20 +9,16 @@ import java.util.Optional;
 
 @Service
 public class UserService {
+
     @Autowired
     private UserRepository userRepository;
-    public boolean save(User user) {
-        try{
-            userRepository.save(user);
-        } catch(Exception e)
-        {
-            e.printStackTrace();
-            return false;
-        }
-        return true;
+
+    public User save(User user) {
+        return userRepository.save(user);
     }
+
     public boolean update(User user) {
-        try{
+        try {
             User temp_user = userRepository.findById(user.getId()).orElse(user);
             temp_user.setDesignation(user.getDesignation());
             temp_user.setDepartment(user.getDepartment());
@@ -31,15 +27,15 @@ public class UserService {
             //temp_user.setEmployeeId(user.getEmployeeId());
             //userCredential1.setPassword(userCredential.getPassword());
             userRepository.save(temp_user);
-        } catch(Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
         return true;
     }
+
     public Optional<User> findById(long id) {
-            return userRepository.findById(id);
+        return userRepository.findById(id);
     }
 
 }

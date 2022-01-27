@@ -12,9 +12,11 @@ import javax.mail.internet.MimeMessage;
 @Service
 @AllArgsConstructor
 public class EmailService implements EmailSender {
+
     private final JavaMailSender javaMailSender;
-    @Override
+
     @Async
+    @Override
     public void send(String to, String email) {
         try{
             MimeMessage mimeMessage = javaMailSender.createMimeMessage();
