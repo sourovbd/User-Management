@@ -21,12 +21,12 @@ public class FamilyInformationService {
 
     public boolean updatePersonalFamilyInfo(PersonalFamilyInfo familyInfo) {
         try{
-            PersonalFamilyInfo dbInfo = personalFamilyInfoRepository.findPersonalFamilyInfoById(familyInfo.getUser().getId());
-            dbInfo.setFathersName(familyInfo.getFathersName());
-            dbInfo.setMothersName(familyInfo.getMothersName());
-            dbInfo.setMaritalStatus(familyInfo.getMaritalStatus());
-            dbInfo.setSpouseName(familyInfo.getSpouseName());
-            personalFamilyInfoRepository.save(dbInfo);
+            PersonalFamilyInfo dbUpdate = personalFamilyInfoRepository.findPersonalFamilyInfoById(familyInfo.getUser().getId());
+            dbUpdate.setFathersName(familyInfo.getFathersName());
+            dbUpdate.setMothersName(familyInfo.getMothersName());
+            dbUpdate.setMaritalStatus(familyInfo.getMaritalStatus());
+            dbUpdate.setSpouseName(familyInfo.getSpouseName());
+            personalFamilyInfoRepository.save(dbUpdate);
         }catch (Exception e){
             e.printStackTrace();
             return false;

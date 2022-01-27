@@ -29,6 +29,5 @@ public class PersonalFamilyInfo {
 
     @OneToOne(cascade = CascadeType.ALL, optional = false) //@OneToOne defines a one-to-one relationship between 2 entities
     @JoinColumn(name = "user_id", referencedColumnName = "id") //@JoinColumn defines a foreign key column
-    //@MapsId //@MapsId maps to the parent entity primary key
     private User user;
 }
