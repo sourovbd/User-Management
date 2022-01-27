@@ -1,11 +1,8 @@
 package com.aes.corebackend.controller;
 
-import com.aes.corebackend.dto.UserCredentialDTO;
+import com.aes.corebackend.dto.*;
 import com.aes.corebackend.entity.UserCredential;
 import com.aes.corebackend.service.UserCredentialService;
-import com.aes.corebackend.dto.UserCreationResponseDTO;
-import com.aes.corebackend.dto.UserDTO;
-import com.aes.corebackend.dto.UserFinderResponseDTO;
 import com.aes.corebackend.entity.User;
 import com.aes.corebackend.service.EmailSender;
 import com.aes.corebackend.service.UserService;
@@ -90,5 +87,17 @@ public class UserController {
     public ResponseEntity<?> getUserDetails(@PathVariable int id) {
         User user = userService.findById(id).orElse(null);
         return ResponseEntity.ok(new UserFinderResponseDTO("use fetch ok",user));
+    }
+
+    @PostMapping("users/forgot-pass")
+    public ResponseEntity<?> forgotPassword(@RequestBody ForgotPasswordDTO forgotPasswordDTO) {
+        //email validation
+        boolean done = userCredentialService.generateAndSendTempPass(forgotPasswordDTO.getEmailAddress());
+        if (done) {
+            return ResponseEntity.ok("A new password is sent to your email.");
+        }
+        else {
+            return ResponseEntity.ok("Pleas try again.");
+        }
     }
 }
