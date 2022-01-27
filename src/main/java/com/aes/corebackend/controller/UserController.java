@@ -1,5 +1,8 @@
 package com.aes.corebackend.controller;
 
+import com.aes.corebackend.dto.UserCredentialDTO;
+import com.aes.corebackend.entity.UserCredential;
+import com.aes.corebackend.service.UserCredentialService;
 import com.aes.corebackend.dto.UserCreationResponseDTO;
 import com.aes.corebackend.dto.UserDTO;
 import com.aes.corebackend.dto.UserFinderResponseDTO;
@@ -22,6 +25,18 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @PostMapping("users/save-credential")
+    public ResponseEntity<?> saveCredential(@RequestBody UserCredentialDTO userCredentialDTO) {
+        UserCredential userCredential = userCredentialDTO.to(userCredentialDTO);
+        boolean saved = userCredentialService.save(userCredential);
+        if (saved) {
+            return ResponseEntity.ok("Saved Successfully");
+        }
+        else {
+            return ResponseEntity.ok("Save Failed");
+        }
+    }
+        
     @PostMapping("/user/create")
     public ResponseEntity<?> createUser(@RequestBody UserDTO userDto) {
         User user = userService.save(userDto.dtoToUser(userDto));
@@ -31,8 +46,8 @@ public class UserController {
         }
         else
             return ResponseEntity.ok(new UserCreationResponseDTO("user creation failed"));
-
     }
+    
     @PutMapping("/user/update/{id}")
     public ResponseEntity<?> updateUser(@RequestBody UserDTO userDto) {
         User user = userDto.dtoToUser(userDto);
@@ -43,8 +58,31 @@ public class UserController {
         }
         else
             return ResponseEntity.ok(new UserCreationResponseDTO("user update failed"));
-
     }
+    
+    @PostMapping("users/update-credential")
+    public ResponseEntity<?> updateCredential(@RequestBody UserCredentialDTO userCredentialDTO) {
+        UserCredential userCredential = userCredentialDTO.to(userCredentialDTO);
+        boolean updated = userCredentialService.update(userCredential);
+        if (updated) {
+            return ResponseEntity.ok("Updated Successfully");
+        }
+        else {
+            return ResponseEntity.ok("Update Failed");
+        }
+    }
+
+    @PostMapping("users/verify-credential")
+    public ResponseEntity<?> verifyCredential(@RequestBody UserCredentialDTO userCredentialDTO) {
+        boolean verified = userCredentialService.verifyPassword(userCredentialDTO);
+        if (verified) {
+            return ResponseEntity.ok("Valid Password");
+        }
+        else {
+            return ResponseEntity.ok("Invalid Password");
+        }
+    }
+    
     @GetMapping("get/user/{id}")
     public ResponseEntity<?> getUserDetails(@PathVariable int id) {
         User user = userService.findById(id).orElse(null);
