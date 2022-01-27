@@ -1,8 +1,12 @@
 package com.aes.corebackend.service;
 
 import com.aes.corebackend.dto.UserCredentialDTO;
+import com.aes.corebackend.entity.User;
 import com.aes.corebackend.entity.UserCredential;
 import com.aes.corebackend.repository.UserCredentialRepository;
+import com.aes.corebackend.repository.UserRepository;
+import com.aes.corebackend.util.Constant;
+import com.aes.corebackend.util.UserCredentialUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 //import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -12,6 +16,12 @@ public class UserCredentialService {
 
     @Autowired
     private UserCredentialRepository userCredentialRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private EmailService emailService;
 
     public boolean save(UserCredential userCredential) {
         try {
@@ -53,5 +63,27 @@ public class UserCredentialService {
             e.printStackTrace();
             return false;
         }
+    }
+
+    public boolean generateAndSendTempPass(String email) {
+        try {
+            //fetch user and credentials
+            User user = userRepository.findByEmailId(email);
+            UserCredential userCredential = userCredentialRepository.findByEmployeeId(""+user.getEmployeeId());
+
+            //generate dummy password
+            String password = UserCredentialUtil.generatePassword(Constant.PASSWORD_LENGTH);
+            userCredential.setPassword(password);
+
+            String messageBody = emailService.buildEmailText(userCredential);
+            emailService.send(user.getEmailAddress(), messageBody);
+
+            userCredentialRepository.save(userCredential); //encrypt password before save, after authentication is done
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 }
