@@ -8,6 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.GenerationType;
 import javax.persistence.GeneratedValue;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 
 
 @Data
@@ -18,11 +20,14 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private long id;
-    @Column(name = "emailAddress")
+    @Column(name = "emailAddress", unique = true)
+    @Pattern(regexp = "[a-zA-Z0-9.]*[@][a-zA-Z]+\\.(com|net|org)")
+    @NotBlank(message = "email is mandatory")
     private String emailAddress;
     @Column(name = "designation")
     private String designation;
-    @Column(name = "employeeId")
+    @NotBlank(message = "employee id is mandatory")
+    @Column(name = "employeeId", unique = true)
     private String employeeId;
     @Column(name = "businessUnit")
     private String businessUnit;

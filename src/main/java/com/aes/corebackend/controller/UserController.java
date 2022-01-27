@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -40,7 +41,7 @@ public class UserController {
         }
     }
         
-    @PostMapping("/user/create")
+    @PostMapping("/users/create")
     public ResponseEntity<?> createUser(@RequestBody UserDTO userDto) {
         User user = userService.save(userDto.dtoToUser(userDto));
         if (Objects.nonNull(user)) {
@@ -51,7 +52,7 @@ public class UserController {
             return ResponseEntity.ok(new UserCreationResponseDTO("user creation failed"));
     }
     
-    @PutMapping("/user/update/{id}")
+    @PutMapping("/users/update/{id}")
     public ResponseEntity<?> updateUser(@RequestBody UserDTO userDto, @PathVariable long id) {
         User user = userDto.dtoToUser(userDto);
         boolean success = userService.update(user,id);

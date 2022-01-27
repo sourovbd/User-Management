@@ -1,3 +1,4 @@
+/*
 package com.aes.corebackend.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +12,10 @@ public class AuthenticateController {
     private AuthenticationManager authenticationManager;
 
 
-    /*@Autowired
-    private MyUserDetailsService userDetailsService;*/
+    */
+/*@Autowired
+    private MyUserDetailsService userDetailsService;*//*
+
 
 @Autowired
     private JwtUtil jwtTokenUtil;
@@ -36,3 +39,4 @@ public class AuthenticateController {
 
 
 }
+*/
