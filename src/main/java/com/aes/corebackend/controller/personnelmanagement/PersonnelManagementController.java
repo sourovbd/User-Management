@@ -1,7 +1,9 @@
 package com.aes.corebackend.controller.personnelmanagement;
 
 import com.aes.corebackend.dto.personnelmanagement.*;
+import com.aes.corebackend.entity.User;
 import com.aes.corebackend.entity.personnelmanagement.*;
+import com.aes.corebackend.service.UserService;
 import com.aes.corebackend.service.personnelmanagement.PersonalInformationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,13 +17,28 @@ public class PersonnelManagementController {
 
     @Autowired
     PersonalInformationService personalInformationService;
+    @Autowired
+    UserService userService;
 
-    @PostMapping(value = "/users/{id}/update-personal-basic-info")
-    public ResponseEntity<?> updatePersonalBasicInfo(@RequestBody PersonalBasicInfoDTO basicInfoDTO, @PathVariable String id) {
-        //TODO convert dto to entity
+    @PostMapping(value = "/users/{userId}/update-personal-basic-info")
+    public ResponseEntity<?> updatePersonalBasicInfo(@RequestBody PersonalBasicInfoDTO basicInfoDTO, @PathVariable Long userId) {
+        boolean success = false;
+        String message = "Update failed";
+
         PersonalBasicInfo basicInfo = basicInfoDTO.getPersonalBasicInfoEntity(basicInfoDTO);
-        boolean success = personalInformationService.updatePersonalBasicInfo(basicInfo);
-        return ResponseEntity.ok(new PersonnelManagementResponseDTO("Update successfull!", success));
+        User user = userService.getUserByUserId(userId);
+
+        if (user != null) {
+            basicInfo.setUser(user);
+            success = personalInformationService.updatePersonalBasicInfo(basicInfo);
+            if (success) {
+                message = "Update successful";
+            }
+        } else {
+            message = "User not found";
+        }
+
+        return ResponseEntity.ok(new PersonnelManagementResponseDTO(message, success));
     }
 
 

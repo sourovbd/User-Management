@@ -1,13 +1,10 @@
 package com.aes.corebackend.entity;
 
+import com.aes.corebackend.entity.personnelmanagement.PersonalBasicInfo;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.GenerationType;
-import javax.persistence.GeneratedValue;
+import javax.persistence.*;
 
 
 @Data
@@ -16,19 +13,18 @@ import javax.persistence.GeneratedValue;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
-    private long id;
-
+    @Column(name = "id")
+    private Long id;
+    @Column(name = "emailAddress")
     private String emailAddress;
-
+    @Column(name = "designation")
     private String designation;
-
-    private long employeeId;
-
+    @Column(name = "employeeId")
+    private String employeeId;
+    @Column(name = "businessUnit")
     private String businessUnit;
-
+    @Column(name = "department")
     private String department;
-
-    private String role;
-
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "user") //mappedBy value points to the relationship owner
+    private PersonalBasicInfo basicInfo;
 }
