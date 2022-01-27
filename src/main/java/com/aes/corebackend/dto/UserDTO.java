@@ -13,7 +13,7 @@ public class UserDTO {
 
     private String designation;
 
-    private long employeeId;
+    private String employeeId;
 
     private String businessUnit;
 

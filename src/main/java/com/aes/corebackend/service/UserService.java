@@ -17,9 +17,10 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public boolean update(User user) {
+    public boolean update(User user, long id) {
         try{
-            User tempUser = userRepository.findById(user.getId()).orElse(user);
+            User tempUser = userRepository.findById(id).orElse(null);
+            //User tempUser = userRepository.findByEmployeeId(user.getEmployeeId());
             tempUser.setDesignation(user.getDesignation());
             tempUser.setDepartment(user.getDepartment());
             tempUser.setEmailAddress(user.getEmailAddress());

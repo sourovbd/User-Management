@@ -34,9 +34,9 @@ public class UserController {
 
     }
     @PutMapping("/user/update/{id}")
-    public ResponseEntity<?> updateUser(@RequestBody UserDTO userDto) {
+    public ResponseEntity<?> updateUser(@RequestBody UserDTO userDto, @PathVariable long id) {
         User user = userDto.dtoToUser(userDto);
-        boolean success = userService.update(user);
+        boolean success = userService.update(user,id);
         if (success) {
             //emailSender.send(userDto.dtoToUser(userDto).getEmailAddress(),"This is a test email");
             return ResponseEntity.ok(new UserCreationResponseDTO("user data updated"));

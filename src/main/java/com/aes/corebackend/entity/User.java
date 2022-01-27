@@ -23,7 +23,7 @@ public class User {
     @Column(name = "designation")
     private String designation;
     @Column(name = "employeeId")
-    private long employeeId;
+    private String employeeId;
     @Column(name = "businessUnit")
     private String businessUnit;
     @Column(name = "department")
