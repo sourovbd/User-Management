@@ -1,5 +1,6 @@
 package com.aes.corebackend.entity.personnelmanagement;
 
+import com.aes.corebackend.entity.User;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -14,8 +15,8 @@ public class PersonalFamilyInfo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "materialStatus")
-    private String materialStatus;
+    @Column(name = "maritalStatus")
+    private String maritalStatus;
 
     @Column(name = "fathersName")
     private String fathersName;
@@ -25,4 +26,9 @@ public class PersonalFamilyInfo {
 
     @Column(name = "spouseName")
     private String spouseName;
+
+    @OneToOne(cascade = CascadeType.ALL, optional = false) //@OneToOne defines a one-to-one relationship between 2 entities
+    @JoinColumn(name = "user_id", referencedColumnName = "id") //@JoinColumn defines a foreign key column
+    @MapsId //@MapsId maps to the parent entity primary key
+    private User user;
 }

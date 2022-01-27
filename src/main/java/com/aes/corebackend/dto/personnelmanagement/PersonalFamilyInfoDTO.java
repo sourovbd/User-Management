@@ -14,7 +14,7 @@ public class PersonalFamilyInfoDTO {
         PersonalFamilyInfo personalFamilyInfoEntity = new PersonalFamilyInfo();
         personalFamilyInfoEntity.setFathersName(familyInfoDTO.getFathersName());
         personalFamilyInfoEntity.setMothersName(familyInfoDTO.getMothersName());
-        personalFamilyInfoEntity.setMaterialStatus(familyInfoDTO.getMaritalStatus());
+        personalFamilyInfoEntity.setMaritalStatus(familyInfoDTO.getMaritalStatus());
         personalFamilyInfoEntity.setSpouseName(familyInfoDTO.getSpouseName());
         return personalFamilyInfoEntity;
     }
