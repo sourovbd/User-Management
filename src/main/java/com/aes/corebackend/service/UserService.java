@@ -23,14 +23,14 @@ public class UserService {
     }
     public boolean update(User user) {
         try{
-            User temp_user = userRepository.findById(user.getId()).orElse(user);
-            temp_user.setDesignation(user.getDesignation());
-            temp_user.setDepartment(user.getDepartment());
-            //temp_user.setEmailAddress(user.getEmailAddress());
-            temp_user.setBusinessUnit(user.getBusinessUnit());
-            //temp_user.setEmployeeId(user.getEmployeeId());
+            User tempUser = userRepository.findById(user.getId()).orElse(user);
+            tempUser.setDesignation(user.getDesignation());
+            tempUser.setDepartment(user.getDepartment());
+            tempUser.setEmailAddress(user.getEmailAddress());
+            tempUser.setBusinessUnit(user.getBusinessUnit());
+            tempUser.setEmployeeId(user.getEmployeeId());
             //userCredential1.setPassword(userCredential.getPassword());
-            userRepository.save(temp_user);
+            userRepository.save(tempUser);
         } catch(Exception e)
         {
             e.printStackTrace();
