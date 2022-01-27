@@ -20,28 +20,6 @@ public class PersonnelManagementController {
     @Autowired
     UserService userService;
 
-    @PostMapping(value = "/users/{userId}/update-personal-basic-info")
-    public ResponseEntity<?> updatePersonalBasicInfo(@RequestBody PersonalBasicInfoDTO basicInfoDTO, @PathVariable Long userId) {
-        boolean success = false;
-        String message = "Update failed";
-
-        PersonalBasicInfo basicInfo = basicInfoDTO.getPersonalBasicInfoEntity(basicInfoDTO);
-        User user = userService.getUserByUserId(userId);
-
-        if (user != null) {
-            basicInfo.setUser(user);
-            success = personalInformationService.updatePersonalBasicInfo(basicInfo);
-            if (success) {
-                message = "Update successful";
-            }
-        } else {
-            message = "User not found";
-        }
-
-        return ResponseEntity.ok(new PersonnelManagementResponseDTO(message, success));
-    }
-
-
     @PostMapping(value = "/users/{id}/update-personal-attributes")
     public ResponseEntity<?> updatePersonalAttributes(@RequestBody PersonalAttributesDTO attributesDTO, @PathVariable String id) {
         //TODO convert dto to entity
