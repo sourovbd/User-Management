@@ -11,8 +11,8 @@ public class AuthenticateController {
    /* @Autowired
     private AuthenticationManager authenticationManager;*/
 
-    @Autowired
-    private MyUserDetailsService userDetailsService;
+    /*@Autowired
+    private MyUserDetailsService userDetailsService;*/
 
     /*@Autowired
     private JwtUtil jwtTokenUtil;*/
