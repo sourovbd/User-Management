@@ -1,6 +1,7 @@
 package com.aes.corebackend.service.personnelmanagement;
 
 import com.aes.corebackend.dto.personnelmanagement.PersonalFamilyInfoDTO;
+import com.aes.corebackend.dto.personnelmanagement.PersonnelManagementResponseDTO;
 import com.aes.corebackend.entity.User;
 import com.aes.corebackend.entity.personnelmanagement.PersonalFamilyInfo;
 import com.aes.corebackend.repository.personnelmanagement.PersonalFamilyInfoRepository;
@@ -27,8 +28,9 @@ public class FamilyInformationService {
         return true;
     }
 
-    public String createPersonalFamilyInfo(PersonalFamilyInfoDTO familyInfoDTO, Long userId) {
+    public PersonnelManagementResponseDTO createPersonalFamilyInfo(PersonalFamilyInfoDTO familyInfoDTO, Long userId) {
         //Check if User Exists
+        PersonnelManagementResponseDTO responseDTO = new PersonnelManagementResponseDTO("User not found!", false);
         User user = userService.getUserByUserId(userId);
 
         if(Objects.nonNull(user)){
@@ -36,11 +38,14 @@ public class FamilyInformationService {
             PersonalFamilyInfo familyInfo = familyInfoDTO.getPersonalFamilyEntity(familyInfoDTO);
             familyInfo.setUser(user);
             if(createService(familyInfo)){
-                return "Create Success";
+                responseDTO.setMessage("Create Family Info Success");
+                responseDTO.setSuccess(true);
+                return responseDTO;
             }
-            return "Create Failed";
+            responseDTO.setMessage("Create Family Info Fail");
+            return responseDTO;
         }else{
-            return "User not found!";
+            return responseDTO;
         }
     }
     ///     UPDATE
@@ -59,20 +64,23 @@ public class FamilyInformationService {
         return true;
     }
 
-    public String updatePersonalFamilyInfo(PersonalFamilyInfoDTO familyInfoDTO, Long userId) {
+    public PersonnelManagementResponseDTO updatePersonalFamilyInfo(PersonalFamilyInfoDTO familyInfoDTO, Long userId) {
         //Check if User Exists
+        PersonnelManagementResponseDTO responseDTO = new PersonnelManagementResponseDTO("User not found!", false);
         User user = userService.getUserByUserId(userId);
-
         if(Objects.nonNull(user)){
             //convert DTO to Entity
             PersonalFamilyInfo familyInfo = familyInfoDTO.getPersonalFamilyEntity(familyInfoDTO);
             familyInfo.setUser(user);
             if(updateService(familyInfo)){
-                return "Update Success";
+                responseDTO.setMessage("Update Family Info Success");
+                responseDTO.setSuccess(true);
+                return responseDTO;
             }
-            return "Update Failed";
+            responseDTO.setMessage("Update Family Info Fail");
+            return responseDTO;
         }else{
-            return "User not found!";
+            return responseDTO;
         }
     }
 
