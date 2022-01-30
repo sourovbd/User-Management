@@ -2,7 +2,7 @@ package com.aes.corebackend.util;
 
 import java.util.Random;
 
-public class UserCredentialUtil {
+public class UserCredentialUtils {
     public static String generatePassword(Integer length) {
         Long min = (long) Math.pow(10, length - 1);
         Long max = (long) Math.pow(10, length) - 1;

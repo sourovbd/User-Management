@@ -5,8 +5,8 @@ import com.aes.corebackend.entity.User;
 import com.aes.corebackend.entity.UserCredential;
 import com.aes.corebackend.repository.UserCredentialRepository;
 import com.aes.corebackend.repository.UserRepository;
-import com.aes.corebackend.util.Constant;
-import com.aes.corebackend.util.UserCredentialUtil;
+import com.aes.corebackend.util.Constants;
+import com.aes.corebackend.util.UserCredentialUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 //import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -72,7 +72,7 @@ public class UserCredentialService {
             UserCredential userCredential = userCredentialRepository.findByEmployeeId(""+user.getEmployeeId());
 
             //generate dummy password
-            String password = UserCredentialUtil.generatePassword(Constant.PASSWORD_MIN_LENGTH);
+            String password = UserCredentialUtils.generatePassword(Constants.PASSWORD_MIN_LENGTH);
             userCredential.setPassword(password);
 
             String messageBody = emailSender.buildEmailText(userCredential);
