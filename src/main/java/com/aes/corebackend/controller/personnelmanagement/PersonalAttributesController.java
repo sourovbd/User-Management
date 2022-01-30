@@ -24,7 +24,7 @@ public class PersonalAttributesController {
     @Autowired
     UserRepository userRepository;
 
-    @PostMapping(value = "/users/create/attributes-info/{userId}")
+    @PostMapping(value = "/users/{userId}/create-attributes-info")
     public ResponseEntity<?> createAttributesInfo(@RequestBody PersonalAttributesDTO attributesDTO, @PathVariable Long userId) {
         String message = "Create Failed";
         boolean success = false;
@@ -45,7 +45,7 @@ public class PersonalAttributesController {
         return ResponseEntity.ok(new PersonnelManagementResponseDTO(message, success));
     }
 
-    @PutMapping(value = "/users/update/attributes-info/{userId}")
+    @PutMapping(value = "/users/{userId}/update-attributes-info")
     public ResponseEntity<?> updateAttributesInfo(@RequestBody PersonalAttributesDTO attributesDTO, @PathVariable Long userId) {
         String message = "Update Failed";
         boolean success = false;

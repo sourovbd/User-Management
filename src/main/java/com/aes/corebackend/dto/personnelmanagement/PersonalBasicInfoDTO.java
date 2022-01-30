@@ -5,6 +5,7 @@ import lombok.Data;
 
 @Data
 public class PersonalBasicInfoDTO {
+    private Long id;
     private String firstName;
     private String lastName;
     private String dateOfBirth;
@@ -12,6 +13,7 @@ public class PersonalBasicInfoDTO {
 
     public PersonalBasicInfo getPersonalBasicInfoEntity(PersonalBasicInfoDTO basicInfoDTO) {
         PersonalBasicInfo basicInfoEntity = new PersonalBasicInfo();
+        basicInfoEntity.setId(basicInfoDTO.getId());
         basicInfoEntity.setFirstName(basicInfoDTO.getFirstName());
         basicInfoEntity.setLastName(basicInfoDTO.getLastName());
         basicInfoEntity.setGender(basicInfoDTO.getGender());

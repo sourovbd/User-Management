@@ -23,7 +23,7 @@ public class FamilyInformationController {
     @Autowired
     UserService userService;
 
-    @PostMapping(value = "/users/create/family-info/{userId}")
+    @PostMapping(value = "/users/{userId}/create-family-info")
     public ResponseEntity<?> createFamilyInfo(@RequestBody PersonalFamilyInfoDTO familyInfoDTO, @PathVariable Long userId) {
 
         String message = "Create";
@@ -44,7 +44,7 @@ public class FamilyInformationController {
         return ResponseEntity.ok(new PersonnelManagementResponseDTO(message, success));
     }
 
-    @PutMapping(value = "/users/update/family-info/{userId}")
+    @PutMapping(value = "/users/{userId}/update-family-info")
     public ResponseEntity<?> updateFamilyInfo(@RequestBody PersonalFamilyInfoDTO familyInfoDTO, @PathVariable Long userId) {
 
         String message = "Update";
