@@ -18,8 +18,6 @@ import java.util.Objects;
 public class PersonalAttributesController {
     @Autowired
     PersonalAttributesService personalAttributesService;
-    /*@Autowired
-    UserRepository userRepository;*/
 
     @PostMapping(value = "/users/{userId}/create-attributes-info")
     public ResponseEntity<?> createAttributesInfo(@RequestBody PersonalAttributesDTO attributesDTO, @PathVariable Long userId) {
@@ -33,8 +31,7 @@ public class PersonalAttributesController {
 
     @GetMapping(value = "/users/{userId}/attributes-info")
     public ResponseEntity<?> getPersonalBasicInfo(@PathVariable Long userId) {
-        PersonnelManagementResponseDTO response = personalAttributesService.getPersonalAttributes(userId);
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(personalAttributesService.getPersonalAttributes(userId));
     }
 
 }

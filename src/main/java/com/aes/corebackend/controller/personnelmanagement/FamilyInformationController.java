@@ -17,8 +17,6 @@ import java.util.Objects;
 public class FamilyInformationController {
     @Autowired
     FamilyInformationService familyInformationService;
-    @Autowired
-    UserService userService;
 
     @PostMapping(value = "/users/{userId}/create-family-info")
     public ResponseEntity<?> createFamilyInfo(@RequestBody PersonalFamilyInfoDTO familyInfoDTO, @PathVariable Long userId) {
@@ -32,7 +30,6 @@ public class FamilyInformationController {
 
     @GetMapping(value = "/users/{userId}/family-info")
     public ResponseEntity<?> getFamilyInfo(@PathVariable Long userId) {
-        PersonnelManagementResponseDTO response = familyInformationService.getFamilyInfo(userId);
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(familyInformationService.getFamilyInfo(userId));
     }
 }
