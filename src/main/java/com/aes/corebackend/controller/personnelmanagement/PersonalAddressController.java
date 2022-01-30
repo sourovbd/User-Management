@@ -7,10 +7,7 @@ import com.aes.corebackend.service.personnelmanagement.PersonalAddressService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class PersonalAddressController {
@@ -29,6 +26,12 @@ public class PersonalAddressController {
     @PutMapping(value = "/users/{userId}/personal-address")
     public ResponseEntity<?> updatePersonalAddress(@RequestBody PersonalAddressInfoDTO personalAddressInfoDTO, @PathVariable Long userId) {
         PersonnelManagementResponseDTO response = personalAddressService.updatePersonalAddress(personalAddressInfoDTO, userId);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping(value = "/users/{userId}/personal-address")
+    public ResponseEntity<?> getPersonalAddress(@PathVariable Long userId) {
+        PersonnelManagementResponseDTO response = personalAddressService.getPersonalAddressInfo(userId);
         return ResponseEntity.ok(response);
     }
 }
