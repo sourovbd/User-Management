@@ -26,7 +26,7 @@ public class UserController {
         //TODO convert dto to entity
         User user = userDTO.getUserEntity(userDTO);
         boolean success = userService.createUser(user);
-        return ResponseEntity.ok(new PersonnelManagementResponseDTO("User creation successful!", success));
+        return ResponseEntity.ok(new PersonnelManagementResponseDTO("User creation successful!", success, null));
     }
 
 
