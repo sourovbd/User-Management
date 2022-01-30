@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.Objects;
-import java.util.Optional;
 
 @RestController
 public class UserController {
@@ -40,8 +39,7 @@ public class UserController {
             return ResponseEntity.ok("Save Failed");
         }
     }
-        
-    @PostMapping("/users/create")
+    @PostMapping("/user/create")
     public ResponseEntity<?> createUser(@RequestBody UserDTO userDto) {
         User user = userService.save(userDto.dtoToUser(userDto));
         if (Objects.nonNull(user)) {
@@ -52,7 +50,7 @@ public class UserController {
             return ResponseEntity.ok(new UserCreationResponseDTO("user creation failed"));
     }
     
-    @PutMapping("/users/update/{id}")
+    @PutMapping("/users/{id}/update")
     public ResponseEntity<?> updateUser(@RequestBody UserDTO userDto, @PathVariable long id) {
         User user = userDto.dtoToUser(userDto);
         boolean success = userService.update(user,id);
@@ -63,7 +61,7 @@ public class UserController {
         else
             return ResponseEntity.ok(new UserCreationResponseDTO("user update failed"));
     }
-    
+
     @PostMapping("users/update-credential")
     public ResponseEntity<?> updateCredential(@RequestBody UserCredentialDTO userCredentialDTO) {
         UserCredential userCredential = userCredentialDTO.to(userCredentialDTO);
@@ -86,7 +84,7 @@ public class UserController {
             return ResponseEntity.ok("Invalid Password");
         }
     }
-    
+
     @GetMapping("get/user/{id}")
     public ResponseEntity<?> getUserDetails(@PathVariable int id) {
         User user = userService.findById(id);
