@@ -2,11 +2,7 @@ package com.aes.corebackend.controller.personnelmanagement;
 
 import com.aes.corebackend.dto.personnelmanagement.PersonalBasicInfoDTO;
 import com.aes.corebackend.dto.personnelmanagement.PersonnelManagementResponseDTO;
-import com.aes.corebackend.entity.User;
-import com.aes.corebackend.entity.personnelmanagement.PersonalBasicInfo;
-import com.aes.corebackend.service.UserService;
 import com.aes.corebackend.service.personnelmanagement.PersonalBasicInformationService;
-import com.aes.corebackend.service.personnelmanagement.PersonalInformationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;

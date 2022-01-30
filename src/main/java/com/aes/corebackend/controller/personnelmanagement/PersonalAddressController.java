@@ -1,7 +1,6 @@
 package com.aes.corebackend.controller.personnelmanagement;
 
 import com.aes.corebackend.dto.personnelmanagement.PersonalAddressInfoDTO;
-import com.aes.corebackend.dto.personnelmanagement.PersonalBasicInfoDTO;
 import com.aes.corebackend.dto.personnelmanagement.PersonnelManagementResponseDTO;
 import com.aes.corebackend.service.personnelmanagement.PersonalAddressService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +16,6 @@ public class PersonalAddressController {
 
     @PostMapping(value = "/users/{userId}/personal-address")
     public ResponseEntity<?> createPersonalAddress(@RequestBody PersonalAddressInfoDTO addressInfoDTO, @PathVariable Long userId) {
-        System.out.println("addressInfoDTO");
-        System.out.println(addressInfoDTO);
         PersonnelManagementResponseDTO response = personalAddressService.createPersonalAddress(addressInfoDTO, userId);
         return ResponseEntity.ok(response);
     }
