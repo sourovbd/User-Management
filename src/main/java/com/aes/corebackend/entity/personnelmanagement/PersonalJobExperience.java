@@ -11,7 +11,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 public class PersonalJobExperience {
     @Id
-    @Column(name = "ID")
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
