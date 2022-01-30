@@ -30,7 +30,7 @@ public class FamilyInformationService {
 
     public PersonnelManagementResponseDTO createPersonalFamilyInfo(PersonalFamilyInfoDTO familyInfoDTO, Long userId) {
         //Check if User Exists
-        PersonnelManagementResponseDTO responseDTO = new PersonnelManagementResponseDTO("User not found!", false);
+        PersonnelManagementResponseDTO responseDTO = new PersonnelManagementResponseDTO("User not found!", false, null);
         User user = userService.getUserByUserId(userId);
 
         if(Objects.nonNull(user)){
@@ -66,7 +66,7 @@ public class FamilyInformationService {
 
     public PersonnelManagementResponseDTO updatePersonalFamilyInfo(PersonalFamilyInfoDTO familyInfoDTO, Long userId) {
         //Check if User Exists
-        PersonnelManagementResponseDTO responseDTO = new PersonnelManagementResponseDTO("User not found!", false);
+        PersonnelManagementResponseDTO responseDTO = new PersonnelManagementResponseDTO("User not found!", false, null);
         User user = userService.getUserByUserId(userId);
         if(Objects.nonNull(user)){
             //convert DTO to Entity
@@ -84,6 +84,5 @@ public class FamilyInformationService {
         }
     }
 
-
-    //GET Request
+    //READ
 }
