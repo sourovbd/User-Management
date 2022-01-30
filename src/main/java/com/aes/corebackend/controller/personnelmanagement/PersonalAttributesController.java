@@ -28,7 +28,7 @@ public class PersonalAttributesController {
     public ResponseEntity<?> createAttributesInfo(@RequestBody PersonalAttributesDTO attributesDTO, @PathVariable Long userId) {
         String message = "Create Failed";
         boolean success = false;
-
+/*
         PersonalAttributes attributes = attributesDTO.getPersonalAttributesEntity(attributesDTO);
         User user = userRepository.getById(userId);
 
@@ -41,7 +41,7 @@ public class PersonalAttributesController {
         }else{
             message = "User not found!";
         }
-
+*/
         return ResponseEntity.ok(new PersonnelManagementResponseDTO(message, success));
     }
 
