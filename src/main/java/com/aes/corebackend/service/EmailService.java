@@ -1,5 +1,6 @@
 package com.aes.corebackend.service;
 
+import com.aes.corebackend.entity.UserCredential;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -33,5 +34,11 @@ public class EmailService implements EmailSender {
         }catch (MessagingException e) {
 
         }
+    }
+
+    @Override
+    public String buildEmailText(UserCredential userCredential) {
+        String messagebody = "Your new password is: " + userCredential.getPassword() + ".";
+        return messagebody;
     }
 }
