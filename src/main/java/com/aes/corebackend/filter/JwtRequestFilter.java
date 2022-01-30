@@ -1,6 +1,6 @@
 package com.aes.corebackend.filter;
 
-import com.aes.corebackend.service.MyUserDetailsService;
+import com.aes.corebackend.service.CustomUserDetailsService;
 import com.aes.corebackend.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -8,7 +8,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -21,7 +20,7 @@ import java.io.IOException;
 public class JwtRequestFilter extends OncePerRequestFilter {
 
     @Autowired
-    private MyUserDetailsService myUserDetailsService;
+    private CustomUserDetailsService myUserDetailsService;
 
     @Autowired
     private JwtUtil jwtUtil;
