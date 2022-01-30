@@ -8,6 +8,7 @@ import com.aes.corebackend.service.EmailSender;
 import com.aes.corebackend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Objects;
@@ -48,16 +49,20 @@ public class UserController {
             return ResponseEntity.ok(new UserCreationResponseDTO("user creation failed"));
     }
     
-    @PutMapping("/user/update/{id}")
+    @PutMapping("/users/{id}")
     public ResponseEntity<?> updateUser(@RequestBody UserDTO userDto) {
-        User user = userDto.dtoToUser(userDto);
-        boolean success = userService.update(user);
-        if (success) {
+        //User user = userDto.dtoToUser(userDto);
+        //boolean success = userService.update(userDto.dtoToUser(userDto));
+
+        return userService.update(userDto.dtoToUser(userDto))?
+                ResponseEntity.ok(new UserCreationResponseDTO("user data updated")) :
+                ResponseEntity.ok(new UserCreationResponseDTO("user update failed"));
+        /*if (success) {
             //emailSender.send(userDto.dtoToUser(userDto).getEmailAddress(),"This is a test email");
             return ResponseEntity.ok(new UserCreationResponseDTO("user data updated"));
         }
         else
-            return ResponseEntity.ok(new UserCreationResponseDTO("user update failed"));
+            return ResponseEntity.ok(new UserCreationResponseDTO("user update failed"));*/
     }
     
     @PostMapping("users/reset-password/{id}")

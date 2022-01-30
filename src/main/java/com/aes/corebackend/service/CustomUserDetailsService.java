@@ -21,14 +21,14 @@ public class CustomUserDetailsService implements UserDetailsService {
     private UserCredentialRepository repository;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String employeeId) throws UsernameNotFoundException {
 
-        UserCredential user = repository.findByEmployeeId(username);
-        logger.info("employeId: "+username);
+        UserCredential user = repository.findByEmployeeId(employeeId);
+        logger.info("employeId: "+employeeId);
         logger.info("user: "+user);
         logger.info("Username/emloyeeId: "+user.getEmployeeId());
         logger.info("Pass hash: "+user.getPassword());
-        logger.info("Role: "+user.getRole());
+        logger.info("Role: "+user.getRoles());
 
         if (user.equals(null)) {
             throw  new UsernameNotFoundException("Username is not found.");
