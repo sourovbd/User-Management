@@ -11,7 +11,7 @@ public class PersonalBasicInfoDTO {
     private String dateOfBirth;
     private String gender;
 
-    public PersonalBasicInfo getPersonalBasicInfoEntity(PersonalBasicInfoDTO basicInfoDTO) {
+    public static PersonalBasicInfo getPersonalBasicInfoEntity(PersonalBasicInfoDTO basicInfoDTO) {
         PersonalBasicInfo basicInfoEntity = new PersonalBasicInfo();
         basicInfoEntity.setId(basicInfoDTO.getId());
         basicInfoEntity.setFirstName(basicInfoDTO.getFirstName());
@@ -19,5 +19,15 @@ public class PersonalBasicInfoDTO {
         basicInfoEntity.setGender(basicInfoDTO.getGender());
         basicInfoEntity.setDateOfBirth(basicInfoDTO.getDateOfBirth());
         return basicInfoEntity;
+    }
+
+    public static PersonalBasicInfoDTO getPersonalBasicInfoDTO(PersonalBasicInfo personalBasicInfo) {
+        PersonalBasicInfoDTO personalBasicInfoDTO = new PersonalBasicInfoDTO();
+        personalBasicInfoDTO.setId(personalBasicInfo.getId());
+        personalBasicInfoDTO.setFirstName(personalBasicInfo.getFirstName());
+        personalBasicInfoDTO.setLastName(personalBasicInfo.getLastName());
+        personalBasicInfoDTO.setDateOfBirth(personalBasicInfo.getDateOfBirth());
+        personalBasicInfoDTO.setGender(personalBasicInfo.getGender());
+        return personalBasicInfoDTO;
     }
 }
