@@ -1,9 +1,11 @@
 package com.aes.corebackend.service.personnelmanagement;
 
 import com.aes.corebackend.dto.personnelmanagement.PersonalAddressInfoDTO;
+import com.aes.corebackend.dto.personnelmanagement.PersonalBasicInfoDTO;
 import com.aes.corebackend.dto.personnelmanagement.PersonnelManagementResponseDTO;
 import com.aes.corebackend.entity.User;
 import com.aes.corebackend.entity.personnelmanagement.PersonalAddressInfo;
+import com.aes.corebackend.entity.personnelmanagement.PersonalBasicInfo;
 import com.aes.corebackend.repository.personnelmanagement.PersonalAddressInfoRepository;
 import com.aes.corebackend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +41,52 @@ public class PersonalAddressService {
     private boolean createPersonalAddressInfo(PersonalAddressInfo addressInfo) {
         try {
             personalAddressInfoRepository.save(addressInfo);//create new row into basic info table
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    public PersonnelManagementResponseDTO updatePersonalAddress(PersonalAddressInfoDTO updatedPersonalAddressInfoDTO, Long userId) {
+        PersonnelManagementResponseDTO response = new PersonnelManagementResponseDTO("Personal address update successful", true, null);
+        User user = userService.getUserByUserId(userId);
+        if (Objects.nonNull(user)) {
+            //convert basic info DTO to Entity object
+            PersonalAddressInfo updatedAddressInfo = PersonalAddressInfoDTO.getPersonalAddressInfoEntity(updatedPersonalAddressInfoDTO);
+            updatedAddressInfo.setUser(user);
+            //TODO should we fetch existing basic info by user and basic info id both?
+            PersonalAddressInfo existingAddressInfo = this.getPersonalAddressInfoByUser(user);
+            boolean success = this.updatePersonalAddress(existingAddressInfo, updatedAddressInfo);
+            if (!success) {
+                response.setMessage("Personal address update failed");
+                response.setSuccess(false);
+            }
+        } else {
+            response.setMessage("User not found");
+            response.setSuccess(false);
+        }
+        return response;
+    }
+
+    private PersonalAddressInfo getPersonalAddressInfoByUser(User user) {
+        try {
+            return personalAddressInfoRepository.findPersonalAddressInfoByUser(user);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private boolean updatePersonalAddress(PersonalAddressInfo existingAddress, PersonalAddressInfo updatedAddress) {
+        try {
+            if (Objects.nonNull(existingAddress)) {
+                existingAddress.setPermanentAddress(updatedAddress.getPermanentAddress());
+                existingAddress.setPresentAddress(updatedAddress.getPresentAddress());
+                personalAddressInfoRepository.save(existingAddress);
+            } else {
+                return false;
+            }
         } catch (Exception e) {
             e.printStackTrace();
             return false;
