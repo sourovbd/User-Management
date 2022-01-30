@@ -23,7 +23,7 @@ public class PersonalBasicInfoController {
 
     @PostMapping(value = "/users/{userId}/create-personal-basic-info")
     public ResponseEntity<?> createPersonalBasicInfo(@RequestBody PersonalBasicInfoDTO personalBasicInfoDTO, @PathVariable Long userId) {
-        PersonalBasicInfo basicInfo = personalBasicInfoDTO.getPersonalBasicInfoEntity(personalBasicInfoDTO);
+        PersonalBasicInfo basicInfo = personalBasicInfoDTO.getPersonalBasicInfoEntity(personalBasicInfoDTO);//
         PersonnelManagementResponseDTO response = personalInformationService.createPersonalBasicInfo(basicInfo, userId);
         return ResponseEntity.ok(response);
     }
