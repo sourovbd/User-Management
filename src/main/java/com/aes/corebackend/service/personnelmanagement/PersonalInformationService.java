@@ -10,10 +10,6 @@ public class PersonalInformationService {
     @Autowired
     PersonalBasicInfoRepository personalBasicInfoRepository;
     @Autowired
-    PersonalAttributesRepository personalAttributesRepository;
-    @Autowired
-    PersonalFamilyInfoRepository personalFamilyInfoRepository;
-    @Autowired
     PersonalIdentificationInfoRepository personalIdentificationInfoRepository;
     @Autowired
     PersonalAddressInfoRepository personalAddressInfoRepository;
@@ -38,24 +34,6 @@ public class PersonalInformationService {
             }
         } catch (Exception e) {
             System.out.println(e);
-            return false;
-        }
-        return true;
-    }
-
-    public boolean updatePersonalAttributes(PersonalAttributes personalAttributes) {
-        try {
-            personalAttributesRepository.save(personalAttributes);
-        } catch (Exception e) {
-            return false;
-        }
-        return true;
-    }
-
-    public boolean updatePersonalFamilyInfo(PersonalFamilyInfo familyInfo) {
-        try {
-            personalFamilyInfoRepository.save(familyInfo);
-        } catch (Exception e) {
             return false;
         }
         return true;
