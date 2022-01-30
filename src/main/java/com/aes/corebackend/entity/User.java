@@ -1,5 +1,6 @@
 package com.aes.corebackend.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -14,6 +15,7 @@ import javax.validation.constraints.Pattern;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 public class User {
     @Id
@@ -24,13 +26,16 @@ public class User {
     @Pattern(regexp = "[a-zA-Z0-9.]*[@][a-zA-Z]+\\.(com|net|org)", message = "email id is invalid")
     @NotBlank(message = "email is mandatory")
     private String emailAddress;
+    @NotBlank(message = "designation id is mandatory")
     @Column(name = "designation")
     private String designation;
     @NotBlank(message = "employee id is mandatory")
     @Column(name = "employeeId", unique = true)
     private String employeeId;
+    @NotBlank(message = "business unit is mandatory")
     @Column(name = "businessUnit")
     private String businessUnit;
+    @NotBlank(message = "department is mandatory")
     @Column(name = "department")
     private String department;
 
