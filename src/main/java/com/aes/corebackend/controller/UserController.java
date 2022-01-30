@@ -25,7 +25,7 @@ public class UserController {
     @Autowired
     private UserCredentialService userCredentialService;
 
-    @PostMapping("users/save-credential")
+    @PostMapping("users/save-password")
     public ResponseEntity<?> saveCredential(@RequestBody UserCredentialDTO userCredentialDTO) {
         UserCredential userCredential = userCredentialDTO.to(userCredentialDTO);
         boolean saved = userCredentialService.save(userCredential);
@@ -60,10 +60,10 @@ public class UserController {
             return ResponseEntity.ok(new UserCreationResponseDTO("user update failed"));
     }
     
-    @PostMapping("users/update-credential")
-    public ResponseEntity<?> updateCredential(@RequestBody UserCredentialDTO userCredentialDTO) {
+    @PostMapping("users/reset-password/{id}")
+    public ResponseEntity<?> updateCredential(@RequestBody UserCredentialDTO userCredentialDTO, @PathVariable Long id) {
         UserCredential userCredential = userCredentialDTO.to(userCredentialDTO);
-        boolean updated = userCredentialService.update(userCredential);
+        boolean updated = userCredentialService.update(userCredential, id);
         if (updated) {
             return ResponseEntity.ok("Updated Successfully");
         }
@@ -89,7 +89,7 @@ public class UserController {
         return ResponseEntity.ok(new UserFinderResponseDTO("use fetch ok",user));
     }
 
-    @PostMapping("users/forgot-pass")
+    @PostMapping("users/forgot-password")
     public ResponseEntity<?> forgotPassword(@RequestBody ForgotPasswordDTO forgotPasswordDTO) {
         //email validation
         boolean done = userCredentialService.generateAndSendTempPass(forgotPasswordDTO.getEmailAddress());

@@ -21,7 +21,7 @@ public class UserCredentialService {
     private UserRepository userRepository;
 
     @Autowired
-    private EmailService emailService;
+    private EmailSender emailSender;
 
     public boolean save(UserCredential userCredential) {
         try {
@@ -35,12 +35,12 @@ public class UserCredentialService {
         return true;
     }
 
-    public boolean update(UserCredential userCredential) {
+    public boolean update(UserCredential userCredential, Long id) {
         try {
-            UserCredential userCredential1 = userCredentialRepository.findByEmployeeId(userCredential.getEmployeeId());
-            userCredential1.setPassword(userCredential.getPassword());
             //BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
             //userCredential.setPassword(passwordEncoder.encode(userCredential.getPassword()));
+            UserCredential userCredential1 = userCredentialRepository.getById(id);
+            userCredential1.setPassword(userCredential.getPassword());
             userCredentialRepository.save(userCredential1);
         } catch (Exception e) {
             e.printStackTrace();
@@ -75,8 +75,8 @@ public class UserCredentialService {
             String password = UserCredentialUtil.generatePassword(Constant.PASSWORD_LENGTH);
             userCredential.setPassword(password);
 
-            String messageBody = emailService.buildEmailText(userCredential);
-            emailService.send(user.getEmailAddress(), messageBody);
+            String messageBody = emailSender.buildEmailText(userCredential);
+            emailSender.send(user.getEmailAddress(), messageBody);
 
             userCredentialRepository.save(userCredential); //encrypt password before save, after authentication is done
         }
@@ -85,5 +85,9 @@ public class UserCredentialService {
             return false;
         }
         return true;
+    }
+
+    public UserCredential getById(Long id) {
+        return userCredentialRepository.findById(id).get();
     }
 }
