@@ -72,7 +72,7 @@ public class UserCredentialService {
             UserCredential userCredential = userCredentialRepository.findByEmployeeId(""+user.getEmployeeId());
 
             //generate dummy password
-            String password = UserCredentialUtil.generatePassword(Constant.PASSWORD_LENGTH);
+            String password = UserCredentialUtil.generatePassword(Constant.PASSWORD_MIN_LENGTH);
             userCredential.setPassword(password);
 
             String messageBody = emailSender.buildEmailText(userCredential);

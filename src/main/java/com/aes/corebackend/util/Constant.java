@@ -1,5 +1,5 @@
 package com.aes.corebackend.util;
 
 public class Constant {
-    public static final int PASSWORD_LENGTH = 10;
+    public static final int PASSWORD_MIN_LENGTH = 8;
 }
