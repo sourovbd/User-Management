@@ -29,4 +29,10 @@ public class PersonalBasicInfoController {
         PersonnelManagementResponseDTO response = personalBasicInformationService.updatePersonalBasicInfo(basicInfoDTO, userId);
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping(value = "/users/{userId}/personal-basic-info")
+    public ResponseEntity<?> getPersonalBasicInfo(@PathVariable Long userId) {
+        PersonnelManagementResponseDTO response = personalBasicInformationService.getPersonalBasicInfo(userId);
+        return ResponseEntity.ok(response);
+    }
 }

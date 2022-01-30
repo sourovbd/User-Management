@@ -1,6 +1,7 @@
 package com.aes.corebackend.service.personnelmanagement;
 
 import com.aes.corebackend.dto.personnelmanagement.PersonalBasicInfoDTO;
+import com.aes.corebackend.dto.personnelmanagement.PersonalInformationDTO;
 import com.aes.corebackend.dto.personnelmanagement.PersonnelManagementResponseDTO;
 import com.aes.corebackend.entity.User;
 import com.aes.corebackend.entity.personnelmanagement.PersonalBasicInfo;
@@ -18,12 +19,33 @@ public class PersonalBasicInformationService {
     @Autowired
     UserService userService;
 
+    public PersonnelManagementResponseDTO getPersonalBasicInfo(Long userId) {
+        PersonnelManagementResponseDTO response = new PersonnelManagementResponseDTO("Basic information not found", false, null);
+        User user = userService.getUserByUserId(userId);
+        if (Objects.nonNull(user)) {
+            PersonalBasicInfo basicInfo = this.getPersonalBasicInfoByUser(user);
+            if (Objects.nonNull(basicInfo)) {
+                //convert Entity to DTO object and set personal info object
+                PersonalBasicInfoDTO basicInfoDTO = PersonalBasicInfoDTO.getPersonalBasicInfoDTO(basicInfo);
+
+                //build response
+                response.setMessage("Basic information found");
+                response.setSuccess(true);
+                response.setData(basicInfoDTO);
+            }
+        } else {
+            response.setMessage("User not found");
+            response.setSuccess(false);
+        }
+        return response;
+    }
+
     public PersonnelManagementResponseDTO createPersonalBasicInfo(PersonalBasicInfoDTO basicInfoDTO, Long userId) {
-        PersonnelManagementResponseDTO response = new PersonnelManagementResponseDTO("Basic information creation successful", true);
+        PersonnelManagementResponseDTO response = new PersonnelManagementResponseDTO("Basic information creation successful", true, null);
         User user = userService.getUserByUserId(userId);
         if (Objects.nonNull(user)) {
             //convert basic info DTO to Entity object
-            PersonalBasicInfo basicInfo = basicInfoDTO.getPersonalBasicInfoEntity(basicInfoDTO);
+            PersonalBasicInfo basicInfo = PersonalBasicInfoDTO.getPersonalBasicInfoEntity(basicInfoDTO);
             basicInfo.setUser(user);
             boolean success = this.createPersonalBasicInfo(basicInfo);
             if (!success) {
@@ -46,11 +68,11 @@ public class PersonalBasicInformationService {
     }
 
     public PersonnelManagementResponseDTO updatePersonalBasicInfo(PersonalBasicInfoDTO updatedBasicInfoDTO, Long userId) {
-        PersonnelManagementResponseDTO response = new PersonnelManagementResponseDTO("Basic information update successful", true);
+        PersonnelManagementResponseDTO response = new PersonnelManagementResponseDTO("Basic information update successful", true, null);
         User user = userService.getUserByUserId(userId);
         if (Objects.nonNull(user)) {
             //convert basic info DTO to Entity object
-            PersonalBasicInfo updatedBasicInfo = updatedBasicInfoDTO.getPersonalBasicInfoEntity(updatedBasicInfoDTO);
+            PersonalBasicInfo updatedBasicInfo = PersonalBasicInfoDTO.getPersonalBasicInfoEntity(updatedBasicInfoDTO);
             updatedBasicInfo.setUser(user);
             //TODO should we fetch existing basic info by user and basic info id?
             PersonalBasicInfo existingBasicInfo = this.getPersonalBasicInfoByUser(user);
