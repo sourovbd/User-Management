@@ -36,8 +36,9 @@ public class EmailService implements EmailSender {
         }
     }
 
+    @Override
     public String buildEmailText(UserCredential userCredential) {
-        String messagebody = "Your new password is: " + userCredential.getPassword() + ".<br>";
+        String messagebody = "Your new password is: " + userCredential.getPassword() + ".";
         return messagebody;
     }
 }
