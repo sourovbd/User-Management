@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @Controller
@@ -28,7 +29,7 @@ public class PersonalBasicInfoController {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping(value = "/users/{userId}/update-personal-basic-info")
+    @PutMapping(value = "/users/{userId}/update-personal-basic-info")
     public ResponseEntity<?> updatePersonalBasicInfo(@RequestBody PersonalBasicInfoDTO basicInfoDTO, @PathVariable Long userId) {
         PersonalBasicInfo basicInfo = basicInfoDTO.getPersonalBasicInfoEntity(basicInfoDTO);
         PersonnelManagementResponseDTO response = personalInformationService.updatePersonalBasicInfo(basicInfo, userId);
