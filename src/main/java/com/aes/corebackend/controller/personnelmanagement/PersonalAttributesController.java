@@ -42,7 +42,7 @@ public class PersonalAttributesController {
             message = "User not found!";
         }
 */
-        return ResponseEntity.ok(new PersonnelManagementResponseDTO(message, success));
+        return ResponseEntity.ok(new PersonnelManagementResponseDTO(message, success, null));
     }
 
     @PutMapping(value = "/users/{userId}/update-attributes-info")
@@ -62,7 +62,7 @@ public class PersonalAttributesController {
             message = "User not found!";
         }
 
-        return ResponseEntity.ok(new PersonnelManagementResponseDTO(message, success));
+        return ResponseEntity.ok(new PersonnelManagementResponseDTO(message, success, null));
     }
 
 }

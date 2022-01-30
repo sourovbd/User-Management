@@ -25,7 +25,7 @@ public class PersonnelManagementController {
         //TODO convert dto to entity
         PersonalIdentificationInfo identificationInfo = identificationInfoDTO.getPersonalIdentificationEntity(identificationInfoDTO);
         boolean success = personalInformationService.updatePersonalIdentificationInfo(identificationInfo);
-        return ResponseEntity.ok(new PersonnelManagementResponseDTO("Update successfull!", success));
+        return ResponseEntity.ok(new PersonnelManagementResponseDTO("Update successfull!", success, null));
     }
 
     @PostMapping(value = "/users/{id}/update-personal-address")
@@ -33,7 +33,7 @@ public class PersonnelManagementController {
         //TODO convert dto to entity
         PersonalAddressInfo addressInfo = addressInfoDTO.getPersonalAddressInfoEntity(addressInfoDTO);
         boolean success = personalInformationService.updatePersonalAddress(addressInfo);
-        return ResponseEntity.ok(new PersonnelManagementResponseDTO("Update successfull!", success));
+        return ResponseEntity.ok(new PersonnelManagementResponseDTO("Update successfull!", success, null));
     }
 
     @PostMapping(value = "/users/{id}/update-personal-education")
@@ -41,7 +41,7 @@ public class PersonnelManagementController {
         //TODO convert dto to entity
         PersonalEducationInfo educationInfo = educationDTO.getPersonalEducationEntity(educationDTO);
         boolean success = personalInformationService.updatePersonalEducation(educationInfo);
-        return ResponseEntity.ok(new PersonnelManagementResponseDTO("Update successfull!", success));
+        return ResponseEntity.ok(new PersonnelManagementResponseDTO("Update successfull!", success, null));
     }
 
     @PostMapping(value = "/users/{id}/update-personal-training")
@@ -49,7 +49,7 @@ public class PersonnelManagementController {
         //TODO convert dto to entity
         PersonalTrainingInfo trainingInfo = trainingDTO.getPersonalTrainingEntity(trainingDTO);
         boolean success = personalInformationService.updatePersonalTraining(trainingInfo);
-        return ResponseEntity.ok(new PersonnelManagementResponseDTO("Update successfull!", success));
+        return ResponseEntity.ok(new PersonnelManagementResponseDTO("Update successfull!", success, null));
     }
 
     @PostMapping(value = "/users/{id}/update-personal-job-experience")
@@ -57,7 +57,7 @@ public class PersonnelManagementController {
         //TODO convert dto to entity
         PersonalJobExperience experienceInfo = experienceDTO.getPersonalJobExperienceEntity(experienceDTO);
         boolean success = personalInformationService.updateJobExperience(experienceInfo);
-        return ResponseEntity.ok(new PersonnelManagementResponseDTO("Update successfull!", success));
+        return ResponseEntity.ok(new PersonnelManagementResponseDTO("Update successfull!", success, null));
     }
 
     //Will need one more GET request to respond back everything
