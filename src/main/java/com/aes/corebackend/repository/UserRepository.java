@@ -12,7 +12,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     //User save(User user);
     //User getUserBy(long id);
     //User findOne(int employeeId);
-    User findById(long id);
     @Query("select u from User u where u.employeeId=:employeeId")
     public User findByEmployeeId(@Param("employeeId") String employeeId);
 }
