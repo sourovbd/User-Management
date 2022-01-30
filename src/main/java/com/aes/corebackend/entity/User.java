@@ -21,7 +21,7 @@ public class User {
     @Column(name = "id", nullable = false)
     private long id;
     @Column(name = "emailAddress", unique = true)
-    @Pattern(regexp = "[a-zA-Z0-9.]*[@][a-zA-Z]+\\.(com|net|org)")
+    @Pattern(regexp = "[a-zA-Z0-9.]*[@][a-zA-Z]+\\.(com|net|org)", message = "email id is invalid")
     @NotBlank(message = "email is mandatory")
     private String emailAddress;
     @Column(name = "designation")

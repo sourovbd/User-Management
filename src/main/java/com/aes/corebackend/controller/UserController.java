@@ -89,7 +89,7 @@ public class UserController {
     
     @GetMapping("get/user/{id}")
     public ResponseEntity<?> getUserDetails(@PathVariable int id) {
-        User user = userService.findById(id).orElse(null);
+        User user = userService.findById(id);
         return ResponseEntity.ok(new UserFinderResponseDTO("use fetch ok",user));
     }
 }
