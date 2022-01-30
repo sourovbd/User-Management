@@ -21,48 +21,17 @@ import java.util.Objects;
 public class PersonalAttributesController {
     @Autowired
     PersonalAttributesService personalAttributesService;
-    @Autowired
-    UserRepository userRepository;
+    /*@Autowired
+    UserRepository userRepository;*/
 
     @PostMapping(value = "/users/{userId}/create-attributes-info")
     public ResponseEntity<?> createAttributesInfo(@RequestBody PersonalAttributesDTO attributesDTO, @PathVariable Long userId) {
-        String message = "Create Failed";
-        boolean success = false;
-/*
-        PersonalAttributes attributes = attributesDTO.getPersonalAttributesEntity(attributesDTO);
-        User user = userRepository.getById(userId);
-
-        if(Objects.nonNull(user)){
-            attributes.setUser(user);
-            success = personalAttributesService.createAttributesInfo(attributes);
-            if(success){
-                message = "Create Successful";
-            }
-        }else{
-            message = "User not found!";
-        }
-*/
-        return ResponseEntity.ok(new PersonnelManagementResponseDTO(message, success));
+        return ResponseEntity.ok(personalAttributesService.createAttributesInfo(attributesDTO, userId));
     }
 
     @PutMapping(value = "/users/{userId}/update-attributes-info")
     public ResponseEntity<?> updateAttributesInfo(@RequestBody PersonalAttributesDTO attributesDTO, @PathVariable Long userId) {
-        String message = "Update Failed";
-        boolean success = false;
-        PersonalAttributes attributes = attributesDTO.getPersonalAttributesEntity(attributesDTO);
-        User user = userRepository.getById(userId);
-
-        if(Objects.nonNull(user)){
-            attributes.setUser(user);
-            success = personalAttributesService.updateAttributesInfo(attributes);
-            if(success){
-                message = "Update Successful";
-            }
-        }else{
-            message = "User not found!";
-        }
-
-        return ResponseEntity.ok(new PersonnelManagementResponseDTO(message, success));
+        return ResponseEntity.ok(personalAttributesService.updateAttributesInfo(attributesDTO, userId));
     }
 
 }

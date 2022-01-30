@@ -25,13 +25,11 @@ public class FamilyInformationController {
 
     @PostMapping(value = "/users/{userId}/create-family-info")
     public ResponseEntity<?> createFamilyInfo(@RequestBody PersonalFamilyInfoDTO familyInfoDTO, @PathVariable Long userId) {
-        String message = familyInformationService.createPersonalFamilyInfo(familyInfoDTO, userId);
-        return ResponseEntity.ok(new PersonnelManagementResponseDTO(message, false));
+        return ResponseEntity.ok(familyInformationService.createPersonalFamilyInfo(familyInfoDTO, userId));
     }
 
     @PutMapping(value = "/users/{userId}/update-family-info")
     public ResponseEntity<?> updateFamilyInfo(@RequestBody PersonalFamilyInfoDTO familyInfoDTO, @PathVariable Long userId) {
-        String message = familyInformationService.updatePersonalFamilyInfo(familyInfoDTO, userId);
-        return ResponseEntity.ok(new PersonnelManagementResponseDTO(message, false));
+        return ResponseEntity.ok(familyInformationService.updatePersonalFamilyInfo(familyInfoDTO, userId));
     }
 }
