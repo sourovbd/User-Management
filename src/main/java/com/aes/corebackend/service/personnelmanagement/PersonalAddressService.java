@@ -93,4 +93,25 @@ public class PersonalAddressService {
         }
         return true;
     }
+
+    public PersonnelManagementResponseDTO getPersonalAddressInfo(Long userId) {
+        PersonnelManagementResponseDTO response = new PersonnelManagementResponseDTO("Basic information not found", false, null);
+        User user = userService.getUserByUserId(userId);
+        if (Objects.nonNull(user)) {
+            PersonalAddressInfo addressInfo = this.getPersonalAddressInfoByUser(user);
+            if (Objects.nonNull(addressInfo)) {
+                //convert Entity to DTO object and set personal info object
+                PersonalAddressInfoDTO addressDTO = PersonalAddressInfoDTO.getPersonalAddressInfoDTO(addressInfo);
+
+                //build response
+                response.setMessage("Personal address found");
+                response.setSuccess(true);
+                response.setData(addressDTO);
+            }
+        } else {
+            response.setMessage("User not found");
+            response.setSuccess(false);
+        }
+        return response;
+    }
 }
