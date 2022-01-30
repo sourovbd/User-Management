@@ -20,14 +20,6 @@ public class PersonnelManagementController {
     @Autowired
     UserService userService;
 
-    @PostMapping(value = "/users/{id}/update-personal-attributes")
-    public ResponseEntity<?> updatePersonalAttributes(@RequestBody PersonalAttributesDTO attributesDTO, @PathVariable String id) {
-        //TODO convert dto to entity
-        PersonalAttributes attributes = attributesDTO.getPersonalAttributesEntity(attributesDTO);//new PersonalAttributes();//
-        boolean success = personalInformationService.updatePersonalAttributes(attributes);
-        return ResponseEntity.ok(new PersonnelManagementResponseDTO("Update successfull!", success));
-    }
-
     @PostMapping(value = "/users/{id}/update-personal-identification-info")
     public ResponseEntity<?> updatePersonalIdentificationInfo(@RequestBody PersonalIdentificationInfoDTO identificationInfoDTO, @PathVariable String id) {
         //TODO convert dto to entity
