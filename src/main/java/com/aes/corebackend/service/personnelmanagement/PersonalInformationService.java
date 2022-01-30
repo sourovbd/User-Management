@@ -52,9 +52,9 @@ public class PersonalInformationService {
         return true;
     }
 
-    private PersonalBasicInfo getPersonalBasicInfoByUser(PersonalBasicInfo basicInfo) {
+    private PersonalBasicInfo getPersonalBasicInfoByUser(User user) {
         try {
-            PersonalBasicInfo info = personalBasicInfoRepository.findPersonalBasicInfoByUser(basicInfo.getUser());
+            PersonalBasicInfo info = personalBasicInfoRepository.findPersonalBasicInfoByUser(user);
             return info;
         } catch (Exception e) {
             e.printStackTrace();
@@ -62,14 +62,14 @@ public class PersonalInformationService {
         return null;
     }
 
-    public PersonnelManagementResponseDTO updatePersonalBasicInfo(PersonalBasicInfo basicInfo, Long userId) {
+    public PersonnelManagementResponseDTO updatePersonalBasicInfo(PersonalBasicInfo updatedBasicInfo, Long userId) {
         PersonnelManagementResponseDTO response = new PersonnelManagementResponseDTO("Basic information update successful", true);
-        System.out.println(basicInfo);
         User user = userService.getUserByUserId(userId);
         if (Objects.nonNull(user)) {
-            basicInfo.setUser(user);
-            PersonalBasicInfo info = this.getPersonalBasicInfoByUser(basicInfo);
-            boolean success = this.updateBasicInfo(info);
+            updatedBasicInfo.setUser(user);
+            //TODO should we fetch existing basic info by user and basic info id?
+            PersonalBasicInfo existingBasicInfo = this.getPersonalBasicInfoByUser(user);
+            boolean success = this.updateBasicInfo(existingBasicInfo, updatedBasicInfo);
             if (!success) {
                 response.setMessage("Basic information update failed");
             }
@@ -79,23 +79,22 @@ public class PersonalInformationService {
         return response;
     }
 
-    private boolean updateBasicInfo(PersonalBasicInfo info) {
-        try {
-            return true;
-//            if (Objects.nonNull(info)) {
-//                info.setFirstName(basicInfo.getFirstName());
-//                info.setLastName(basicInfo.getLastName());
-//                info.setDateOfBirth(basicInfo.getDateOfBirth());
-//                info.setGender(basicInfo.getGender());
-//                personalBasicInfoRepository.save(basicInfo);
-//            } else {
-//
-//            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-//        return true;
+    private boolean updateBasicInfo(PersonalBasicInfo existingBasicInfo, PersonalBasicInfo updatedBasicInfo) {
+            try {
+                if (Objects.nonNull(existingBasicInfo)) {
+                    existingBasicInfo.setFirstName(updatedBasicInfo.getFirstName());
+                    existingBasicInfo.setLastName(updatedBasicInfo.getLastName());
+                    existingBasicInfo.setDateOfBirth(updatedBasicInfo.getDateOfBirth());
+                    existingBasicInfo.setGender(updatedBasicInfo.getGender());
+                    personalBasicInfoRepository.save(existingBasicInfo);
+                } else {
+                    return false;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+        return true;
     }
 
     public boolean updatePersonalIdentificationInfo(PersonalIdentificationInfo identificationInfo) {
