@@ -1,8 +1,10 @@
 package com.aes.corebackend.service.personnelmanagement;
 
+import com.aes.corebackend.dto.personnelmanagement.PersonalAttributesDTO;
 import com.aes.corebackend.dto.personnelmanagement.PersonalFamilyInfoDTO;
 import com.aes.corebackend.dto.personnelmanagement.PersonnelManagementResponseDTO;
 import com.aes.corebackend.entity.User;
+import com.aes.corebackend.entity.personnelmanagement.PersonalAttributes;
 import com.aes.corebackend.entity.personnelmanagement.PersonalFamilyInfo;
 import com.aes.corebackend.repository.personnelmanagement.PersonalFamilyInfoRepository;
 import com.aes.corebackend.service.UserService;
@@ -81,6 +83,39 @@ public class FamilyInformationService {
             return responseDTO;
         }else{
             return responseDTO;
+        }
+    }
+
+    public PersonnelManagementResponseDTO getFamilyInfo(Long userId) {
+        PersonnelManagementResponseDTO responseDTO = new PersonnelManagementResponseDTO("User not found!", false, null);
+        User user = userService.getUserByUserId(userId);
+        //if exists: convert DTO to entity and call create service
+        if(Objects.nonNull(user)){
+            //Get data by user
+            PersonalFamilyInfo familyInfo = getService(userId);
+            //If data is NonNull--> respond responstDTO with data
+            if(Objects.nonNull(familyInfo)){
+                PersonalFamilyInfoDTO familyInfoDTO = PersonalFamilyInfoDTO.getPersonalFamilyDTO(familyInfo);
+                responseDTO.setMessage("Family Information found");
+                responseDTO.setSuccess(true);
+                responseDTO.setData(familyInfoDTO);
+                return responseDTO;
+            }else{
+                responseDTO.setMessage("Family Information not found");
+                responseDTO.setSuccess(true);
+                return responseDTO;
+            }
+        }else{
+            return responseDTO;
+        }
+    }
+
+    private PersonalFamilyInfo getService(Long userId){
+        try {
+            PersonalFamilyInfo familyInfo = personalFamilyInfoRepository.findPersonalFamilyInfoById(userId);
+            return familyInfo;
+        }catch (Exception e){
+            return null;
         }
     }
 
