@@ -39,7 +39,7 @@ public class UserController {
             return ResponseEntity.ok("Save Failed");
         }
     }
-    @PostMapping("/user/create")
+    @PostMapping("/users/create")
     public ResponseEntity<?> createUser(@RequestBody UserDTO userDto) {
         User user = userService.save(userDto.dtoToUser(userDto));
         if (Objects.nonNull(user)) {

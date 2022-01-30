@@ -20,7 +20,7 @@ public class UserService {
 
     public boolean update(User user, long id) {
         try{
-            User tempUser = userRepository.findById(id).orElse(null);
+            User tempUser = userRepository.findById(id);
             //User tempUser = userRepository.findByEmployeeId(user.getEmployeeId());
             //nullpointer check
             if(Objects.nonNull(tempUser)) {
@@ -42,7 +42,7 @@ public class UserService {
     }
 
     public User findById(long id) {
-        return userRepository.findById(id).orElse(null);
+        return userRepository.findById(id);
     }
 
 }
