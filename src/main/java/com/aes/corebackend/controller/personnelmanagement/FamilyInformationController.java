@@ -25,31 +25,16 @@ public class FamilyInformationController {
 
     @PostMapping(value = "/users/create/family-info/{userId}")
     public ResponseEntity<?> createFamilyInfo(@RequestBody PersonalFamilyInfoDTO familyInfoDTO, @PathVariable Long userId) {
-
-        String message = "Create";
         boolean success = false;
-
-        PersonalFamilyInfo familyInfo = familyInfoDTO.getPersonalFamilyEntity(familyInfoDTO);
-        User user = userService.getUserByUserId(userId);
-
-        if(Objects.nonNull(user)){
-            familyInfo.setUser(user);
-            success = familyInformationService.createPersonalFamilyInfo(familyInfo);
-            if(success){
-                message = "Create Successful";
-            }
-        }else{
-            message = "User not found!";
-        }
+        String message = familyInformationService.createPersonalFamilyInfo(familyInfoDTO, userId);
         return ResponseEntity.ok(new PersonnelManagementResponseDTO(message, success));
     }
 
     @PutMapping(value = "/users/update/family-info/{userId}")
     public ResponseEntity<?> updateFamilyInfo(@RequestBody PersonalFamilyInfoDTO familyInfoDTO, @PathVariable Long userId) {
 
-        String message = "Update";
-        boolean success = false;
-
+        String message = familyInformationService.updatePersonalFamilyInfo(familyInfoDTO, userId);
+/*
         PersonalFamilyInfo familyInfo = familyInfoDTO.getPersonalFamilyEntity(familyInfoDTO);
         User user = userService.getUserByUserId(userId);
 
@@ -61,7 +46,7 @@ public class FamilyInformationController {
             }
         }else{
             message = "User not found!";
-        }
-        return ResponseEntity.ok(new PersonnelManagementResponseDTO(message, success));
+        }*/
+        return ResponseEntity.ok(new PersonnelManagementResponseDTO(message, false));
     }
 }
