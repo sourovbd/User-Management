@@ -31,7 +31,7 @@ public class UserController {
 
     @PostMapping("users/save-password")
     @PreAuthorize("hasAuthority('EMPLOYEE')")
-    public ResponseEntity<?> saveCredential(@RequestBody UserCredentialDTO userCredentialDTO) {
+    public ResponseEntity<?> saveCredential(@Valid @RequestBody UserCredentialDTO userCredentialDTO) {
 
         return userCredentialService.save(userCredentialDTO.to(userCredentialDTO))?
                 ResponseEntity.ok("Saved Successfully") :
@@ -61,7 +61,7 @@ public class UserController {
     
     @PostMapping("users/reset-password/{id}")
     @PreAuthorize("hasAuthority('EMPLOYEE')")
-    public ResponseEntity<?> updateCredential(@RequestBody UserCredentialDTO userCredentialDTO, @PathVariable Long id) {
+    public ResponseEntity<?> updateCredential(@Valid @RequestBody UserCredentialDTO userCredentialDTO, @PathVariable Long id) {
 
         return userCredentialService.update(userCredentialDTO.to(userCredentialDTO), id) ?
                 ResponseEntity.ok("Updated Successfully") :
@@ -71,13 +71,10 @@ public class UserController {
     @PostMapping("users/verify-credential")
     @PreAuthorize("hasAuthority('EMPLOYEE')")
     public ResponseEntity<?> verifyCredential(@RequestBody UserCredentialDTO userCredentialDTO) {
-        boolean verified = userCredentialService.verifyPassword(userCredentialDTO);
-        if (verified) {
-            return ResponseEntity.ok("Valid Password");
-        }
-        else {
-            return ResponseEntity.ok("Invalid Password");
-        }
+
+        return userCredentialService.verifyPassword(userCredentialDTO) ?
+                ResponseEntity.ok("Valid Password") :
+                ResponseEntity.ok("Invalid Password");
     }
     
     @GetMapping("get/user/{id}")
@@ -95,14 +92,10 @@ public class UserController {
 
     @PostMapping("users/forgot-password")
     @PreAuthorize("hasAuthority('EMPLOYEE')")
-    public ResponseEntity<?> forgotPassword(@RequestBody ForgotPasswordDTO forgotPasswordDTO) {
-        /** email validation */
-        boolean done = userCredentialService.generateAndSendTempPass(forgotPasswordDTO.getEmailAddress());
-        if (done) {
-            return ResponseEntity.ok("A new password is sent to your email.");
-        }
-        else {
-            return ResponseEntity.ok("Pleas try again.");
-        }
+    public ResponseEntity<?> forgotPassword(@Valid @RequestBody ForgotPasswordDTO forgotPasswordDTO) {
+
+        return userCredentialService.generateAndSendTempPass(forgotPasswordDTO.getEmailAddress()) ?
+                ResponseEntity.ok("A new password is sent to your email.") :
+                ResponseEntity.ok("Please try again.");
     }
 }
