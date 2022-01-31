@@ -28,7 +28,7 @@ public class UserController {
     private UserCredentialService userCredentialService;
 
     @PostMapping("users/save-password")
-    @PreAuthorize("hasRole('EMPLOYEE')")
+    @PreAuthorize("hasAuthority('EMPLOYEE')")
     public ResponseEntity<?> saveCredential(@RequestBody UserCredentialDTO userCredentialDTO) {
 
         return userCredentialService.save(userCredentialDTO.to(userCredentialDTO))?
@@ -37,7 +37,7 @@ public class UserController {
     }
         
     @PostMapping("/user/create")
-    @PreAuthorize("hasRole('SYS_ADMIN')")
+    @PreAuthorize("hasAuthority('SYS_ADMIN')")
     public ResponseEntity<?> createUser(@RequestBody UserDTO userDto) {
 
         User user = userService.save(userDto.dtoToUser(userDto));
@@ -50,7 +50,7 @@ public class UserController {
     }
     
     @PutMapping("/users/{id}")
-    @PreAuthorize("hasRole('EMPLOYEE')")
+    @PreAuthorize("hasAuthority('EMPLOYEE')")
     public ResponseEntity<?> updateUser(@RequestBody UserDTO userDto) {
         return userService.update(userDto.dtoToUser(userDto))?
                 ResponseEntity.ok(new UserCreationResponseDTO("user data updated")) :
@@ -58,7 +58,7 @@ public class UserController {
     }
     
     @PostMapping("users/reset-password/{id}")
-    @PreAuthorize("hasRole('EMPLOYEE')")
+    @PreAuthorize("hasAuthority('EMPLOYEE')")
     public ResponseEntity<?> updateCredential(@RequestBody UserCredentialDTO userCredentialDTO, @PathVariable Long id) {
 
         return userCredentialService.update(userCredentialDTO.to(userCredentialDTO), id) ?
@@ -67,7 +67,7 @@ public class UserController {
     }
 
     @PostMapping("users/verify-credential")
-    @PreAuthorize("hasRole('EMPLOYEE')")
+    @PreAuthorize("hasAuthority('EMPLOYEE')")
     public ResponseEntity<?> verifyCredential(@RequestBody UserCredentialDTO userCredentialDTO) {
         boolean verified = userCredentialService.verifyPassword(userCredentialDTO);
         if (verified) {
@@ -79,14 +79,14 @@ public class UserController {
     }
     
     @GetMapping("get/user/{id}")
-    @PreAuthorize("hasRole('EMPLOYEE')")
+    @PreAuthorize("hasAuthority('EMPLOYEE')")
     public ResponseEntity<?> getUserDetails(@PathVariable int id) {
         User user = userService.findById(id).orElse(null);
         return ResponseEntity.ok(new UserFinderResponseDTO("use fetch ok",user));
     }
 
     @PostMapping("users/forgot-password")
-    @PreAuthorize("hasRole('EMPLOYEE')")
+    @PreAuthorize("hasAuthority('EMPLOYEE')")
     public ResponseEntity<?> forgotPassword(@RequestBody ForgotPasswordDTO forgotPasswordDTO) {
         /** email validation */
         boolean done = userCredentialService.generateAndSendTempPass(forgotPasswordDTO.getEmailAddress());
