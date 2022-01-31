@@ -6,10 +6,11 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-@Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
+@Table(name = "user_credential")
 public class UserCredential {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,7 +23,10 @@ public class UserCredential {
     @Column(name = "password")
     private String password;
 
-    @Column(name = "role", nullable = false)
-    private String role;
+    @Column(name = "active")
+    private boolean active;
+
+    @Column(name = "roles", nullable = false)
+    private String roles;
 
 }

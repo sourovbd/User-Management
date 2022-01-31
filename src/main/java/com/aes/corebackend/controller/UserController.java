@@ -8,6 +8,8 @@ import com.aes.corebackend.service.EmailSender;
 import com.aes.corebackend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -28,18 +30,18 @@ public class UserController {
     private UserCredentialService userCredentialService;
 
     @PostMapping("users/save-password")
+    @PreAuthorize("hasRole('EMPLOYEE')")
     public ResponseEntity<?> saveCredential(@RequestBody UserCredentialDTO userCredentialDTO) {
-        UserCredential userCredential = userCredentialDTO.to(userCredentialDTO);
-        boolean saved = userCredentialService.save(userCredential);
-        if (saved) {
-            return ResponseEntity.ok("Saved Successfully");
-        }
-        else {
-            return ResponseEntity.ok("Save Failed");
-        }
+
+        return userCredentialService.save(userCredentialDTO.to(userCredentialDTO))?
+                ResponseEntity.ok("Saved Successfully") :
+                ResponseEntity.ok("Save Failed");
     }
+
     @PostMapping("/users/create")
+    @PreAuthorize("hasRole('SYS_ADMIN')")
     public ResponseEntity<?> createUser(@RequestBody UserDTO userDto) {
+
         User user = userService.save(userDto.dtoToUser(userDto));
         if (Objects.nonNull(user)) {
             emailSender.send(userDto.dtoToUser(userDto).getEmailAddress(),"This is a test email");
@@ -48,31 +50,26 @@ public class UserController {
         else
             return ResponseEntity.ok(new UserCreationResponseDTO("user creation failed"));
     }
-    @PutMapping("/users/{id}/update")
+
+    @PutMapping("/users/{id}")
+    @PreAuthorize("hasRole('EMPLOYEE')")
     public ResponseEntity<?> updateUser(@RequestBody UserDTO userDto, @PathVariable long id) {
-        User user = userDto.dtoToUser(userDto);
-        boolean success = userService.update(user,id);
-        if (success) {
-            //emailSender.send(userDto.dtoToUser(userDto).getEmailAddress(),"This is a test email");
-            return ResponseEntity.ok(new UserCreationResponseDTO("user data updated"));
-        }
-        else
-            return ResponseEntity.ok(new UserCreationResponseDTO("user update failed"));
+        return userService.update(userDto.dtoToUser(userDto),id)?
+                ResponseEntity.ok(new UserCreationResponseDTO("user data updated")) :
+                ResponseEntity.ok(new UserCreationResponseDTO("user update failed"));
     }
     
     @PostMapping("users/reset-password/{id}")
+    @PreAuthorize("hasRole('EMPLOYEE')")
     public ResponseEntity<?> updateCredential(@RequestBody UserCredentialDTO userCredentialDTO, @PathVariable Long id) {
-        UserCredential userCredential = userCredentialDTO.to(userCredentialDTO);
-        boolean updated = userCredentialService.update(userCredential, id);
-        if (updated) {
-            return ResponseEntity.ok("Updated Successfully");
-        }
-        else {
-            return ResponseEntity.ok("Update Failed");
-        }
+
+        return userCredentialService.update(userCredentialDTO.to(userCredentialDTO), id) ?
+                ResponseEntity.ok("Updated Successfully") :
+                ResponseEntity.ok("Update Failed");
     }
 
     @PostMapping("users/verify-credential")
+    @PreAuthorize("hasRole('EMPLOYEE')")
     public ResponseEntity<?> verifyCredential(@RequestBody UserCredentialDTO userCredentialDTO) {
         boolean verified = userCredentialService.verifyPassword(userCredentialDTO);
         if (verified) {
@@ -84,6 +81,7 @@ public class UserController {
     }
     
     @GetMapping("get/user/{id}")
+    @PreAuthorize("hasRole('EMPLOYEE')")
     public ResponseEntity<?> getUserDetails(@PathVariable int id) {
         User user = userService.findById(id);
         return ResponseEntity.ok(new UserFinderResponseDTO("user fetch ok",user));
@@ -95,8 +93,9 @@ public class UserController {
     }
 
     @PostMapping("users/forgot-password")
+    @PreAuthorize("hasRole('EMPLOYEE')")
     public ResponseEntity<?> forgotPassword(@RequestBody ForgotPasswordDTO forgotPasswordDTO) {
-        //email validation
+        /** email validation */
         boolean done = userCredentialService.generateAndSendTempPass(forgotPasswordDTO.getEmailAddress());
         if (done) {
             return ResponseEntity.ok("A new password is sent to your email.");

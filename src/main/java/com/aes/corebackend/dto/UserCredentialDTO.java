@@ -21,7 +21,7 @@ public class UserCredentialDTO {
         dto.setId(userCredential.getId());
         dto.setEmployeeId(userCredential.getEmployeeId());
         dto.setPassword(userCredential.getPassword());
-        dto.setRole(userCredential.getRole());
+        dto.setRole(userCredential.getRoles());
         return dto;
     }
 
@@ -30,7 +30,7 @@ public class UserCredentialDTO {
         userCredential.setId(dto.getId());
         userCredential.setEmployeeId(dto.getEmployeeId());
         userCredential.setPassword(dto.getPassword());
-        userCredential.setRole(dto.getRole());
+        userCredential.setRoles(dto.getRole());
         return userCredential;
     }
 }
