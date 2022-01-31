@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface PersonalJobExperienceRepository extends JpaRepository<PersonalJobExperience, Long> {
+    PersonalJobExperience findPersonalJobExperienceById(Long Id);
 }
