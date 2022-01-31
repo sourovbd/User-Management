@@ -12,7 +12,7 @@ public class PersonalJobExperienceDTO {
     private String designation;
     private String responsibilities;
 
-    public PersonalJobExperience getPersonalJobExperienceEntity(PersonalJobExperienceDTO experienceDTO) {
+    public static PersonalJobExperience getPersonalJobExperienceEntity(PersonalJobExperienceDTO experienceDTO) {
         PersonalJobExperience personalJobExperience = new PersonalJobExperience();
         personalJobExperience.setId(experienceDTO.getId());
         personalJobExperience.setEmployerName(experienceDTO.getEmployerName());
