@@ -1,5 +1,7 @@
 package com.aes.corebackend.annotation;
 
+import com.aes.corebackend.validator.PasswordConstraintValidator;
+
 import javax.validation.Constraint;
 import javax.validation.Payload;
 
