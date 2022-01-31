@@ -34,7 +34,7 @@ public class UserController {
     @PreAuthorize("hasAuthority('EMPLOYEE')")
     public ResponseEntity<?> saveCredential(@RequestBody @Valid UserCredentialDTO userCredentialDTO, BindingResult result) {
         if (result.hasErrors()) {
-            return ResponseEntity.ok(new UserCreationResponseDTO(result.getFieldError().getDefaultMessage()));
+            return ResponseEntity.ok(new UserCredentialResponseDTO(result.getFieldError().getDefaultMessage()));
         }
 
         return userCredentialService.save(userCredentialDTO.to(userCredentialDTO))?
@@ -63,11 +63,14 @@ public class UserController {
                 ResponseEntity.ok(new UserCreationResponseDTO("user update failed"));
     }
     
-    @PostMapping("users/reset-password/{id}")
+    @PostMapping("users/{employeeId}/reset-password")
     @PreAuthorize("hasAuthority('EMPLOYEE')")
-    public ResponseEntity<?> updateCredential(@Valid @RequestBody UserCredentialDTO userCredentialDTO, @PathVariable Long id) {
+    public ResponseEntity<?> updateCredential(@Valid @RequestBody UserCredentialDTO userCredentialDTO, BindingResult result, @PathVariable String employeeId) {
+        if (result.hasErrors()) {
+            return ResponseEntity.ok(new UserCredentialResponseDTO(result.getFieldError().getDefaultMessage()));
+        }
 
-        return userCredentialService.update(userCredentialDTO.to(userCredentialDTO), id) ?
+        return userCredentialService.update(userCredentialDTO.to(userCredentialDTO), employeeId) ?
                 ResponseEntity.ok(new UserCredentialResponseDTO("Updated Successfully")) :
                 ResponseEntity.ok(new UserCredentialResponseDTO("Update Failed"));
     }
