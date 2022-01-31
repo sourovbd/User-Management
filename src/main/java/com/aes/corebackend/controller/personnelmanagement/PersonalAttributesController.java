@@ -21,17 +21,17 @@ public class PersonalAttributesController {
 
     @PostMapping(value = "/users/{userId}/create-attributes-info")
     public ResponseEntity<?> createAttributesInfo(@RequestBody PersonalAttributesDTO attributesDTO, @PathVariable Long userId) {
-        return ResponseEntity.ok(personalAttributesService.createAttributesInfo(attributesDTO, userId));
+        return ResponseEntity.ok(personalAttributesService.create(attributesDTO, userId));
     }
 
     @PutMapping(value = "/users/{userId}/update-attributes-info")
     public ResponseEntity<?> updateAttributesInfo(@RequestBody PersonalAttributesDTO attributesDTO, @PathVariable Long userId) {
-        return ResponseEntity.ok(personalAttributesService.updateAttributesInfo(attributesDTO, userId));
+        return ResponseEntity.ok(personalAttributesService.update(attributesDTO, userId));
     }
 
     @GetMapping(value = "/users/{userId}/attributes-info")
     public ResponseEntity<?> getPersonalBasicInfo(@PathVariable Long userId) {
-        return ResponseEntity.ok(personalAttributesService.getPersonalAttributes(userId));
+        return ResponseEntity.ok(personalAttributesService.read(userId));
     }
 
 }

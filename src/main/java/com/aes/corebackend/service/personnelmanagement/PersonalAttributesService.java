@@ -21,7 +21,7 @@ public class PersonalAttributesService {
     UserService userService;
 
 
-    public PersonnelManagementResponseDTO createAttributesInfo(PersonalAttributesDTO attributesDTO, Long userId) {
+    public PersonnelManagementResponseDTO create(PersonalAttributesDTO attributesDTO, Long userId) {
         //check if user exists
         PersonnelManagementResponseDTO responseDTO = new PersonnelManagementResponseDTO("User not found!", false, null);
         User user = userService.getUserByUserId(userId);
@@ -29,7 +29,7 @@ public class PersonalAttributesService {
         if(Objects.nonNull(user)){
             PersonalAttributes attributes = attributesDTO.getPersonalAttributesEntity(attributesDTO);
             attributes.setUser(user);
-            if(createService(attributes)){
+            if(this.create(attributes)){
                 responseDTO.setMessage("Create Attribute Success");
                 responseDTO.setSuccess(true);
                 return responseDTO;
@@ -42,7 +42,7 @@ public class PersonalAttributesService {
         }
     }
 
-    private boolean createService(PersonalAttributes attributesInfo) {
+    private boolean create(PersonalAttributes attributesInfo) {
         try {
             personalAttributesRepository.save(attributesInfo);
         } catch (Exception e) {
@@ -52,7 +52,7 @@ public class PersonalAttributesService {
     }
 
 
-    public PersonnelManagementResponseDTO updateAttributesInfo(PersonalAttributesDTO attributesDTO, Long userId) {
+    public PersonnelManagementResponseDTO update(PersonalAttributesDTO attributesDTO, Long userId) {
         //check if user exists
         PersonnelManagementResponseDTO responseDTO = new PersonnelManagementResponseDTO("User not found!", false, null);
         User user = userService.getUserByUserId(userId);
@@ -60,7 +60,7 @@ public class PersonalAttributesService {
         if(Objects.nonNull(user)){
             PersonalAttributes attributes = attributesDTO.getPersonalAttributesEntity(attributesDTO);
             attributes.setUser(user);
-            if(updateService(attributes)){
+            if(this.update(attributes)){
                 responseDTO.setMessage("Update Attribute Success");
                 responseDTO.setSuccess(true);
                 return responseDTO;
@@ -73,7 +73,7 @@ public class PersonalAttributesService {
         }
     }
 
-    private boolean updateService(PersonalAttributes attributesInfo) {
+    private boolean update(PersonalAttributes attributesInfo) {
         try {
             PersonalAttributes dbUpdate = personalAttributesRepository.findPersonalAttributesById(attributesInfo.getUser().getId());
             dbUpdate.setBirthPlace(attributesInfo.getBirthPlace());
@@ -88,13 +88,15 @@ public class PersonalAttributesService {
         return true;
     }
 
-    public PersonnelManagementResponseDTO getPersonalAttributes(Long userId) {
+    /////  READ
+
+    public PersonnelManagementResponseDTO read(Long userId) {
         PersonnelManagementResponseDTO responseDTO = new PersonnelManagementResponseDTO("User not found!", false, null);
         User user = userService.getUserByUserId(userId);
         //if exists: convert DTO to entity and call create service
         if(Objects.nonNull(user)){
             //Get data by user
-            PersonalAttributes attributes = getService(userId);
+            PersonalAttributes attributes = fetchData(userId);
             //If data is NonNull--> respond responstDTO with data
             if(Objects.nonNull(attributes)){
                 PersonalAttributesDTO attributesDTO = PersonalAttributesDTO.getPersonalAttributesDTO(attributes);
@@ -112,7 +114,7 @@ public class PersonalAttributesService {
         }
     }
 
-    private PersonalAttributes getService(Long userId){
+    private PersonalAttributes fetchData(Long userId){
         try {
             PersonalAttributes attributes = personalAttributesRepository.findPersonalAttributesById(userId);
             return attributes;
@@ -120,7 +122,5 @@ public class PersonalAttributesService {
             return null;
         }
     }
-
-    /////  READ
 
 }
