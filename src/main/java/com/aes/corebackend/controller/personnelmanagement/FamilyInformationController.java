@@ -20,16 +20,16 @@ public class FamilyInformationController {
 
     @PostMapping(value = "/users/{userId}/create-family-info")
     public ResponseEntity<?> createFamilyInfo(@RequestBody PersonalFamilyInfoDTO familyInfoDTO, @PathVariable Long userId) {
-        return ResponseEntity.ok(familyInformationService.createPersonalFamilyInfo(familyInfoDTO, userId));
+        return ResponseEntity.ok(familyInformationService.create(familyInfoDTO, userId));
     }
 
     @PutMapping(value = "/users/{userId}/update-family-info")
     public ResponseEntity<?> updateFamilyInfo(@RequestBody PersonalFamilyInfoDTO familyInfoDTO, @PathVariable Long userId) {
-        return ResponseEntity.ok(familyInformationService.updatePersonalFamilyInfo(familyInfoDTO, userId));
+        return ResponseEntity.ok(familyInformationService.update(familyInfoDTO, userId));
     }
 
     @GetMapping(value = "/users/{userId}/family-info")
     public ResponseEntity<?> getFamilyInfo(@PathVariable Long userId) {
-        return ResponseEntity.ok(familyInformationService.getFamilyInfo(userId));
+        return ResponseEntity.ok(familyInformationService.read(userId));
     }
 }

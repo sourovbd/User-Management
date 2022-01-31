@@ -1,12 +1,12 @@
 package com.aes.corebackend.service.personnelmanagement;
 
-
 import com.aes.corebackend.dto.personnelmanagement.PersonalAttributesDTO;
+import com.aes.corebackend.dto.personnelmanagement.PersonalIdentificationInfoDTO;
 import com.aes.corebackend.dto.personnelmanagement.PersonnelManagementResponseDTO;
 import com.aes.corebackend.entity.User;
 import com.aes.corebackend.entity.personnelmanagement.PersonalAttributes;
-import com.aes.corebackend.repository.UserRepository;
-import com.aes.corebackend.repository.personnelmanagement.PersonalAttributesRepository;
+import com.aes.corebackend.entity.personnelmanagement.PersonalIdentificationInfo;
+import com.aes.corebackend.repository.personnelmanagement.PersonalIdentificationInfoRepository;
 import com.aes.corebackend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,27 +14,26 @@ import org.springframework.stereotype.Service;
 import java.util.Objects;
 
 @Service
-public class PersonalAttributesService {
+public class PersonalIdentificationService {
     @Autowired
-    PersonalAttributesRepository personalAttributesRepository;
+    PersonalIdentificationInfoRepository repository;
     @Autowired
     UserService userService;
 
 
-    public PersonnelManagementResponseDTO create(PersonalAttributesDTO attributesDTO, Long userId) {
-        //check if user exists
+    public PersonnelManagementResponseDTO create(PersonalIdentificationInfoDTO idDTO, Long userId) {
         PersonnelManagementResponseDTO responseDTO = new PersonnelManagementResponseDTO("User not found!", false, null);
         User user = userService.getUserByUserId(userId);
-        //if exists: convert DTO to entity and call create service
+
         if(Objects.nonNull(user)){
-            PersonalAttributes attributes = attributesDTO.getPersonalAttributesEntity(attributesDTO);
-            attributes.setUser(user);
-            if(this.create(attributes)){
-                responseDTO.setMessage("Create Attribute Success");
+            PersonalIdentificationInfo id = idDTO.getPersonalIdentificationEntity(idDTO);
+            id.setUser(user);
+            if(create(id)){
+                responseDTO.setMessage("Create ID Info Success");
                 responseDTO.setSuccess(true);
                 return responseDTO;
             }else{
-                responseDTO.setMessage("Create Attribute Fail");
+                responseDTO.setMessage("Create ID info Fail");
                 return responseDTO;
             }
         }else{
@@ -42,9 +41,9 @@ public class PersonalAttributesService {
         }
     }
 
-    private boolean create(PersonalAttributes attributesInfo) {
+    private boolean create(PersonalIdentificationInfo id){
         try {
-            personalAttributesRepository.save(attributesInfo);
+            repository.save(id);
         } catch (Exception e) {
             return false;
         }
@@ -52,20 +51,20 @@ public class PersonalAttributesService {
     }
 
 
-    public PersonnelManagementResponseDTO update(PersonalAttributesDTO attributesDTO, Long userId) {
+    public PersonnelManagementResponseDTO update(PersonalIdentificationInfoDTO idDTO, Long userId) {
         //check if user exists
         PersonnelManagementResponseDTO responseDTO = new PersonnelManagementResponseDTO("User not found!", false, null);
         User user = userService.getUserByUserId(userId);
         //if exists: convert DTO to entity and call create service
         if(Objects.nonNull(user)){
-            PersonalAttributes attributes = attributesDTO.getPersonalAttributesEntity(attributesDTO);
-            attributes.setUser(user);
-            if(this.update(attributes)){
-                responseDTO.setMessage("Update Attribute Success");
+            PersonalIdentificationInfo idInfo = idDTO.getPersonalIdentificationEntity(idDTO);
+            idInfo.setUser(user);
+            if(update(idInfo)){
+                responseDTO.setMessage("Update ID Info Success");
                 responseDTO.setSuccess(true);
                 return responseDTO;
             }else{
-                responseDTO.setMessage("Update Attribute Fail");
+                responseDTO.setMessage("Update ID info Fail");
                 return responseDTO;
             }
         }else{
@@ -73,14 +72,12 @@ public class PersonalAttributesService {
         }
     }
 
-    private boolean update(PersonalAttributes attributesInfo) {
+    private boolean update(PersonalIdentificationInfo idInfo) {
         try {
-            PersonalAttributes dbUpdate = personalAttributesRepository.findPersonalAttributesById(attributesInfo.getUser().getId());
-            dbUpdate.setBirthPlace(attributesInfo.getBirthPlace());
-            dbUpdate.setNationality(attributesInfo.getNationality());
-            dbUpdate.setReligion(attributesInfo.getReligion());
-            dbUpdate.setBloodGroup(attributesInfo.getBloodGroup());
-            personalAttributesRepository.save(dbUpdate);
+            PersonalIdentificationInfo dbUpdate = repository.findPersonalIdentificationInfoById(idInfo.getUser().getId());
+            dbUpdate.setEtin(idInfo.getEtin());
+            dbUpdate.setNationalID(idInfo.getNationalID());
+            repository.save(dbUpdate);
         } catch (Exception e) {
             e.printStackTrace();
             return false;
@@ -88,7 +85,7 @@ public class PersonalAttributesService {
         return true;
     }
 
-    /////  READ
+    // Read
 
     public PersonnelManagementResponseDTO read(Long userId) {
         PersonnelManagementResponseDTO responseDTO = new PersonnelManagementResponseDTO("User not found!", false, null);
@@ -96,16 +93,16 @@ public class PersonalAttributesService {
         //if exists: convert DTO to entity and call create service
         if(Objects.nonNull(user)){
             //Get data by user
-            PersonalAttributes attributes = fetchData(userId);
+            PersonalIdentificationInfo idInfo = fetchData(userId);
             //If data is NonNull--> respond responstDTO with data
-            if(Objects.nonNull(attributes)){
-                PersonalAttributesDTO attributesDTO = PersonalAttributesDTO.getPersonalAttributesDTO(attributes);
+            if(Objects.nonNull(idInfo)){
+                PersonalIdentificationInfoDTO idDTO = PersonalIdentificationInfoDTO.getPersonalIdentificationDTO(idInfo);
                 responseDTO.setMessage("Personal Attribute found");
                 responseDTO.setSuccess(true);
-                responseDTO.setData(attributesDTO);
+                responseDTO.setData(idDTO);
                 return responseDTO;
             }else{
-                responseDTO.setMessage("Personal Attribute not found");
+                responseDTO.setMessage("ID Info not found");
                 responseDTO.setSuccess(true);
                 return responseDTO;
             }
@@ -114,13 +111,14 @@ public class PersonalAttributesService {
         }
     }
 
-    private PersonalAttributes fetchData(Long userId){
+    private PersonalIdentificationInfo fetchData(Long userId) {
         try {
-            PersonalAttributes attributes = personalAttributesRepository.findPersonalAttributesById(userId);
-            return attributes;
+            PersonalIdentificationInfo idInfo = repository.findPersonalIdentificationInfoById(userId);
+            return idInfo;
         }catch (Exception e){
             return null;
         }
     }
+
 
 }
