@@ -10,12 +10,21 @@ public class PersonalFamilyInfoDTO {
     private String mothersName;
     private String spouseName;
 
-    public PersonalFamilyInfo getPersonalFamilyEntity(PersonalFamilyInfoDTO familyInfoDTO) {
+    public static PersonalFamilyInfo getPersonalFamilyEntity(PersonalFamilyInfoDTO familyInfoDTO) {
         PersonalFamilyInfo personalFamilyInfoEntity = new PersonalFamilyInfo();
         personalFamilyInfoEntity.setFathersName(familyInfoDTO.getFathersName());
         personalFamilyInfoEntity.setMothersName(familyInfoDTO.getMothersName());
         personalFamilyInfoEntity.setMaritalStatus(familyInfoDTO.getMaritalStatus());
         personalFamilyInfoEntity.setSpouseName(familyInfoDTO.getSpouseName());
         return personalFamilyInfoEntity;
+    }
+
+    public static PersonalFamilyInfoDTO getPersonalFamilyDTO(PersonalFamilyInfo familyInfo){
+        PersonalFamilyInfoDTO familyInfoDTO = new PersonalFamilyInfoDTO();
+        familyInfoDTO.setMaritalStatus(familyInfo.getMaritalStatus());
+        familyInfoDTO.setFathersName(familyInfo.getFathersName());
+        familyInfoDTO.setMothersName(familyInfo.getMothersName());
+        familyInfoDTO.setSpouseName(familyInfo.getSpouseName());
+        return familyInfoDTO;
     }
 }

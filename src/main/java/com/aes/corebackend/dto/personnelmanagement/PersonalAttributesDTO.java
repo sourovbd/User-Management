@@ -10,12 +10,23 @@ public class PersonalAttributesDTO {
     private String birthPlace;
     private String nationality;
 
-    public PersonalAttributes getPersonalAttributesEntity(PersonalAttributesDTO attributesDTO) {
+    public static PersonalAttributes getPersonalAttributesEntity(PersonalAttributesDTO attributesDTO) {
         PersonalAttributes attributesEntity = new PersonalAttributes();
         attributesEntity.setReligion(attributesDTO.getReligion());
         attributesEntity.setBirthPlace(attributesDTO.getBirthPlace());
         attributesEntity.setNationality(attributesDTO.getNationality());
         attributesEntity.setBloodGroup(attributesDTO.getBloodGroup());
         return attributesEntity;
+    }
+
+    public static PersonalAttributesDTO getPersonalAttributesDTO(PersonalAttributes attributes){
+        PersonalAttributesDTO attributesDTO = new PersonalAttributesDTO();
+
+        attributesDTO.setReligion(attributes.getReligion());
+        attributesDTO.setBloodGroup(attributes.getBloodGroup());
+        attributesDTO.setNationality(attributes.getNationality());
+        attributesDTO.setBirthPlace(attributes.getBirthPlace());
+
+        return attributesDTO;
     }
 }

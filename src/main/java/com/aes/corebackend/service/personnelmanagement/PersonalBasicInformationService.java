@@ -40,6 +40,16 @@ public class PersonalBasicInformationService {
         return response;
     }
 
+    private PersonalBasicInfo getPersonalBasicInfoByUser(User user) {
+        try {
+            PersonalBasicInfo info = personalBasicInfoRepository.findPersonalBasicInfoByUser(user);
+            return info;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public PersonnelManagementResponseDTO createPersonalBasicInfo(PersonalBasicInfoDTO basicInfoDTO, Long userId) {
         PersonnelManagementResponseDTO response = new PersonnelManagementResponseDTO("Basic information creation successful", true, null);
         User user = userService.getUserByUserId(userId);
@@ -84,16 +94,6 @@ public class PersonalBasicInformationService {
             response.setMessage("User not found");
         }
         return response;
-    }
-
-    private PersonalBasicInfo getPersonalBasicInfoByUser(User user) {
-        try {
-            PersonalBasicInfo info = personalBasicInfoRepository.findPersonalBasicInfoByUser(user);
-            return info;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
     }
 
     private boolean updateBasicInfo(PersonalBasicInfo existingBasicInfo, PersonalBasicInfo updatedBasicInfo) {

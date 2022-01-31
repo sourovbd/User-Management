@@ -10,10 +10,7 @@ import com.aes.corebackend.service.personnelmanagement.PersonalAttributesService
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Objects;
 
@@ -21,8 +18,6 @@ import java.util.Objects;
 public class PersonalAttributesController {
     @Autowired
     PersonalAttributesService personalAttributesService;
-    /*@Autowired
-    UserRepository userRepository;*/
 
     @PostMapping(value = "/users/{userId}/create-attributes-info")
     public ResponseEntity<?> createAttributesInfo(@RequestBody PersonalAttributesDTO attributesDTO, @PathVariable Long userId) {
@@ -32,6 +27,11 @@ public class PersonalAttributesController {
     @PutMapping(value = "/users/{userId}/update-attributes-info")
     public ResponseEntity<?> updateAttributesInfo(@RequestBody PersonalAttributesDTO attributesDTO, @PathVariable Long userId) {
         return ResponseEntity.ok(personalAttributesService.updateAttributesInfo(attributesDTO, userId));
+    }
+
+    @GetMapping(value = "/users/{userId}/attributes-info")
+    public ResponseEntity<?> getPersonalBasicInfo(@PathVariable Long userId) {
+        return ResponseEntity.ok(personalAttributesService.getPersonalAttributes(userId));
     }
 
 }

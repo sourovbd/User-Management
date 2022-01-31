@@ -23,7 +23,7 @@ public class PersonalAttributesService {
 
     public PersonnelManagementResponseDTO createAttributesInfo(PersonalAttributesDTO attributesDTO, Long userId) {
         //check if user exists
-        PersonnelManagementResponseDTO responseDTO = new PersonnelManagementResponseDTO("User not found!", false);
+        PersonnelManagementResponseDTO responseDTO = new PersonnelManagementResponseDTO("User not found!", false, null);
         User user = userService.getUserByUserId(userId);
         //if exists: convert DTO to entity and call create service
         if(Objects.nonNull(user)){
@@ -54,7 +54,7 @@ public class PersonalAttributesService {
 
     public PersonnelManagementResponseDTO updateAttributesInfo(PersonalAttributesDTO attributesDTO, Long userId) {
         //check if user exists
-        PersonnelManagementResponseDTO responseDTO = new PersonnelManagementResponseDTO("User not found!", false);
+        PersonnelManagementResponseDTO responseDTO = new PersonnelManagementResponseDTO("User not found!", false, null);
         User user = userService.getUserByUserId(userId);
         //if exists: convert DTO to entity and call create service
         if(Objects.nonNull(user)){
@@ -73,7 +73,7 @@ public class PersonalAttributesService {
         }
     }
 
-    public boolean updateService(PersonalAttributes attributesInfo) {
+    private boolean updateService(PersonalAttributes attributesInfo) {
         try {
             PersonalAttributes dbUpdate = personalAttributesRepository.findPersonalAttributesById(attributesInfo.getUser().getId());
             dbUpdate.setBirthPlace(attributesInfo.getBirthPlace());
@@ -87,4 +87,40 @@ public class PersonalAttributesService {
         }
         return true;
     }
+
+    public PersonnelManagementResponseDTO getPersonalAttributes(Long userId) {
+        PersonnelManagementResponseDTO responseDTO = new PersonnelManagementResponseDTO("User not found!", false, null);
+        User user = userService.getUserByUserId(userId);
+        //if exists: convert DTO to entity and call create service
+        if(Objects.nonNull(user)){
+            //Get data by user
+            PersonalAttributes attributes = getService(userId);
+            //If data is NonNull--> respond responstDTO with data
+            if(Objects.nonNull(attributes)){
+                PersonalAttributesDTO attributesDTO = PersonalAttributesDTO.getPersonalAttributesDTO(attributes);
+                responseDTO.setMessage("Personal Attribute found");
+                responseDTO.setSuccess(true);
+                responseDTO.setData(attributesDTO);
+                return responseDTO;
+            }else{
+                responseDTO.setMessage("Personal Attribute not found");
+                responseDTO.setSuccess(true);
+                return responseDTO;
+            }
+        }else{
+            return responseDTO;
+        }
+    }
+
+    private PersonalAttributes getService(Long userId){
+        try {
+            PersonalAttributes attributes = personalAttributesRepository.findPersonalAttributesById(userId);
+            return attributes;
+        }catch (Exception e){
+            return null;
+        }
+    }
+
+    /////  READ
+
 }
