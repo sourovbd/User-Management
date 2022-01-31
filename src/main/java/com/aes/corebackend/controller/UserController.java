@@ -39,7 +39,7 @@ public class UserController {
     }
         
     @PostMapping("/user/create")
-    @PreAuthorize("hasAuthority('SYS_ADMIN')")
+    @PreAuthorize("hasAuthority('EMPLOYEE')")
     public ResponseEntity<?> createUser(@RequestBody UserDTO userDto) {
 
         User user = userService.save(userDto.dtoToUser(userDto));
