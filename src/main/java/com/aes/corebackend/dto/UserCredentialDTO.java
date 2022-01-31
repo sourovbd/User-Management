@@ -1,5 +1,6 @@
 package com.aes.corebackend.dto;
 
+import com.aes.corebackend.annotation.ValidPassword;
 import com.aes.corebackend.entity.UserCredential;
 import lombok.Data;
 
@@ -12,16 +13,20 @@ public class UserCredentialDTO {
 
     private String employeeId;
 
+    @ValidPassword
     private String password;
 
-    private String role;
+    private boolean active;
+
+    private String roles;
 
     public UserCredentialDTO from(UserCredential userCredential) {
         UserCredentialDTO dto = new UserCredentialDTO();
         dto.setId(userCredential.getId());
         dto.setEmployeeId(userCredential.getEmployeeId());
         dto.setPassword(userCredential.getPassword());
-        dto.setRole(userCredential.getRoles());
+        dto.setActive(userCredential.isActive());
+        dto.setRoles(userCredential.getRoles());
         return dto;
     }
 
@@ -30,7 +35,8 @@ public class UserCredentialDTO {
         userCredential.setId(dto.getId());
         userCredential.setEmployeeId(dto.getEmployeeId());
         userCredential.setPassword(dto.getPassword());
-        userCredential.setRoles(dto.getRole());
+        userCredential.setActive(dto.isActive());
+        userCredential.setRoles(dto.getRoles());
         return userCredential;
     }
 }
