@@ -5,9 +5,13 @@ import lombok.Data;
 
 @Data
 public class PersonalAttributesDTO {
+    //a-zA-z
     private String religion;
+    //Characters- 3
     private String bloodGroup;
+    //a-zA-z
     private String birthPlace;
+    //a-zA-z
     private String nationality;
 
     public static PersonalAttributes getPersonalAttributesEntity(PersonalAttributesDTO attributesDTO) {
