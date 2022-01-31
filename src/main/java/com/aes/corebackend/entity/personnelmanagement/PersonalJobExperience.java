@@ -1,6 +1,7 @@
 package com.aes.corebackend.entity.personnelmanagement;
 
 
+import com.aes.corebackend.entity.User;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,7 +12,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 public class PersonalJobExperience {
     @Id
-    @Column(name = "ID")
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -25,4 +26,7 @@ public class PersonalJobExperience {
     private String designation;
     @Column(name = "responsibilities")
     private String responsibilities;
+
+    @ManyToOne
+    private User user;
 }

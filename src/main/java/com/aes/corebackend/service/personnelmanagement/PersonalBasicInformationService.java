@@ -1,7 +1,6 @@
 package com.aes.corebackend.service.personnelmanagement;
 
 import com.aes.corebackend.dto.personnelmanagement.PersonalBasicInfoDTO;
-import com.aes.corebackend.dto.personnelmanagement.PersonalInformationDTO;
 import com.aes.corebackend.dto.personnelmanagement.PersonnelManagementResponseDTO;
 import com.aes.corebackend.entity.User;
 import com.aes.corebackend.entity.personnelmanagement.PersonalBasicInfo;
@@ -9,7 +8,6 @@ import com.aes.corebackend.repository.personnelmanagement.PersonalBasicInfoRepos
 import com.aes.corebackend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.Objects;
 
 @Service

@@ -1,5 +1,6 @@
 package com.aes.corebackend.entity;
 
+import com.aes.corebackend.entity.personnelmanagement.PersonalAddressInfo;
 import com.aes.corebackend.entity.personnelmanagement.PersonalBasicInfo;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -27,4 +28,6 @@ public class User {
     private String department;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "user") //mappedBy value points to the relationship owner
     private PersonalBasicInfo basicInfo;
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "user") //mappedBy value points to the relationship owner
+    private PersonalAddressInfo address;
 }

@@ -35,15 +35,6 @@ public class PersonalInformationService {
         return true;
     }
 
-    public boolean updatePersonalAddress(PersonalAddressInfo addressInfo) {
-        try {
-            personalAddressInfoRepository.save(addressInfo);
-        } catch (Exception e) {
-            return false;
-        }
-        return true;
-    }
-
     public boolean updatePersonalEducation(PersonalEducationInfo educationInfo) {
         try {
             personalEducationRepository.save(educationInfo);
