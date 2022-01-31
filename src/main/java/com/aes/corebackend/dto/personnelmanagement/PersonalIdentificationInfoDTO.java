@@ -10,7 +10,7 @@ public class PersonalIdentificationInfoDTO {
 
     public PersonalIdentificationInfo getPersonalIdentificationEntity(PersonalIdentificationInfoDTO identificationInfoDTO) {
         PersonalIdentificationInfo personalIdentificationInfoEntity = new PersonalIdentificationInfo();
-        personalIdentificationInfoEntity.setETin(identificationInfoDTO.getEtin());
+        personalIdentificationInfoEntity.setEtin(identificationInfoDTO.getEtin());
         personalIdentificationInfoEntity.setNationalID(identificationInfoDTO.getNationalID());
         return personalIdentificationInfoEntity;
     }
