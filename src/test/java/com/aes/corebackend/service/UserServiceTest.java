@@ -1,29 +1,54 @@
 package com.aes.corebackend.service;
 
+import com.aes.corebackend.dto.UserCreationResponseDTO;
 import com.aes.corebackend.entity.User;
-import com.aes.corebackend.repository.UserRepository;
-import org.apache.el.stream.Stream;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.aspectj.lang.annotation.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.http.MediaType;
+import org.springframework.test.context.event.annotation.BeforeTestMethod;
+import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.util.Assert;
+import org.springframework.web.context.WebApplicationContext;
 
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.when;
-class UserServiceTest {
-    @InjectMocks
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+@WebAppConfiguration
+public class UserServiceTest {
+    @Autowired
+    private MockMvc mockMvc;
+    @Autowired
+    private WebApplicationContext context;
+    ObjectMapper om = new ObjectMapper();
+    @BeforeEach
+    public void setup() {
+        mockMvc = MockMvcBuilders.webAppContextSetup(context).build();
+    }
+    @Test
+    public void createUserTest() throws Exception {
+        User user = new User();
+        user.setDesignation("agm");
+        user.setDepartment("accounts");
+        user.setEmailAddress("md.ahadulalam@gmail.com");
+        user.setBusinessUnit("a1polymar");
+        user.setEmployeeId("0101");
+        String jsonRequest = om.writeValueAsString(user);
+        MvcResult result = mockMvc.perform(post("/users").content(jsonRequest).content(MediaType.APPLICATION_JSON_VALUE)).andExpect(status().isOk()).andReturn();
+        String resultContent = result.getResponse().getContentAsString();
+        UserCreationResponseDTO response = om.readValue(resultContent, UserCreationResponseDTO.class);
+        assertEquals(response.getMessage(),"user created");
+    }
+    /*@Autowired
     private UserService service ;
-    @Mock
+    @MockBean
     private UserRepository repository;
 
     @Test
@@ -41,8 +66,8 @@ class UserServiceTest {
     public void findByIdTest() {
         long id = 1;
         User userMock = new User(1, "ahad.alam@anwargroup.net", "agm", "0101", "a1polymar", "accounts");
-        when(repository.findById(id)).thenReturn(userMock);
+        when(repository.findById(id)).thenReturn(Optional.of(userMock));
         //User userService = service.findById(id);
 
-    }
+    }*/
 }

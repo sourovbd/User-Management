@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -37,7 +38,7 @@ public class UserController {
             return ResponseEntity.ok("Save Failed");
         }
     }
-    @PostMapping("/users")
+    @PostMapping("/users/create")
     public ResponseEntity<?> createUser(@RequestBody UserDTO userDto) {
         User user = userService.save(userDto.dtoToUser(userDto));
         if (Objects.nonNull(user)) {
@@ -85,7 +86,12 @@ public class UserController {
     @GetMapping("get/user/{id}")
     public ResponseEntity<?> getUserDetails(@PathVariable int id) {
         User user = userService.findById(id);
-        return ResponseEntity.ok(new UserFinderResponseDTO("use fetch ok",user));
+        return ResponseEntity.ok(new UserFinderResponseDTO("user fetch ok",user));
+    }
+    @GetMapping("get/users")
+    public ResponseEntity<?> getAllUsers() {
+        List<User>  users = userService.findAllUsers();
+        return ResponseEntity.ok(new UsersFetchResponseDTO("All user fetch ok",users));
     }
 
     @PostMapping("users/forgot-password")

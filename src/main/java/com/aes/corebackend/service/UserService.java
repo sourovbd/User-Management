@@ -5,6 +5,7 @@ import com.aes.corebackend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -20,7 +21,7 @@ public class UserService {
 
     public boolean update(User user, long id) {
         try{
-            User tempUser = userRepository.findById(id);
+            User tempUser = userRepository.findById(id).orElse(null);
             //User tempUser = userRepository.findByEmployeeId(user.getEmployeeId());
             //nullpointer check
             if(Objects.nonNull(tempUser)) {
@@ -42,7 +43,10 @@ public class UserService {
     }
 
     public User findById(long id) {
-        return userRepository.findById(id);
+        return userRepository.findById(id).orElse(null);
+    }
+    public List<User> findAllUsers() {
+        return userRepository.findAll();
     }
 
 }
