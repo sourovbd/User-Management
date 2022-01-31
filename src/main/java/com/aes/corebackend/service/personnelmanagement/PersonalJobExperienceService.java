@@ -90,7 +90,7 @@ public class PersonalJobExperienceService {
         return true;
     }
 
-    public PersonnelManagementResponseDTO getJobExperiences(Long userId) {
+    public PersonnelManagementResponseDTO read(Long userId) {
         PersonnelManagementResponseDTO response = new PersonnelManagementResponseDTO("Job experiences found", true, null);
         User user = userService.getUserByUserId(userId);
         if (Objects.nonNull(user)) {
@@ -133,7 +133,7 @@ public class PersonalJobExperienceService {
         return experiences;
     }
 
-    public PersonnelManagementResponseDTO getJobExperience(Long userId, Long experienceId) {
+    public PersonnelManagementResponseDTO read(Long userId, Long experienceId) {
         PersonnelManagementResponseDTO response = new PersonnelManagementResponseDTO("Job experience found", true, null);
         User user = userService.getUserByUserId(userId);
         if (Objects.nonNull(user)) {

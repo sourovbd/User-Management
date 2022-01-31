@@ -21,22 +21,20 @@ public class JobExperienceController {
     }
 
     @PutMapping(value = "/users/{userId}/job-experience/{experienceId}")
-    public ResponseEntity<?> updatePersonalBasicInfo(@RequestBody PersonalJobExperienceDTO personalJobExperienceDTO, @PathVariable Long userId, @PathVariable Long experienceId) {
-        System.out.println("userId: " + userId);
-        System.out.println("experienceId: " + experienceId);
+    public ResponseEntity<?> updatePersonalJobExperience(@RequestBody PersonalJobExperienceDTO personalJobExperienceDTO, @PathVariable Long userId, @PathVariable Long experienceId) {
         PersonnelManagementResponseDTO response = personalJobExperienceService.update(personalJobExperienceDTO, userId, experienceId);
         return ResponseEntity.ok(response);
     }
 
     @GetMapping(value = "/users/{userId}/job-experiences")
     public ResponseEntity<?> getPersonalJobExperiences(@PathVariable Long userId) {
-        PersonnelManagementResponseDTO response = personalJobExperienceService.getJobExperiences(userId);
+        PersonnelManagementResponseDTO response = personalJobExperienceService.read(userId);
         return ResponseEntity.ok(response);
     }
 
     @GetMapping(value = "/users/{userId}/job-experiences/{experienceId}")
     public ResponseEntity<?> getPersonalJobExperience(@PathVariable Long userId, @PathVariable Long experienceId) {
-        PersonnelManagementResponseDTO response = personalJobExperienceService.getJobExperience(userId, experienceId);
+        PersonnelManagementResponseDTO response = personalJobExperienceService.read(userId, experienceId);
         return ResponseEntity.ok(response);
     }
 }
