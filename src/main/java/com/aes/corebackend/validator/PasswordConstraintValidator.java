@@ -1,5 +1,6 @@
-package com.aes.corebackend.annotation;
+package com.aes.corebackend.validator;
 
+import com.aes.corebackend.annotation.ValidPassword;
 import com.aes.corebackend.util.Constants;
 import org.passay.*;
 

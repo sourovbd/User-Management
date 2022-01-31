@@ -85,4 +85,8 @@ public class UserCredentialService {
     public UserCredential getById(Long id) {
         return userCredentialRepository.findById(id).get();
     }
+
+    public UserCredential getByEmployeeId(String employeeId) {
+        return userCredentialRepository.findByEmployeeId(employeeId);
+    }
 }

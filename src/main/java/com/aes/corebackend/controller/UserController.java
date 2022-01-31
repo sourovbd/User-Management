@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -31,11 +32,14 @@ public class UserController {
 
     @PostMapping("users/save-password")
     @PreAuthorize("hasAuthority('EMPLOYEE')")
-    public ResponseEntity<?> saveCredential(@Valid @RequestBody UserCredentialDTO userCredentialDTO) {
+    public ResponseEntity<?> saveCredential(@RequestBody @Valid UserCredentialDTO userCredentialDTO, BindingResult result) {
+        if (result.hasErrors()) {
+            return ResponseEntity.ok(new UserCreationResponseDTO(result.getFieldError().getDefaultMessage()));
+        }
 
         return userCredentialService.save(userCredentialDTO.to(userCredentialDTO))?
-                ResponseEntity.ok("Saved Successfully") :
-                ResponseEntity.ok("Save Failed");
+                ResponseEntity.ok(new UserCredentialResponseDTO("Saved Successfully")) :
+                ResponseEntity.ok(new UserCredentialResponseDTO("Save Failed"));
     }
         
     @PostMapping("/user/create")
@@ -64,8 +68,8 @@ public class UserController {
     public ResponseEntity<?> updateCredential(@Valid @RequestBody UserCredentialDTO userCredentialDTO, @PathVariable Long id) {
 
         return userCredentialService.update(userCredentialDTO.to(userCredentialDTO), id) ?
-                ResponseEntity.ok("Updated Successfully") :
-                ResponseEntity.ok("Update Failed");
+                ResponseEntity.ok(new UserCredentialResponseDTO("Updated Successfully")) :
+                ResponseEntity.ok(new UserCredentialResponseDTO("Update Failed"));
     }
 
     @PostMapping("users/verify-credential")
@@ -73,8 +77,8 @@ public class UserController {
     public ResponseEntity<?> verifyCredential(@RequestBody UserCredentialDTO userCredentialDTO) {
 
         return userCredentialService.verifyPassword(userCredentialDTO) ?
-                ResponseEntity.ok("Valid Password") :
-                ResponseEntity.ok("Invalid Password");
+                ResponseEntity.ok(new UserCredentialResponseDTO("Valid Password")) :
+                ResponseEntity.ok(new UserCredentialResponseDTO("Invalid Password"));
     }
     
     @GetMapping("get/user/{id}")
@@ -92,10 +96,22 @@ public class UserController {
 
     @PostMapping("users/forgot-password")
     @PreAuthorize("hasAuthority('EMPLOYEE')")
-    public ResponseEntity<?> forgotPassword(@Valid @RequestBody ForgotPasswordDTO forgotPasswordDTO) {
+    public ResponseEntity<?> forgotPassword(@Valid @RequestBody ForgotPasswordDTO forgotPasswordDTO, BindingResult result) {
+        if (result.hasErrors()) {
+            return ResponseEntity.ok(new UserCreationResponseDTO(result.getFieldError().getDefaultMessage()));
+        }
 
         return userCredentialService.generateAndSendTempPass(forgotPasswordDTO.getEmailAddress()) ?
-                ResponseEntity.ok("A new password is sent to your email.") :
-                ResponseEntity.ok("Please try again.");
+                ResponseEntity.ok(new UserCredentialResponseDTO("A new password is sent to your email.")) :
+                ResponseEntity.ok(new UserCredentialResponseDTO("Please try again."));
+    }
+
+    @GetMapping ("users/{employeeId}/fetch-credential")
+    @PreAuthorize("hasAuthority('EMPLOYEE')")
+    public ResponseEntity<?> forgotPassword(@PathVariable String employeeId) {
+        UserCredential userCredential = userCredentialService.getByEmployeeId(employeeId);
+        return userCredential==null ?
+                ResponseEntity.ok(new UserCredentialResponseDTO("Not Found")) :
+                ResponseEntity.ok(new UserCredentialResponseDTO("Found", userCredential));
     }
 }
