@@ -84,4 +84,41 @@ public class PersonalIdentificationService {
         }
         return true;
     }
+
+    // Read
+
+    public PersonnelManagementResponseDTO read(Long userId) {
+        PersonnelManagementResponseDTO responseDTO = new PersonnelManagementResponseDTO("User not found!", false, null);
+        User user = userService.getUserByUserId(userId);
+        //if exists: convert DTO to entity and call create service
+        if(Objects.nonNull(user)){
+            //Get data by user
+            PersonalIdentificationInfo idInfo = fetchData(userId);
+            //If data is NonNull--> respond responstDTO with data
+            if(Objects.nonNull(idInfo)){
+                PersonalIdentificationInfoDTO idDTO = PersonalIdentificationInfoDTO.getPersonalIdentificationDTO(idInfo);
+                responseDTO.setMessage("Personal Attribute found");
+                responseDTO.setSuccess(true);
+                responseDTO.setData(idDTO);
+                return responseDTO;
+            }else{
+                responseDTO.setMessage("ID Info not found");
+                responseDTO.setSuccess(true);
+                return responseDTO;
+            }
+        }else{
+            return responseDTO;
+        }
+    }
+
+    private PersonalIdentificationInfo fetchData(Long userId) {
+        try {
+            PersonalIdentificationInfo idInfo = repository.findPersonalIdentificationInfoById(userId);
+            return idInfo;
+        }catch (Exception e){
+            return null;
+        }
+    }
+
+
 }

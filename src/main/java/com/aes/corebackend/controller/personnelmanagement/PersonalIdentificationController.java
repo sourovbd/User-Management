@@ -24,10 +24,10 @@ public class PersonalIdentificationController {
         return ResponseEntity.ok(service.update(idDTO, userId));
     }
 
-    /*
-    @GetMapping(value = "/users/{userId}/attributes-info")
-    public ResponseEntity<?> getPersonalBasicInfo(@PathVariable Long userId) {
-        return ResponseEntity.ok(personalAttributesService.read(userId));
+
+    @GetMapping(value = "/users/{userId}/id-info")
+    public ResponseEntity<?> getAttributesInfo(@PathVariable Long userId) {
+        return ResponseEntity.ok(service.read(userId));
     }
-*/
+
 }
