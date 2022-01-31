@@ -13,6 +13,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -38,7 +39,7 @@ public class UserController {
     }
         
     @PostMapping("/user/create")
-    @PreAuthorize("hasAuthority('SYS_ADMIN')")
+    @PreAuthorize("hasAuthority('EMPLOYEE')")
     public ResponseEntity<?> createUser(@RequestBody UserDTO userDto) {
 
         User user = userService.save(userDto.dtoToUser(userDto));
@@ -49,11 +50,11 @@ public class UserController {
         else
             return ResponseEntity.ok(new UserCreationResponseDTO("user creation failed"));
     }
-    
+
     @PutMapping("/users/{id}")
     @PreAuthorize("hasAuthority('EMPLOYEE')")
-    public ResponseEntity<?> updateUser(@RequestBody UserDTO userDto) {
-        return userService.update(userDto.dtoToUser(userDto))?
+    public ResponseEntity<?> updateUser(@RequestBody UserDTO userDto, @PathVariable long id) {
+        return userService.update(userDto.dtoToUser(userDto),id)?
                 ResponseEntity.ok(new UserCreationResponseDTO("user data updated")) :
                 ResponseEntity.ok(new UserCreationResponseDTO("user update failed"));
     }
@@ -79,8 +80,14 @@ public class UserController {
     @GetMapping("get/user/{id}")
     @PreAuthorize("hasAuthority('EMPLOYEE')")
     public ResponseEntity<?> getUserDetails(@PathVariable int id) {
-        User user = userService.findById(id).orElse(null);
-        return ResponseEntity.ok(new UserFinderResponseDTO("use fetch ok",user));
+        User user = userService.findById(id);
+        return ResponseEntity.ok(new UserFinderResponseDTO("user fetch ok",user));
+    }
+    @GetMapping("get/users")
+    @PreAuthorize("hasAuthority('EMPLOYEE')")
+    public ResponseEntity<?> getAllUsers() {
+        List<User>  users = userService.findAllUsers();
+        return ResponseEntity.ok(new UsersFetchResponseDTO("All user fetch ok",users));
     }
 
     @PostMapping("users/forgot-password")
