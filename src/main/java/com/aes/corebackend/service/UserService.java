@@ -22,10 +22,7 @@ public class UserService {
             User temp_user = userRepository.findById(user.getId()).orElse(user);
             temp_user.setDesignation(user.getDesignation());
             temp_user.setDepartment(user.getDepartment());
-            //temp_user.setEmailAddress(user.getEmailAddress());
             temp_user.setBusinessUnit(user.getBusinessUnit());
-            //temp_user.setEmployeeId(user.getEmployeeId());
-            //userCredential1.setPassword(userCredential.getPassword());
             userRepository.save(temp_user);
         } catch (Exception e) {
             e.printStackTrace();
@@ -35,6 +32,7 @@ public class UserService {
     }
 
     public Optional<User> findById(long id) {
+
         return userRepository.findById(id);
     }
 
