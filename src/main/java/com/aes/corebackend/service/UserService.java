@@ -19,7 +19,7 @@ public class UserService {
     public User create(User user, UserDTO userDto) {
         UserCredential userCredential = new UserCredential();
         userCredential.setEmployeeId(userDto.getEmployeeId());
-        userCredential.setRoles("EMPLOYEE");
+        userCredential.setRoles(userDto.getRoles());
         userCredential.setActive(true);
         user.setUserCredential(userCredential);
         return userRepository.save(user);
