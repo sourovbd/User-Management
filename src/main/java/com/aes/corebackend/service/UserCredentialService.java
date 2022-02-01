@@ -50,7 +50,7 @@ public class UserCredentialService {
 
     public boolean verifyPassword(UserCredentialDTO userCredentialDTO) {
         try {
-            UserCredential userCredential = userCredentialRepository.findByEmployeeId(userCredentialDTO.getEmployeeId());
+            UserCredential userCredential = userCredentialRepository.findByEmployeeId(userCredentialDTO.getEmployeeId()).get();
             return passwordEncoder.matches(userCredentialDTO.getPassword(), userCredential.getPassword());
         }
         catch (Exception e) {
@@ -63,7 +63,7 @@ public class UserCredentialService {
         try {
             //fetch user and credentials
             User user = userRepository.findByEmailId(email);
-            UserCredential userCredential = userCredentialRepository.findByEmployeeId(""+user.getEmployeeId());
+            UserCredential userCredential = userCredentialRepository.findByEmployeeId(""+user.getEmployeeId()).get();
 
             //generate dummy password
             String password = UserCredentialUtils.generatePassword(Constants.PASSWORD_MIN_LENGTH);
@@ -87,6 +87,6 @@ public class UserCredentialService {
     }
 
     public UserCredential getByEmployeeId(String employeeId) {
-        return userCredentialRepository.findByEmployeeId(employeeId);
+        return userCredentialRepository.findByEmployeeId(employeeId).get();
     }
 }
