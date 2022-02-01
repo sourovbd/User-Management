@@ -27,6 +27,7 @@ import java.sql.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.doReturn;
@@ -49,7 +50,7 @@ public class UserServiceTest {
     @InjectMocks
     private UserController userController;
     @InjectMocks
-    private UserCredential userCredential;
+    private UserCredentialService userCredentialService;
 
     ObjectMapper om = new ObjectMapper();
     UserCredential userCredential_1 = new UserCredential(1,"101","a1wq",true,"EMPLOYEE");
@@ -61,12 +62,13 @@ public class UserServiceTest {
 
     @BeforeEach
     public void setup() {
-        MockitoAnnotations.initMocks(this);
-        userService = Mockito.mock(UserService.class);
+        MockitoAnnotations.openMocks(this);
+        userCredentialService = Mockito.mock(UserCredentialService.class);
         mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
     }
     @Test
     public void createUserTest() throws Exception {
+        UserCredential userCredential = new UserCredential(1,"101","a1wq",true,"EMPLOYEE");
         User user = new User();
         user.setId(1);
         user.setDesignation("agm");
@@ -74,10 +76,9 @@ public class UserServiceTest {
         user.setEmailAddress("mdahad118@gmail.com");
         user.setBusinessUnit("a1polymar");
         user.setEmployeeId("0101");
+        user.setUserCredential(userCredential);
         Mockito.when(userRepository.save(user)).thenReturn(user);
-        String jsonRequest = om.writeValueAsString(user);
-        MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders.post("/user/create").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(jsonRequest);
-        mockMvc.perform(mockRequest).andExpect(status().isOk());
+        Mockito.when(userService.save(user)).thenReturn(user);
         // UserCreationResponseDTO response = om.readValue(resultContent, UserCreationResponseDTO.class);
         // assertEquals(response.getMessage(),"user created");
     }
@@ -85,7 +86,12 @@ public class UserServiceTest {
     public void getAllUsers_success() throws Exception {
         List<User> users = new ArrayList<>(Arrays.asList(user_1,user_2,user_3));
         Mockito.when(userRepository.findAll()).thenReturn(users);
-        mockMvc.perform(MockMvcRequestBuilders.get("/get/users").contentType(MediaType.APPLICATION_JSON )).andExpect(status().isOk());
+        Mockito.when(userService.findAllUsers()).thenReturn(users);
+        mockMvc.perform(MockMvcRequestBuilders.get("/users").contentType(MediaType.APPLICATION_JSON )).andExpect(status().isOk());
+    }
+    @Test
+    public void getUserByDetailsTest() throws Exception {
+        Mockito.when(userRepository.findById(1L)).thenReturn(user_1);
     }
     /*@Autowired
     private UserService service ;
