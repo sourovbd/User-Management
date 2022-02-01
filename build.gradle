@@ -43,7 +43,8 @@ dependencies {
 	implementation 'javax.xml.bind:jaxb-api:2.3.1'
 
 	/** Unit test dependencies */
-	implementation 'junit:junit:4.13.1'
+	implementation 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
+	//implementation 'junit:junit:4.13.1'
 	compileOnly group: 'org.mockito', name: 'mockito-core', version: '2.23.4'
 
 	/** Spring validation dependencies */
