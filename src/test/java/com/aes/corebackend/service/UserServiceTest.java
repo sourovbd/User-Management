@@ -30,6 +30,11 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.util.Assert;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.sql.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.doReturn;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -45,10 +50,14 @@ public class UserServiceTest {
     @InjectMocks
     private UserController userController;
     ObjectMapper om = new ObjectMapper();
+    User user_1 = new User(1,"abc@gmail.com","agm","101","a1polymar","accounts");
+    User user_2 = new User(1,"abd@gmail.com","agm","102","a1polymar","accounts");
+    User user_3 = new User(1,"abe@gmail.com","agm","103","a1polymar","accounts");
     @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        mockMvc = MockMvcBuilders.standaloneSetup(userService).build();
+        userService = Mockito.mock(UserService.class);
+        mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
     }
     @Test
     public void createUserTest() throws Exception {
@@ -65,6 +74,12 @@ public class UserServiceTest {
         mockMvc.perform(mockRequest).andExpect(status().isOk());
         // UserCreationResponseDTO response = om.readValue(resultContent, UserCreationResponseDTO.class);
         // assertEquals(response.getMessage(),"user created");
+    }
+    @Test
+    public void getAllUsers_success() throws Exception {
+        List<User> users = new ArrayList<>(Arrays.asList(user_1,user_2,user_3));
+        Mockito.when(userRepository.findAll()).thenReturn(users);
+        mockMvc.perform(MockMvcRequestBuilders.get("/get/users").contentType(MediaType.APPLICATION_JSON )).andExpect(status().isOk());
     }
     /*@Autowired
     private UserService service ;
