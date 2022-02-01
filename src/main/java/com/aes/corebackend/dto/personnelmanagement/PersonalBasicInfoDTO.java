@@ -6,9 +6,15 @@ import lombok.Data;
 @Data
 public class PersonalBasicInfoDTO {
     private Long id;
+    //a-zA-z
+    //max length 50
     private String firstName;
+    //a-zA-z
+    //max length 50
     private String lastName;
-    private String dateOfBirth;
+    //format of date
+    private String dateOfBirth;//change to date field
+    //enum
     private String gender;
 
     public static PersonalBasicInfo getPersonalBasicInfoEntity(PersonalBasicInfoDTO basicInfoDTO) {
