@@ -3,12 +3,12 @@ package com.aes.corebackend.service;
 import com.aes.corebackend.controller.UserController;
 import com.aes.corebackend.dto.UserCreationResponseDTO;
 import com.aes.corebackend.entity.User;
+import com.aes.corebackend.entity.UserCredential;
 import com.aes.corebackend.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.aspectj.lang.annotation.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -16,19 +16,12 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.event.annotation.BeforeTestMethod;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.context.web.WebAppConfiguration;
+
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.util.Assert;
-import org.springframework.web.context.WebApplicationContext;
 
 import java.sql.Array;
 import java.util.ArrayList;
@@ -38,21 +31,34 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.doReturn;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 @RunWith(MockitoJUnitRunner.class)
 public class UserServiceTest {
+
     @Autowired
     private MockMvc mockMvc;
+
     @Mock
     private UserRepository userRepository;
+
     @InjectMocks
     private UserService userService;
+
     @InjectMocks
     private UserController userController;
+    @InjectMocks
+    private UserCredential userCredential;
+
     ObjectMapper om = new ObjectMapper();
-    User user_1 = new User(1,"abc@gmail.com","agm","101","a1polymar","accounts");
-    User user_2 = new User(1,"abd@gmail.com","agm","102","a1polymar","accounts");
-    User user_3 = new User(1,"abe@gmail.com","agm","103","a1polymar","accounts");
+    UserCredential userCredential_1 = new UserCredential(1,"101","a1wq",true,"EMPLOYEE");
+    UserCredential userCredential_2 = new UserCredential(2,"102","a1wq",true,"EMPLOYEE");
+    UserCredential userCredential_3 = new UserCredential(3,"103","a1wq",true,"EMPLOYEE");
+    User user_1 = new User(1,"abc@gmail.com","agm","101","a1polymar","accounts",userCredential_1);
+    User user_2 = new User(2,"abd@gmail.com","agm","102","a1polymar","accounts",userCredential_2);
+    User user_3 = new User(3,"abe@gmail.com","agm","103","a1polymar","accounts",userCredential_3);
+
     @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);

@@ -9,6 +9,7 @@ import java.util.Optional;
 @Data
 @AllArgsConstructor
 public class UserFinderResponseDTO {
+
     String message;
     User user;
 }

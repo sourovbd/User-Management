@@ -9,6 +9,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 public class UsersFetchResponseDTO {
+
     String message;
     List<User> users;
 }

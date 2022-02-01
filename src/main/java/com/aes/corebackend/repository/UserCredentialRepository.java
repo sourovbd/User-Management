@@ -5,11 +5,10 @@ import com.aes.corebackend.entity.UserCredential;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface UserCredentialRepository extends JpaRepository<UserCredential, Long> {
 
-    /*@Query("select u from UserCredential u where u.employeeId=:employeeId")
-    public UserCredential findByEmployeeId(@Param("employeeId") String employeeId);*/
-
-    UserCredential findByEmployeeId(String employeeId);
+    Optional<UserCredential> findByEmployeeId(String employeeId);
 }
