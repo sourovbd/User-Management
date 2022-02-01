@@ -5,9 +5,16 @@ import lombok.Data;
 
 @Data
 public class PersonalFamilyInfoDTO {
+    //enum
     private String maritalStatus;
+    //a-zA-Z
+    //max length 50
     private String fathersName;
+    //a-zA-Z
+    //max length 50
     private String mothersName;
+    //a-zA-Z
+    //max length 50
     private String spouseName;
 
     public static PersonalFamilyInfo getPersonalFamilyEntity(PersonalFamilyInfoDTO familyInfoDTO) {

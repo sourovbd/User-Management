@@ -9,10 +9,18 @@ import javax.persistence.Column;
 @Data
 public class PersonalEducationDTO {
     private Long id;
+    //max length 30
+    //a-zA-Z[.]
     private String degreeName;
+    //max length 30
+    //a-zA-Z
     private String institutionName;
+    //max value 5.0
     private float gpaScale;
+    //max value 5.0
     private float cgpa;
+    //change into Date type
+    //date format
     private String passingYear;
 
     public static PersonalEducationInfo getPersonalEducationEntity(PersonalEducationDTO educationInfoDTO) {
