@@ -27,18 +27,18 @@ public class UserController {
 
     @PostMapping("/users")
     @PreAuthorize("hasAuthority('EMPLOYEE')")
-    public ResponseEntity<?> createUser(@RequestBody UserDTO userDto) {
+    public ResponseEntity<?> create(@RequestBody UserDTO userDto) {
 
         UserCredential userCredential = userCredentialService.getByEmployeeId(userDto.getEmployeeId());
         User user = userDto.dtoToEntity(userDto);
         user.setUserCredential(userCredential);
 
-        if (Objects.nonNull(userService.save(user))) {
+        if (Objects.nonNull(userService.create(user))) {
             emailSender.send(userDto.dtoToEntity(userDto).getEmailAddress(),"This is a test email");
-            return ResponseEntity.ok(new UserCreationResponseDTO("user created"));
+            return ResponseEntity.ok(new ResponseDTO("user created",true,null));
         }
         else
-            return ResponseEntity.ok(new UserCreationResponseDTO("user creation failed"));
+            return ResponseEntity.ok(new ResponseDTO("user creation failed", true, null));
     }
 
     @PutMapping("/users/{id}")
@@ -52,14 +52,14 @@ public class UserController {
     @PreAuthorize("hasAuthority('EMPLOYEE')")
     public ResponseEntity<?> getUserDetails(@PathVariable int id) {
 
-        return ResponseEntity.ok(new UserFinderResponseDTO("user fetch ok", userService.findById(id)));
+        return ResponseEntity.ok(new ResponseDTO("user fetch ok", true, userService.read(id)));
     }
 
     @GetMapping("/users")
     @PreAuthorize("hasAuthority('EMPLOYEE')")
     public ResponseEntity<?> getAllUsers() {
 
-        return ResponseEntity.ok(new UsersFetchResponseDTO("All user fetch ok", userService.findAllUsers()));
+        return ResponseEntity.ok(new ResponseDTO("All user fetch ok", true, userService.read()));
     }
 
 }

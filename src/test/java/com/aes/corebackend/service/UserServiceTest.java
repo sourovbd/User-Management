@@ -1,12 +1,10 @@
 package com.aes.corebackend.service;
 
 import com.aes.corebackend.controller.UserController;
-import com.aes.corebackend.dto.UserCreationResponseDTO;
 import com.aes.corebackend.entity.User;
 import com.aes.corebackend.entity.UserCredential;
 import com.aes.corebackend.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.aspectj.lang.annotation.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -19,11 +17,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -78,7 +74,7 @@ public class UserServiceTest {
         user.setEmployeeId("0101");
         user.setUserCredential(userCredential);
         Mockito.when(userRepository.save(user)).thenReturn(user);
-        Mockito.when(userService.save(user)).thenReturn(user);
+        Mockito.when(userService.create(user)).thenReturn(user);
         // UserCreationResponseDTO response = om.readValue(resultContent, UserCreationResponseDTO.class);
         // assertEquals(response.getMessage(),"user created");
     }
@@ -86,13 +82,13 @@ public class UserServiceTest {
     public void getAllUsers_success() throws Exception {
         List<User> users = new ArrayList<>(Arrays.asList(user_1,user_2,user_3));
         Mockito.when(userRepository.findAll()).thenReturn(users);
-        Mockito.when(userService.findAllUsers()).thenReturn(users);
+        Mockito.when(userService.read()).thenReturn(users);
         mockMvc.perform(MockMvcRequestBuilders.get("/users").contentType(MediaType.APPLICATION_JSON )).andExpect(status().isOk());
     }
     @Test
     public void getUserByDetailsTest() throws Exception {
         Mockito.when(userRepository.findById(1L)).thenReturn(Optional.ofNullable(user_1));
-        Mockito.when(userService.findById(1L)).thenReturn(user_1);
+        Mockito.when(userService.read(1L)).thenReturn(user_1);
     }
     @Test
     public void updateUserById() throws Exception {
