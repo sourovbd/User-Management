@@ -39,7 +39,9 @@ public class User {
     @NotBlank(message = "department is mandatory")
     @Column(name = "department")
     private String department;
+    @Column(name = "roles")
+    private String roles;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private UserCredential userCredential;
 }

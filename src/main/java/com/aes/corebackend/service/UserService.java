@@ -1,7 +1,9 @@
 package com.aes.corebackend.service;
 
+import com.aes.corebackend.dto.UserDTO;
 import com.aes.corebackend.dto.UserResponseDTO;
 import com.aes.corebackend.entity.User;
+import com.aes.corebackend.entity.UserCredential;
 import com.aes.corebackend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,7 +16,12 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public User create(User user) {
+    public User create(User user, UserDTO userDto) {
+        UserCredential userCredential = new UserCredential();
+        userCredential.setEmployeeId(userDto.getEmployeeId());
+        userCredential.setRoles(userDto.getRoles());
+        userCredential.setActive(true);
+        user.setUserCredential(userCredential);
         return userRepository.save(user);
     }
 
