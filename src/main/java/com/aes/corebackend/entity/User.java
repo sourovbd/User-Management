@@ -40,6 +40,6 @@ public class User {
     @Column(name = "department")
     private String department;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private UserCredential userCredential;
 }

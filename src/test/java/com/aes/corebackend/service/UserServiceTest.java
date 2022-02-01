@@ -75,7 +75,7 @@ public class UserServiceTest {
         user.setEmployeeId("0101");
         user.setUserCredential(userCredential);
         Mockito.when(userRepository.save(user)).thenReturn(user);
-        Mockito.when(userService.create(user)).thenReturn(user);
+        //Mockito.when(userService.create(user)).thenReturn(user);
         // UserCreationResponseDTO response = om.rea  dValue(resultContent, UserCreationResponseDTO.class);
         // assertEquals(response.getMessage(),"user created");
     }

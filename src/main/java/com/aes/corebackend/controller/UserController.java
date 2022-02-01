@@ -33,12 +33,8 @@ public class UserController {
     @PostMapping("/users")
     @PreAuthorize("hasAuthority('EMPLOYEE')")
     public ResponseEntity<?> create(@RequestBody UserDTO userDto) {
-
-        UserCredential userCredential = userCredentialService.getByEmployeeId(userDto.getEmployeeId());
         User user = userDto.dtoToEntity(userDto);
-        user.setUserCredential(userCredential);
-
-        if (Objects.nonNull(userService.create(user))) {
+        if (Objects.nonNull(userService.create(user,userDto))) {
             emailSender.send(userDto.dtoToEntity(userDto).getEmailAddress(),"This is a test email");
             return ResponseEntity.ok(new ResponseDTO("user created",true,null));
         }
