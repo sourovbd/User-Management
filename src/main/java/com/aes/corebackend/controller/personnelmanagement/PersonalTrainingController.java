@@ -13,26 +13,26 @@ public class PersonalTrainingController {
     @Autowired
     PersonalTrainingService personalTrainingService;
 
-    @PostMapping(value = "/users/{userId}/training")
+    @PostMapping(value = "/users/{userId}/trainings")
     public ResponseEntity<?> createPersonalTraining(@RequestBody PersonalTrainingDTO personalTrainingDTO, @PathVariable Long userId) {
         PersonnelManagementResponseDTO response = personalTrainingService.create(personalTrainingDTO, userId);
         return ResponseEntity.ok(response);
     }
 
-    @PutMapping(value = "/users/{userId}/training/{trainingId}")
+    @PutMapping(value = "/users/{userId}/trainings/{trainingId}")
     public ResponseEntity<?> updatePersonalTraining(@RequestBody PersonalTrainingDTO personalTrainingDTO, @PathVariable Long userId, @PathVariable Long trainingId) {
         PersonnelManagementResponseDTO response = personalTrainingService.update(personalTrainingDTO, userId, trainingId);
 
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping(value = "/users/{userId}/training")
+    @GetMapping(value = "/users/{userId}/trainings")
     public ResponseEntity<?> getPersonalTrainings(@PathVariable Long userId) {
         PersonnelManagementResponseDTO response = personalTrainingService.read(userId);
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping(value = "/users/{userId}/training/{trainingId}")
+    @GetMapping(value = "/users/{userId}/trainings/{trainingId}")
     public ResponseEntity<?> getPersonalTraining(@PathVariable Long userId, @PathVariable Long trainingId) {
         PersonnelManagementResponseDTO response = personalTrainingService.read(userId, trainingId);
         return ResponseEntity.ok(response);

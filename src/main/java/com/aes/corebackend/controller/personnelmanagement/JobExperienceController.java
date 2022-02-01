@@ -14,13 +14,13 @@ public class JobExperienceController {
     @Autowired
     PersonalJobExperienceService personalJobExperienceService;
 
-    @PostMapping(value = "/users/{userId}/job-experience")
+    @PostMapping(value = "/users/{userId}/job-experiences")
     public ResponseEntity<?> createJobExperience(@RequestBody PersonalJobExperienceDTO personalJobExperienceDTO, @PathVariable Long userId) {
         PersonnelManagementResponseDTO response = personalJobExperienceService.create(personalJobExperienceDTO, userId);
         return ResponseEntity.ok(response);
     }
 
-    @PutMapping(value = "/users/{userId}/job-experience/{experienceId}")
+    @PutMapping(value = "/users/{userId}/job-experiences/{experienceId}")
     public ResponseEntity<?> updatePersonalJobExperience(@RequestBody PersonalJobExperienceDTO personalJobExperienceDTO, @PathVariable Long userId, @PathVariable Long experienceId) {
         PersonnelManagementResponseDTO response = personalJobExperienceService.update(personalJobExperienceDTO, userId, experienceId);
         return ResponseEntity.ok(response);

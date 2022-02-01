@@ -14,18 +14,18 @@ public class PersonalIdentificationController {
     @Autowired
     PersonalIdentificationService service;
 
-    @PostMapping(value = "/users/{userId}/create-id-info")
+    @PostMapping(value = "/users/{userId}/identification-information")
     public ResponseEntity<?> createAttributesInfo(@RequestBody PersonalIdentificationInfoDTO idDTO, @PathVariable Long userId) {
         return ResponseEntity.ok(service.create(idDTO, userId));
     }
 
-    @PutMapping(value = "/users/{userId}/update-id-info")
+    @PutMapping(value = "/users/{userId}/identification-information")
     public ResponseEntity<?> updateAttributesInfo(@RequestBody PersonalIdentificationInfoDTO idDTO, @PathVariable Long userId) {
         return ResponseEntity.ok(service.update(idDTO, userId));
     }
 
 
-    @GetMapping(value = "/users/{userId}/id-info")
+    @GetMapping(value = "/users/{userId}/identification-information")
     public ResponseEntity<?> getAttributesInfo(@PathVariable Long userId) {
         return ResponseEntity.ok(service.read(userId));
     }
