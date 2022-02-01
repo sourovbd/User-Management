@@ -27,7 +27,7 @@ public class PersonnelManagementController {
         boolean success = personalInformationService.updatePersonalIdentificationInfo(identificationInfo);
         return ResponseEntity.ok(new PersonnelManagementResponseDTO("Update successfull!", success, null));
     }
-
+/*
     @PostMapping(value = "/users/{id}/update-personal-education")
     public ResponseEntity<?> updatePersonalEducation(@RequestBody PersonalEducationDTO educationDTO, @PathVariable String id) {
         //TODO convert dto to entity
@@ -35,7 +35,7 @@ public class PersonnelManagementController {
         boolean success = personalInformationService.updatePersonalEducation(educationInfo);
         return ResponseEntity.ok(new PersonnelManagementResponseDTO("Update successfull!", success, null));
     }
-
+*/
     @PostMapping(value = "/users/{id}/update-personal-training")
     public ResponseEntity<?> updatePersonalTraining(@RequestBody PersonalTrainingDTO trainingDTO, @PathVariable String id) {
         //TODO convert dto to entity
