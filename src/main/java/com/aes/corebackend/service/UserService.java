@@ -1,5 +1,6 @@
 package com.aes.corebackend.service;
 
+import com.aes.corebackend.dto.UserCreationResponseDTO;
 import com.aes.corebackend.entity.User;
 import com.aes.corebackend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,27 +19,23 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public boolean update(User user, long id) {
-        try{
+    public UserCreationResponseDTO update(User user, long id) {
             User tempUser = userRepository.findById(id).orElse(null);
-            //User tempUser = userRepository.findByEmployeeId(user.getEmployeeId());
-            //nullpointer check
-            if(Objects.nonNull(tempUser)) {
+            //System.out.println("Temp user" + tempUser);
+            UserCreationResponseDTO responseDTO = new UserCreationResponseDTO("user not found");
+
+            if(tempUser != null) {
                 tempUser.setDesignation(user.getDesignation());
                 tempUser.setDepartment(user.getDepartment());
                 tempUser.setEmailAddress(user.getEmailAddress());
                 tempUser.setBusinessUnit(user.getBusinessUnit());
                 tempUser.setEmployeeId(user.getEmployeeId());
-                //userCredential1.setPassword(userCredential.getPassword());
                 userRepository.save(tempUser);
+                responseDTO.setMessage("user updated successfully");
             }
 
-        } catch (Exception e) {
+            return responseDTO;
 
-            e.printStackTrace();
-            return false;
-        }
-        return true;
     }
 
     public User findById(long id) {

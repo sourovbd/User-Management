@@ -89,10 +89,10 @@ public class UserServiceTest {
         Mockito.when(userService.findAllUsers()).thenReturn(users);
         mockMvc.perform(MockMvcRequestBuilders.get("/users").contentType(MediaType.APPLICATION_JSON )).andExpect(status().isOk());
     }
-    @Test
+    /*@Test
     public void getUserByDetailsTest() throws Exception {
         Mockito.when(userRepository.findById(1L)).thenReturn(user_1);
-    }
+    }*/
     /*@Autowired
     private UserService service ;
     @MockBean
