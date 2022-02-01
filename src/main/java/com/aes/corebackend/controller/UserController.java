@@ -24,7 +24,7 @@ public class UserController {
 
     @Autowired
     private UserCredentialService userCredentialService;
-        
+
     @PostMapping("/users")
     @PreAuthorize("hasAuthority('EMPLOYEE')")
     public ResponseEntity<?> createUser(@RequestBody UserDTO userDto) {
@@ -47,7 +47,7 @@ public class UserController {
 
         return ResponseEntity.ok(userService.update(userDto.dtoToEntity(userDto),id));
     }
-    
+
     @GetMapping("/users/{id}")
     @PreAuthorize("hasAuthority('EMPLOYEE')")
     public ResponseEntity<?> getUserDetails(@PathVariable int id) {
