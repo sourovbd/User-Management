@@ -1,23 +1,20 @@
 package com.aes.corebackend.controller;
 
 import com.aes.corebackend.dto.ForgotPasswordDTO;
-import com.aes.corebackend.dto.UserCreationResponseDTO;
+import com.aes.corebackend.dto.UserResponseDTO;
 import com.aes.corebackend.dto.UserCredentialDTO;
 import com.aes.corebackend.dto.UserCredentialResponseDTO;
-import com.aes.corebackend.entity.UserCredential;
 import com.aes.corebackend.service.UserCredentialService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.validation.Valid;
-import java.util.Objects;
 
 @Controller
 public class UserCredentialController {
@@ -64,7 +61,7 @@ public class UserCredentialController {
     public ResponseEntity<?> forgotPassword(@Valid @RequestBody ForgotPasswordDTO forgotPasswordDTO, BindingResult result) {
 
         if (result.hasErrors()) {
-            return ResponseEntity.ok(new UserCreationResponseDTO(result.getFieldError().getDefaultMessage()));
+            return ResponseEntity.ok(new UserResponseDTO(result.getFieldError().getDefaultMessage()));
         }
 
         return userCredentialService.generateAndSendTempPass(forgotPasswordDTO.getEmailAddress()) ?

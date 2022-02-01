@@ -35,10 +35,10 @@ public class UserController {
 
         if (Objects.nonNull(userService.save(user))) {
             emailSender.send(userDto.dtoToEntity(userDto).getEmailAddress(),"This is a test email");
-            return ResponseEntity.ok(new UserCreationResponseDTO("user created"));
+            return ResponseEntity.ok(new UserResponseDTO("user created"));
         }
         else
-            return ResponseEntity.ok(new UserCreationResponseDTO("user creation failed"));
+            return ResponseEntity.ok(new UserResponseDTO("user creation failed"));
     }
 
     @PutMapping("/users/{id}")
