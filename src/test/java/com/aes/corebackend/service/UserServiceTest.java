@@ -52,9 +52,9 @@ public class UserServiceTest {
     UserCredential userCredential_1 = new UserCredential(1,"101","a1wq",true,"EMPLOYEE");
     UserCredential userCredential_2 = new UserCredential(2,"102","a1wq",true,"EMPLOYEE");
     UserCredential userCredential_3 = new UserCredential(3,"103","a1wq",true,"EMPLOYEE");
-    User user_1 = new User(1,"abc@gmail.com","agm","101","a1polymar","accounts",userCredential_1);
-    User user_2 = new User(2,"abd@gmail.com","agm","102","a1polymar","accounts",userCredential_2);
-    User user_3 = new User(3,"abe@gmail.com","agm","103","a1polymar","accounts",userCredential_3);
+    User user_1 = new User(1L,"abc@gmail.com","agm","101","a1polymar","accounts",userCredential_1);
+    User user_2 = new User(2L,"abd@gmail.com","agm","102","a1polymar","accounts",userCredential_2);
+    User user_3 = new User(3L,"abe@gmail.com","agm","103","a1polymar","accounts",userCredential_3);
 
     @BeforeEach
     public void setup() {
@@ -66,7 +66,7 @@ public class UserServiceTest {
     public void createUserTest() throws Exception {
         UserCredential userCredential = new UserCredential(1,"101","a1wq",true,"EMPLOYEE");
         User user = new User();
-        user.setId(1);
+        user.setId(1L);
         user.setDesignation("agm");
         user.setDepartment("accounts");
         user.setEmailAddress("mdahad118@gmail.com");
@@ -75,7 +75,7 @@ public class UserServiceTest {
         user.setUserCredential(userCredential);
         Mockito.when(userRepository.save(user)).thenReturn(user);
         Mockito.when(userService.create(user)).thenReturn(user);
-        // UserCreationResponseDTO response = om.readValue(resultContent, UserCreationResponseDTO.class);
+        // UserCreationResponseDTO response = om.rea  dValue(resultContent, UserCreationResponseDTO.class);
         // assertEquals(response.getMessage(),"user created");
     }
     @Test
