@@ -89,10 +89,16 @@ public class UserServiceTest {
         Mockito.when(userService.findAllUsers()).thenReturn(users);
         mockMvc.perform(MockMvcRequestBuilders.get("/users").contentType(MediaType.APPLICATION_JSON )).andExpect(status().isOk());
     }
-    /*@Test
+    @Test
     public void getUserByDetailsTest() throws Exception {
-        Mockito.when(userRepository.findById(1L)).thenReturn(user_1);
-    }*/
+        Mockito.when(userRepository.findById(1L)).thenReturn(Optional.ofNullable(user_1));
+        Mockito.when(userService.findById(1L)).thenReturn(user_1);
+    }
+    @Test
+    public void updateUserById() throws Exception {
+        User user_1_temp = new User(1,"abc@gmail.com","dgm","101","a1polymar","accounts",userCredential_1);
+        // Mockito.when(userService.update(user_1_temp,1L)).thenReturn(true);
+    }
     /*@Autowired
     private UserService service ;
     @MockBean
