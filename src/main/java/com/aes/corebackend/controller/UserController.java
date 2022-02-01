@@ -24,8 +24,6 @@ public class UserController {
 
     @Autowired
     private UserCredentialService userCredentialService;
-
-
         
     @PostMapping("/users")
     @PreAuthorize("hasAuthority('EMPLOYEE')")

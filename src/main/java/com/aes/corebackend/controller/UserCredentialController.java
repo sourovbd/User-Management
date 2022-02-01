@@ -29,7 +29,7 @@ public class UserCredentialController {
     @PreAuthorize("hasAuthority('EMPLOYEE')")
     public ResponseEntity<?> saveCredential(@RequestBody @Valid UserCredentialDTO userCredentialDTO, BindingResult result) {
         if (result.hasErrors()) {
-            return ResponseEntity.ok(new UserCreationResponseDTO(result.getFieldError().getDefaultMessage()));
+            return ResponseEntity.ok(new UserCredentialResponseDTO(result.getFieldError().getDefaultMessage()));
         }
 
         return userCredentialService.save(userCredentialDTO.to(userCredentialDTO))?
@@ -37,15 +37,19 @@ public class UserCredentialController {
                 ResponseEntity.ok(new UserCredentialResponseDTO("Save Failed"));
     }
 
-    @PostMapping("users/reset-password/{id}")
+    @PostMapping("users/{employeeId}/reset-password")
     @PreAuthorize("hasAuthority('EMPLOYEE')")
-    public ResponseEntity<?> updateCredential(@Valid @RequestBody UserCredentialDTO userCredentialDTO, @PathVariable Long id) {
+    public ResponseEntity<?> updateCredential(@Valid @RequestBody UserCredentialDTO userCredentialDTO, BindingResult result, @PathVariable String employeeId) {
+        if (result.hasErrors()) {
+            return ResponseEntity.ok(new UserCredentialResponseDTO(result.getFieldError().getDefaultMessage()));
+        }
 
-        return userCredentialService.update(userCredentialDTO.to(userCredentialDTO), id) ?
+        return userCredentialService.update(userCredentialDTO.to(userCredentialDTO), employeeId) ?
                 ResponseEntity.ok(new UserCredentialResponseDTO("Updated Successfully")) :
                 ResponseEntity.ok(new UserCredentialResponseDTO("Update Failed"));
     }
 
+    /** During login */
     @PostMapping("users/verify-credential")
     @PreAuthorize("hasAuthority('EMPLOYEE')")
     public ResponseEntity<?> verifyCredential(@RequestBody UserCredentialDTO userCredentialDTO) {
@@ -68,14 +72,4 @@ public class UserCredentialController {
                 ResponseEntity.ok(new UserCredentialResponseDTO("Please try again."));
     }
 
-    @GetMapping("users/{employeeId}/fetch-credential")
-    @PreAuthorize("hasAuthority('EMPLOYEE')")
-    public ResponseEntity<?> forgotPassword(@PathVariable String employeeId) {
-
-        UserCredential userCredential = userCredentialService.getByEmployeeId(employeeId);
-
-        return Objects.isNull(userCredential) ?
-                ResponseEntity.ok(new UserCredentialResponseDTO("Not Found")) :
-                ResponseEntity.ok(new UserCredentialResponseDTO("Found", userCredential));
-    }
 }

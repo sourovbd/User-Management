@@ -36,9 +36,9 @@ public class UserCredentialService {
         return true;
     }
 
-    public boolean update(UserCredential userCredential, Long id) {
+    public boolean update(UserCredential userCredential, String employeeId) {
         try {
-            UserCredential userCredential1 = userCredentialRepository.getById(id);
+            UserCredential userCredential1 = userCredentialRepository.findByEmployeeId(employeeId).get();
             userCredential1.setPassword(passwordEncoder.encode(userCredential.getPassword()));
             userCredentialRepository.save(userCredential1);
         } catch (Exception e) {
@@ -61,11 +61,9 @@ public class UserCredentialService {
 
     public boolean generateAndSendTempPass(String email) {
         try {
-            //fetch user and credentials
             User user = userRepository.findByEmailId(email);
             UserCredential userCredential = userCredentialRepository.findByEmployeeId(""+user.getEmployeeId()).get();
 
-            //generate dummy password
             String password = UserCredentialUtils.generatePassword(Constants.PASSWORD_MIN_LENGTH);
             userCredential.setPassword(password);
 
