@@ -1,8 +1,6 @@
 package com.aes.corebackend.controller.personnelmanagement;
 
-import com.aes.corebackend.dto.personnelmanagement.PersonalAttributesDTO;
 import com.aes.corebackend.dto.personnelmanagement.PersonalIdentificationInfoDTO;
-import com.aes.corebackend.entity.personnelmanagement.PersonalIdentificationInfo;
 import com.aes.corebackend.service.personnelmanagement.PersonalIdentificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

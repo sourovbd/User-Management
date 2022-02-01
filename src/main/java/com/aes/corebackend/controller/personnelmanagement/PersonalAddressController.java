@@ -1,7 +1,6 @@
 package com.aes.corebackend.controller.personnelmanagement;
 
 import com.aes.corebackend.dto.personnelmanagement.PersonalAddressInfoDTO;
-import com.aes.corebackend.dto.personnelmanagement.PersonnelManagementResponseDTO;
 import com.aes.corebackend.service.personnelmanagement.PersonalAddressService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,19 +15,16 @@ public class PersonalAddressController {
 
     @PostMapping(value = "/users/{userId}/personal-address")
     public ResponseEntity<?> createPersonalAddress(@RequestBody PersonalAddressInfoDTO addressInfoDTO, @PathVariable Long userId) {
-        PersonnelManagementResponseDTO response = personalAddressService.createPersonalAddress(addressInfoDTO, userId);
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(personalAddressService.createPersonalAddress(addressInfoDTO, userId));
     }
 
     @PutMapping(value = "/users/{userId}/personal-address")
     public ResponseEntity<?> updatePersonalAddress(@RequestBody PersonalAddressInfoDTO personalAddressInfoDTO, @PathVariable Long userId) {
-        PersonnelManagementResponseDTO response = personalAddressService.updatePersonalAddress(personalAddressInfoDTO, userId);
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(personalAddressService.updatePersonalAddress(personalAddressInfoDTO, userId));
     }
 
     @GetMapping(value = "/users/{userId}/personal-address")
     public ResponseEntity<?> getPersonalAddress(@PathVariable Long userId) {
-        PersonnelManagementResponseDTO response = personalAddressService.getPersonalAddressInfo(userId);
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(personalAddressService.getPersonalAddressInfo(userId));
     }
 }
