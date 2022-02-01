@@ -43,11 +43,9 @@ public class UserController {
 
     @PutMapping("/users/{id}")
     @PreAuthorize("hasAuthority('EMPLOYEE')")
-    public ResponseEntity<?> updateUser(@RequestBody UserDTO userDto, @PathVariable long id) {
+    public ResponseEntity<User> updateUser(@RequestBody UserDTO userDto, @PathVariable long id) {
 
-        return userService.update(userDto.dtoToEntity(userDto),id)?
-                ResponseEntity.ok(new UserCreationResponseDTO("user data updated")) :
-                ResponseEntity.ok(new UserCreationResponseDTO("user update failed"));
+        return ResponseEntity.ok(userService.update(userDto.dtoToEntity(userDto),id));
     }
     
     @GetMapping("/users/{id}")

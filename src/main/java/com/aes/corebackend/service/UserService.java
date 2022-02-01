@@ -18,27 +18,18 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public boolean update(User user, long id) {
-        try{
-            User tempUser = userRepository.findById(id).orElse(null);
-            //User tempUser = userRepository.findByEmployeeId(user.getEmployeeId());
-            //nullpointer check
+    public User update(User user, long id) {
+            User tempUser = userRepository.findById(id).get();
+
             if(Objects.nonNull(tempUser)) {
                 tempUser.setDesignation(user.getDesignation());
                 tempUser.setDepartment(user.getDepartment());
                 tempUser.setEmailAddress(user.getEmailAddress());
                 tempUser.setBusinessUnit(user.getBusinessUnit());
                 tempUser.setEmployeeId(user.getEmployeeId());
-                //userCredential1.setPassword(userCredential.getPassword());
-                userRepository.save(tempUser);
+
             }
-
-        } catch (Exception e) {
-
-            e.printStackTrace();
-            return false;
-        }
-        return true;
+        return userRepository.save(tempUser);
     }
 
     public User findById(long id) {
