@@ -45,6 +45,7 @@ public class UserServiceTest {
 
     @InjectMocks
     private UserController userController;
+
     @InjectMocks
     private UserCredentialService userCredentialService;
 
@@ -83,7 +84,9 @@ public class UserServiceTest {
         List<User> users = new ArrayList<>(Arrays.asList(user_1,user_2,user_3));
         Mockito.when(userRepository.findAll()).thenReturn(users);
         Mockito.when(userService.read()).thenReturn(users);
-        mockMvc.perform(MockMvcRequestBuilders.get("/users").contentType(MediaType.APPLICATION_JSON )).andExpect(status().isOk());
+        mockMvc.perform(MockMvcRequestBuilders.get("/users")
+                        .contentType(MediaType.APPLICATION_JSON ))
+                .andExpect(status().isOk());
     }
     @Test
     public void getUserByDetailsTest() throws Exception {

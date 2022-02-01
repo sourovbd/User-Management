@@ -5,7 +5,10 @@ import com.aes.corebackend.dto.UserResponseDTO;
 import com.aes.corebackend.dto.UserCredentialDTO;
 import com.aes.corebackend.dto.UserCredentialResponseDTO;
 import com.aes.corebackend.service.UserCredentialService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -16,11 +19,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.validation.Valid;
 
+@Slf4j
 @Controller
+@RequiredArgsConstructor
 public class UserCredentialController {
 
-    @Autowired
-    private UserCredentialService userCredentialService;
+    private final UserCredentialService userCredentialService;
+
+    private static final Logger logger = LoggerFactory.getLogger(UserCredentialController.class);
 
     @PostMapping("/users-credential")
     @PreAuthorize("hasAuthority('EMPLOYEE')")
@@ -64,7 +70,7 @@ public class UserCredentialController {
             return ResponseEntity.ok(new UserResponseDTO(result.getFieldError().getDefaultMessage()));
         }
 
-        return userCredentialService.generateAndSendTempPass(forgotPasswordDTO.getEmailAddress()) ?
+        return userCredentialService. generateAndSendTempPass(forgotPasswordDTO.getEmailAddress()) ?
                 ResponseEntity.ok(new UserCredentialResponseDTO("A new password is sent to your email.")) :
                 ResponseEntity.ok(new UserCredentialResponseDTO("Please try again."));
     }
