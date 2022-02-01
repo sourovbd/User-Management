@@ -1,5 +1,6 @@
 package com.aes.corebackend.entity.personnelmanagement;
 
+import com.aes.corebackend.entity.User;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -24,5 +25,6 @@ public class PersonalEducationInfo {
     private float cgpa;
     @Column(name = "passingYear")
     private String passingYear;
-
+    @ManyToOne
+    private User user;
 }
