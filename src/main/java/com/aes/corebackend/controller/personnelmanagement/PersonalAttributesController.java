@@ -19,17 +19,17 @@ public class PersonalAttributesController {
     @Autowired
     PersonalAttributesService personalAttributesService;
 
-    @PostMapping(value = "/users/{userId}/create-attributes-info")
+    @PostMapping(value = "/users/{userId}/attribute-information")
     public ResponseEntity<?> createAttributesInfo(@RequestBody PersonalAttributesDTO attributesDTO, @PathVariable Long userId) {
         return ResponseEntity.ok(personalAttributesService.create(attributesDTO, userId));
     }
 
-    @PutMapping(value = "/users/{userId}/update-attributes-info")
+    @PutMapping(value = "/users/{userId}/attribute-information")
     public ResponseEntity<?> updateAttributesInfo(@RequestBody PersonalAttributesDTO attributesDTO, @PathVariable Long userId) {
         return ResponseEntity.ok(personalAttributesService.update(attributesDTO, userId));
     }
 
-    @GetMapping(value = "/users/{userId}/attributes-info")
+    @GetMapping(value = "/users/{userId}/attribute-information")
     public ResponseEntity<?> getPersonalBasicInfo(@PathVariable Long userId) {
         return ResponseEntity.ok(personalAttributesService.read(userId));
     }

@@ -1,7 +1,6 @@
 package com.aes.corebackend.controller.personnelmanagement;
 
 import com.aes.corebackend.dto.personnelmanagement.PersonalBasicInfoDTO;
-import com.aes.corebackend.dto.personnelmanagement.PersonnelManagementResponseDTO;
 import com.aes.corebackend.service.personnelmanagement.PersonalBasicInformationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,21 +13,18 @@ public class PersonalBasicInfoController {
     @Autowired
     PersonalBasicInformationService personalBasicInformationService;
 
-    @PostMapping(value = "/users/{userId}/create-personal-basic-info")
+    @PostMapping(value = "/users/{userId}/basic-information")
     public ResponseEntity<?> createPersonalBasicInfo(@RequestBody PersonalBasicInfoDTO personalBasicInfoDTO, @PathVariable Long userId) {
-        PersonnelManagementResponseDTO response = personalBasicInformationService.createPersonalBasicInfo(personalBasicInfoDTO, userId);
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(personalBasicInformationService.createPersonalBasicInfo(personalBasicInfoDTO, userId));
     }
 
-    @PutMapping(value = "/users/{userId}/update-personal-basic-info")
+    @PutMapping(value = "/users/{userId}/basic-information")
     public ResponseEntity<?> updatePersonalBasicInfo(@RequestBody PersonalBasicInfoDTO basicInfoDTO, @PathVariable Long userId) {
-        PersonnelManagementResponseDTO response = personalBasicInformationService.updatePersonalBasicInfo(basicInfoDTO, userId);
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(personalBasicInformationService.updatePersonalBasicInfo(basicInfoDTO, userId));
     }
 
-    @GetMapping(value = "/users/{userId}/personal-basic-info")
+    @GetMapping(value = "/users/{userId}/basic-information")
     public ResponseEntity<?> getPersonalBasicInfo(@PathVariable Long userId) {
-        PersonnelManagementResponseDTO response = personalBasicInformationService.getPersonalBasicInfo(userId);
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(personalBasicInformationService.getPersonalBasicInfo(userId));
     }
 }
