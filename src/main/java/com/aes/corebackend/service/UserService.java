@@ -14,22 +14,21 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public User save(User user) {
+    public User create(User user) {
         return userRepository.save(user);
     }
 
     public UserResponseDTO update(User user, long id) {
-            User tempUser = userRepository.findById(id).orElse(null);
-            //System.out.println("Temp user" + tempUser);
+            User existingUser = userRepository.findById(id).orElse(null);
             UserResponseDTO responseDTO = new UserResponseDTO("user not found");
 
-            if(tempUser != null) {
-                tempUser.setDesignation(user.getDesignation());
-                tempUser.setDepartment(user.getDepartment());
-                tempUser.setEmailAddress(user.getEmailAddress());
-                tempUser.setBusinessUnit(user.getBusinessUnit());
-                tempUser.setEmployeeId(user.getEmployeeId());
-                userRepository.save(tempUser);
+            if(existingUser != null) {
+                existingUser.setDesignation(user.getDesignation());
+                existingUser.setDepartment(user.getDepartment());
+                existingUser.setEmailAddress(user.getEmailAddress());
+                existingUser.setBusinessUnit(user.getBusinessUnit());
+                existingUser.setEmployeeId(user.getEmployeeId());
+                userRepository.save(existingUser);
                 responseDTO.setMessage("user updated successfully");
             }
 
@@ -37,11 +36,11 @@ public class UserService {
 
     }
 
-    public User findById(long id) {
+    public User read(long id) {
         return userRepository.findById(id).orElse(null);
     }
 
-    public List<User> findAllUsers() {
+    public List<User> read() {
         return userRepository.findAll();
     }
 
