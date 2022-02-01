@@ -36,9 +36,9 @@ public class UserCredentialService {
         return true;
     }
 
-    public boolean update(UserCredential userCredential, Long id) {
+    public boolean update(UserCredential userCredential, String employeeId) {
         try {
-            UserCredential userCredential1 = userCredentialRepository.getById(id);
+            UserCredential userCredential1 = userCredentialRepository.findByEmployeeId(employeeId);
             userCredential1.setPassword(passwordEncoder.encode(userCredential.getPassword()));
             userCredentialRepository.save(userCredential1);
         } catch (Exception e) {
