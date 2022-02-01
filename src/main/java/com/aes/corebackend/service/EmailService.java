@@ -2,6 +2,7 @@ package com.aes.corebackend.service;
 
 import com.aes.corebackend.entity.UserCredential;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -12,11 +13,11 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
 @Service
-@NoArgsConstructor
+//@NoArgsConstructor(force = true)
+@RequiredArgsConstructor
 public class EmailService implements EmailSender {
 
-    @Autowired
-    private JavaMailSender javaMailSender;
+    private final JavaMailSender javaMailSender;
 
     @Async
     @Override

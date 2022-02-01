@@ -61,7 +61,7 @@ public class UserCredentialService {
 
     public boolean generateAndSendTempPass(String email) {
         try {
-            User user = userRepository.findByEmailId(email);
+            User user = userRepository.findByEmailAddress(email).get();
             UserCredential userCredential = userCredentialRepository.findByEmployeeId(""+user.getEmployeeId()).get();
 
             String password = UserCredentialUtils.generatePassword(Constants.PASSWORD_MIN_LENGTH);

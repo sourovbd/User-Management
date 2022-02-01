@@ -6,24 +6,29 @@ import com.aes.corebackend.entity.UserCredential;
 import com.aes.corebackend.service.UserCredentialService;
 import com.aes.corebackend.service.EmailSender;
 import com.aes.corebackend.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Objects;
 
+@Slf4j
 @RestController
+@RequiredArgsConstructor
 public class UserController {
 
-    @Autowired
-    private EmailSender emailSender;
+    private final EmailSender emailSender;
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
-    @Autowired
-    private UserCredentialService userCredentialService;
+    private final UserCredentialService userCredentialService;
+
+    /** static is used so that it only happens once */
+    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
     @PostMapping("/users")
     @PreAuthorize("hasAuthority('EMPLOYEE')")

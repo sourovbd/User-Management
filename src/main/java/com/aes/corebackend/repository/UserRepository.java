@@ -6,13 +6,10 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 
-    //User save(User user);
-    //User getUserBy(long id);
-    //User findOne(int employeeId);
-
-    @Query("select u from User u where u.emailAddress=:emailAddress")
-    public User findByEmailId(@Param("emailAddress") String emailAddress);
+    Optional<User> findByEmailAddress(String emailAddress);
 }
