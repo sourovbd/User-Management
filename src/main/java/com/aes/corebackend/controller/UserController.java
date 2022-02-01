@@ -43,7 +43,7 @@ public class UserController {
 
     @PutMapping("/users/{id}")
     @PreAuthorize("hasAuthority('EMPLOYEE')")
-    public ResponseEntity<User> updateUser(@RequestBody UserDTO userDto, @PathVariable long id) {
+    public ResponseEntity<?> updateUser(@RequestBody UserDTO userDto, @PathVariable long id) {
 
         return ResponseEntity.ok(userService.update(userDto.dtoToEntity(userDto),id));
     }
