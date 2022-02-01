@@ -4,7 +4,7 @@ import com.aes.corebackend.entity.personnelmanagement.PersonalAddressInfo;
 import lombok.Data;
 
 @Data
-public class PersonalAddressInfoDTO {
+public class PersonalAddressInfoDTO {// change from string to object of type address
     private Long id;
     private String presentAddress;
     private String permanentAddress;

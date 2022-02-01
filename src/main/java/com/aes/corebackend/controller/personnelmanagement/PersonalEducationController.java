@@ -13,23 +13,23 @@ public class PersonalEducationController {
     @Autowired
     PersonalEducationService service;
 
-    @PostMapping(value = "/users/{userId}/education-info")
+    @PostMapping(value = "/users/{userId}/education-information")
     public ResponseEntity<?> updatePersonalEducation(@RequestBody PersonalEducationDTO educationDTO, @PathVariable Long userId) {
         return ResponseEntity.ok(service.create(educationDTO, userId));
     }
 
-    @PutMapping(value = "/users/{userId}/education-info/{educationId}")
+    @PutMapping(value = "/users/{userId}/education-information/{educationId}")
     public ResponseEntity<?> updatePersonalEducation(@RequestBody PersonalEducationDTO educationDTO, @PathVariable Long userId, @PathVariable Long educationId) {
         return ResponseEntity.ok(service.update(educationDTO, userId, educationId));
     }
 
 
-    @GetMapping(value = "/users/{userId}/education-infos")
+    @GetMapping(value = "/users/{userId}/education-information")
     public ResponseEntity<?> getPersonalEducationInfomations(@PathVariable Long userId) {
         return ResponseEntity.ok(service.read(userId));
     }
 
-    @GetMapping(value = "/users/{userId}/education-info/{educationId}")
+    @GetMapping(value = "/users/{userId}/education-information/{educationId}")
     public ResponseEntity<?> getPersonalEducation(@PathVariable Long userId, @PathVariable Long educationId) {
         return ResponseEntity.ok(service.read(userId, educationId));
     }
