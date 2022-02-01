@@ -41,6 +41,5 @@ public class User {
     private String department;
 
     @OneToOne
-    @JoinColumn(name = "employeeId", referencedColumnName = "employeeId")
     private UserCredential userCredential;
 }
