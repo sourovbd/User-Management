@@ -14,6 +14,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 
 import org.springframework.test.web.servlet.MockMvc;
@@ -86,19 +87,19 @@ public class UserServiceTest {
         responseDTO.setMessage("user created successfully");
         responseDTO.setSuccess(true);
         responseDTO.setData(null);
-
         user.setUserCredential(userCredential);
         Mockito.when(userRepository.save(user)).thenReturn(user);
         Mockito.when(userService.create(user,userDto)).thenReturn(responseDTO);
-        // UserCreationResponseDTO response = om.rea  dValue(resultContent, UserCreationResponseDTO.class);
-        // assertEquals(response.getMessage(),"user created");
+        System.out.println(userService.create(user,userDto).getMessage());
+        assertEquals(userService.create(user,userDto).getMessage(),responseDTO.getMessage());
+        assertEquals(userService.create(user,userDto).getData(),responseDTO.getData());
     }
     @Test
     public void getAllUsers_success() throws Exception {
         List<User> users = new ArrayList<>(Arrays.asList(user_1,user_2,user_3));
         Mockito.when(userRepository.findAll()).thenReturn(users);
         Mockito.when(userService.read()).thenReturn(users);
-        mockMvc.perform(MockMvcRequestBuilders.get("/users")
+        mockMvc.perform(MockMvcRequestBuilders.get("http://localhost:8081/users").header(HttpHeaders.AUTHORIZATION,"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIwMTI1MTkiLCJleHAiOjE2NDM4MTk4ODAsImlhdCI6MTY0Mzc4Mzg4MH0.5LF-tn-BGh20YpushocQv9pNLPaI1P_MDsxriO6w3zc")
                         .contentType(MediaType.APPLICATION_JSON ))
                 .andExpect(status().isOk());
     }
@@ -109,31 +110,13 @@ public class UserServiceTest {
     }
     @Test
     public void updateUserById() throws Exception {
-        User user_1_temp = new User(1,"abc@gmail.com","dgm","101","a1polymar","accounts","EMPLOYEE",userCredential_1);
-        // Mockito.when(userService.update(user_1_temp,1L)).thenReturn(true);
+        User user_1_temp = new User(1L,"abc@gmail.com","dgm","0101","a1polymar","accounts","EMPLOYEE",userCredential_1);
+        ResponseDTO responseDTO = new ResponseDTO();
+        responseDTO.setMessage("user updated successfully");
+        responseDTO.setSuccess(true);
+        responseDTO.setData(null);
+        Mockito.when(userService.update(user_1_temp,1L)).thenReturn(responseDTO);
+        assertEquals(userService.update(user_1_temp,1L).getMessage(),responseDTO.getMessage());
+        assertEquals(userService.update(user_1_temp,1L).getData(),responseDTO.getData());
     }
-    /*@Autowired
-    private UserService service ;
-    @MockBean
-    private UserRepository repository;
-
-    @Test
-    public void saveUserTest() {
-        User user = new User(1, "ahad.alam@anwargroup.net", "agm", "0101", "a1polymar", "accounts");
-        when(repository.save(user)).thenReturn(user);
-        assertEquals(user,service.save(user));
-    }
-
-    @Test
-    void update() {
-    }
-
-    @Test
-    public void findByIdTest() {
-        long id = 1;
-        User userMock = new User(1, "ahad.alam@anwargroup.net", "agm", "0101", "a1polymar", "accounts");
-        when(repository.findById(id)).thenReturn(Optional.of(userMock));
-        //User userService = service.findById(id);
-
-    }*/
 }
