@@ -49,7 +49,7 @@ public class UserCredentialServiceTest {
         UserCredential userCredential = new UserCredential(27, "12471", "123456", true, "EMPLOYEE");
 
         Mockito.when(userCredentialRepository.save(userCredential)).thenReturn(userCredential);
-        Mockito.when(userCredentialService.save(userCredential)).thenReturn(ACTUAL);
+        //Mockito.when(userCredentialService.save(userCredential)).thenReturn(ACTUAL);
     }
 
     @Test
