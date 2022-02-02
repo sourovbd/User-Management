@@ -20,20 +20,21 @@ public class PersonalJobExperienceService {
     PersonalJobExperienceRepository personalJobExperienceRepository;
 
     public PersonnelManagementResponseDTO create(PersonalJobExperienceDTO jobExperienceDTO, Long userId) {
-        PersonnelManagementResponseDTO response = new PersonnelManagementResponseDTO("Job experience creation successful", true, null);
+        PersonnelManagementResponseDTO response = new PersonnelManagementResponseDTO("User not found", false, null);
         User user = userService.getUserByUserId(userId);
+        /** check if user exists */
         if (Objects.nonNull(user)) {
-            //convert basic info DTO to Entity object
+            /** convert DTO to Entity object */
             PersonalJobExperience jobExperienceEntity = PersonalJobExperienceDTO.getPersonalJobExperienceEntity(jobExperienceDTO);
             jobExperienceEntity.setUser(user);
-            boolean success = this.createJobExperience(jobExperienceEntity);
-            if (!success) {
+            /** create job experience record and build response object */
+            if (this.createJobExperience(jobExperienceEntity)) {
+                response.setMessage("Job experience creation successful");
+                response.setSuccess(false);
+            } else {
                 response.setMessage("Job experience creation failed");
                 response.setSuccess(false);
             }
-        } else {
-            response.setMessage("User not found");
-            response.setSuccess(false);
         }
         return response;
     }
@@ -49,40 +50,36 @@ public class PersonalJobExperienceService {
     }
 
     public PersonnelManagementResponseDTO update(PersonalJobExperienceDTO jobExperienceDTO, Long userId, Long experienceId) {
-        PersonnelManagementResponseDTO response = new PersonnelManagementResponseDTO("Job experience update successful", true, null);
+        PersonnelManagementResponseDTO response = new PersonnelManagementResponseDTO("User not found", false, null);
         User user = userService.getUserByUserId(userId);
-
+        /** check if user exists */
         if (Objects.nonNull(user)) {
-            //convert job experience DTO to Entity object
-            PersonalJobExperience updatedJobExperience = PersonalJobExperienceDTO.getPersonalJobExperienceEntity(jobExperienceDTO);
-            updatedJobExperience.setUser(user);
-
-            //TODO should we fetch existing basic info by user and basic info id?
             PersonalJobExperience existingJobExperience = personalJobExperienceRepository.findPersonalJobExperienceByIdAndUserId(experienceId, userId);
-            boolean success = this.updateJobExperience(existingJobExperience, updatedJobExperience);
-            if (!success) {
-                response.setMessage("Job experience update failed");
+            /** check if job experience record exists */
+            if (Objects.nonNull(existingJobExperience)) {
+                /** convert experience DTO to Entity object */
+                PersonalJobExperience updatedJobExperience = PersonalJobExperienceDTO.getPersonalJobExperienceEntity(jobExperienceDTO);
+                updatedJobExperience.setUser(user);
+                /** update record and build response object */
+                if (this.updateJobExperience(updatedJobExperience, experienceId)) {
+                    response.setMessage("Experience update successful");
+                    response.setSuccess(true);
+                } else {
+                    response.setMessage("Experience update failed");
+                    response.setSuccess(false);
+                }
+            } else {
+                response.setMessage("Experience record not found");
                 response.setSuccess(false);
             }
-        } else {
-            response.setMessage("User not found");
-            response.setSuccess(false);
         }
         return response;
     }
 
-    private boolean updateJobExperience(PersonalJobExperience existingJobExperience, PersonalJobExperience updatedJobExperience) {
+    private boolean updateJobExperience(PersonalJobExperience updatedJobExperience, Long experienceId) {
         try {
-            if (Objects.nonNull(existingJobExperience)) {
-                existingJobExperience.setEmployerName(updatedJobExperience.getEmployerName());
-                existingJobExperience.setDesignation(updatedJobExperience.getDesignation());
-                existingJobExperience.setStartDate(updatedJobExperience.getStartDate());
-                existingJobExperience.setEndDate(updatedJobExperience.getEndDate());
-                existingJobExperience.setResponsibilities(updatedJobExperience.getResponsibilities());
-                personalJobExperienceRepository.save(existingJobExperience);
-            } else {
-                return false;
-            }
+            updatedJobExperience.setId(experienceId);
+            personalJobExperienceRepository.save(updatedJobExperience);
         } catch (Exception e) {
             e.printStackTrace();
             return false;
@@ -91,36 +88,31 @@ public class PersonalJobExperienceService {
     }
 
     public PersonnelManagementResponseDTO read(Long userId) {
-        PersonnelManagementResponseDTO response = new PersonnelManagementResponseDTO("Job experiences found", true, null);
+        PersonnelManagementResponseDTO response = new PersonnelManagementResponseDTO("User not found", false, null);
         User user = userService.getUserByUserId(userId);
+        /** check if user exists */
         if (Objects.nonNull(user)) {
             ArrayList<PersonalJobExperience> experiences = this.getJobExperiencesByUserId(userId);
-            ArrayList<PersonalJobExperienceDTO> experienceDTOS = new ArrayList<>();
-
-            //convert entities into dtos
             if (experiences.size() > 0) {
-                experiences.forEach(experience -> {
-                    PersonalJobExperienceDTO dto = new PersonalJobExperienceDTO();
-                    dto.setId(experience.getId());
-                    dto.setEmployerName(experience.getEmployerName());
-                    dto.setDesignation(experience.getDesignation());
-                    dto.setStartDate(experience.getStartDate());
-                    dto.setEndDate(experience.getEndDate());
-                    dto.setResponsibilities(experience.getResponsibilities());
-                    experienceDTOS.add(dto);
-                });
-                //build response
+                /** convert Entity to DTO objects */
+                ArrayList<PersonalJobExperienceDTO> experienceDTOS = this.convertToDTOs(experiences);
+                /** build response object */
                 response.setData(experienceDTOS);
+                response.setSuccess(true);
+                response.setMessage("Job experience read successful");
             } else {
-                //build response
-                response.setMessage("Job experience not found");
-                response.setSuccess(false);
+                response.setMessage("Job experience records not found");
             }
-        } else {
-            response.setMessage("User not found");
-            response.setSuccess(false);
         }
         return response;
+    }
+
+    private ArrayList<PersonalJobExperienceDTO> convertToDTOs(ArrayList<PersonalJobExperience> experienceList) {
+        ArrayList<PersonalJobExperienceDTO> experienceDTOS = new ArrayList<>();
+        experienceList.forEach(experience -> {
+            experienceDTOS.add(PersonalJobExperienceDTO.getPersonalJobExperienceDTO(experience));
+        });
+        return experienceDTOS;
     }
 
     private ArrayList<PersonalJobExperience> getJobExperiencesByUserId(Long userId) {
@@ -134,29 +126,20 @@ public class PersonalJobExperienceService {
     }
 
     public PersonnelManagementResponseDTO read(Long userId, Long experienceId) {
-        PersonnelManagementResponseDTO response = new PersonnelManagementResponseDTO("Job experience found", true, null);
+        PersonnelManagementResponseDTO response = new PersonnelManagementResponseDTO("User not found", false, null);
         User user = userService.getUserByUserId(userId);
+        /** check if user exists */
         if (Objects.nonNull(user)) {
             PersonalJobExperience experience = personalJobExperienceRepository.findPersonalJobExperienceByIdAndUserId(experienceId, userId);
-            //convert job experience entity into job experience dto
+            /** check if job experience record exists */
             if (Objects.nonNull(experience)) {
-                PersonalJobExperienceDTO dto = new PersonalJobExperienceDTO();
-                dto.setId(experience.getId());
-                dto.setEmployerName(experience.getEmployerName());
-                dto.setDesignation(experience.getDesignation());
-                dto.setStartDate(experience.getStartDate());
-                dto.setEndDate(experience.getEndDate());
-                dto.setResponsibilities(experience.getResponsibilities());
-                //build response
-                response.setData(dto);
+                /** convert Entity to DTO and build response object */
+                response.setData(PersonalJobExperienceDTO.getPersonalJobExperienceDTO(experience));
+                response.setMessage("Job experience record found");
+                response.setSuccess(true);
             } else {
-                //build response
-                response.setMessage("Job experience not found");
-                response.setSuccess(false);
+                response.setMessage("Job experience record not found");
             }
-        } else {
-            response.setMessage("User not found");
-            response.setSuccess(false);
         }
         return response;
     }

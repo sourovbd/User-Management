@@ -26,4 +26,10 @@ public class PersonalAddressInfoDTO {// change from string to object of type add
         addressInfoDTO.setPermanentAddress(personalAddressInfo.getPermanentAddress());
         return addressInfoDTO;
     }
+
+    public static PersonalAddressInfo assignDTOToEntity(PersonalAddressInfo addressEntity, PersonalAddressInfoDTO addressDTO) {
+        addressEntity.setPermanentAddress(addressDTO.getPermanentAddress());
+        addressEntity.setPresentAddress(addressDTO.getPresentAddress());
+        return addressEntity;
+    }
 }

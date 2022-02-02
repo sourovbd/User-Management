@@ -17,28 +17,29 @@ public class PersonalAddressService {
     @Autowired
     UserService userService;
 
-    public PersonnelManagementResponseDTO createPersonalAddress(PersonalAddressInfoDTO personalAddressInfoDTO, Long userId) {
-        PersonnelManagementResponseDTO response = new PersonnelManagementResponseDTO("Personal address creation successful", true, null);
+    public PersonnelManagementResponseDTO create(PersonalAddressInfoDTO personalAddressInfoDTO, Long userId) {
+        PersonnelManagementResponseDTO response = new PersonnelManagementResponseDTO("User not found", false, null);
         User user = userService.getUserByUserId(userId);
+        /** check if user exists */
         if (Objects.nonNull(user)) {
-            //convert basic info DTO to Entity object
+            /** convert basic info DTO to Entity object */
             PersonalAddressInfo addressInfoEntity = PersonalAddressInfoDTO.getPersonalAddressInfoEntity(personalAddressInfoDTO);
             addressInfoEntity.setUser(user);
-            boolean success = this.createPersonalAddressInfo(addressInfoEntity);
-            if (!success) {
+            /** create address record  and build response object */
+            if (this.createPersonalAddressInfo(addressInfoEntity)) {
+                response.setMessage("Personal address creation successful");
+                response.setSuccess(true);
+            } else {
                 response.setMessage("Personal address creation failed");
                 response.setSuccess(false);
             }
-        } else {
-            response.setMessage("User not found");
-            response.setSuccess(false);
         }
         return response;
     }
 
     private boolean createPersonalAddressInfo(PersonalAddressInfo addressInfo) {
         try {
-            personalAddressInfoRepository.save(addressInfo);//create new row into basic info table
+            personalAddressInfoRepository.save(addressInfo);
         } catch (Exception e) {
             e.printStackTrace();
             return false;
@@ -46,23 +47,26 @@ public class PersonalAddressService {
         return true;
     }
 
-    public PersonnelManagementResponseDTO updatePersonalAddress(PersonalAddressInfoDTO updatedPersonalAddressInfoDTO, Long userId) {
-        PersonnelManagementResponseDTO response = new PersonnelManagementResponseDTO("Personal address update successful", true, null);
+    public PersonnelManagementResponseDTO update(PersonalAddressInfoDTO updatedPersonalAddressInfoDTO, Long userId) {
+        PersonnelManagementResponseDTO response = new PersonnelManagementResponseDTO("User not found", false, null);
         User user = userService.getUserByUserId(userId);
+        /** check if user exists */
         if (Objects.nonNull(user)) {
-            //convert basic info DTO to Entity object
-            PersonalAddressInfo updatedAddressInfo = PersonalAddressInfoDTO.getPersonalAddressInfoEntity(updatedPersonalAddressInfoDTO);
-            updatedAddressInfo.setUser(user);
-            //TODO should we fetch existing basic info by user and basic info id both?
             PersonalAddressInfo existingAddressInfo = this.getPersonalAddressInfoByUser(user);
-            boolean success = this.updatePersonalAddress(existingAddressInfo, updatedAddressInfo);
-            if (!success) {
-                response.setMessage("Personal address update failed");
+            /** check if address exists */
+            if (Objects.nonNull(existingAddressInfo)) {
+                /** assign updated data to existing data, execute update address and build response object*/
+                if (this.updatePersonalAddress(PersonalAddressInfoDTO.assignDTOToEntity(existingAddressInfo, updatedPersonalAddressInfoDTO))) {
+                    response.setMessage("Personal address update successful");
+                    response.setSuccess(true);
+                } else {
+                    response.setMessage("Personal address update failed");
+                    response.setSuccess(false);
+                }
+            } else {
+                response.setMessage("Personal address record not found");
                 response.setSuccess(false);
             }
-        } else {
-            response.setMessage("User not found");
-            response.setSuccess(false);
         }
         return response;
     }
@@ -76,15 +80,9 @@ public class PersonalAddressService {
         return null;
     }
 
-    private boolean updatePersonalAddress(PersonalAddressInfo existingAddress, PersonalAddressInfo updatedAddress) {
+    private boolean updatePersonalAddress(PersonalAddressInfo addressEntity) {
         try {
-            if (Objects.nonNull(existingAddress)) {
-                existingAddress.setPermanentAddress(updatedAddress.getPermanentAddress());
-                existingAddress.setPresentAddress(updatedAddress.getPresentAddress());
-                personalAddressInfoRepository.save(existingAddress);
-            } else {
-                return false;
-            }
+            personalAddressInfoRepository.save(addressEntity);
         } catch (Exception e) {
             e.printStackTrace();
             return false;
@@ -92,23 +90,21 @@ public class PersonalAddressService {
         return true;
     }
 
-    public PersonnelManagementResponseDTO getPersonalAddressInfo(Long userId) {
-        PersonnelManagementResponseDTO response = new PersonnelManagementResponseDTO("Basic information not found", false, null);
+    public PersonnelManagementResponseDTO read(Long userId) {
+        PersonnelManagementResponseDTO response = new PersonnelManagementResponseDTO("User not found", false, null);
         User user = userService.getUserByUserId(userId);
+        /** check if user exists */
         if (Objects.nonNull(user)) {
             PersonalAddressInfo addressInfo = this.getPersonalAddressInfoByUser(user);
+            /** check if address exists */
             if (Objects.nonNull(addressInfo)) {
-                //convert Entity to DTO object and set personal info object
-                PersonalAddressInfoDTO addressDTO = PersonalAddressInfoDTO.getPersonalAddressInfoDTO(addressInfo);
-
-                //build response
-                response.setMessage("Personal address found");
+                /** convert Entity to DTO object and build response object */
+                response.setData(PersonalAddressInfoDTO.getPersonalAddressInfoDTO(addressInfo));
+                response.setMessage("Personal address record found");
                 response.setSuccess(true);
-                response.setData(addressDTO);
+            } else {
+                response.setMessage("Personal address record not found");
             }
-        } else {
-            response.setMessage("User not found");
-            response.setSuccess(false);
         }
         return response;
     }

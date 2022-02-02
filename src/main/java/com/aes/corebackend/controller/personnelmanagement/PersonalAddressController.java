@@ -15,16 +15,16 @@ public class PersonalAddressController {
 
     @PostMapping(value = "/users/{userId}/personal-address")
     public ResponseEntity<?> createPersonalAddress(@RequestBody PersonalAddressInfoDTO addressInfoDTO, @PathVariable Long userId) {
-        return ResponseEntity.ok(personalAddressService.createPersonalAddress(addressInfoDTO, userId));
+        return ResponseEntity.ok(personalAddressService.create(addressInfoDTO, userId));
     }
 
     @PutMapping(value = "/users/{userId}/personal-address")
     public ResponseEntity<?> updatePersonalAddress(@RequestBody PersonalAddressInfoDTO personalAddressInfoDTO, @PathVariable Long userId) {
-        return ResponseEntity.ok(personalAddressService.updatePersonalAddress(personalAddressInfoDTO, userId));
+        return ResponseEntity.ok(personalAddressService.update(personalAddressInfoDTO, userId));
     }
 
     @GetMapping(value = "/users/{userId}/personal-address")
     public ResponseEntity<?> getPersonalAddress(@PathVariable Long userId) {
-        return ResponseEntity.ok(personalAddressService.getPersonalAddressInfo(userId));
+        return ResponseEntity.ok(personalAddressService.read(userId));
     }
 }
