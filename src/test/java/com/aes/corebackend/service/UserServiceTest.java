@@ -34,21 +34,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 public class UserServiceTest {
-
-    @Autowired
-    private MockMvc mockMvc;
-
-    @Mock
-    private UserRepository userRepository;
-
     @InjectMocks
     private UserService userService;
-
-    @InjectMocks
-    private UserController userController;
-
-    @InjectMocks
-    private UserCredentialService userCredentialService;
 
     ObjectMapper om = new ObjectMapper();
     UserCredential userCredential_1 = new UserCredential(1,"101","a1wq",true,"EMPLOYEE");
@@ -61,8 +48,6 @@ public class UserServiceTest {
     @BeforeEach
     public void setup() {
         MockitoAnnotations.openMocks(this);
-        userCredentialService = Mockito.mock(UserCredentialService.class);
-        mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
         userService = Mockito.mock(UserService.class);
     }
 
@@ -91,7 +76,6 @@ public class UserServiceTest {
         responseDTO.setMessage("user created successfully");
         responseDTO.setSuccess(true);
         responseDTO.setData(user);
-        Mockito.when(userRepository.save(user)).thenReturn(user);
         Mockito.when(userService.create(user,userDto)).thenReturn(responseDTO);
         assertEquals(userService.create(user,userDto).getMessage(),responseDTO.getMessage());
         assertEquals(userService.create(user,userDto).getData(),responseDTO.getData());
@@ -104,11 +88,7 @@ public class UserServiceTest {
         responseDTO.setMessage("user fetch ok");
         responseDTO.setSuccess(true);
         responseDTO.setData(users);
-        Mockito.when(userRepository.findAll()).thenReturn(users);
         Mockito.when(userService.read()).thenReturn(responseDTO);
-        mockMvc.perform(MockMvcRequestBuilders.get("http://localhost:8081/users").header(HttpHeaders.AUTHORIZATION,"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIwMTI1MTkiLCJleHAiOjE2NDM4MTk4ODAsImlhdCI6MTY0Mzc4Mzg4MH0.5LF-tn-BGh20YpushocQv9pNLPaI1P_MDsxriO6w3zc")
-                        .contentType(MediaType.APPLICATION_JSON ))
-                .andExpect(status().isOk());
     }
 
     @Test
@@ -117,7 +97,6 @@ public class UserServiceTest {
         responseDTO.setMessage("user found");
         responseDTO.setSuccess(true);
         responseDTO.setData(user_1);
-        Mockito.when(userRepository.findById(1L)).thenReturn(Optional.ofNullable(user_1));
         Mockito.when(userService.read(1L)).thenReturn(responseDTO);
     }
 
