@@ -46,14 +46,14 @@ public class UserController {
     @PreAuthorize("hasAuthority('EMPLOYEE')")
     public ResponseEntity<?> getUserDetails(@PathVariable int id) {
 
-        return ResponseEntity.ok(new ResponseDTO("user fetch ok", true, userService.read(id)));
+        return ResponseEntity.ok(userService.read(id));
     }
 
     @GetMapping("/users")
     @PreAuthorize("hasAuthority('EMPLOYEE')")
     public ResponseEntity<?> getAllUsers() {
 
-        return ResponseEntity.ok(new ResponseDTO("All user fetch ok", true, userService.read()));
+        return ResponseEntity.ok(userService.read());
     }
 
 }

@@ -90,7 +90,6 @@ public class UserServiceTest {
         user.setUserCredential(userCredential);
         Mockito.when(userRepository.save(user)).thenReturn(user);
         Mockito.when(userService.create(user,userDto)).thenReturn(responseDTO);
-        System.out.println(userService.create(user,userDto).getMessage());
         assertEquals(userService.create(user,userDto).getMessage(),responseDTO.getMessage());
         assertEquals(userService.create(user,userDto).getData(),responseDTO.getData());
     }

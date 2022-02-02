@@ -58,12 +58,27 @@ public class UserService {
 
     }
 
-    public User read(long id) {
-        return userRepository.findById(id).orElse(null);
+    public ResponseDTO read(long id) {
+        ResponseDTO responseDTO = new ResponseDTO("user not found",false,null);
+        User existingUser = userRepository.findById(id).orElse(null);
+        if(Objects.nonNull(existingUser)) {
+            responseDTO.setMessage("user found");
+            responseDTO.setSuccess(true);
+            responseDTO.setData(existingUser);
+
+        }
+        return responseDTO;
     }
 
-    public List<User> read() {
-        return userRepository.findAll();
+    public ResponseDTO read() {
+        ResponseDTO responseDTO = new ResponseDTO("No user exist",false,null);
+        List<User> existingUsers = userRepository.findAll();
+        if(Objects.nonNull(existingUsers)) {
+            responseDTO.setMessage("user fetch ok");
+            responseDTO.setSuccess(true);
+            responseDTO.setData(existingUsers);
+        }
+        return responseDTO;
     }
 
 }
