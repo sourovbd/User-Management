@@ -26,12 +26,9 @@ public class FamilyInformationService {
         //Check if User Exists
         PersonnelManagementResponseDTO responseDTO = new PersonnelManagementResponseDTO("User not found!", false, null);
         User user = userService.getUserByUserId(userId);
-
         if(Objects.nonNull(user)){
             //convert DTO to Entity
-            PersonalFamilyInfo familyInfo = PersonalFamilyInfoDTO.getPersonalFamilyEntity(familyInfoDTO);
-            familyInfo.setUser(user);
-            if(this.create(familyInfo)){
+            if(this.create(familyInfoDTO, user)){
                 responseDTO.setMessage("Create Family Info Success");
                 responseDTO.setSuccess(true);
                 return responseDTO;
@@ -43,7 +40,9 @@ public class FamilyInformationService {
         }
     }
 
-    private boolean create(PersonalFamilyInfo familyInfo) {
+    private boolean create(PersonalFamilyInfoDTO familyInfoDTO, User user) {
+        PersonalFamilyInfo familyInfo = PersonalFamilyInfoDTO.getPersonalFamilyEntity(familyInfoDTO);
+        familyInfo.setUser(user);
         try {
             personalFamilyInfoRepository.save(familyInfo);
         } catch (Exception e) {
@@ -63,10 +62,7 @@ public class FamilyInformationService {
             //Check if record exists
             PersonalFamilyInfo currentData = personalFamilyInfoRepository.findPersonalFamilyInfoById(userId);
             if(Objects.nonNull(currentData)) {
-                //convert DTO to Entity
-                PersonalFamilyInfo familyInfo = PersonalFamilyInfoDTO.getPersonalFamilyEntity(familyInfoDTO);
-                familyInfo.setUser(user);
-                if (update(familyInfo, userId)) {
+                if (update(familyInfoDTO, user)) {
                     responseDTO.setMessage("Update Family Info Success");
                     responseDTO.setSuccess(true);
                 } else {
@@ -79,9 +75,11 @@ public class FamilyInformationService {
         return responseDTO;
     }
 
-    private boolean update(PersonalFamilyInfo familyInfo, Long userId) {
+    private boolean update(PersonalFamilyInfoDTO familyInfoDTO, User user) {
+        PersonalFamilyInfo familyInfo = PersonalFamilyInfoDTO.getPersonalFamilyEntity(familyInfoDTO);
+        familyInfo.setUser(user);
         try{
-            familyInfo.setId(userId);
+            familyInfo.setId(familyInfo.getUser().getId());
             personalFamilyInfoRepository.save(familyInfo);
         }catch (Exception e){
             e.printStackTrace();
