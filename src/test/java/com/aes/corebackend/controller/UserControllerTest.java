@@ -58,11 +58,36 @@ public class UserControllerTest {
         MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders.post("http://localhost:8081/users").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(jsonRequest);
         mockMvc.perform(mockRequest).andExpect(status().isOk());
     }
+
     @Test
     public void getAllUsers_success() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("http://localhost:8081/users").header(HttpHeaders.AUTHORIZATION, "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIwMTI1MTkiLCJleHAiOjE2NDM4MTk4ODAsImlhdCI6MTY0Mzc4Mzg4MH0.5LF-tn-BGh20YpushocQv9pNLPaI1P_MDsxriO6w3zc")
                         .contentType(MediaType.APPLICATION_JSON))
                         .andExpect(status().isOk());
+    }
+
+    @Test
+    public void getUserDetailsTest() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("http://localhost:8081/users/1").header(HttpHeaders.AUTHORIZATION, "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIwMTI1MTkiLCJleHAiOjE2NDM4MTk4ODAsImlhdCI6MTY0Mzc4Mzg4MH0.5LF-tn-BGh20YpushocQv9pNLPaI1P_MDsxriO6w3zc")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void updateUserById() throws Exception {
+        UserCredential userCredential = new UserCredential(1,"101","a1wq",true,"EMPLOYEE");
+        User user = new User();
+        user.setId(1L);
+        user.setDesignation("agm");
+        user.setDepartment("accounts");
+        user.setEmailAddress("mdahad118@gmail.com");
+        user.setBusinessUnit("a1polymar");
+        user.setEmployeeId("0101");
+        user.setRoles("EMPLOYEE");
+        user.setUserCredential(userCredential);
+        String jsonRequest = om.writeValueAsString(user);
+        MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders.put("http://localhost:8081/users/1").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(jsonRequest);
+        mockMvc.perform(mockRequest).andExpect(status().isOk());
     }
 
 }
