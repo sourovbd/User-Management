@@ -52,16 +52,16 @@ public class PersonalAttributesService {
     }
 
 
-    public PersonnelManagementResponseDTO update(PersonalAttributesDTO attributesDTO, Long userId) {
+    public PersonnelManagementResponseDTO update(PersonalAttributesDTO attributesDTO, Long userId) {// error in update
         //check if user exists
         PersonnelManagementResponseDTO responseDTO = new PersonnelManagementResponseDTO("User not found!", false, null);
         User user = userService.getUserByUserId(userId);
         //if exists: convert DTO to entity and call create service
         if(Objects.nonNull(user)){
             //check if record exists
-            PersonalAttributes currentData = personalAttributesRepository.findPersonalAttributesById(userId);
+            PersonalAttributes currentData = personalAttributesRepository.findPersonalAttributesByUserId(userId);
             if(Objects.nonNull(currentData)) {
-                if (this.update(attributesDTO, user)) {
+                if (this.update(attributesDTO, currentData)) {
                     responseDTO.setMessage("Update Attribute Success");
                     responseDTO.setSuccess(true);
                 } else {
@@ -74,11 +74,9 @@ public class PersonalAttributesService {
             return responseDTO;
     }
 
-    private boolean update(PersonalAttributesDTO attributesDTO, User user) {
-        PersonalAttributes attributesInfo = PersonalAttributesDTO.getPersonalAttributesEntity(attributesDTO);
-        attributesInfo.setUser(user);
+    private boolean update(PersonalAttributesDTO attributesDTO, PersonalAttributes currentData) {
+        PersonalAttributes attributesInfo = PersonalAttributesDTO.updateEntityFromDTO(attributesDTO, currentData);
         try {
-            attributesInfo.setId(user.getId());
             personalAttributesRepository.save(attributesInfo);
         } catch (Exception e) {
             e.printStackTrace();
@@ -115,7 +113,7 @@ public class PersonalAttributesService {
 
     private PersonalAttributes fetchData(Long userId){
         try {
-            PersonalAttributes attributes = personalAttributesRepository.findPersonalAttributesById(userId);
+            PersonalAttributes attributes = personalAttributesRepository.findPersonalAttributesByUserId(userId);
             return attributes;
         }catch (Exception e){
             return null;

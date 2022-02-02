@@ -37,4 +37,12 @@ public class PersonalAttributesDTO {
 
         return attributesDTO;
     }
+
+    public static PersonalAttributes updateEntityFromDTO(PersonalAttributesDTO attributesDTO, PersonalAttributes currentData) {
+        currentData.setReligion(attributesDTO.getReligion());
+        currentData.setNationality(attributesDTO.getNationality());
+        currentData.setBirthPlace(attributesDTO.getBirthPlace());
+        currentData.setBloodGroup(attributesDTO.getBloodGroup());
+        return currentData;
+    }
 }

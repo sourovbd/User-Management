@@ -54,9 +54,9 @@ public class PersonalIdentificationService {
         //if exists: convert DTO to entity and call create service
         if(Objects.nonNull(user)){
             //check if record exists
-            PersonalIdentificationInfo currentData = repository.findPersonalIdentificationInfoById(userId);
+            PersonalIdentificationInfo currentData = repository.findPersonalIdentificationInfoByUserId(userId);
             if(Objects.nonNull(currentData)){
-                if(this.update(idDTO, user)){
+                if(this.update(idDTO, currentData)){
                     responseDTO.setMessage("Update ID Info Success");
                     responseDTO.setSuccess(true);
                 }else{
@@ -69,11 +69,9 @@ public class PersonalIdentificationService {
         return responseDTO;
     }
 
-    private boolean update(PersonalIdentificationInfoDTO idDTO, User user) {
-        PersonalIdentificationInfo idInfo = PersonalIdentificationInfoDTO.getPersonalIdentificationEntity(idDTO);
-        idInfo.setUser(user);
+    private boolean update(PersonalIdentificationInfoDTO idDTO, PersonalIdentificationInfo currentData) {
+        PersonalIdentificationInfo idInfo = PersonalIdentificationInfoDTO.updateEntityFromDTO(idDTO, currentData);
         try {
-            idInfo.setId(user.getId());
             repository.save(idInfo);
         } catch (Exception e) {
             e.printStackTrace();
@@ -110,7 +108,7 @@ public class PersonalIdentificationService {
 
     private PersonalIdentificationInfo fetchData(Long userId) {
         try {
-            PersonalIdentificationInfo idInfo = repository.findPersonalIdentificationInfoById(userId);
+            PersonalIdentificationInfo idInfo = repository.findPersonalIdentificationInfoByUserId(userId);
             return idInfo;
         }catch (Exception e){
             return null;

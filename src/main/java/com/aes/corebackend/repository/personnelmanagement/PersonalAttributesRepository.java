@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface PersonalAttributesRepository extends JpaRepository<PersonalAttributes, Long> {
-    public PersonalAttributes findPersonalAttributesById(Long id);
+    public PersonalAttributes findPersonalAttributesByUserId(Long id);
 }

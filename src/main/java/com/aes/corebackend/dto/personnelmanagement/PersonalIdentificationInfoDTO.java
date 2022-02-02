@@ -26,4 +26,10 @@ public class PersonalIdentificationInfoDTO {
         idDTO.setNationalID(idInfo.getNationalID());
         return idDTO;
     }
+
+    public static PersonalIdentificationInfo updateEntityFromDTO(PersonalIdentificationInfoDTO idDTO, PersonalIdentificationInfo id) {
+        id.setEtin(idDTO.getEtin());
+        id.setNationalID(idDTO.getNationalID());
+        return id;
+    }
 }
