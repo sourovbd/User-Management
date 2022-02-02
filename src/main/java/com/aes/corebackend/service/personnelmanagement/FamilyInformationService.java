@@ -60,29 +60,29 @@ public class FamilyInformationService {
         PersonnelManagementResponseDTO responseDTO = new PersonnelManagementResponseDTO("User not found!", false, null);
         User user = userService.getUserByUserId(userId);
         if(Objects.nonNull(user)){
-            //convert DTO to Entity
-            PersonalFamilyInfo familyInfo = PersonalFamilyInfoDTO.getPersonalFamilyEntity(familyInfoDTO);
-            familyInfo.setUser(user);
-            if(this.update(familyInfo)){
-                responseDTO.setMessage("Update Family Info Success");
-                responseDTO.setSuccess(true);
-                return responseDTO;
+            //Check if record exists
+            PersonalFamilyInfo currentData = personalFamilyInfoRepository.findPersonalFamilyInfoById(userId);
+            if(Objects.nonNull(currentData)) {
+                //convert DTO to Entity
+                PersonalFamilyInfo familyInfo = PersonalFamilyInfoDTO.getPersonalFamilyEntity(familyInfoDTO);
+                familyInfo.setUser(user);
+                if (update(familyInfo, userId)) {
+                    responseDTO.setMessage("Update Family Info Success");
+                    responseDTO.setSuccess(true);
+                } else {
+                    responseDTO.setMessage("Update Family Info Fail");
+                }
+            } else {
+                responseDTO.setMessage("Family Record Not found for user");
             }
-            responseDTO.setMessage("Update Family Info Fail");
-            return responseDTO;
-        }else{
-            return responseDTO;
         }
+        return responseDTO;
     }
 
-    private boolean update(PersonalFamilyInfo familyInfo) {
+    private boolean update(PersonalFamilyInfo familyInfo, Long userId) {
         try{
-            PersonalFamilyInfo dbUpdate = personalFamilyInfoRepository.findPersonalFamilyInfoById(familyInfo.getUser().getId());
-            dbUpdate.setFathersName(familyInfo.getFathersName());
-            dbUpdate.setMothersName(familyInfo.getMothersName());
-            dbUpdate.setMaritalStatus(familyInfo.getMaritalStatus());
-            dbUpdate.setSpouseName(familyInfo.getSpouseName());
-            personalFamilyInfoRepository.save(dbUpdate);
+            familyInfo.setId(userId);
+            personalFamilyInfoRepository.save(familyInfo);
         }catch (Exception e){
             e.printStackTrace();
             return false;
