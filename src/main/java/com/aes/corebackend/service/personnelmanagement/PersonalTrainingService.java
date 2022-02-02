@@ -22,12 +22,14 @@ public class PersonalTrainingService {
     public PersonnelManagementResponseDTO create(PersonalTrainingDTO trainingDTO, Long userId) {
         PersonnelManagementResponseDTO response = new PersonnelManagementResponseDTO("User not found", false, null);
         User user = userService.getUserByUserId(userId);
+        /** check if user exists */
         if (Objects.nonNull(user)) {
+            /** convert dto to entity */
             PersonalTrainingInfo personalTrainingInfoEntity = PersonalTrainingDTO.getPersonalTrainingEntity(trainingDTO);
             personalTrainingInfoEntity.setUser(user);
-            boolean success = this.createTraining(personalTrainingInfoEntity);
-            if (success) {
-                response.setMessage("Training creation success");
+            /** create training record  and build response object */
+            if (this.createTraining(personalTrainingInfoEntity)) {
+                response.setMessage("Training creation successful");
                 response.setSuccess(true);
             } else {
                 response.setMessage("Training creation failed");
@@ -51,12 +53,15 @@ public class PersonalTrainingService {
     public PersonnelManagementResponseDTO update(PersonalTrainingDTO personalTrainingDTO, Long userId, Long trainingId) {
         PersonnelManagementResponseDTO response = new PersonnelManagementResponseDTO("User not found", false, null);
         User user = userService.getUserByUserId(userId);
+        /** check if user exists */
         if (Objects.nonNull(user)) {
             PersonalTrainingInfo existingTraining = personalTrainingRepository.findPersonalTrainingInfoByIdAndUserId(trainingId, userId);
+            /** check if training record exists */
             if (Objects.nonNull(existingTraining)) {
-                //convert training DTO to Entity object
+                /** convert training DTO to Entity object */
                 PersonalTrainingInfo updatedTraining = PersonalTrainingDTO.getPersonalTrainingEntity(personalTrainingDTO);
                 updatedTraining.setUser(user);
+                /** update record and build response object */
                 if (this.updateTraining(updatedTraining, trainingId)) {
                     response.setMessage("Training update successful");
                     response.setSuccess(true);
@@ -86,17 +91,17 @@ public class PersonalTrainingService {
     public PersonnelManagementResponseDTO read(Long userId) {
         PersonnelManagementResponseDTO response = new PersonnelManagementResponseDTO("User not found", false, null);
         User user = userService.getUserByUserId(userId);
+        /** check if user exists */
         if (Objects.nonNull(user)) {
             ArrayList<PersonalTrainingInfo> trainings = this.getTrainingsByUserId(userId);
-            //convert entities into dtos
             if (trainings.size() > 0) {
-                //build response
-                ArrayList<PersonalTrainingDTO> trainingDTOS = convertToDTOs(trainings);
+                /** convert Entity into DTO objects */
+                ArrayList<PersonalTrainingDTO> trainingDTOS = this.convertToDTOs(trainings);
+                /** build response object */
                 response.setData(trainingDTOS);
                 response.setSuccess(true);
                 response.setMessage("Training read successful");
             } else {
-                //build response
                 response.setMessage("Training records not found");
             }
         }
@@ -124,9 +129,12 @@ public class PersonalTrainingService {
     public PersonnelManagementResponseDTO read(Long userId, Long trainingId) {
         PersonnelManagementResponseDTO response = new PersonnelManagementResponseDTO("User not found", false, null);
         User user = userService.getUserByUserId(userId);
+        /** check if user exists */
         if (Objects.nonNull(user)) {
             PersonalTrainingInfo training = personalTrainingRepository.findPersonalTrainingInfoByIdAndUserId(trainingId, userId);
+            /** check if training record exists */
             if (Objects.nonNull(training)) {
+                /** build response object */
                 response.setData(PersonalTrainingDTO.getPersonalTrainingDTO(training));
                 response.setMessage("Training record found");
                 response.setSuccess(true);
