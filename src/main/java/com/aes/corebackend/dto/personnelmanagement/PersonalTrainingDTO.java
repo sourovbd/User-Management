@@ -6,10 +6,20 @@ import lombok.Data;
 @Data
 public class PersonalTrainingDTO {
     private Long id;
+    //max length 50
+    //alphanumeric
     private String programName;
+    //max length 50
+    //alphanumeric
     private String trainingInstitute;
+    //max length 255
+    //alphabets
     private String description;
+    //change into Date type
+    //date format
     private String startDate;
+    //change into Date type
+    //date format
     private String endDate;
 
     public static PersonalTrainingInfo getPersonalTrainingEntity(PersonalTrainingDTO trainingDTO) {

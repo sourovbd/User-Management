@@ -6,12 +6,16 @@ import lombok.Data;
 @Data
 public class PersonalAttributesDTO {
     //a-zA-z
+    //max length
     private String religion;
     //Characters- 3
+    //max length + pattern/regex
     private String bloodGroup;
     //a-zA-z
+    //max length 255 + pattern/regex
     private String birthPlace;
     //a-zA-z
+    //max length 30
     private String nationality;
 
     public static PersonalAttributes getPersonalAttributesEntity(PersonalAttributesDTO attributesDTO) {

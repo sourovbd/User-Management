@@ -6,10 +6,20 @@ import lombok.Data;
 @Data
 public class PersonalJobExperienceDTO {
     private Long id;
+    //max length 50
+    //alphanumeric
     private String employerName;
+    //change into Date type
+    //date format
     private String startDate;
+    //change into Date type
+    //date format
     private String endDate;
+    //max length 50
+    //alphabets
     private String designation;
+    //max length 255
+    //alphanumeric + [,.]
     private String responsibilities;
 
     public static PersonalJobExperience getPersonalJobExperienceEntity(PersonalJobExperienceDTO experienceDTO) {

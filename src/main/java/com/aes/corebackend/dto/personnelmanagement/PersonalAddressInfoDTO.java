@@ -6,7 +6,9 @@ import lombok.Data;
 @Data
 public class PersonalAddressInfoDTO {// change from string to object of type address
     private Long id;
+    //max length
     private String presentAddress;
+    //max length
     private String permanentAddress;
 
     public static PersonalAddressInfo getPersonalAddressInfoEntity(PersonalAddressInfoDTO addressInfoDTO) {
