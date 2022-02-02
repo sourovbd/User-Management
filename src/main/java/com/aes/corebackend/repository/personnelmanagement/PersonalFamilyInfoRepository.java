@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface PersonalFamilyInfoRepository extends JpaRepository<PersonalFamilyInfo, Long> {
-    public PersonalFamilyInfo findPersonalFamilyInfoById(Long id);
+    public PersonalFamilyInfo findPersonalFamilyInfoByUserId(Long UserId);
 
 }

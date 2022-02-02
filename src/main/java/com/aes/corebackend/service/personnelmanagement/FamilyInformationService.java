@@ -31,8 +31,10 @@ public class FamilyInformationService {
             if(this.create(familyInfoDTO, user)){
                 responseDTO.setMessage("Create Family Info Success");
                 responseDTO.setSuccess(true);
+            }else{
+                responseDTO.setMessage("Create Family Info Fail");
             }
-            responseDTO.setMessage("Create Family Info Fail");
+
         }
         return responseDTO;
     }
@@ -56,10 +58,9 @@ public class FamilyInformationService {
         PersonnelManagementResponseDTO responseDTO = new PersonnelManagementResponseDTO("User not found!", false, null);
         User user = userService.getUserByUserId(userId);
         if(Objects.nonNull(user)){
-            //Check if record exists
-            PersonalFamilyInfo currentData = personalFamilyInfoRepository.findPersonalFamilyInfoById(userId);
-            if(Objects.nonNull(currentData)) {
-                if (update(familyInfoDTO, user)) {
+            PersonalFamilyInfo currentData = personalFamilyInfoRepository.findPersonalFamilyInfoByUserId(userId);
+            if(Objects.nonNull(currentData)) {//Check if record exists to update
+                if (update(familyInfoDTO, currentData)) {
                     responseDTO.setMessage("Update Family Info Success");
                     responseDTO.setSuccess(true);
                 } else {
@@ -72,11 +73,9 @@ public class FamilyInformationService {
         return responseDTO;
     }
 
-    private boolean update(PersonalFamilyInfoDTO familyInfoDTO, User user) {
-        PersonalFamilyInfo familyInfo = PersonalFamilyInfoDTO.getPersonalFamilyEntity(familyInfoDTO);
-        familyInfo.setUser(user);
+    private boolean update(PersonalFamilyInfoDTO familyInfoDTO, PersonalFamilyInfo currentData) {//seems like problem in the familyInfoDTO being passed in
+        PersonalFamilyInfo familyInfo = PersonalFamilyInfoDTO.updateEntityFromDTO(familyInfoDTO, currentData);
         try{
-            familyInfo.setId(user.getId());
             personalFamilyInfoRepository.save(familyInfo);
         }catch (Exception e){
             e.printStackTrace();
@@ -87,7 +86,7 @@ public class FamilyInformationService {
 
     ///// READ
 
-    public PersonnelManagementResponseDTO read(Long userId) {
+    public PersonnelManagementResponseDTO read(Long userId) {// also not returning the right value
         PersonnelManagementResponseDTO responseDTO = new PersonnelManagementResponseDTO("User not found!", false, null);
         User user = userService.getUserByUserId(userId);
         //if exists: convert DTO to entity and call create service
@@ -113,7 +112,7 @@ public class FamilyInformationService {
 
     private PersonalFamilyInfo fetchData(Long userId){
         try {
-            PersonalFamilyInfo familyInfo = personalFamilyInfoRepository.findPersonalFamilyInfoById(userId);
+            PersonalFamilyInfo familyInfo = personalFamilyInfoRepository.findPersonalFamilyInfoByUserId(userId);
             return familyInfo;
         }catch (Exception e){
             return null;
