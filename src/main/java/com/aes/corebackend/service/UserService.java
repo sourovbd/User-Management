@@ -31,9 +31,7 @@ public class UserService {
         ResponseDTO responseDTO = new ResponseDTO("user creation failed",false,null);
         if(Objects.nonNull(createdUser)) {
             emailSender.send(userDto.dtoToEntity(userDto).getEmailAddress(),"This is a test email");
-            responseDTO.setMessage("user created successfully");
-            responseDTO.setSuccess(true);
-            responseDTO.setData(createdUser);
+            responseDTO.setResponses("user created successfully", true, createdUser);
         }
         return responseDTO;
     }
@@ -43,15 +41,16 @@ public class UserService {
             ResponseDTO responseDTO = new ResponseDTO("user not found",false,null);
 
             if(Objects.nonNull(existingUser)) {
+
                 existingUser.setDesignation(user.getDesignation());
                 existingUser.setDepartment(user.getDepartment());
                 existingUser.setEmailAddress(user.getEmailAddress());
                 existingUser.setBusinessUnit(user.getBusinessUnit());
                 existingUser.setEmployeeId(user.getEmployeeId());
+
                 userRepository.save(existingUser);
-                responseDTO.setMessage("user updated successfully");
-                responseDTO.setSuccess(true);
-                responseDTO.setData(existingUser);
+
+                responseDTO.setResponses("user updated successfully", true, existingUser);
             }
 
             return responseDTO;
@@ -61,11 +60,9 @@ public class UserService {
     public ResponseDTO read(long id) {
         ResponseDTO responseDTO = new ResponseDTO("user not found",false,null);
         User existingUser = userRepository.findById(id).orElse(null);
-        if(Objects.nonNull(existingUser)) {
-            responseDTO.setMessage("user found");
-            responseDTO.setSuccess(true);
-            responseDTO.setData(existingUser);
 
+        if(Objects.nonNull(existingUser)) {
+            responseDTO.setResponses("user found", true, existingUser);
         }
         return responseDTO;
     }
@@ -73,10 +70,9 @@ public class UserService {
     public ResponseDTO read() {
         ResponseDTO responseDTO = new ResponseDTO("No user exist",false,null);
         List<User> existingUsers = userRepository.findAll();
+
         if(Objects.nonNull(existingUsers)) {
-            responseDTO.setMessage("user fetch ok");
-            responseDTO.setSuccess(true);
-            responseDTO.setData(existingUsers);
+            responseDTO.setResponses("user fetch ok", true, existingUsers);
         }
         return responseDTO;
     }
