@@ -76,6 +76,7 @@ public class UserServiceTest {
         user.setBusinessUnit("a1polymar");
         user.setEmployeeId("0101");
         user.setRoles("EMPLOYEE");
+        user.setUserCredential(userCredential);
         UserDTO userDto = new UserDTO();
         userDto.setDesignation("agm");
         userDto.setDepartment("accounts");
@@ -86,8 +87,7 @@ public class UserServiceTest {
         ResponseDTO responseDTO = new ResponseDTO();
         responseDTO.setMessage("user created successfully");
         responseDTO.setSuccess(true);
-        responseDTO.setData(null);
-        user.setUserCredential(userCredential);
+        responseDTO.setData(user);
         Mockito.when(userRepository.save(user)).thenReturn(user);
         Mockito.when(userService.create(user,userDto)).thenReturn(responseDTO);
         assertEquals(userService.create(user,userDto).getMessage(),responseDTO.getMessage());
@@ -96,16 +96,24 @@ public class UserServiceTest {
     @Test
     public void getAllUsers_success() throws Exception {
         List<User> users = new ArrayList<>(Arrays.asList(user_1,user_2,user_3));
+        ResponseDTO responseDTO = new ResponseDTO();
+        responseDTO.setMessage("user fetch ok");
+        responseDTO.setSuccess(true);
+        responseDTO.setData(users);
         Mockito.when(userRepository.findAll()).thenReturn(users);
-        Mockito.when(userService.read()).thenReturn(users);
+        Mockito.when(userService.read()).thenReturn(responseDTO);
         mockMvc.perform(MockMvcRequestBuilders.get("http://localhost:8081/users").header(HttpHeaders.AUTHORIZATION,"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIwMTI1MTkiLCJleHAiOjE2NDM4MTk4ODAsImlhdCI6MTY0Mzc4Mzg4MH0.5LF-tn-BGh20YpushocQv9pNLPaI1P_MDsxriO6w3zc")
                         .contentType(MediaType.APPLICATION_JSON ))
                 .andExpect(status().isOk());
     }
     @Test
     public void getUserDetailsTest() throws Exception {
+        ResponseDTO responseDTO = new ResponseDTO();
+        responseDTO.setMessage("user found");
+        responseDTO.setSuccess(true);
+        responseDTO.setData(user_1);
         Mockito.when(userRepository.findById(1L)).thenReturn(Optional.ofNullable(user_1));
-        Mockito.when(userService.read(1L)).thenReturn(user_1);
+        Mockito.when(userService.read(1L)).thenReturn(responseDTO);
     }
     @Test
     public void updateUserById() throws Exception {

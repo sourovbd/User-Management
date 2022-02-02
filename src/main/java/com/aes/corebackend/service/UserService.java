@@ -33,7 +33,7 @@ public class UserService {
             emailSender.send(userDto.dtoToEntity(userDto).getEmailAddress(),"This is a test email");
             responseDTO.setMessage("user created successfully");
             responseDTO.setSuccess(true);
-            responseDTO.setData(null);
+            responseDTO.setData(createdUser);
         }
         return responseDTO;
     }
@@ -51,7 +51,7 @@ public class UserService {
                 userRepository.save(existingUser);
                 responseDTO.setMessage("user updated successfully");
                 responseDTO.setSuccess(true);
-                responseDTO.setData(null);
+                responseDTO.setData(existingUser);
             }
 
             return responseDTO;
