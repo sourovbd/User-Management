@@ -31,13 +31,10 @@ public class FamilyInformationService {
             if(this.create(familyInfoDTO, user)){
                 responseDTO.setMessage("Create Family Info Success");
                 responseDTO.setSuccess(true);
-                return responseDTO;
             }
             responseDTO.setMessage("Create Family Info Fail");
-            return responseDTO;
-        }else{
-            return responseDTO;
         }
+        return responseDTO;
     }
 
     private boolean create(PersonalFamilyInfoDTO familyInfoDTO, User user) {
@@ -79,7 +76,7 @@ public class FamilyInformationService {
         PersonalFamilyInfo familyInfo = PersonalFamilyInfoDTO.getPersonalFamilyEntity(familyInfoDTO);
         familyInfo.setUser(user);
         try{
-            familyInfo.setId(familyInfo.getUser().getId());
+            familyInfo.setId(user.getId());
             personalFamilyInfoRepository.save(familyInfo);
         }catch (Exception e){
             e.printStackTrace();

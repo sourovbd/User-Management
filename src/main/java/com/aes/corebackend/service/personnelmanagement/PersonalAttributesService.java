@@ -78,7 +78,7 @@ public class PersonalAttributesService {
         PersonalAttributes attributesInfo = PersonalAttributesDTO.getPersonalAttributesEntity(attributesDTO);
         attributesInfo.setUser(user);
         try {
-            attributesInfo.setId(attributesInfo.getUser().getId());
+            attributesInfo.setId(user.getId());
             personalAttributesRepository.save(attributesInfo);
         } catch (Exception e) {
             e.printStackTrace();
