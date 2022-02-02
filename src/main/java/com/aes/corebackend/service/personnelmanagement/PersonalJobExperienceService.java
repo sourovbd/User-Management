@@ -72,9 +72,6 @@ public class PersonalJobExperienceService {
                 response.setMessage("Experience record not found");
                 response.setSuccess(false);
             }
-        } else {
-            response.setMessage("User not found");
-            response.setSuccess(false);
         }
         return response;
     }
@@ -136,7 +133,7 @@ public class PersonalJobExperienceService {
             PersonalJobExperience experience = personalJobExperienceRepository.findPersonalJobExperienceByIdAndUserId(experienceId, userId);
             /** check if job experience record exists */
             if (Objects.nonNull(experience)) {
-                /** build response object */
+                /** convert Entity to DTO and build response object */
                 response.setData(PersonalJobExperienceDTO.getPersonalJobExperienceDTO(experience));
                 response.setMessage("Job experience record found");
                 response.setSuccess(true);
