@@ -22,8 +22,6 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class UserController {
 
-    private final EmailSender emailSender;
-
     private final UserService userService;
 
     private final UserCredentialService userCredentialService;
@@ -34,13 +32,7 @@ public class UserController {
     @PostMapping("/users")
     @PreAuthorize("hasAuthority('EMPLOYEE')")
     public ResponseEntity<?> create(@RequestBody UserDTO userDto) {
-        User user = userDto.dtoToEntity(userDto);
-        if (Objects.nonNull(userService.create(user,userDto))) {
-            emailSender.send(userDto.dtoToEntity(userDto).getEmailAddress(),"This is a test email");
-            return ResponseEntity.ok(new ResponseDTO("user created",true,null));
-        }
-        else
-            return ResponseEntity.ok(new ResponseDTO("user creation failed", true, null));
+        return ResponseEntity.ok(userService.create(userDto.dtoToEntity(userDto),userDto));
     }
 
     @PutMapping("/users/{id}")
