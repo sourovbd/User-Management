@@ -4,6 +4,7 @@ import com.aes.corebackend.dto.AuthenticationRequest;
 import com.aes.corebackend.dto.AuthenticationResponse;
 import com.aes.corebackend.service.CustomUserDetailsService;
 import com.aes.corebackend.util.JwtUtil;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,18 +22,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
+@RequiredArgsConstructor
 public class AuthenticateController {
 
-    final Logger logger = LoggerFactory.getLogger(AuthenticateController.class);
+    private static final Logger logger = LoggerFactory.getLogger(AuthenticateController.class);
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
 
-    @Autowired
-    private CustomUserDetailsService userDetailsService;
+    private final CustomUserDetailsService userDetailsService;
 
-    @Autowired
-    private JwtUtil jwtTokenUtil;
+    private final JwtUtil jwtTokenUtil;
 
     @GetMapping("/hello")
     @PreAuthorize("hasAuthority('EMPLOYEE')")

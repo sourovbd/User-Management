@@ -65,6 +65,7 @@ public class UserServiceTest {
         mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
         userService = Mockito.mock(UserService.class);
     }
+
     @Test
     public void createUserTest() throws Exception {
         UserCredential userCredential = new UserCredential(1,"101","a1wq",true,"EMPLOYEE");
@@ -77,6 +78,7 @@ public class UserServiceTest {
         user.setEmployeeId("0101");
         user.setRoles("EMPLOYEE");
         user.setUserCredential(userCredential);
+
         UserDTO userDto = new UserDTO();
         userDto.setDesignation("agm");
         userDto.setDepartment("accounts");
@@ -84,6 +86,7 @@ public class UserServiceTest {
         userDto.setBusinessUnit("a1polymar");
         userDto.setEmployeeId("0101");
         userDto.setRoles("EMPLOYEE");
+
         ResponseDTO responseDTO = new ResponseDTO();
         responseDTO.setMessage("user created successfully");
         responseDTO.setSuccess(true);
@@ -93,6 +96,7 @@ public class UserServiceTest {
         assertEquals(userService.create(user,userDto).getMessage(),responseDTO.getMessage());
         assertEquals(userService.create(user,userDto).getData(),responseDTO.getData());
     }
+
     @Test
     public void getAllUsers_success() throws Exception {
         List<User> users = new ArrayList<>(Arrays.asList(user_1,user_2,user_3));
@@ -106,6 +110,7 @@ public class UserServiceTest {
                         .contentType(MediaType.APPLICATION_JSON ))
                 .andExpect(status().isOk());
     }
+
     @Test
     public void getUserDetailsTest() throws Exception {
         ResponseDTO responseDTO = new ResponseDTO();
@@ -115,6 +120,7 @@ public class UserServiceTest {
         Mockito.when(userRepository.findById(1L)).thenReturn(Optional.ofNullable(user_1));
         Mockito.when(userService.read(1L)).thenReturn(responseDTO);
     }
+
     @Test
     public void updateUserById() throws Exception {
         User user_1_temp = new User(1L,"abc@gmail.com","dgm","0101","a1polymar","accounts","EMPLOYEE",userCredential_1);
