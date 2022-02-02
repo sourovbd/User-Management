@@ -26,7 +26,7 @@ public class PersonalIdentificationService {
         User user = userService.getUserByUserId(userId);
 
         if(Objects.nonNull(user)){
-            PersonalIdentificationInfo id = idDTO.getPersonalIdentificationEntity(idDTO);
+            PersonalIdentificationInfo id = PersonalIdentificationInfoDTO.getPersonalIdentificationEntity(idDTO);
             id.setUser(user);
             if(create(id)){
                 responseDTO.setMessage("Create ID Info Success");
@@ -57,7 +57,7 @@ public class PersonalIdentificationService {
         User user = userService.getUserByUserId(userId);
         //if exists: convert DTO to entity and call create service
         if(Objects.nonNull(user)){
-            PersonalIdentificationInfo idInfo = idDTO.getPersonalIdentificationEntity(idDTO);
+            PersonalIdentificationInfo idInfo = PersonalIdentificationInfoDTO.getPersonalIdentificationEntity(idDTO);
             idInfo.setUser(user);
             if(update(idInfo)){
                 responseDTO.setMessage("Update ID Info Success");

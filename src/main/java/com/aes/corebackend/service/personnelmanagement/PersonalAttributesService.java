@@ -27,7 +27,7 @@ public class PersonalAttributesService {
         User user = userService.getUserByUserId(userId);
         //if exists: convert DTO to entity and call create service
         if(Objects.nonNull(user)){
-            PersonalAttributes attributes = attributesDTO.getPersonalAttributesEntity(attributesDTO);
+            PersonalAttributes attributes = PersonalAttributesDTO.getPersonalAttributesEntity(attributesDTO);
             attributes.setUser(user);
             if(this.create(attributes)){
                 responseDTO.setMessage("Create Attribute Success");
@@ -58,7 +58,7 @@ public class PersonalAttributesService {
         User user = userService.getUserByUserId(userId);
         //if exists: convert DTO to entity and call create service
         if(Objects.nonNull(user)){
-            PersonalAttributes attributes = attributesDTO.getPersonalAttributesEntity(attributesDTO);
+            PersonalAttributes attributes = PersonalAttributesDTO.getPersonalAttributesEntity(attributesDTO);
             attributes.setUser(user);
             if(this.update(attributes)){
                 responseDTO.setMessage("Update Attribute Success");

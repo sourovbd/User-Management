@@ -29,7 +29,7 @@ public class FamilyInformationService {
 
         if(Objects.nonNull(user)){
             //convert DTO to Entity
-            PersonalFamilyInfo familyInfo = familyInfoDTO.getPersonalFamilyEntity(familyInfoDTO);
+            PersonalFamilyInfo familyInfo = PersonalFamilyInfoDTO.getPersonalFamilyEntity(familyInfoDTO);
             familyInfo.setUser(user);
             if(this.create(familyInfo)){
                 responseDTO.setMessage("Create Family Info Success");
@@ -61,7 +61,7 @@ public class FamilyInformationService {
         User user = userService.getUserByUserId(userId);
         if(Objects.nonNull(user)){
             //convert DTO to Entity
-            PersonalFamilyInfo familyInfo = familyInfoDTO.getPersonalFamilyEntity(familyInfoDTO);
+            PersonalFamilyInfo familyInfo = PersonalFamilyInfoDTO.getPersonalFamilyEntity(familyInfoDTO);
             familyInfo.setUser(user);
             if(this.update(familyInfo)){
                 responseDTO.setMessage("Update Family Info Success");
