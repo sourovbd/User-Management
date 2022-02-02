@@ -34,4 +34,13 @@ public class PersonalFamilyInfoDTO {
         familyInfoDTO.setSpouseName(familyInfo.getSpouseName());
         return familyInfoDTO;
     }
+
+    public static PersonalFamilyInfo updateEntityFromDTO(PersonalFamilyInfoDTO familyDTO, PersonalFamilyInfo familyInfo){
+        // is the same
+        familyInfo.setFathersName(familyDTO.getFathersName());
+        familyInfo.setMothersName(familyDTO.getMothersName());
+        familyInfo.setMaritalStatus(familyDTO.getMaritalStatus());
+        familyInfo.setSpouseName(familyDTO.getSpouseName());
+        return familyInfo;
+    }
 }

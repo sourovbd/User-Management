@@ -2,15 +2,17 @@ package com.aes.corebackend.controller.personnelmanagement;
 
 import com.aes.corebackend.dto.personnelmanagement.PersonalIdentificationInfoDTO;
 import com.aes.corebackend.service.personnelmanagement.PersonalIdentificationService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
+@RequiredArgsConstructor
 public class PersonalIdentificationController {
-    @Autowired
-    PersonalIdentificationService service;
+
+    private final PersonalIdentificationService service;
 
     @PostMapping(value = "/users/{userId}/identification-information")
     public ResponseEntity<?> createAttributesInfo(@RequestBody PersonalIdentificationInfoDTO idDTO, @PathVariable Long userId) {

@@ -24,24 +24,20 @@ public class PersonalIdentificationService {
     public PersonnelManagementResponseDTO create(PersonalIdentificationInfoDTO idDTO, Long userId) {
         PersonnelManagementResponseDTO responseDTO = new PersonnelManagementResponseDTO("User not found!", false, null);
         User user = userService.getUserByUserId(userId);
-
         if(Objects.nonNull(user)){
-            PersonalIdentificationInfo id = idDTO.getPersonalIdentificationEntity(idDTO);
-            id.setUser(user);
-            if(create(id)){
+            if(create(idDTO, user)){
                 responseDTO.setMessage("Create ID Info Success");
                 responseDTO.setSuccess(true);
-                return responseDTO;
             }else{
                 responseDTO.setMessage("Create ID info Fail");
-                return responseDTO;
             }
-        }else{
-            return responseDTO;
         }
+        return responseDTO;
     }
 
-    private boolean create(PersonalIdentificationInfo id){
+    private boolean create(PersonalIdentificationInfoDTO idDTO, User user){
+        PersonalIdentificationInfo id = PersonalIdentificationInfoDTO.getPersonalIdentificationEntity(idDTO);
+        id.setUser(user);
         try {
             repository.save(id);
         } catch (Exception e) {
@@ -57,27 +53,26 @@ public class PersonalIdentificationService {
         User user = userService.getUserByUserId(userId);
         //if exists: convert DTO to entity and call create service
         if(Objects.nonNull(user)){
-            PersonalIdentificationInfo idInfo = idDTO.getPersonalIdentificationEntity(idDTO);
-            idInfo.setUser(user);
-            if(update(idInfo)){
-                responseDTO.setMessage("Update ID Info Success");
-                responseDTO.setSuccess(true);
-                return responseDTO;
+            //check if record exists
+            PersonalIdentificationInfo currentData = repository.findPersonalIdentificationInfoByUserId(userId);
+            if(Objects.nonNull(currentData)){
+                if(this.update(idDTO, currentData)){
+                    responseDTO.setMessage("Update ID Info Success");
+                    responseDTO.setSuccess(true);
+                }else{
+                    responseDTO.setMessage("Update ID info Fail");
+                }
             }else{
-                responseDTO.setMessage("Update ID info Fail");
-                return responseDTO;
+                responseDTO.setMessage("Identification record not found");
             }
-        }else{
-            return responseDTO;
         }
+        return responseDTO;
     }
 
-    private boolean update(PersonalIdentificationInfo idInfo) {
+    private boolean update(PersonalIdentificationInfoDTO idDTO, PersonalIdentificationInfo currentData) {
+        PersonalIdentificationInfo idInfo = PersonalIdentificationInfoDTO.updateEntityFromDTO(idDTO, currentData);
         try {
-            PersonalIdentificationInfo dbUpdate = repository.findPersonalIdentificationInfoById(idInfo.getUser().getId());
-            dbUpdate.setEtin(idInfo.getEtin());
-            dbUpdate.setNationalID(idInfo.getNationalID());
-            repository.save(dbUpdate);
+            repository.save(idInfo);
         } catch (Exception e) {
             e.printStackTrace();
             return false;
@@ -113,12 +108,11 @@ public class PersonalIdentificationService {
 
     private PersonalIdentificationInfo fetchData(Long userId) {
         try {
-            PersonalIdentificationInfo idInfo = repository.findPersonalIdentificationInfoById(userId);
+            PersonalIdentificationInfo idInfo = repository.findPersonalIdentificationInfoByUserId(userId);
             return idInfo;
         }catch (Exception e){
             return null;
         }
     }
-
 
 }

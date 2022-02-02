@@ -22,9 +22,7 @@ public class PersonalEducationService {
         PersonnelManagementResponseDTO response = new PersonnelManagementResponseDTO("User not found", false, null);
         User user = userService.getUserByUserId(userId);
         if (Objects.nonNull(user)) {
-            PersonalEducationInfo educationInfo = PersonalEducationDTO.getPersonalEducationEntity(educationDTO);
-            educationInfo.setUser(user);
-            if(create(educationInfo)){
+            if(create(educationDTO, user)){
                 response.setMessage("Education creation success");
                 response.setSuccess(true);
             }else{
@@ -35,7 +33,9 @@ public class PersonalEducationService {
         return response;
     }
 
-    private boolean create(PersonalEducationInfo educationInfo){
+    private boolean create(PersonalEducationDTO educationDTO,  User user){
+        PersonalEducationInfo educationInfo = PersonalEducationDTO.getPersonalEducationEntity(educationDTO);
+        educationInfo.setUser(user);
         try {
             repository.save(educationInfo);
             return true;
@@ -51,9 +51,7 @@ public class PersonalEducationService {
         if (Objects.nonNull(user)) {
             PersonalEducationInfo currentInfo = repository.findPersonalEducationInfoByIdAndUserId(educationId, userId);
             if (Objects.nonNull(currentInfo)){// if a record exists with these id values
-                PersonalEducationInfo updateInfo = PersonalEducationDTO.getPersonalEducationEntity(educationDTO);
-                updateInfo.setUser(user);
-                if (update(updateInfo, educationId)){
+                if (update(educationDTO, user, educationId)){
                     response.setMessage("Education update success");
                     response.setSuccess(true);
                 } else {
@@ -68,7 +66,9 @@ public class PersonalEducationService {
         return response;
     }
 
-    private boolean update(PersonalEducationInfo updateInfo, Long updateId) {
+    private boolean update(PersonalEducationDTO educationDTO, User user, Long updateId) {
+        PersonalEducationInfo updateInfo = PersonalEducationDTO.getPersonalEducationEntity(educationDTO);
+        updateInfo.setUser(user);
         try {
             updateInfo.setId(updateId);
             repository.save(updateInfo);

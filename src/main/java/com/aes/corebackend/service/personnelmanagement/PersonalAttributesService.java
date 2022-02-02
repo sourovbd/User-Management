@@ -27,9 +27,7 @@ public class PersonalAttributesService {
         User user = userService.getUserByUserId(userId);
         //if exists: convert DTO to entity and call create service
         if(Objects.nonNull(user)){
-            PersonalAttributes attributes = attributesDTO.getPersonalAttributesEntity(attributesDTO);
-            attributes.setUser(user);
-            if(this.create(attributes)){
+            if(this.create(attributesDTO, user)){
                 responseDTO.setMessage("Create Attribute Success");
                 responseDTO.setSuccess(true);
                 return responseDTO;
@@ -42,7 +40,9 @@ public class PersonalAttributesService {
         }
     }
 
-    private boolean create(PersonalAttributes attributesInfo) {
+    private boolean create(PersonalAttributesDTO attributesDTO, User user) {
+        PersonalAttributes attributesInfo = PersonalAttributesDTO.getPersonalAttributesEntity(attributesDTO);
+        attributesInfo.setUser(user);
         try {
             personalAttributesRepository.save(attributesInfo);
         } catch (Exception e) {
@@ -52,35 +52,32 @@ public class PersonalAttributesService {
     }
 
 
-    public PersonnelManagementResponseDTO update(PersonalAttributesDTO attributesDTO, Long userId) {
+    public PersonnelManagementResponseDTO update(PersonalAttributesDTO attributesDTO, Long userId) {// error in update
         //check if user exists
         PersonnelManagementResponseDTO responseDTO = new PersonnelManagementResponseDTO("User not found!", false, null);
         User user = userService.getUserByUserId(userId);
         //if exists: convert DTO to entity and call create service
         if(Objects.nonNull(user)){
-            PersonalAttributes attributes = attributesDTO.getPersonalAttributesEntity(attributesDTO);
-            attributes.setUser(user);
-            if(this.update(attributes)){
-                responseDTO.setMessage("Update Attribute Success");
-                responseDTO.setSuccess(true);
-                return responseDTO;
-            }else{
-                responseDTO.setMessage("Update Attribute Fail");
-                return responseDTO;
+            //check if record exists
+            PersonalAttributes currentData = personalAttributesRepository.findPersonalAttributesByUserId(userId);
+            if(Objects.nonNull(currentData)) {
+                if (this.update(attributesDTO, currentData)) {
+                    responseDTO.setMessage("Update Attribute Success");
+                    responseDTO.setSuccess(true);
+                } else {
+                    responseDTO.setMessage("Update Attribute Fail");
+                }
+            } else {
+                responseDTO.setMessage("Attribute Record not found");
             }
-        }else{
-            return responseDTO;
         }
+            return responseDTO;
     }
 
-    private boolean update(PersonalAttributes attributesInfo) {
+    private boolean update(PersonalAttributesDTO attributesDTO, PersonalAttributes currentData) {
+        PersonalAttributes attributesInfo = PersonalAttributesDTO.updateEntityFromDTO(attributesDTO, currentData);
         try {
-            PersonalAttributes dbUpdate = personalAttributesRepository.findPersonalAttributesById(attributesInfo.getUser().getId());
-            dbUpdate.setBirthPlace(attributesInfo.getBirthPlace());
-            dbUpdate.setNationality(attributesInfo.getNationality());
-            dbUpdate.setReligion(attributesInfo.getReligion());
-            dbUpdate.setBloodGroup(attributesInfo.getBloodGroup());
-            personalAttributesRepository.save(dbUpdate);
+            personalAttributesRepository.save(attributesInfo);
         } catch (Exception e) {
             e.printStackTrace();
             return false;
@@ -116,7 +113,7 @@ public class PersonalAttributesService {
 
     private PersonalAttributes fetchData(Long userId){
         try {
-            PersonalAttributes attributes = personalAttributesRepository.findPersonalAttributesById(userId);
+            PersonalAttributes attributes = personalAttributesRepository.findPersonalAttributesByUserId(userId);
             return attributes;
         }catch (Exception e){
             return null;
