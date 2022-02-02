@@ -1,5 +1,6 @@
 package com.aes.corebackend.service;
 
+import com.aes.corebackend.dto.ResponseDTO;
 import com.aes.corebackend.dto.UserCredentialDTO;
 import com.aes.corebackend.entity.User;
 import com.aes.corebackend.entity.UserCredential;
@@ -10,6 +11,8 @@ import com.aes.corebackend.util.UserCredentialUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+import java.util.Optional;
 
 @Service
 public class UserCredentialService {
@@ -25,44 +28,37 @@ public class UserCredentialService {
     @Autowired
     private EmailSender emailSender;
 
-    public boolean save(UserCredential userCredential) {
-        try {
-            userCredential.setPassword(passwordEncoder.encode(userCredential.getPassword()));
-            userCredentialRepository.save(userCredential);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-        return true;
+    public ResponseDTO save(UserCredential userCredential) {
+        userCredential.setPassword(passwordEncoder.encode(userCredential.getPassword()));
+        UserCredential userCredential1 = userCredentialRepository.save(userCredential);
+        return userCredential1!=null ?
+                new ResponseDTO("Saved Successfully", true, userCredential1) :
+                new ResponseDTO("Save Failed", false, null);
     }
 
-    public boolean update(UserCredential userCredential, String employeeId) {
-        try {
-            UserCredential userCredential1 = userCredentialRepository.findByEmployeeId(employeeId).get();
+    public ResponseDTO update(UserCredential userCredential, String employeeId) {
+        UserCredential userCredential1 = userCredentialRepository.findByEmployeeId(employeeId).get();
+        if (userCredential1!=null) {
             userCredential1.setPassword(passwordEncoder.encode(userCredential.getPassword()));
-            userCredentialRepository.save(userCredential1);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
+            UserCredential userCredential2 = userCredentialRepository.save(userCredential1);
+            return new ResponseDTO("Updated Successfully.", true, userCredential2);
         }
-        return true;
-    }
-
-    public boolean verifyPassword(UserCredentialDTO userCredentialDTO) {
-        try {
-            UserCredential userCredential = userCredentialRepository.findByEmployeeId(userCredentialDTO.getEmployeeId()).get();
-            return passwordEncoder.matches(userCredentialDTO.getPassword(), userCredential.getPassword());
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-            return false;
+        else {
+            return new ResponseDTO("Invalid Employee ID.", false, null);
         }
     }
 
-    public boolean generateAndSendTempPass(String email) {
-        try {
-            User user = userRepository.findByEmailAddress(email).get();
-            UserCredential userCredential = userCredentialRepository.findByEmployeeId(""+user.getEmployeeId()).get();
+    public ResponseDTO verifyPassword(UserCredentialDTO userCredentialDTO) {
+        UserCredential userCredential = userCredentialRepository.findByEmployeeId(userCredentialDTO.getEmployeeId()).get();
+        return passwordEncoder.matches(userCredentialDTO.getPassword(), userCredential.getPassword()) == true ?
+                new ResponseDTO("Valid Password", true, userCredential) :
+                new ResponseDTO("Invalid Password", false, null);
+    }
+
+    public ResponseDTO generateAndSendTempPass(String email) {
+        User user = userRepository.findByEmailAddress(email).get();
+        if (user != null) {
+            UserCredential userCredential = user.getUserCredential(); //userCredentialRepository.findByEmployeeId(""+user.getEmployeeId()).get();
 
             String password = UserCredentialUtils.generatePassword(Constants.PASSWORD_MIN_LENGTH);
             userCredential.setPassword(password);
@@ -72,20 +68,10 @@ public class UserCredentialService {
 
             userCredential.setPassword(passwordEncoder.encode(userCredential.getPassword()));
             userCredentialRepository.save(userCredential);
+            return new ResponseDTO("A new password is sent to your email.", false, user);
         }
-        catch (Exception e) {
-            e.printStackTrace();
-            return false;
+        else {
+            return new ResponseDTO("Employee not found.", false, null);
         }
-        return true;
-    }
-
-    public UserCredential getById(Long id) {
-        return userCredentialRepository.findById(id).get();
-    }
-
-    public UserCredential getByEmployeeId(String employeeId) {
-
-        return userCredentialRepository.findByEmployeeId(employeeId).get();
     }
 }
