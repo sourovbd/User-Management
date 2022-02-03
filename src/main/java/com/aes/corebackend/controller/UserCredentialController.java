@@ -38,18 +38,18 @@ public class UserCredentialController {
         return ResponseEntity.ok(userCredentialService.save(userCredentialDTO.to(userCredentialDTO)));
     }
 
-    @PostMapping("users/{employeeId}/reset-password")
+    @PostMapping("/users/{employeeId}/reset-password")
     @PreAuthorize("hasAuthority('EMPLOYEE')")
     public ResponseEntity<?> updateCredential(@Valid @RequestBody UserCredentialDTO userCredentialDTO, BindingResult result, @PathVariable String employeeId) {
         if (result.hasErrors()) {
             return ResponseEntity.ok(new ResponseDTO(result.getFieldError().getDefaultMessage(), false, null));
         }
-
+        System.out.println("userCredentialDTO = " + userCredentialDTO + ", result = " + result + ", employeeId = " + employeeId);
         return ResponseEntity.ok(userCredentialService.update(userCredentialDTO.to(userCredentialDTO), employeeId));
     }
 
     /** During login */
-    @PostMapping("users/verify-credential")
+    @PostMapping("/users/verify-credential")
     @PreAuthorize("hasAuthority('EMPLOYEE')")
     public ResponseEntity<?> verifyCredential(@RequestBody UserCredentialDTO userCredentialDTO) {
 
