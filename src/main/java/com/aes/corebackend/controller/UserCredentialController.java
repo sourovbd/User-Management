@@ -28,7 +28,7 @@ public class UserCredentialController {
 
     private static final Logger logger = LoggerFactory.getLogger(UserCredentialController.class);
 
-    @PostMapping("/users-credential/{employeeId}")
+    @PostMapping("/users-credential")
     @PreAuthorize("hasAuthority('EMPLOYEE')")
     public ResponseEntity<?> saveCredential(@RequestBody @Valid UserCredentialDTO userCredentialDTO, BindingResult result, @PathVariable String employeeId) throws Exception {
         if (result.hasErrors()) {
@@ -44,7 +44,7 @@ public class UserCredentialController {
         if (result.hasErrors()) {
             return ResponseEntity.ok(new ResponseDTO(result.getFieldError().getDefaultMessage(), false, null));
         }
-        System.out.println("userCredentialDTO = " + userCredentialDTO + ", result = " + result + ", employeeId = " + employeeId);
+
         return ResponseEntity.ok(userCredentialService.update(userCredentialDTO.to(userCredentialDTO), employeeId));
     }
 

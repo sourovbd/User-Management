@@ -76,7 +76,6 @@ public class UserCredentialServiceTest {
         Mockito.when(userCredentialService.generateAndSendTempPass(email)).thenReturn(expectedResponse);
         ResponseDTO actualResponse = userCredentialService.generateAndSendTempPass(email);
 
-        logger.info(actualResponse.toString());
         assert actualResponse.getMessage().equals(expectedResponse.getMessage());
     }
 }
