@@ -20,7 +20,9 @@ public class PersonalBasicInformationService {
     public PersonnelManagementResponseDTO create(PersonalBasicInfoDTO basicInfoDTO, Long userId) {
         PersonnelManagementResponseDTO response = new PersonnelManagementResponseDTO("User not found!", false, null);
         User user = userService.getUserByUserId(userId);
+        /** check if user exists */
         if (Objects.nonNull(user)) {
+            /** create user and build response object */
             if (this.create(basicInfoDTO, user)) {
                 response.setMessage("Basic information creation successful");
                 response.setSuccess(true);
@@ -86,12 +88,10 @@ public class PersonalBasicInformationService {
             PersonalBasicInfo basicInfo = personalBasicInfoRepository.findPersonalBasicInfoByUserId(userId);
             /** check if basic information exists */
             if (Objects.nonNull(basicInfo)) {
-                /** convert Entity to DTO object and set personal info object */
-                PersonalBasicInfoDTO basicInfoDTO = PersonalBasicInfoDTO.getPersonalBasicInfoDTO(basicInfo);
-                /** build response */
+                /** convert Entity to DTO object and build response object */
+                response.setData(PersonalBasicInfoDTO.getPersonalBasicInfoDTO(basicInfo));
                 response.setMessage("Basic information found");
                 response.setSuccess(true);
-                response.setData(basicInfoDTO);
             } else {
                 response.setMessage("Basic information not found");
             }
