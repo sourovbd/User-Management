@@ -11,8 +11,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Objects;
 
 @Controller
@@ -22,12 +24,18 @@ public class PersonalAttributesController {
     private final PersonalAttributesService personalAttributesService;
 
     @PostMapping(value = "/users/{userId}/attribute-information")
-    public ResponseEntity<?> createAttributesInfo(@RequestBody PersonalAttributesDTO attributesDTO, @PathVariable Long userId) {
+    public ResponseEntity<?> createAttributesInfo(@Valid @RequestBody PersonalAttributesDTO attributesDTO, BindingResult result, @PathVariable Long userId) {
+        if(result.hasErrors()){
+            return ResponseEntity.ok(new PersonnelManagementResponseDTO(result.getFieldError().getDefaultMessage(), false, null));
+        }
         return ResponseEntity.ok(personalAttributesService.create(attributesDTO, userId));
     }
 
     @PutMapping(value = "/users/{userId}/attribute-information")
-    public ResponseEntity<?> updateAttributesInfo(@RequestBody PersonalAttributesDTO attributesDTO, @PathVariable Long userId) {
+    public ResponseEntity<?> updateAttributesInfo(@Valid @RequestBody PersonalAttributesDTO attributesDTO, BindingResult result, @PathVariable Long userId) {
+        if(result.hasErrors()){
+            return ResponseEntity.ok(new PersonnelManagementResponseDTO(result.getFieldError().getDefaultMessage(), false, null));
+        }
         return ResponseEntity.ok(personalAttributesService.update(attributesDTO, userId));
     }
 
