@@ -36,4 +36,12 @@ public class PersonalBasicInfoDTO {
         personalBasicInfoDTO.setGender(personalBasicInfo.getGender());
         return personalBasicInfoDTO;
     }
+
+    public static PersonalBasicInfo updateEntityFromDTO(PersonalBasicInfo basicInfoEntity, PersonalBasicInfoDTO basicInfoDTO) {
+        basicInfoEntity.setFirstName(basicInfoDTO.getFirstName());
+        basicInfoEntity.setLastName(basicInfoDTO.getLastName());
+        basicInfoEntity.setDateOfBirth(basicInfoDTO.getDateOfBirth());
+        basicInfoEntity.setGender(basicInfoDTO.getGender());
+        return basicInfoEntity;
+    }
 }

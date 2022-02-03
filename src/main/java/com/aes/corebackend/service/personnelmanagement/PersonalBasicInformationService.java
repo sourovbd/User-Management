@@ -6,68 +6,39 @@ import com.aes.corebackend.entity.User;
 import com.aes.corebackend.entity.personnelmanagement.PersonalBasicInfo;
 import com.aes.corebackend.repository.personnelmanagement.PersonalBasicInfoRepository;
 import com.aes.corebackend.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.Objects;
 
 @Service
+@RequiredArgsConstructor
 public class PersonalBasicInformationService {
-    @Autowired
-    PersonalBasicInfoRepository personalBasicInfoRepository;
-    @Autowired
-    UserService userService;
 
-    public PersonnelManagementResponseDTO getPersonalBasicInfo(Long userId) {
-        PersonnelManagementResponseDTO response = new PersonnelManagementResponseDTO("Basic information not found", false, null);
+    private final PersonalBasicInfoRepository personalBasicInfoRepository;
+    private final UserService userService;
+
+    public PersonnelManagementResponseDTO create(PersonalBasicInfoDTO basicInfoDTO, Long userId) {
+        PersonnelManagementResponseDTO response = new PersonnelManagementResponseDTO("User not found!", false, null);
         User user = userService.getUserByUserId(userId);
+        /** check if user exists */
         if (Objects.nonNull(user)) {
-            PersonalBasicInfo basicInfo = this.getPersonalBasicInfoByUser(user);
-            if (Objects.nonNull(basicInfo)) {
-                //convert Entity to DTO object and set personal info object
-                PersonalBasicInfoDTO basicInfoDTO = PersonalBasicInfoDTO.getPersonalBasicInfoDTO(basicInfo);
-
-                //build response
-                response.setMessage("Basic information found");
+            /** create user and build response object */
+            if (this.create(basicInfoDTO, user)) {
+                response.setMessage("Basic information creation successful");
                 response.setSuccess(true);
-                response.setData(basicInfoDTO);
-            }
-        } else {
-            response.setMessage("User not found");
-            response.setSuccess(false);
-        }
-        return response;
-    }
-
-    private PersonalBasicInfo getPersonalBasicInfoByUser(User user) {
-        try {
-            PersonalBasicInfo info = personalBasicInfoRepository.findPersonalBasicInfoByUser(user);
-            return info;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    public PersonnelManagementResponseDTO createPersonalBasicInfo(PersonalBasicInfoDTO basicInfoDTO, Long userId) {
-        PersonnelManagementResponseDTO response = new PersonnelManagementResponseDTO("Basic information creation successful", true, null);
-        User user = userService.getUserByUserId(userId);
-        if (Objects.nonNull(user)) {
-            //convert basic info DTO to Entity object
-            PersonalBasicInfo basicInfo = PersonalBasicInfoDTO.getPersonalBasicInfoEntity(basicInfoDTO);
-            basicInfo.setUser(user);
-            boolean success = this.createPersonalBasicInfo(basicInfo);
-            if (!success) {
+            } else {
                 response.setMessage("Basic information creation failed");
             }
-        } else {
-            response.setMessage("User not found");
         }
         return response;
     }
 
-    private boolean createPersonalBasicInfo(PersonalBasicInfo basicInfo) {
+    private boolean create(PersonalBasicInfoDTO basicInfoDTO, User user) {
+        /** convert basic info DTO to Entity object */
+        PersonalBasicInfo basicInfo = PersonalBasicInfoDTO.getPersonalBasicInfoEntity(basicInfoDTO);
+        basicInfo.setUser(user);
         try {
-            personalBasicInfoRepository.save(basicInfo);//create new row into basic info table
+            personalBasicInfoRepository.save(basicInfo);
         } catch (Exception e) {
             e.printStackTrace();
             return false;
@@ -75,40 +46,56 @@ public class PersonalBasicInformationService {
         return true;
     }
 
-    public PersonnelManagementResponseDTO updatePersonalBasicInfo(PersonalBasicInfoDTO updatedBasicInfoDTO, Long userId) {
-        PersonnelManagementResponseDTO response = new PersonnelManagementResponseDTO("Basic information update successful", true, null);
+    public PersonnelManagementResponseDTO update(PersonalBasicInfoDTO updatedBasicInfoDTO, Long userId) {
+        PersonnelManagementResponseDTO response = new PersonnelManagementResponseDTO("User not found", false, null);
         User user = userService.getUserByUserId(userId);
+        /** check if user exists */
         if (Objects.nonNull(user)) {
-            //convert basic info DTO to Entity object
-            PersonalBasicInfo updatedBasicInfo = PersonalBasicInfoDTO.getPersonalBasicInfoEntity(updatedBasicInfoDTO);
-            updatedBasicInfo.setUser(user);
-            //TODO should we fetch existing basic info by user and basic info id?
-            PersonalBasicInfo existingBasicInfo = this.getPersonalBasicInfoByUser(user);
-            boolean success = this.updateBasicInfo(existingBasicInfo, updatedBasicInfo);
-            if (!success) {
-                response.setMessage("Basic information update failed");
+            PersonalBasicInfo existingBasicInfo = personalBasicInfoRepository.findPersonalBasicInfoByUserId(userId);
+            /** check if basic information record exists */
+            if (Objects.nonNull(existingBasicInfo)) {
+                /** update record and build response object */
+                if (this.update(updatedBasicInfoDTO, existingBasicInfo)) {
+                    response.setMessage("Basic information update successful");
+                    response.setSuccess(true);
+                } else {
+                    response.setMessage("Basic information update failed");
+                }
+            } else {
+                response.setMessage("Basic information record not found");
             }
-        } else {
-            response.setMessage("User not found");
         }
         return response;
     }
 
-    private boolean updateBasicInfo(PersonalBasicInfo existingBasicInfo, PersonalBasicInfo updatedBasicInfo) {
+    private boolean update(PersonalBasicInfoDTO basicInfoDTO, PersonalBasicInfo existingBasicInfo) {
+        /** convert basic info DTO to Entity object */
+        PersonalBasicInfo updatedBasicInfo = PersonalBasicInfoDTO.updateEntityFromDTO(existingBasicInfo, basicInfoDTO);
         try {
-            if (Objects.nonNull(existingBasicInfo)) {
-                existingBasicInfo.setFirstName(updatedBasicInfo.getFirstName());
-                existingBasicInfo.setLastName(updatedBasicInfo.getLastName());
-                existingBasicInfo.setDateOfBirth(updatedBasicInfo.getDateOfBirth());
-                existingBasicInfo.setGender(updatedBasicInfo.getGender());
-                personalBasicInfoRepository.save(existingBasicInfo);
-            } else {
-                return false;
-            }
+            personalBasicInfoRepository.save(updatedBasicInfo);
         } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
         return true;
+    }
+
+    public PersonnelManagementResponseDTO read(Long userId) {
+        PersonnelManagementResponseDTO response = new PersonnelManagementResponseDTO("User not found", false, null);
+        User user = userService.getUserByUserId(userId);
+        /** check if user exists */
+        if (Objects.nonNull(user)) {
+            PersonalBasicInfo basicInfo = personalBasicInfoRepository.findPersonalBasicInfoByUserId(userId);
+            /** check if basic information exists */
+            if (Objects.nonNull(basicInfo)) {
+                /** convert Entity to DTO object and build response object */
+                response.setData(PersonalBasicInfoDTO.getPersonalBasicInfoDTO(basicInfo));
+                response.setMessage("Basic information found");
+                response.setSuccess(true);
+            } else {
+                response.setMessage("Basic information not found");
+            }
+        }
+        return response;
     }
 }

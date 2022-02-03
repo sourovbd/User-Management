@@ -6,42 +6,40 @@ import com.aes.corebackend.entity.User;
 import com.aes.corebackend.entity.personnelmanagement.PersonalJobExperience;
 import com.aes.corebackend.repository.personnelmanagement.PersonalJobExperienceRepository;
 import com.aes.corebackend.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Objects;
 
 @Service
+@RequiredArgsConstructor
 public class PersonalJobExperienceService {
-    @Autowired
-    UserService userService;
 
-    @Autowired
-    PersonalJobExperienceRepository personalJobExperienceRepository;
+    private final UserService userService;
+    private final PersonalJobExperienceRepository personalJobExperienceRepository;
 
     public PersonnelManagementResponseDTO create(PersonalJobExperienceDTO jobExperienceDTO, Long userId) {
         PersonnelManagementResponseDTO response = new PersonnelManagementResponseDTO("User not found", false, null);
         User user = userService.getUserByUserId(userId);
         /** check if user exists */
         if (Objects.nonNull(user)) {
-            /** convert DTO to Entity object */
-            PersonalJobExperience jobExperienceEntity = PersonalJobExperienceDTO.getPersonalJobExperienceEntity(jobExperienceDTO);
-            jobExperienceEntity.setUser(user);
             /** create job experience record and build response object */
-            if (this.createJobExperience(jobExperienceEntity)) {
+            if (this.createJobExperience(jobExperienceDTO, user)) {
                 response.setMessage("Job experience creation successful");
                 response.setSuccess(false);
             } else {
                 response.setMessage("Job experience creation failed");
-                response.setSuccess(false);
             }
         }
         return response;
     }
 
-    private boolean createJobExperience(PersonalJobExperience jobExperience) {
+    private boolean createJobExperience(PersonalJobExperienceDTO jobExperienceDTO, User user) {
+        /** convert DTO to Entity object */
+        PersonalJobExperience jobExperienceEntity = PersonalJobExperienceDTO.getPersonalJobExperienceEntity(jobExperienceDTO);
+        jobExperienceEntity.setUser(user);
         try {
-            personalJobExperienceRepository.save(jobExperience);
+            personalJobExperienceRepository.save(jobExperienceEntity);
         } catch (Exception e) {
             e.printStackTrace();
             return false;
@@ -57,26 +55,24 @@ public class PersonalJobExperienceService {
             PersonalJobExperience existingJobExperience = personalJobExperienceRepository.findPersonalJobExperienceByIdAndUserId(experienceId, userId);
             /** check if job experience record exists */
             if (Objects.nonNull(existingJobExperience)) {
-                /** convert experience DTO to Entity object */
-                PersonalJobExperience updatedJobExperience = PersonalJobExperienceDTO.getPersonalJobExperienceEntity(jobExperienceDTO);
-                updatedJobExperience.setUser(user);
                 /** update record and build response object */
-                if (this.updateJobExperience(updatedJobExperience, experienceId)) {
+                if (this.updateJobExperience(jobExperienceDTO, user, experienceId)) {
                     response.setMessage("Experience update successful");
                     response.setSuccess(true);
                 } else {
                     response.setMessage("Experience update failed");
-                    response.setSuccess(false);
                 }
             } else {
                 response.setMessage("Experience record not found");
-                response.setSuccess(false);
             }
         }
         return response;
     }
 
-    private boolean updateJobExperience(PersonalJobExperience updatedJobExperience, Long experienceId) {
+    private boolean updateJobExperience(PersonalJobExperienceDTO jobExperienceDTO, User user, Long experienceId) {
+        /** convert experience DTO to Entity object */
+        PersonalJobExperience updatedJobExperience = PersonalJobExperienceDTO.getPersonalJobExperienceEntity(jobExperienceDTO);
+        updatedJobExperience.setUser(user);
         try {
             updatedJobExperience.setId(experienceId);
             personalJobExperienceRepository.save(updatedJobExperience);
@@ -92,10 +88,10 @@ public class PersonalJobExperienceService {
         User user = userService.getUserByUserId(userId);
         /** check if user exists */
         if (Objects.nonNull(user)) {
-            ArrayList<PersonalJobExperience> experiences = this.getJobExperiencesByUserId(userId);
-            if (experiences.size() > 0) {
+            ArrayList<PersonalJobExperience> experienceList = personalJobExperienceRepository.findPersonalJobExperiencesByUserId(userId);
+            if (experienceList.size() > 0) {
                 /** convert Entity to DTO objects */
-                ArrayList<PersonalJobExperienceDTO> experienceDTOS = this.convertToDTOs(experiences);
+                ArrayList<PersonalJobExperienceDTO> experienceDTOS = this.convertToDTOs(experienceList);
                 /** build response object */
                 response.setData(experienceDTOS);
                 response.setSuccess(true);
@@ -113,16 +109,6 @@ public class PersonalJobExperienceService {
             experienceDTOS.add(PersonalJobExperienceDTO.getPersonalJobExperienceDTO(experience));
         });
         return experienceDTOS;
-    }
-
-    private ArrayList<PersonalJobExperience> getJobExperiencesByUserId(Long userId) {
-        ArrayList<PersonalJobExperience> experiences = new ArrayList<>();
-        try {
-             experiences = personalJobExperienceRepository.findPersonalJobExperiencesByUserId(userId);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return experiences;
     }
 
     public PersonnelManagementResponseDTO read(Long userId, Long experienceId) {
