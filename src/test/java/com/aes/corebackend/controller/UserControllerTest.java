@@ -1,22 +1,34 @@
 package com.aes.corebackend.controller;
 
+import com.aes.corebackend.dto.ResponseDTO;
 import com.aes.corebackend.entity.User;
 import com.aes.corebackend.entity.UserCredential;
 import com.aes.corebackend.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.JsonPathResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import static org.assertj.core.internal.bytebuddy.matcher.ElementMatchers.is;
+import static org.hamcrest.Matchers.hasSize;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class UserControllerTest {
@@ -69,21 +81,39 @@ public class UserControllerTest {
 
     @Test
     public void getAllUsers_success() throws Exception {
+        List<User> users = Lists.newArrayList(user_1,user_2,user_3);
+        ResponseDTO responseDTO =  new ResponseDTO();
+        responseDTO.setMessage("user fetch ok");
+        responseDTO.setSuccess(true);
+        responseDTO.setData(users);
+        Mockito.when(userService.read()).thenReturn(responseDTO);
         mockMvc.perform(MockMvcRequestBuilders
                         .get("/users")
                         .header(HttpHeaders.AUTHORIZATION, "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIwMTI1MTkiLCJleHAiOjE2NDM4MTk4ODAsImlhdCI6MTY0Mzc4Mzg4MH0.5LF-tn-BGh20YpushocQv9pNLPaI1P_MDsxriO6w3zc")
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
+                        .andExpect(status().isOk())
+                        .andExpect(jsonPath("$.message").value("user fetch ok"))
+                        .andExpect(jsonPath("$.data[0].id").value(1L))
+                        .andExpect(jsonPath("$.data[0].emailAddress").value("abc@gmail.com"))
+                        .andExpect(jsonPath("$.data[0].designation").value("agm"))
+                        .andExpect(jsonPath("$.data[0].employeeId").value("101"))
+                        .andExpect(jsonPath("$.data[0].userCredential.active").value(true));
     }
 
     @Test
     public void getUserDetailsTest() throws Exception {
+        ResponseDTO responseDTO =  new ResponseDTO();
+        responseDTO.setMessage("user found");
+        responseDTO.setSuccess(true);
+        responseDTO.setData(user_1);
+        Mockito.when(userService.read(1L)).thenReturn(responseDTO);
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/users/11")
-                        //.header(HttpHeaders.AUTHORIZATION, "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIwMTI1MTkiLCJleHAiOjE2NDM4MTk4ODAsImlhdCI6MTY0Mzc4Mzg4MH0.5LF-tn-BGh20YpushocQv9pNLPaI1P_MDsxriO6w3zc")
-                       // .contentType(MediaType.APPLICATION_JSON)
-                )
-                .andExpect(status().isOk());
+                        .get("/users/1")
+                        .header(HttpHeaders.AUTHORIZATION, "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIwMTI1MTkiLCJleHAiOjE2NDM4MTk4ODAsImlhdCI6MTY0Mzc4Mzg4MH0.5LF-tn-BGh20YpushocQv9pNLPaI1P_MDsxriO6w3zc")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.message").value("user found"))
+                .andExpect(jsonPath("$.data").value(user_1));
     }
 
     @Test
