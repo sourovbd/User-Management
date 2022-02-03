@@ -3,6 +3,7 @@ package com.aes.corebackend.controller;
 import com.aes.corebackend.dto.ForgotPasswordDTO;
 import com.aes.corebackend.dto.ResponseDTO;
 import com.aes.corebackend.dto.UserCredentialDTO;
+import com.aes.corebackend.entity.UserCredential;
 import com.aes.corebackend.service.UserCredentialService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,16 +28,14 @@ public class UserCredentialController {
 
     private static final Logger logger = LoggerFactory.getLogger(UserCredentialController.class);
 
-    @PostMapping("/users-credential")
+    @PostMapping("/users-credential/{employeeId}")
     @PreAuthorize("hasAuthority('EMPLOYEE')")
-    public ResponseEntity<?> saveCredential(@RequestBody @Valid UserCredentialDTO userCredentialDTO, BindingResult result) {
+    public ResponseEntity<?> saveCredential(@RequestBody @Valid UserCredentialDTO userCredentialDTO, BindingResult result, @PathVariable String employeeId) throws Exception {
         if (result.hasErrors()) {
             return ResponseEntity.ok(new ResponseDTO(result.getFieldError().getDefaultMessage(), false, null));
         }
 
-        return userCredentialService.save(userCredentialDTO.to(userCredentialDTO))?
-                ResponseEntity.ok(new ResponseDTO("Saved Successfully", true, null)) :
-                ResponseEntity.ok(new ResponseDTO("Save Failed", false, null));
+        return ResponseEntity.ok(userCredentialService.save(userCredentialDTO.to(userCredentialDTO)));
     }
 
     @PostMapping("users/{employeeId}/reset-password")
@@ -46,9 +45,7 @@ public class UserCredentialController {
             return ResponseEntity.ok(new ResponseDTO(result.getFieldError().getDefaultMessage(), false, null));
         }
 
-        return userCredentialService.update(userCredentialDTO.to(userCredentialDTO), employeeId) ?
-                ResponseEntity.ok(new ResponseDTO("Updated Successfully", true, null)) :
-                ResponseEntity.ok(new ResponseDTO("Update Failed", false, null));
+        return ResponseEntity.ok(userCredentialService.update(userCredentialDTO.to(userCredentialDTO), employeeId));
     }
 
     /** During login */
@@ -56,9 +53,7 @@ public class UserCredentialController {
     @PreAuthorize("hasAuthority('EMPLOYEE')")
     public ResponseEntity<?> verifyCredential(@RequestBody UserCredentialDTO userCredentialDTO) {
 
-        return userCredentialService.verifyPassword(userCredentialDTO) ?
-                ResponseEntity.ok(new ResponseDTO("Valid Password", true, null)) :
-                ResponseEntity.ok(new ResponseDTO("Invalid Password", false, null));
+        return ResponseEntity.ok(userCredentialService.verifyPassword(userCredentialDTO));
     }
 
     @PostMapping("/users/forgot-password")
@@ -69,9 +64,7 @@ public class UserCredentialController {
             return ResponseEntity.ok(new ResponseDTO(result.getFieldError().getDefaultMessage(), false, null));
         }
 
-        return userCredentialService. generateAndSendTempPass(forgotPasswordDTO.getEmailAddress()) ?
-                ResponseEntity.ok(new ResponseDTO("A new password is sent to your email.", true, null)) :
-                ResponseEntity.ok(new ResponseDTO("Please try again.", false, null));
+        return  ResponseEntity.ok(userCredentialService.generateAndSendTempPass(forgotPasswordDTO.getEmailAddress()));
     }
 
 }

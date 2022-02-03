@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Objects;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -12,4 +14,12 @@ public class ResponseDTO {
     private String message;
     private boolean success;
     private Object data;
+
+    public void setResponses(String message, boolean success, Object data) {
+        this.message = message;
+        this.success = success;
+        this.data = data;
+    }
 }
+
+

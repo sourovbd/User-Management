@@ -35,9 +35,10 @@ public class UserCredentialServiceTest {
     @InjectMocks
     private UserCredentialController userCredentialController;
 
+    private static final boolean ACTUAL = false;
+
     @BeforeEach
     public void setup() {
-        //MockitoAnnotations.initMocks(this);
         MockitoAnnotations.openMocks(this);
         userCredentialService = Mockito.mock(UserCredentialService.class);
         mockMvc = MockMvcBuilders.standaloneSetup(userCredentialController).build();
@@ -45,16 +46,10 @@ public class UserCredentialServiceTest {
 
     @Test
     public void saveTest() throws Exception {
-        UserCredential userCredential = new UserCredential();
-        userCredential.setId(27);
-        userCredential.setEmployeeId("12471");
-        userCredential.setActive(true);
-        userCredential.setPassword("123456");
-        userCredential.setRoles("EMPLOYEE");
+        UserCredential userCredential = new UserCredential(27, "12471", "123456", true, "EMPLOYEE");
 
-        boolean actual = false;
         Mockito.when(userCredentialRepository.save(userCredential)).thenReturn(userCredential);
-        Mockito.when(userCredentialService.save(userCredential)).thenReturn(actual);
+        //Mockito.when(userCredentialService.save(userCredential)).thenReturn(ACTUAL);
     }
 
     @Test

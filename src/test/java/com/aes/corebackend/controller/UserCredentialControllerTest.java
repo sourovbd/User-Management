@@ -1,5 +1,7 @@
 package com.aes.corebackend.controller;
 
+import com.aes.corebackend.entity.User;
+import com.aes.corebackend.entity.UserCredential;
 import com.aes.corebackend.service.UserCredentialService;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -16,10 +18,9 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.TimeZone;
 
-
-@ExtendWith(SpringExtension.class) /** Manages Spring Application Context */
-@SpringBootTest /** Populates our application context with all of our spring managed beans. Manages Spring Application Context */
-@AutoConfigureMockMvc /** This creates mock mvc instance and wires into out test class. */
+@ExtendWith(SpringExtension.class)   /** Manages Spring Application Context */
+@SpringBootTest                      /** Populates our application context with all of our spring managed beans. Manages Spring Application Context */
+@AutoConfigureMockMvc                /** This creates mock mvc instance and wires into out test class. */
 public class UserCredentialControllerTest {
 
     @MockBean
@@ -37,7 +38,12 @@ public class UserCredentialControllerTest {
 
     @Test
     @DisplayName("POST /users-credential")
-    public void testSaveCredential() {
+    void testSaveCredential() throws Exception {
+        //Setup mocked service
+        User user = new User(1L,"abc@gmail.com","agm","101","a1polymar","accounts","EMPLOYEE", null);
+        UserCredential userCredential = new UserCredential(27, "12471", "123456", true, "EMPLOYEE");
+        user.setUserCredential(userCredential);
+        System.out.println("user: "+user);
 
     }
 }
