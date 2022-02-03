@@ -41,7 +41,9 @@ public class UserCredentialServiceTest {
     public void setup() {
         MockitoAnnotations.openMocks(this);
         userCredentialService = Mockito.mock(UserCredentialService.class);
-        mockMvc = MockMvcBuilders.standaloneSetup(userCredentialController).build();
+        mockMvc = MockMvcBuilders
+                .standaloneSetup(userCredentialController)
+                .build();
     }
 
     @Test

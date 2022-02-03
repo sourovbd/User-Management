@@ -18,6 +18,7 @@ public class UserCredentialRepositoryTest {
 
     @BeforeEach
     public void setup() {
+
         MockitoAnnotations.openMocks(this);
     }
 
