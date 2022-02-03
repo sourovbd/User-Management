@@ -4,6 +4,7 @@ import com.aes.corebackend.dto.ResponseDTO;
 import com.aes.corebackend.dto.UserCredentialDTO;
 import com.aes.corebackend.entity.User;
 import com.aes.corebackend.entity.UserCredential;
+import com.aes.corebackend.exception.ResourceNotFoundException;
 import com.aes.corebackend.repository.UserCredentialRepository;
 import com.aes.corebackend.repository.UserRepository;
 import com.aes.corebackend.util.Constants;
@@ -36,23 +37,22 @@ public class UserCredentialService {
                 new ResponseDTO("Save Failed", false, null);
     }
 
-    public ResponseDTO update(UserCredential userCredential, String employeeId) {
-        UserCredential userCredential1 = userCredentialRepository.findByEmployeeId(employeeId).get();
-        if (Objects.nonNull(userCredential1)) {
-            userCredential1.setPassword(passwordEncoder.encode(userCredential.getPassword()));
-            UserCredential userCredential2 = userCredentialRepository.save(userCredential1);
-            return new ResponseDTO("Updated Successfully.", true, userCredential2);
+    public UserCredential update(UserCredential userCredential) {
+
+        UserCredential existingUerCredential = getEmployeeId(userCredential.getEmployeeId());
+        if (Objects.nonNull(existingUerCredential)) {
+            existingUerCredential.setPassword(passwordEncoder.encode(userCredential.getPassword()));
         }
-        else {
-            return new ResponseDTO("Invalid Employee ID.", false, null);
-        }
+        return userCredentialRepository.save(existingUerCredential);
     }
 
-    public ResponseDTO verifyPassword(UserCredentialDTO userCredentialDTO) {
-        UserCredential userCredential = userCredentialRepository.findByEmployeeId(userCredentialDTO.getEmployeeId()).get();
-        return passwordEncoder.matches(userCredentialDTO.getPassword(), userCredential.getPassword()) ?
-                new ResponseDTO("Valid Password", true, userCredential) :
-                new ResponseDTO("Invalid Password", false, null);
+    public boolean verifyPassword(UserCredentialDTO userCredentialDTO) {
+        UserCredential userCredential =  userCredentialRepository.findByEmployeeId(userCredentialDTO.getEmployeeId()).get();
+        return passwordEncoder.matches(userCredentialDTO.getPassword(), userCredential.getPassword());
+    }
+
+    public UserCredential getEmployeeId(String employeeId) {
+        return userCredentialRepository.findByEmployeeId(employeeId).orElseThrow(ResourceNotFoundException::new);
     }
 
     public ResponseDTO generateAndSendTempPass(String email) {

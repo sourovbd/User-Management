@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -31,8 +32,9 @@ public class UserCredentialController {
     @PostMapping("/users-credential")
     @PreAuthorize("hasAuthority('EMPLOYEE')")
     public ResponseEntity<?> saveCredential(@RequestBody @Valid UserCredentialDTO userCredentialDTO, BindingResult result) throws Exception {
+
         if (result.hasErrors()) {
-            return ResponseEntity.ok(new ResponseDTO(result.getFieldError().getDefaultMessage(), false, null));
+            return new ResponseEntity(new ResponseDTO(result.getFieldError().getDefaultMessage(), false, null), HttpStatus.BAD_REQUEST);
         }
 
         return ResponseEntity.ok(userCredentialService.save(userCredentialDTO.to(userCredentialDTO)));
@@ -41,11 +43,12 @@ public class UserCredentialController {
     @PostMapping("/users/{employeeId}/reset-password")
     @PreAuthorize("hasAuthority('EMPLOYEE')")
     public ResponseEntity<?> updateCredential(@Valid @RequestBody UserCredentialDTO userCredentialDTO, BindingResult result, @PathVariable String employeeId) {
+
         if (result.hasErrors()) {
-            return ResponseEntity.ok(new ResponseDTO(result.getFieldError().getDefaultMessage(), false, null));
+            return new ResponseEntity(new ResponseDTO(result.getFieldError().getDefaultMessage(), false, null), HttpStatus.BAD_REQUEST);
         }
 
-        return ResponseEntity.ok(userCredentialService.update(userCredentialDTO.to(userCredentialDTO), employeeId));
+        return new ResponseEntity(new ResponseDTO("Saved Successfully", true, userCredentialService.update(userCredentialDTO.to(userCredentialDTO))), HttpStatus.OK);
     }
 
     /** During login */
@@ -53,7 +56,10 @@ public class UserCredentialController {
     @PreAuthorize("hasAuthority('EMPLOYEE')")
     public ResponseEntity<?> verifyCredential(@RequestBody UserCredentialDTO userCredentialDTO) {
 
-        return ResponseEntity.ok(userCredentialService.verifyPassword(userCredentialDTO));
+        if(userCredentialService.verifyPassword(userCredentialDTO)) {
+            return new ResponseEntity(new ResponseDTO("Valid Password", true, userCredentialDTO), HttpStatus.OK);
+        }
+        return new ResponseEntity(new ResponseDTO("Invalid Password", true, userCredentialDTO), HttpStatus.UNAUTHORIZED);
     }
 
     @PostMapping("/users/forgot-password")
