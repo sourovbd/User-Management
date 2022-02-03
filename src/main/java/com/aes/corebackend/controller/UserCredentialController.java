@@ -30,7 +30,7 @@ public class UserCredentialController {
 
     @PostMapping("/users-credential")
     @PreAuthorize("hasAuthority('EMPLOYEE')")
-    public ResponseEntity<?> saveCredential(@RequestBody @Valid UserCredentialDTO userCredentialDTO, BindingResult result, @PathVariable String employeeId) throws Exception {
+    public ResponseEntity<?> saveCredential(@RequestBody @Valid UserCredentialDTO userCredentialDTO, BindingResult result) throws Exception {
         if (result.hasErrors()) {
             return ResponseEntity.ok(new ResponseDTO(result.getFieldError().getDefaultMessage(), false, null));
         }
