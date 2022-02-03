@@ -22,24 +22,23 @@ public class PersonalAddressService {
         User user = userService.getUserByUserId(userId);
         /** check if user exists */
         if (Objects.nonNull(user)) {
-            /** convert basic info DTO to Entity object */
-            PersonalAddressInfo addressInfoEntity = PersonalAddressInfoDTO.getPersonalAddressInfoEntity(personalAddressInfoDTO);
-            addressInfoEntity.setUser(user);
             /** create address record  and build response object */
-            if (this.createPersonalAddressInfo(addressInfoEntity)) {
+            if (this.create(personalAddressInfoDTO, user)) {
                 response.setMessage("Personal address creation successful");
                 response.setSuccess(true);
             } else {
                 response.setMessage("Personal address creation failed");
-                response.setSuccess(false);
             }
         }
         return response;
     }
 
-    private boolean createPersonalAddressInfo(PersonalAddressInfo addressInfo) {
+    private boolean create(PersonalAddressInfoDTO addressInfoDTO, User user) {
+        /** convert basic info DTO to Entity object */
+        PersonalAddressInfo addressInfoEntity = PersonalAddressInfoDTO.getPersonalAddressInfoEntity(addressInfoDTO);
+        addressInfoEntity.setUser(user);
         try {
-            personalAddressInfoRepository.save(addressInfo);
+            personalAddressInfoRepository.save(addressInfoEntity);
         } catch (Exception e) {
             e.printStackTrace();
             return false;
@@ -52,37 +51,28 @@ public class PersonalAddressService {
         User user = userService.getUserByUserId(userId);
         /** check if user exists */
         if (Objects.nonNull(user)) {
-            PersonalAddressInfo existingAddressInfo = this.getPersonalAddressInfoByUser(user);
+            PersonalAddressInfo existingAddressInfo = personalAddressInfoRepository.findPersonalAddressInfoByUserId(userId);
             /** check if address exists */
             if (Objects.nonNull(existingAddressInfo)) {
                 /** assign updated data to existing data, execute update address and build response object*/
-                if (this.updatePersonalAddress(PersonalAddressInfoDTO.assignDTOToEntity(existingAddressInfo, updatedPersonalAddressInfoDTO))) {
+                if (this.update(updatedPersonalAddressInfoDTO, existingAddressInfo)) {
                     response.setMessage("Personal address update successful");
                     response.setSuccess(true);
                 } else {
                     response.setMessage("Personal address update failed");
-                    response.setSuccess(false);
                 }
             } else {
                 response.setMessage("Personal address record not found");
-                response.setSuccess(false);
             }
         }
         return response;
     }
 
-    private PersonalAddressInfo getPersonalAddressInfoByUser(User user) {
+    private boolean update(PersonalAddressInfoDTO updatedPersonalAddressInfoDTO, PersonalAddressInfo existingAddressInfo) {
+        /** convert address info DTO to Entity */
+        PersonalAddressInfo updatedAddressInfo = PersonalAddressInfoDTO.assignDTOToEntity(existingAddressInfo, updatedPersonalAddressInfoDTO);
         try {
-            return personalAddressInfoRepository.findPersonalAddressInfoByUser(user);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    private boolean updatePersonalAddress(PersonalAddressInfo addressEntity) {
-        try {
-            personalAddressInfoRepository.save(addressEntity);
+            personalAddressInfoRepository.save(updatedAddressInfo);
         } catch (Exception e) {
             e.printStackTrace();
             return false;
@@ -95,7 +85,7 @@ public class PersonalAddressService {
         User user = userService.getUserByUserId(userId);
         /** check if user exists */
         if (Objects.nonNull(user)) {
-            PersonalAddressInfo addressInfo = this.getPersonalAddressInfoByUser(user);
+            PersonalAddressInfo addressInfo = personalAddressInfoRepository.findPersonalAddressInfoByUserId(userId);
             /** check if address exists */
             if (Objects.nonNull(addressInfo)) {
                 /** convert Entity to DTO object and build response object */
