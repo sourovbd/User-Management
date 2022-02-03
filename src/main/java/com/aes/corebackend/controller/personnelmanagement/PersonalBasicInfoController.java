@@ -2,7 +2,7 @@ package com.aes.corebackend.controller.personnelmanagement;
 
 import com.aes.corebackend.dto.personnelmanagement.PersonalBasicInfoDTO;
 import com.aes.corebackend.service.personnelmanagement.PersonalBasicInformationService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @Controller
+@RequiredArgsConstructor
 public class PersonalBasicInfoController {
 
-    @Autowired
-    PersonalBasicInformationService personalBasicInformationService;
+    private final PersonalBasicInformationService personalBasicInformationService;
 
     @PostMapping(value = "/users/{userId}/basic-information")
     public ResponseEntity<?> createPersonalBasicInfo(@RequestBody @Valid PersonalBasicInfoDTO personalBasicInfoDTO, @PathVariable Long userId) {

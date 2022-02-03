@@ -6,18 +6,17 @@ import com.aes.corebackend.entity.User;
 import com.aes.corebackend.entity.personnelmanagement.PersonalJobExperience;
 import com.aes.corebackend.repository.personnelmanagement.PersonalJobExperienceRepository;
 import com.aes.corebackend.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Objects;
 
 @Service
+@RequiredArgsConstructor
 public class PersonalJobExperienceService {
-    @Autowired
-    UserService userService;
 
-    @Autowired
-    PersonalJobExperienceRepository personalJobExperienceRepository;
+    private final UserService userService;
+    private final PersonalJobExperienceRepository personalJobExperienceRepository;
 
     public PersonnelManagementResponseDTO create(PersonalJobExperienceDTO jobExperienceDTO, Long userId) {
         PersonnelManagementResponseDTO response = new PersonnelManagementResponseDTO("User not found", false, null);

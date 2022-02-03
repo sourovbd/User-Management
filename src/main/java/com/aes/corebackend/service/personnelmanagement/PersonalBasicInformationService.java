@@ -6,16 +6,16 @@ import com.aes.corebackend.entity.User;
 import com.aes.corebackend.entity.personnelmanagement.PersonalBasicInfo;
 import com.aes.corebackend.repository.personnelmanagement.PersonalBasicInfoRepository;
 import com.aes.corebackend.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.Objects;
 
 @Service
+@RequiredArgsConstructor
 public class PersonalBasicInformationService {
-    @Autowired
-    PersonalBasicInfoRepository personalBasicInfoRepository;
-    @Autowired
-    UserService userService;
+
+    private final PersonalBasicInfoRepository personalBasicInfoRepository;
+    private final UserService userService;
 
     public PersonnelManagementResponseDTO create(PersonalBasicInfoDTO basicInfoDTO, Long userId) {
         PersonnelManagementResponseDTO response = new PersonnelManagementResponseDTO("User not found!", false, null);

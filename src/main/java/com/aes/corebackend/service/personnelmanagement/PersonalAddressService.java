@@ -6,16 +6,16 @@ import com.aes.corebackend.entity.User;
 import com.aes.corebackend.entity.personnelmanagement.PersonalAddressInfo;
 import com.aes.corebackend.repository.personnelmanagement.PersonalAddressInfoRepository;
 import com.aes.corebackend.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.Objects;
 
 @Service
+@RequiredArgsConstructor
 public class PersonalAddressService {
-    @Autowired
-    PersonalAddressInfoRepository personalAddressInfoRepository;
-    @Autowired
-    UserService userService;
+
+    private final PersonalAddressInfoRepository personalAddressInfoRepository;
+    private final UserService userService;
 
     public PersonnelManagementResponseDTO create(PersonalAddressInfoDTO personalAddressInfoDTO, Long userId) {
         PersonnelManagementResponseDTO response = new PersonnelManagementResponseDTO("User not found", false, null);

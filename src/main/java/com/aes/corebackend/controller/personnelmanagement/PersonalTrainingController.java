@@ -2,15 +2,16 @@ package com.aes.corebackend.controller.personnelmanagement;
 
 import com.aes.corebackend.dto.personnelmanagement.PersonalTrainingDTO;
 import com.aes.corebackend.service.personnelmanagement.PersonalTrainingService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
+@RequiredArgsConstructor
 public class PersonalTrainingController {
-    @Autowired
-    PersonalTrainingService personalTrainingService;
+
+    private final PersonalTrainingService personalTrainingService;
 
     @PostMapping(value = "/users/{userId}/trainings")
     public ResponseEntity<?> createPersonalTraining(@RequestBody PersonalTrainingDTO personalTrainingDTO, @PathVariable Long userId) {
