@@ -1,25 +1,40 @@
 package com.aes.corebackend.dto.personnelmanagement;
 
 import com.aes.corebackend.entity.personnelmanagement.PersonalJobExperience;
+import com.aes.corebackend.util.Constants;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
+import org.hibernate.validator.constraints.Length;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.Pattern;
+import java.io.Serializable;
+import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
 
 @Data
-public class PersonalJobExperienceDTO {
+public class PersonalJobExperienceDTO implements Serializable {
     private Long id;
-    //max length 50
-    //alphanumeric
+
+    @Length(min = 0, max = 50, message = "Employer name field can be at max 50 characters long")
+    @Pattern(regexp = "^[a-zA-z0-9]+$", message = "Employer name field cannot have special characters")
     private String employerName;
-    //change into Date type
-    //date format
-    private String startDate;
-    //change into Date type
-    //date format
-    private String endDate;
-    //max length 50
-    //alphabets
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, timezone = Constants.BD_TIMEZONE, pattern = Constants.BD_DATE_FORMAT)
+    private Date startDate;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, timezone = Constants.BD_TIMEZONE, pattern = Constants.BD_DATE_FORMAT)
+    private Date endDate;
+
+    @Length(min = 0, max = 50, message = "Designation field can be at max 50 characters long")
+    @Pattern(regexp = "^[a-zA-z0-9]+$", message = "Designation field cannot have special characters")
     private String designation;
-    //max length 255
-    //alphanumeric + [,.]
+
+    @Length(min = 0, max = 255, message = "Responsibilities field can be at max 255 characters long")
+    @Pattern(regexp = "^[a-zA-z]+$", message = "Responsibilities field cannot have numeric or special characters")
     private String responsibilities;
 
     public static PersonalJobExperience getPersonalJobExperienceEntity(PersonalJobExperienceDTO experienceDTO) {

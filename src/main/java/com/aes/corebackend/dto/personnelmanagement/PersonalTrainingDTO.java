@@ -1,26 +1,36 @@
 package com.aes.corebackend.dto.personnelmanagement;
 
 import com.aes.corebackend.entity.personnelmanagement.PersonalTrainingInfo;
+import com.aes.corebackend.util.Constants;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
+import org.hibernate.validator.constraints.Length;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import javax.validation.constraints.Pattern;
+import java.util.Date;
 
 @Data
 public class PersonalTrainingDTO {
     private Long id;
-    //max length 50
-    //alphanumeric
+
+    @Length(min = 0, max = 50, message = "Program name field can be at max 50 characters long")
+    @Pattern(regexp = "^[a-zA-z0-9]+$", message = "Program name field cannot have special characters")
     private String programName;
-    //max length 50
-    //alphanumeric
+
+    @Length(min = 0, max = 50, message = "Training institute name field can be at max 50 characters long")
+    @Pattern(regexp = "^[a-zA-z0-9]+$", message = "Training institute name field cannot have special characters")
     private String trainingInstitute;
-    //max length 255
-    //alphabets
+
+    @Length(min = 0, max = 255, message = "Description field can be at max 255 characters long")
+    @Pattern(regexp = "^[a-zA-z0-9]+$", message = "Description field cannot have special characters")
     private String description;
-    //change into Date type
-    //date format
-    private String startDate;
-    //change into Date type
-    //date format
-    private String endDate;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, timezone = Constants.BD_TIMEZONE, pattern = Constants.BD_DATE_FORMAT)
+    private Date startDate;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, timezone = Constants.BD_TIMEZONE, pattern = Constants.BD_DATE_FORMAT)
+    private Date endDate;
 
     public static PersonalTrainingInfo getPersonalTrainingEntity(PersonalTrainingDTO trainingDTO) {
         PersonalTrainingInfo personalTrainingInfo = new PersonalTrainingInfo();
