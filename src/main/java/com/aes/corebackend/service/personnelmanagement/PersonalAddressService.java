@@ -70,7 +70,7 @@ public class PersonalAddressService {
 
     private boolean update(PersonalAddressInfoDTO updatedPersonalAddressInfoDTO, PersonalAddressInfo existingAddressInfo) {
         /** convert address info DTO to Entity */
-        PersonalAddressInfo updatedAddressInfo = PersonalAddressInfoDTO.assignDTOToEntity(existingAddressInfo, updatedPersonalAddressInfoDTO);
+        PersonalAddressInfo updatedAddressInfo = PersonalAddressInfoDTO.updateEntityFromDTO(existingAddressInfo, updatedPersonalAddressInfoDTO);
         try {
             personalAddressInfoRepository.save(updatedAddressInfo);
         } catch (Exception e) {
