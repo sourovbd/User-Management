@@ -17,10 +17,20 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.TimeZone;
+/**
+ * Manages Spring Application Context
+ * */
+@ExtendWith(SpringExtension.class)
+/**
+ * Populates our application context with all of our spring managed beans.
+ * Manages false Spring Application Context
+ * */
+@SpringBootTest
+/**
+ * This creates mock mvc instance and wires into out test class.
+ * */
+@AutoConfigureMockMvc
 
-@ExtendWith(SpringExtension.class)   /** Manages Spring Application Context */
-@SpringBootTest                      /** Populates our application context with all of our spring managed beans. Manages Spring Application Context */
-@AutoConfigureMockMvc                /** This creates mock mvc instance and wires into out test class. */
 public class UserCredentialControllerTest {
 
     @MockBean
