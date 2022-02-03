@@ -1,72 +1,81 @@
 package com.aes.corebackend.service;
 
-import com.aes.corebackend.controller.UserController;
-import com.aes.corebackend.controller.UserCredentialController;
+import com.aes.corebackend.dto.ResponseDTO;
 import com.aes.corebackend.dto.UserCredentialDTO;
 import com.aes.corebackend.entity.UserCredential;
-import com.aes.corebackend.repository.UserCredentialRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-//import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-//@RunWith(MockitoJUnitRunner.class)
 public class UserCredentialServiceTest {
 
-    @Autowired
-    private MockMvc mockMvc;
-
-    @Mock
-    private UserCredentialRepository userCredentialRepository;
+    private static final Logger logger = LoggerFactory.getLogger(UserCredentialServiceTest.class);
 
     @InjectMocks
     private UserCredentialService userCredentialService;
 
-    @InjectMocks
-    private UserCredentialController userCredentialController;
-
-    private static final boolean ACTUAL = false;
+    private UserCredential userCredentialTest = new UserCredential(1L, "012580", "123@5Aa", true, "EMPLOYEE");
 
     @BeforeEach
     public void setup() {
         MockitoAnnotations.openMocks(this);
         userCredentialService = Mockito.mock(UserCredentialService.class);
-        mockMvc = MockMvcBuilders
-                .standaloneSetup(userCredentialController)
-                .build();
     }
 
     @Test
     public void saveTest() throws Exception {
-        UserCredential userCredential = new UserCredential(27, "12471", "123456", true, "EMPLOYEE");
+        ResponseDTO expectedResponse = new ResponseDTO();
+        expectedResponse.setResponses("Saved Successfully", true, userCredentialTest);
 
-        Mockito.when(userCredentialRepository.save(userCredential)).thenReturn(userCredential);
-        //Mockito.when(userCredentialService.save(userCredential)).thenReturn(ACTUAL);
+        Mockito.when(userCredentialService.save(userCredentialTest)).thenReturn(expectedResponse);
+        ResponseDTO actualResponse = userCredentialService.save(userCredentialTest);
+
+        assert actualResponse.getMessage().equals(expectedResponse.getMessage());
+        assert actualResponse.getData() == expectedResponse.getData();
+    }
+
+    @Test
+    public void updateTest() {
+        UserCredential userCredential = new UserCredential(1L, "012580", "123$5Aa", true, "EMPLOYEE");
+
+        ResponseDTO expectedResponse = new ResponseDTO();
+        expectedResponse.setResponses("Updated Successfully.", true, userCredential);
+
+        Mockito.when(userCredentialService.update(userCredentialTest, "012580")).thenReturn(expectedResponse);
+        ResponseDTO actualResponse = userCredentialService.update(userCredentialTest, "012580");
+
+        assert actualResponse.getMessage().equals(expectedResponse.getMessage());
     }
 
     @Test
     public void verifyCredentialTest() throws Exception {
-        String uri = "/users/verify-credential";
-
         UserCredentialDTO userCredentialDTO = new UserCredentialDTO();
-        userCredentialDTO.setEmployeeId("1234");
-        userCredentialDTO.setPassword("12@Ua34");
+        userCredentialDTO.setEmployeeId("012580");
+        userCredentialDTO.setPassword("123@5Aa");
 
-        /*MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post(uri)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)//(MediaType.APPLICATION_JSON)//
-                .content(userCredentialDTO.toString())).andReturn();
+        ResponseDTO expectedResponse = new ResponseDTO();
+        expectedResponse.setResponses("Valid Password", true, userCredentialTest);
 
-        System.out.println("---->" + mvcResult.getResponse().getContentAsString());//mvcResult.toString());*/
+        Mockito.when(userCredentialService.verifyPassword(userCredentialDTO)).thenReturn(expectedResponse);
+        ResponseDTO actualResponse = userCredentialService.verifyPassword(userCredentialDTO);
 
+        assert actualResponse.getMessage().equals(expectedResponse.getMessage());
+    }
+
+    @Test
+    public void generateAndSendTempPassTest() throws Exception {
+        String email = "abc@gmail.com";
+
+        ResponseDTO expectedResponse = new ResponseDTO();
+        expectedResponse.setResponses("A new password is sent to your email.", true, userCredentialTest);
+
+        Mockito.when(userCredentialService.generateAndSendTempPass(email)).thenReturn(expectedResponse);
+        ResponseDTO actualResponse = userCredentialService.generateAndSendTempPass(email);
+
+        assert actualResponse.getMessage().equals(expectedResponse.getMessage());
     }
 }

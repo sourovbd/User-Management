@@ -28,9 +28,9 @@ public class UserCredentialController {
 
     private static final Logger logger = LoggerFactory.getLogger(UserCredentialController.class);
 
-    @PostMapping("/users-credential/{employeeId}")
+    @PostMapping("/users-credential")
     @PreAuthorize("hasAuthority('EMPLOYEE')")
-    public ResponseEntity<?> saveCredential(@RequestBody @Valid UserCredentialDTO userCredentialDTO, BindingResult result, @PathVariable String employeeId) throws Exception {
+    public ResponseEntity<?> saveCredential(@RequestBody @Valid UserCredentialDTO userCredentialDTO, BindingResult result) throws Exception {
         if (result.hasErrors()) {
             return ResponseEntity.ok(new ResponseDTO(result.getFieldError().getDefaultMessage(), false, null));
         }
@@ -38,7 +38,7 @@ public class UserCredentialController {
         return ResponseEntity.ok(userCredentialService.save(userCredentialDTO.to(userCredentialDTO)));
     }
 
-    @PostMapping("users/{employeeId}/reset-password")
+    @PostMapping("/users/{employeeId}/reset-password")
     @PreAuthorize("hasAuthority('EMPLOYEE')")
     public ResponseEntity<?> updateCredential(@Valid @RequestBody UserCredentialDTO userCredentialDTO, BindingResult result, @PathVariable String employeeId) {
         if (result.hasErrors()) {
@@ -49,7 +49,7 @@ public class UserCredentialController {
     }
 
     /** During login */
-    @PostMapping("users/verify-credential")
+    @PostMapping("/users/verify-credential")
     @PreAuthorize("hasAuthority('EMPLOYEE')")
     public ResponseEntity<?> verifyCredential(@RequestBody UserCredentialDTO userCredentialDTO) {
 
