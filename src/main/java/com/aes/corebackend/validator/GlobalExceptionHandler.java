@@ -16,7 +16,6 @@ import java.util.stream.Collectors;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler({MethodArgumentNotValidException.class})
     public ResponseEntity<Object> handleMethodArgumentException(MethodArgumentNotValidException me) {
 
@@ -32,7 +31,6 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(fieldErrorMessages, HttpStatus.BAD_REQUEST);
     }
 
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler({ValidationException.class})
     public ResponseEntity<Object> handleValidationExceptions(ValidationException ve) {
 
