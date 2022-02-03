@@ -2,6 +2,7 @@ package com.aes.corebackend.service;
 
 import com.aes.corebackend.entity.UserCredential;
 import com.aes.corebackend.repository.UserCredentialRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,11 +16,11 @@ import java.util.Optional;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
 
     final Logger logger = LoggerFactory.getLogger(CustomUserDetailsService.class);
 
-    @Autowired
     private UserCredentialRepository repository;
 
     @Override
