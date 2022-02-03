@@ -24,25 +24,24 @@ public class PersonalTrainingService {
         User user = userService.getUserByUserId(userId);
         /** check if user exists */
         if (Objects.nonNull(user)) {
-            /** convert dto to entity */
-            PersonalTrainingInfo personalTrainingInfoEntity = PersonalTrainingDTO.getPersonalTrainingEntity(trainingDTO);
-            personalTrainingInfoEntity.setUser(user);
             /** create training record  and build response object */
-            if (this.createTraining(personalTrainingInfoEntity)) {
+            if (this.createTraining(trainingDTO, user)) {
                 response.setMessage("Training creation successful");
                 response.setSuccess(true);
             } else {
                 response.setMessage("Training creation failed");
-                response.setSuccess(false);
             }
         }
         return response;
 
     }
 
-    private boolean createTraining(PersonalTrainingInfo trainingInfo) {
+    private boolean createTraining(PersonalTrainingDTO trainingDTO, User user) {
+        /** convert dto to entity */
+        PersonalTrainingInfo personalTrainingInfoEntity = PersonalTrainingDTO.getPersonalTrainingEntity(trainingDTO);
+        personalTrainingInfoEntity.setUser(user);
         try {
-            personalTrainingRepository.save(trainingInfo);
+            personalTrainingRepository.save(personalTrainingInfoEntity);
         } catch (Exception e) {
             e.printStackTrace();
             return false;
@@ -58,26 +57,24 @@ public class PersonalTrainingService {
             PersonalTrainingInfo existingTraining = personalTrainingRepository.findPersonalTrainingInfoByIdAndUserId(trainingId, userId);
             /** check if training record exists */
             if (Objects.nonNull(existingTraining)) {
-                /** convert training DTO to Entity object */
-                PersonalTrainingInfo updatedTraining = PersonalTrainingDTO.getPersonalTrainingEntity(personalTrainingDTO);
-                updatedTraining.setUser(user);
                 /** update record and build response object */
-                if (this.updateTraining(updatedTraining, trainingId)) {
+                if (this.updateTraining(personalTrainingDTO, user, trainingId)) {
                     response.setMessage("Training update successful");
                     response.setSuccess(true);
                 } else {
                     response.setMessage("Training update failed");
-                    response.setSuccess(false);
                 }
             } else {
                 response.setMessage("Training record not found");
-                response.setSuccess(false);
             }
         }
         return response;
     }
 
-    private boolean updateTraining(PersonalTrainingInfo updatedTraining, Long trainingId) {
+    private boolean updateTraining(PersonalTrainingDTO updatedTrainingDTO, User user, Long trainingId) {
+        /** convert training DTO to Entity object */
+        PersonalTrainingInfo updatedTraining = PersonalTrainingDTO.getPersonalTrainingEntity(updatedTrainingDTO);
+        updatedTraining.setUser(user);
         try {
             updatedTraining.setId(trainingId);
             personalTrainingRepository.save(updatedTraining);
@@ -93,10 +90,10 @@ public class PersonalTrainingService {
         User user = userService.getUserByUserId(userId);
         /** check if user exists */
         if (Objects.nonNull(user)) {
-            ArrayList<PersonalTrainingInfo> trainings = this.getTrainingsByUserId(userId);
-            if (trainings.size() > 0) {
+            ArrayList<PersonalTrainingInfo> trainingList = personalTrainingRepository.findPersonalTrainingInfosByUserId(userId);
+            if (trainingList.size() > 0) {
                 /** convert Entity into DTO objects */
-                ArrayList<PersonalTrainingDTO> trainingDTOS = this.convertToDTOs(trainings);
+                ArrayList<PersonalTrainingDTO> trainingDTOS = this.convertToDTOs(trainingList);
                 /** build response object */
                 response.setData(trainingDTOS);
                 response.setSuccess(true);
@@ -114,16 +111,6 @@ public class PersonalTrainingService {
             trainingDTOS.add(PersonalTrainingDTO.getPersonalTrainingDTO(training));
         });
         return trainingDTOS;
-    }
-
-    private ArrayList<PersonalTrainingInfo> getTrainingsByUserId(Long userId) {
-        ArrayList<PersonalTrainingInfo> trainings = new ArrayList<>();
-        try {
-            trainings = personalTrainingRepository.findPersonalTrainingInfosByUserId(userId);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return trainings;
     }
 
     public PersonnelManagementResponseDTO read(Long userId, Long trainingId) {
