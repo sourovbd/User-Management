@@ -1,6 +1,7 @@
 package com.aes.corebackend.controller;
 
 import com.aes.corebackend.dto.ResponseDTO;
+import com.aes.corebackend.dto.UserDTO;
 import com.aes.corebackend.entity.User;
 import com.aes.corebackend.entity.UserCredential;
 import com.aes.corebackend.service.UserService;
@@ -69,6 +70,20 @@ public class UserControllerTest {
         user.setEmployeeId("0101");
         user.setRoles("EMPLOYEE");
         user.setUserCredential(userCredential);
+
+        UserDTO userDto = new UserDTO();
+        userDto.setDesignation("agm");
+        userDto.setDepartment("accounts");
+        userDto.setEmailAddress("mdahad118@gmail.com");
+        userDto.setBusinessUnit("a1polymar");
+        userDto.setEmployeeId("0101");
+        userDto.setRoles("EMPLOYEE");
+        ResponseDTO responseDTO = new ResponseDTO();
+        responseDTO.setMessage("user created successfully");
+        responseDTO.setSuccess(true);
+        responseDTO.setData(user);
+        Mockito.when(userService.create(user,userDto)).thenReturn(responseDTO);
+
         String jsonRequest = om.writeValueAsString(user);
         MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders
                 .post("/users")
@@ -77,6 +92,7 @@ public class UserControllerTest {
                 .content(jsonRequest);
         mockMvc.perform(mockRequest)
                 .andExpect(status().isOk());
+
     }
 
     @Test
@@ -97,7 +113,11 @@ public class UserControllerTest {
                         .andExpect(jsonPath("$.data[0].emailAddress").value("abc@gmail.com"))
                         .andExpect(jsonPath("$.data[0].designation").value("agm"))
                         .andExpect(jsonPath("$.data[0].employeeId").value("101"))
-                        .andExpect(jsonPath("$.data[0].userCredential.active").value(true));
+                        .andExpect(jsonPath("$.data[0].businessUnit").value("a1polymar"))
+                        .andExpect(jsonPath("$.data[0].department").value("accounts"))
+                        .andExpect(jsonPath("$.data[0].roles").value("EMPLOYEE"))
+                        .andExpect(jsonPath("$.data[0].userCredential.active").value(true))
+                        .andExpect(jsonPath("$.data[0].userCredential.password").value("a1wq"));
     }
 
     @Test
@@ -113,7 +133,17 @@ public class UserControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message").value("user found"))
-                .andExpect(jsonPath("$.data").value(user_1));
+                .andExpect(jsonPath("$.data").value(user_1))
+                .andExpect(jsonPath("$.data.id").value(1L))
+                .andExpect(jsonPath("$.data.emailAddress").value("abc@gmail.com"))
+                .andExpect(jsonPath("$.data.designation").value("agm"))
+                .andExpect(jsonPath("$.data.employeeId").value("101"))
+                .andExpect(jsonPath("$.data.businessUnit").value("a1polymar"))
+                .andExpect(jsonPath("$.data.department").value("accounts"))
+                .andExpect(jsonPath("$.data.roles").value("EMPLOYEE"))
+                .andExpect(jsonPath("$.data.userCredential.active").value(true))
+                .andExpect(jsonPath("$.data.userCredential.password").value("a1wq"));
+
     }
 
     @Test
