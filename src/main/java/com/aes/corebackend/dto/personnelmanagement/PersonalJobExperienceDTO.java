@@ -9,6 +9,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 import java.util.Date;
@@ -24,9 +25,11 @@ public class PersonalJobExperienceDTO implements Serializable {
     private String employerName;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, timezone = Constants.BD_TIMEZONE, pattern = Constants.BD_DATE_FORMAT)
+    @Past(message = "Start date must be in the past")
     private Date startDate;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, timezone = Constants.BD_TIMEZONE, pattern = Constants.BD_DATE_FORMAT)
+    @Past(message = "End date must be in the past")
     private Date endDate;
 
     @Length(min = 0, max = 50, message = "Designation field can be at max 50 characters long")

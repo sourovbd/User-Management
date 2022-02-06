@@ -2,12 +2,14 @@ package com.aes.corebackend.entity.personnelmanagement;
 
 
 import com.aes.corebackend.entity.User;
+import com.aes.corebackend.util.Constants;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
 import java.util.Date;
 
@@ -37,9 +39,13 @@ public class PersonalTrainingInfo {
     private String description;
 
     @Column(name = "start_date")
+    @DateTimeFormat(pattern = Constants.BD_DATE_FORMAT)
+    @Past(message = "Start date must be in the past")
     private Date startDate;
 
     @Column(name = "end_date")
+    @DateTimeFormat(pattern = Constants.BD_DATE_FORMAT)
+    @Past(message = "End date must be in the past")
     private Date endDate;
 
     @ManyToOne

@@ -1,11 +1,15 @@
 package com.aes.corebackend.controller.personnelmanagement;
 
 import com.aes.corebackend.dto.personnelmanagement.PersonalTrainingDTO;
+import com.aes.corebackend.dto.personnelmanagement.PersonnelManagementResponseDTO;
 import com.aes.corebackend.service.personnelmanagement.PersonalTrainingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @Controller
 @RequiredArgsConstructor
@@ -14,12 +18,18 @@ public class PersonalTrainingController {
     private final PersonalTrainingService personalTrainingService;
 
     @PostMapping(value = "/users/{userId}/trainings")
-    public ResponseEntity<?> createPersonalTraining(@RequestBody PersonalTrainingDTO personalTrainingDTO, @PathVariable Long userId) {
+    public ResponseEntity<?> createPersonalTraining(@Valid @RequestBody PersonalTrainingDTO personalTrainingDTO, BindingResult result, @PathVariable Long userId) {
+        if(result.hasErrors()){
+            return ResponseEntity.ok(new PersonnelManagementResponseDTO(result.getFieldError().getDefaultMessage(), false, null));
+        }
         return ResponseEntity.ok(personalTrainingService.create(personalTrainingDTO, userId));
     }
 
     @PutMapping(value = "/users/{userId}/trainings/{trainingId}")
-    public ResponseEntity<?> updatePersonalTraining(@RequestBody PersonalTrainingDTO personalTrainingDTO, @PathVariable Long userId, @PathVariable Long trainingId) {
+    public ResponseEntity<?> updatePersonalTraining(@Valid @RequestBody PersonalTrainingDTO personalTrainingDTO, BindingResult result, @PathVariable Long userId, @PathVariable Long trainingId) {
+        if(result.hasErrors()){
+            return ResponseEntity.ok(new PersonnelManagementResponseDTO(result.getFieldError().getDefaultMessage(), false, null));
+        }
         return ResponseEntity.ok(personalTrainingService.update(personalTrainingDTO, userId, trainingId));
     }
 

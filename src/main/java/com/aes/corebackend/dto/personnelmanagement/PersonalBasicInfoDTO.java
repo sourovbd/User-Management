@@ -10,7 +10,9 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Data
@@ -26,6 +28,7 @@ public class PersonalBasicInfoDTO {
     private String lastName;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, timezone = Constants.BD_TIMEZONE, pattern = Constants.BD_DATE_FORMAT)
+    @Past(message = "The date of birth must be in the past")
     private Date dateOfBirth;
 
     @Enumerated(EnumType.STRING)
