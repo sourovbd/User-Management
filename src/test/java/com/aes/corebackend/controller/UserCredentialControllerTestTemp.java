@@ -3,6 +3,7 @@ package com.aes.corebackend.controller;
 import com.aes.corebackend.dto.ForgotPasswordDTO;
 import com.aes.corebackend.dto.ResponseDTO;
 import com.aes.corebackend.dto.UserCredentialDTO;
+import com.aes.corebackend.entity.User;
 import com.aes.corebackend.entity.UserCredential;
 import com.aes.corebackend.service.UserCredentialService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -33,7 +34,11 @@ public class UserCredentialControllerTestTemp {
     private UserCredentialController userCredentialController;
 
     ObjectMapper om = new ObjectMapper();
+
+    private User user = new User(1L,"abc@gmail.com","agm","012580","a1polymar","accounts","EMPLOYEE", null);
     private UserCredential userCredentialTest = new UserCredential(1L, "012580", "123@5Aa7", true, "EMPLOYEE");
+
+    private ResponseDTO expectedResponse = new ResponseDTO();
 
     @BeforeEach
     public void setup() {
@@ -46,95 +51,118 @@ public class UserCredentialControllerTestTemp {
     @Test
     public void saveCredentialTest() throws Exception {
 
-        ResponseDTO expectedResponse = new ResponseDTO();
+        UserCredentialDTO userCredentialDTO = new UserCredentialDTO();
+        userCredentialDTO.setId(1L);
+        userCredentialDTO.setEmployeeId("012580");
+        userCredentialDTO.setPassword("1234@Aa");
+        userCredentialDTO.setActive(true);
+        userCredentialDTO.setRoles("EMPLOYEE");
+
+        expectedResponse.setResponses("Password must be 8 or more characters in length.", false, null);
+        badRequestHandler("/users-credential", om.writeValueAsString(userCredentialDTO), expectedResponse);
+
+        userCredentialDTO.setPassword("123456Aa");
+        expectedResponse.setMessage("Password must contain 1 or more special characters.");
+        badRequestHandler("/users-credential", om.writeValueAsString(userCredentialDTO), expectedResponse);
+
+        userCredentialDTO.setPassword("123456@a");
+        expectedResponse.setMessage("Password must contain 1 or more uppercase characters.");
+        badRequestHandler("/users-credential", om.writeValueAsString(userCredentialDTO), expectedResponse);
+
+        userCredentialDTO.setPassword("123456@A");
+        expectedResponse.setMessage("Password must contain 1 or more lowercase characters.");
+        badRequestHandler("/users-credential", om.writeValueAsString(userCredentialDTO), expectedResponse);
+
+        userCredentialDTO.setPassword("bbbccc@Aa");
+        expectedResponse.setMessage("Password must contain 1 or more digit characters.");
+        badRequestHandler("/users-credential", om.writeValueAsString(userCredentialDTO), expectedResponse);
+
+        userCredentialDTO.setPassword("bbb 1cc@Aa");
+        expectedResponse.setMessage("Password contains a whitespace character.");
+        badRequestHandler("/users-credential", om.writeValueAsString(userCredentialDTO), expectedResponse);
+
+        userCredentialDTO.setPassword(userCredentialTest.getPassword());
         expectedResponse.setResponses("Saved Successfully", true, userCredentialTest);
-
         Mockito.when(userCredentialService.save(userCredentialTest)).thenReturn(expectedResponse);
+        successRequestHandler("/users-credential", om.writeValueAsString(userCredentialDTO), expectedResponse);
 
-        MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders
-                .post("/users-credential/012580")
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON)
-                .content(om.writeValueAsString(userCredentialTest));
-
-        String actualResponse = mockMvc.perform(mockRequest)
-                .andExpect(status().isOk())
-                .andReturn()
-                .getResponse()
-                .getContentAsString();
-
-        assert om.writeValueAsString(expectedResponse).equals(actualResponse);
+        userCredentialDTO.setPassword(userCredentialTest.getPassword());
+        expectedResponse.setResponses("Save Failed", false, null);
+        Mockito.when(userCredentialService.save(userCredentialTest)).thenReturn(expectedResponse);
+        successRequestHandler("/users-credential", om.writeValueAsString(userCredentialDTO), expectedResponse);
     }
 
     @Test
     public void updateCredentialTest() throws Exception {
 
-        UserCredential userCredential = new UserCredential(1L, "012580", "1423$5Aa", true, "EMPLOYEE");
+        UserCredentialDTO userCredentialDTO = new UserCredentialDTO();
+        userCredentialDTO.setEmployeeId("012580");
+        userCredentialDTO.setPassword("12345@Aa");
 
-        ResponseDTO expectedResponse = new ResponseDTO();
-        expectedResponse.setResponses("Updated Successfully.", true, userCredential);
+        userCredentialTest.setPassword(userCredentialDTO.getPassword());
+        expectedResponse.setResponses("Success", true, userCredentialTest);
+        Mockito.when(userCredentialService.update(userCredentialDTO.to(userCredentialDTO))).thenReturn(expectedResponse);
+        successRequestHandler("/users/reset-password", om.writeValueAsString(userCredentialDTO), expectedResponse);
 
-        Mockito.when(userCredentialService.update(userCredential)).thenReturn(expectedResponse);
-
-        MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders
-                .post("/users/012580/reset-password")
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON)
-                .content(om.writeValueAsString(userCredential));
-
-        String actualResponse = mockMvc.perform(mockRequest)
-                .andExpect(status().isOk())
-                .andReturn()
-                .getResponse()
-                .getContentAsString();
-
-        assert om.writeValueAsString(expectedResponse).equals(actualResponse);
+        expectedResponse.setResponses("Failed", false, null);
+        Mockito.when(userCredentialService.update(userCredentialDTO.to(userCredentialDTO))).thenReturn(expectedResponse);
+        successRequestHandler("/users/reset-password", om.writeValueAsString(userCredentialDTO), expectedResponse);
     }
 
     @Test
     public void verifyCredentialTest() throws Exception {
         UserCredentialDTO userCredentialDTO = new UserCredentialDTO();
         userCredentialDTO.setEmployeeId("012580");
-        userCredentialDTO.setPassword("123@5Aa");
+        userCredentialDTO.setPassword("123@5Aa7");
 
-        ResponseDTO expectedResponse = new ResponseDTO();
-        expectedResponse.setResponses("Valid Password", true, userCredentialTest);
-
+        user.setUserCredential(userCredentialTest);
+        expectedResponse.setResponses("Valid Password", true, user);
         Mockito.when(userCredentialService.verifyPassword(userCredentialDTO)).thenReturn(expectedResponse);
+        successRequestHandler("/users/verify-credential", om.writeValueAsString(userCredentialDTO), expectedResponse);
 
-        MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders
-                .post("/users/verify-credential")
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON)
-                .content(om.writeValueAsString(userCredentialDTO));
-
-        String actualResponse = mockMvc.perform(mockRequest)
-                .andExpect(status().isOk())
-                .andReturn()
-                .getResponse()
-                .getContentAsString();
-
-        assert om.writeValueAsString(expectedResponse).equals(actualResponse);
+        userCredentialDTO.setPassword("123%5Aa7");
+        expectedResponse.setResponses("Invalid Password", false, null);
+        successRequestHandler("/users/verify-credential", om.writeValueAsString(userCredentialDTO), expectedResponse);
     }
 
     @Test
     public void forgotPasswordTest() throws Exception {
         ForgotPasswordDTO forgotPasswordDTO = new ForgotPasswordDTO();
+
+        forgotPasswordDTO.setEmailAddress("ab c@yahoo.com");
+        expectedResponse.setResponses("email id is invalid", false, null);
+        Mockito.when(userCredentialService.generateAndSendTempPass(forgotPasswordDTO.getEmailAddress())).thenReturn(expectedResponse);
+        badRequestHandler("/users/forgot-password", om.writeValueAsString(forgotPasswordDTO), expectedResponse);
+
         forgotPasswordDTO.setEmailAddress("abc@yahoo.com");
+        expectedResponse.setResponses("A new password is sent to your email.", true, userCredentialTest);
+        Mockito.when(userCredentialService.generateAndSendTempPass(forgotPasswordDTO.getEmailAddress())).thenReturn(expectedResponse);
+        successRequestHandler("/users/forgot-password", om.writeValueAsString(forgotPasswordDTO), expectedResponse);
+    }
 
-        ResponseDTO responseDTO =  new ResponseDTO();
-        responseDTO.setResponses("A new password is sent to your email.", true, null);
-        Mockito.when(userCredentialService.generateAndSendTempPass(forgotPasswordDTO.getEmailAddress())).thenReturn(responseDTO);
+    private void successRequestHandler(String uri, String requestJsonContent, ResponseDTO expectedResponse) throws Exception {
 
-        MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders
-                .post("/users/forgot-password")
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON)
-                .content(om.writeValueAsString(forgotPasswordDTO));
-
-        mockMvc.perform(mockRequest)
+        mockMvc.perform(MockMvcRequestBuilders
+                        .post(uri)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .content(requestJsonContent))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.message").value("A new password is sent to your email."))
-                .andExpect(jsonPath("$.success").value("true"));
+                .andExpect(jsonPath("$.message").value(expectedResponse.getMessage()))
+                .andExpect(jsonPath("$.success").value(expectedResponse.isSuccess()))
+                .andExpect(jsonPath("$.data").value(expectedResponse.getData()));
+    }
+
+    private void badRequestHandler(String uri, String requestJsonContent, ResponseDTO expectedResponse) throws Exception {
+
+        mockMvc.perform(MockMvcRequestBuilders
+                        .post(uri)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .content(requestJsonContent))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value(expectedResponse.getMessage()))
+                .andExpect(jsonPath("$.success").value(expectedResponse.isSuccess()))
+                .andExpect(jsonPath("$.data").value(expectedResponse.getData()));
     }
 }

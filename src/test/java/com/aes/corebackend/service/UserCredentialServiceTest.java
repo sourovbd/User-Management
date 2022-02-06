@@ -20,6 +20,8 @@ public class UserCredentialServiceTest {
 
     private UserCredential userCredentialTest = new UserCredential(1L, "012580", "123@5Aa", true, "EMPLOYEE");
 
+    private ResponseDTO expectedResponse = new ResponseDTO();
+
     @BeforeEach
     public void setup() {
         MockitoAnnotations.openMocks(this);
@@ -28,41 +30,63 @@ public class UserCredentialServiceTest {
 
     @Test
     public void saveTest() throws Exception {
-        ResponseDTO expectedResponse = new ResponseDTO();
-        expectedResponse.setResponses("Saved Successfully", true, userCredentialTest);
 
+        expectedResponse.setResponses("Saved Successfully", true, userCredentialTest);
         Mockito.when(userCredentialService.save(userCredentialTest)).thenReturn(expectedResponse);
         ResponseDTO actualResponse = userCredentialService.save(userCredentialTest);
-
         assert actualResponse.getMessage().equals(expectedResponse.getMessage());
-        assert actualResponse.getData() == expectedResponse.getData();
+
+        expectedResponse.setResponses("Save Failed", false, null);
+        Mockito.when(userCredentialService.save(userCredentialTest)).thenReturn(expectedResponse);
+        actualResponse = userCredentialService.save(userCredentialTest);
+        assert actualResponse.getMessage().equals(expectedResponse.getMessage());
     }
 
     @Test
     public void updateTest() {
-        UserCredential userCredential = new UserCredential(1L, "012580", "123$5Aa", true, "EMPLOYEE");
+        UserCredential updatedUserCredential = new UserCredential();
+        updatedUserCredential.setEmployeeId("012580");
+        updatedUserCredential.setPassword("123$5Aa");
 
-        ResponseDTO expectedResponse = new ResponseDTO();
-        expectedResponse.setResponses("Success", true, userCredential);
+        userCredentialTest.setPassword("123$5Aa");
+        expectedResponse.setResponses("Success", true, userCredentialTest);
+        Mockito.when(userCredentialService.update(updatedUserCredential)).thenReturn(expectedResponse);
 
-        Mockito.when(userCredentialService.update(userCredentialTest)).thenReturn(expectedResponse);
-        ResponseDTO actualResponse = userCredentialService.update(userCredentialTest);
+        ResponseDTO actualResponse = userCredentialService.update(updatedUserCredential);
+        System.out.println(actualResponse.toString());
+        assert actualResponse.getMessage().equals(expectedResponse.getMessage());
 
+
+        updatedUserCredential.setEmployeeId("013580");
+        expectedResponse.setResponses("Failed", false, null);
+        Mockito.when(userCredentialService.update(updatedUserCredential)).thenReturn(expectedResponse);
+
+        actualResponse = userCredentialService.update(updatedUserCredential);
+        System.out.println(actualResponse.toString());
         assert actualResponse.getMessage().equals(expectedResponse.getMessage());
     }
 
     @Test
     public void verifyCredentialTest() throws Exception {
-        UserCredentialDTO userCredentialDTO = new UserCredentialDTO();
-        userCredentialDTO.setEmployeeId("012580");
-        userCredentialDTO.setPassword("123@5Aa");
+        UserCredentialDTO validUserCredentialDTO = new UserCredentialDTO();
+        validUserCredentialDTO.setEmployeeId("012580");
+        validUserCredentialDTO.setPassword("123@5Aa");
 
-        ResponseDTO expectedResponse = new ResponseDTO();
         expectedResponse.setResponses("Valid Password", true, userCredentialTest);
+        Mockito.when(userCredentialService.verifyPassword(validUserCredentialDTO)).thenReturn(expectedResponse);
 
-        Mockito.when(userCredentialService.verifyPassword(userCredentialDTO)).thenReturn(expectedResponse);
-        ResponseDTO actualResponse = userCredentialService.verifyPassword(userCredentialDTO);
+        ResponseDTO actualResponse = userCredentialService.verifyPassword(validUserCredentialDTO);
+        assert actualResponse.getMessage().equals(expectedResponse.getMessage());
 
+
+        UserCredentialDTO invalidUserCredentialDTO = new UserCredentialDTO();
+        invalidUserCredentialDTO.setEmployeeId("012580");
+        invalidUserCredentialDTO.setPassword("123&5Aa");
+
+        expectedResponse.setResponses("Invalid Password", false, null);
+        Mockito.when(userCredentialService.verifyPassword(invalidUserCredentialDTO)).thenReturn(expectedResponse);
+
+        actualResponse = userCredentialService.verifyPassword(invalidUserCredentialDTO);
         assert actualResponse.getMessage().equals(expectedResponse.getMessage());
     }
 
@@ -70,12 +94,16 @@ public class UserCredentialServiceTest {
     public void generateAndSendTempPassTest() throws Exception {
         String email = "abc@gmail.com";
 
-        ResponseDTO expectedResponse = new ResponseDTO();
         expectedResponse.setResponses("A new password is sent to your email.", true, userCredentialTest);
-
         Mockito.when(userCredentialService.generateAndSendTempPass(email)).thenReturn(expectedResponse);
-        ResponseDTO actualResponse = userCredentialService.generateAndSendTempPass(email);
 
+        ResponseDTO actualResponse = userCredentialService.generateAndSendTempPass(email);
+        assert actualResponse.getMessage().equals(expectedResponse.getMessage());
+
+        expectedResponse.setResponses("Employee not found.", false, null);
+        Mockito.when(userCredentialService.generateAndSendTempPass(email)).thenReturn(expectedResponse);
+
+        actualResponse = userCredentialService.generateAndSendTempPass(email);
         assert actualResponse.getMessage().equals(expectedResponse.getMessage());
     }
 }
