@@ -4,6 +4,8 @@ import com.aes.corebackend.dto.ResponseDTO;
 import com.aes.corebackend.dto.UserDTO;
 import com.aes.corebackend.entity.User;
 import com.aes.corebackend.entity.UserCredential;
+import com.aes.corebackend.service.EmailSender;
+import com.aes.corebackend.service.EmailService;
 import com.aes.corebackend.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.assertj.core.util.Lists;
@@ -29,6 +31,8 @@ import java.util.List;
 
 import static org.assertj.core.internal.bytebuddy.matcher.ElementMatchers.is;
 import static org.hamcrest.Matchers.hasSize;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.mock;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -56,18 +60,19 @@ public class UserControllerTest {
         mockMvc = MockMvcBuilders
                 .standaloneSetup(userController)
                 .build();
+        //emailSender = mock(EmailSender.class);
     }
 
     @Test
     public void createUserTest() throws Exception {
-        UserCredential userCredential = new UserCredential(1, "101", "a1wq", true, "EMPLOYEE");
+        UserCredential userCredential = new UserCredential(1L, "105", "a1wq", true, "EMPLOYEE");
         User user = new User();
         user.setId(1L);
         user.setDesignation("agm");
         user.setDepartment("accounts");
         user.setEmailAddress("mdahad118@gmail.com");
         user.setBusinessUnit("a1polymar");
-        user.setEmployeeId("0101");
+        user.setEmployeeId("105");
         user.setRoles("EMPLOYEE");
         user.setUserCredential(userCredential);
 
@@ -76,14 +81,14 @@ public class UserControllerTest {
         userDto.setDepartment("accounts");
         userDto.setEmailAddress("mdahad118@gmail.com");
         userDto.setBusinessUnit("a1polymar");
-        userDto.setEmployeeId("0101");
+        userDto.setEmployeeId("105");
         userDto.setRoles("EMPLOYEE");
         ResponseDTO responseDTO = new ResponseDTO();
         responseDTO.setMessage("user created successfully");
         responseDTO.setSuccess(true);
         responseDTO.setData(user);
         Mockito.when(userService.create(user,userDto)).thenReturn(responseDTO);
-
+        //doNothing().when(emailSender.send(user.getEmailAddress(),"This is a test email"));
         String jsonRequest = om.writeValueAsString(user);
         MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders
                 .post("/users")
@@ -91,8 +96,8 @@ public class UserControllerTest {
                 .accept(MediaType.APPLICATION_JSON)
                 .content(jsonRequest);
         mockMvc.perform(mockRequest)
-                .andExpect(status().isOk());
-
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.message").value("user created successfully"));
     }
 
     @Test

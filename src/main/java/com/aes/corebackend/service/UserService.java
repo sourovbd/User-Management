@@ -27,7 +27,7 @@ public class UserService {
         User createdUser = userRepository.save(user);
         ResponseDTO responseDTO = new ResponseDTO("user creation failed",false,null);
         if(Objects.nonNull(createdUser)) {
-            emailSender.send(userDto.dtoToEntity(userDto).getEmailAddress(),"This is a test email");
+            // emailSender.send(userDto.dtoToEntity(userDto).getEmailAddress(),"This is a test email");
             responseDTO.setResponses("user created successfully", true, createdUser);
         }
         return responseDTO;

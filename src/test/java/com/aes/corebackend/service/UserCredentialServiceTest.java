@@ -43,10 +43,10 @@ public class UserCredentialServiceTest {
         UserCredential userCredential = new UserCredential(1L, "012580", "123$5Aa", true, "EMPLOYEE");
 
         ResponseDTO expectedResponse = new ResponseDTO();
-        expectedResponse.setResponses("Updated Successfully.", true, userCredential);
+        expectedResponse.setResponses("Success", true, userCredential);
 
-        Mockito.when(userCredentialService.update(userCredentialTest, "012580")).thenReturn(expectedResponse);
-        ResponseDTO actualResponse = userCredentialService.update(userCredentialTest, "012580");
+        Mockito.when(userCredentialService.update(userCredentialTest)).thenReturn(expectedResponse);
+        ResponseDTO actualResponse = userCredentialService.update(userCredentialTest);
 
         assert actualResponse.getMessage().equals(expectedResponse.getMessage());
     }

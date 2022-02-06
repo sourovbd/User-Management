@@ -40,15 +40,15 @@ public class UserCredentialController {
         return ResponseEntity.ok(userCredentialService.save(userCredentialDTO.to(userCredentialDTO)));
     }
 
-    @PostMapping("/users/{employeeId}/reset-password")
+    @PostMapping("/users/reset-password")
     @PreAuthorize("hasAuthority('EMPLOYEE')")
-    public ResponseEntity<?> updateCredential(@Valid @RequestBody UserCredentialDTO userCredentialDTO, BindingResult result, @PathVariable String employeeId) {
+    public ResponseEntity<?> updateCredential(@Valid @RequestBody UserCredentialDTO userCredentialDTO, BindingResult result) {
 
         if (result.hasErrors()) {
             return new ResponseEntity(new ResponseDTO(result.getFieldError().getDefaultMessage(), false, null), HttpStatus.BAD_REQUEST);
         }
 
-        return new ResponseEntity(new ResponseDTO("Saved Successfully", true, userCredentialService.update(userCredentialDTO.to(userCredentialDTO))), HttpStatus.OK);
+        return new ResponseEntity(userCredentialService.update(userCredentialDTO.to(userCredentialDTO)), HttpStatus.OK);
     }
 
     /** During login */
@@ -56,10 +56,7 @@ public class UserCredentialController {
     @PreAuthorize("hasAuthority('EMPLOYEE')")
     public ResponseEntity<?> verifyCredential(@RequestBody UserCredentialDTO userCredentialDTO) {
 
-        if(userCredentialService.verifyPassword(userCredentialDTO)) {
-            return new ResponseEntity(new ResponseDTO("Valid Password", true, userCredentialDTO), HttpStatus.OK);
-        }
-        return new ResponseEntity(new ResponseDTO("Invalid Password", true, userCredentialDTO), HttpStatus.UNAUTHORIZED);
+        return ResponseEntity.ok(userCredentialService.verifyPassword(userCredentialDTO));
     }
 
     @PostMapping("/users/forgot-password")
@@ -67,7 +64,7 @@ public class UserCredentialController {
     public ResponseEntity<?> forgotPassword(@Valid @RequestBody ForgotPasswordDTO forgotPasswordDTO, BindingResult result) {
 
         if (result.hasErrors()) {
-            return ResponseEntity.ok(new ResponseDTO(result.getFieldError().getDefaultMessage(), false, null));
+            return new ResponseEntity((new ResponseDTO(result.getFieldError().getDefaultMessage(), false, null)), HttpStatus.BAD_REQUEST);
         }
 
         return  ResponseEntity.ok(userCredentialService.generateAndSendTempPass(forgotPasswordDTO.getEmailAddress()));
