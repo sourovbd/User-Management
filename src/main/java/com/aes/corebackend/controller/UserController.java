@@ -31,13 +31,13 @@ public class UserController {
 
     @PostMapping("/users")
     @PreAuthorize("hasAuthority('EMPLOYEE')")
-    public ResponseEntity<?> create(@RequestBody UserDTO userDto) {
+    public ResponseEntity<?> create(@Valid @RequestBody UserDTO userDto) {
         return ResponseEntity.ok(userService.create(userDto.dtoToEntity(userDto),userDto));
     }
 
     @PutMapping("/users/{id}")
     @PreAuthorize("hasAuthority('EMPLOYEE')")
-    public ResponseEntity<?> updateUser(@RequestBody @Valid  UserDTO userDto, @PathVariable long id) {
+    public ResponseEntity<?> updateUser(@Valid @RequestBody  UserDTO userDto, @PathVariable long id) {
 
         return ResponseEntity.ok(userService.update(userDto.dtoToEntity(userDto),id));
     }

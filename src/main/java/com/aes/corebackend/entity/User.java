@@ -24,7 +24,7 @@ public class User {
     @NotBlank(message = "email is mandatory")
     private String emailAddress;
 
-    @NotBlank(message = "designation id is mandatory")
+    //@NotBlank(message = "designation id is mandatory")
     @Column(name = "designation")
     private String designation;
 
