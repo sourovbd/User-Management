@@ -37,18 +37,23 @@ public class UserCredentialService {
                 new ResponseDTO("Save Failed", false, null);
     }
 
-    public UserCredential update(UserCredential userCredential) {
+    public ResponseDTO update(UserCredential userCredential) {
 
         UserCredential existingUerCredential = getEmployeeId(userCredential.getEmployeeId());
         if (Objects.nonNull(existingUerCredential)) {
             existingUerCredential.setPassword(passwordEncoder.encode(userCredential.getPassword()));
         }
-        return userCredentialRepository.save(existingUerCredential);
+        UserCredential updatedUserCredential = userCredentialRepository.save(existingUerCredential);
+        return Objects.nonNull(updatedUserCredential) ?
+                new ResponseDTO("Success", true, updatedUserCredential) :
+                new ResponseDTO("Failed", false, null);
     }
 
-    public boolean verifyPassword(UserCredentialDTO userCredentialDTO) {
+    public ResponseDTO verifyPassword(UserCredentialDTO userCredentialDTO) {
         UserCredential userCredential =  userCredentialRepository.findByEmployeeId(userCredentialDTO.getEmployeeId()).get();
-        return passwordEncoder.matches(userCredentialDTO.getPassword(), userCredential.getPassword());
+        return passwordEncoder.matches(userCredentialDTO.getPassword(), userCredential.getPassword()) ?
+                new ResponseDTO("Valid Password", true, userCredential) :
+                new ResponseDTO("Invalid Password", false, null);
     }
 
     public UserCredential getEmployeeId(String employeeId) {

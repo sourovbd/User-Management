@@ -21,7 +21,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     final Logger logger = LoggerFactory.getLogger(CustomUserDetailsService.class);
 
-    private UserCredentialRepository repository;
+    private final UserCredentialRepository repository;
 
     @Override
     public UserDetails loadUserByUsername(String employeeId) throws UsernameNotFoundException {

@@ -74,7 +74,7 @@ public class UserCredentialControllerTestTemp {
         ResponseDTO expectedResponse = new ResponseDTO();
         expectedResponse.setResponses("Updated Successfully.", true, userCredential);
 
-        Mockito.when(userCredentialService.update(userCredential, "012580")).thenReturn(expectedResponse);
+        Mockito.when(userCredentialService.update(userCredential)).thenReturn(expectedResponse);
 
         MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders
                 .post("/users/012580/reset-password")
