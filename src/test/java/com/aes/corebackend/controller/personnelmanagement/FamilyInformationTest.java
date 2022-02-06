@@ -82,7 +82,7 @@ public class FamilyInformationTest {
     }
 
     @Test
-    public void updateAttributesTest() throws Exception {
+    public void updateFamilyInformationTest() throws Exception {
 
         PersonnelManagementResponseDTO responseDTO = new PersonnelManagementResponseDTO("Update Family Info Success", true, null);
         familyDTO.setMothersName("Neela Manwar");
@@ -102,7 +102,7 @@ public class FamilyInformationTest {
     }
 
     @Test
-    public void getAttributesTest() throws Exception {
+    public void getFamilyInformationTest() throws Exception {
         PersonalFamilyInfo family = PersonalFamilyInfoDTO.getPersonalFamilyEntity(familyDTO);
         PersonnelManagementResponseDTO responseDTO = new PersonnelManagementResponseDTO("Family Information found",
                 true,

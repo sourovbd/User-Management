@@ -61,7 +61,7 @@ public class PersonalIdentificationTest {
     }
 
     @Test
-    public void createFamilyInformationTest() throws Exception {
+    public void createIdentificationTest() throws Exception {
 
         PersonnelManagementResponseDTO responseDTO = new PersonnelManagementResponseDTO("Create ID Info Success", true, null);
         // This is the expected value as well wierdly
@@ -81,7 +81,7 @@ public class PersonalIdentificationTest {
     }
 
     @Test
-    public void updateAttributesTest() throws Exception {
+    public void updateAIdentificationTest() throws Exception {
 
         PersonnelManagementResponseDTO responseDTO = new PersonnelManagementResponseDTO("Update ID Info Success", true, null);
         Mockito.when(service.update(idDTO, user.getId())).thenReturn(responseDTO);// initialize service with expected response
@@ -101,7 +101,7 @@ public class PersonalIdentificationTest {
 
 
     @Test
-    public void getAttributesTest() throws Exception {
+    public void getIdentificationTest() throws Exception {
         PersonalIdentificationInfo id = PersonalIdentificationInfoDTO.getPersonalIdentificationEntity(idDTO);
         PersonnelManagementResponseDTO responseDTO = new PersonnelManagementResponseDTO("Identification information found",
                 true,
