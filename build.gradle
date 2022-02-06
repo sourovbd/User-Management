@@ -49,6 +49,10 @@ dependencies {
 	/** Spring validation dependencies */
 	implementation 'org.passay:passay:1.6.1'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+	// https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple
+	implementation 'com.googlecode.json-simple:json-simple:1.1.1'
+
 }
 
 tasks.named('test') {

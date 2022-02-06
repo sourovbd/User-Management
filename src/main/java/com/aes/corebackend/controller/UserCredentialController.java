@@ -1,9 +1,7 @@
 package com.aes.corebackend.controller;
 
 import com.aes.corebackend.dto.ForgotPasswordDTO;
-import com.aes.corebackend.dto.ResponseDTO;
 import com.aes.corebackend.dto.UserCredentialDTO;
-import com.aes.corebackend.entity.UserCredential;
 import com.aes.corebackend.service.UserCredentialService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,11 +12,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.validation.Valid;
+
+import static org.springframework.http.ResponseEntity.badRequest;
+import static com.aes.corebackend.util.response.AjaxResponse.prepareErrorResponse;
 
 @Slf4j
 @Controller
@@ -34,10 +34,10 @@ public class UserCredentialController {
     public ResponseEntity<?> saveCredential(@RequestBody @Valid UserCredentialDTO userCredentialDTO, BindingResult result) throws Exception {
 
         if (result.hasErrors()) {
-            return new ResponseEntity(new ResponseDTO(result.getFieldError().getDefaultMessage(), false, null), HttpStatus.BAD_REQUEST);
+            return badRequest().body(prepareErrorResponse(result));
         }
 
-        return ResponseEntity.ok(userCredentialService.save(userCredentialDTO.to(userCredentialDTO)));
+        return userCredentialService.save(userCredentialDTO.to(userCredentialDTO));
     }
 
     @PostMapping("/users/reset-password")
@@ -45,7 +45,7 @@ public class UserCredentialController {
     public ResponseEntity<?> updateCredential(@Valid @RequestBody UserCredentialDTO userCredentialDTO, BindingResult result) {
 
         if (result.hasErrors()) {
-            return new ResponseEntity(new ResponseDTO(result.getFieldError().getDefaultMessage(), false, null), HttpStatus.BAD_REQUEST);
+            return badRequest().body(prepareErrorResponse(result));
         }
 
         return new ResponseEntity(userCredentialService.update(userCredentialDTO.to(userCredentialDTO)), HttpStatus.OK);
@@ -64,7 +64,7 @@ public class UserCredentialController {
     public ResponseEntity<?> forgotPassword(@Valid @RequestBody ForgotPasswordDTO forgotPasswordDTO, BindingResult result) {
 
         if (result.hasErrors()) {
-            return new ResponseEntity((new ResponseDTO(result.getFieldError().getDefaultMessage(), false, null)), HttpStatus.BAD_REQUEST);
+            return badRequest().body(prepareErrorResponse(result));
         }
 
         return  ResponseEntity.ok(userCredentialService.generateAndSendTempPass(forgotPasswordDTO.getEmailAddress()));
