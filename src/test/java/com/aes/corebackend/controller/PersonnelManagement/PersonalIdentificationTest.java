@@ -1,4 +1,4 @@
-package com.aes.corebackend.controller.PersonalManagement;
+package com.aes.corebackend.controller.PersonnelManagement;
 
 import com.aes.corebackend.controller.personnelmanagement.FamilyInformationController;
 import com.aes.corebackend.controller.personnelmanagement.PersonalIdentificationController;
