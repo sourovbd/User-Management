@@ -1,16 +1,17 @@
-package com.aes.corebackend.controller.PersonnelManagement;
+package com.aes.corebackend.controller.personnelmanagement;
 
-
-import com.aes.corebackend.controller.personnelmanagement.PersonalAttributesController;
-import com.aes.corebackend.dto.personnelmanagement.PersonalAttributesDTO;
+import com.aes.corebackend.controller.personnelmanagement.FamilyInformationController;
+import com.aes.corebackend.controller.personnelmanagement.PersonalIdentificationController;
+import com.aes.corebackend.dto.personnelmanagement.PersonalFamilyInfoDTO;
+import com.aes.corebackend.dto.personnelmanagement.PersonalIdentificationInfoDTO;
 import com.aes.corebackend.dto.personnelmanagement.PersonnelManagementResponseDTO;
 import com.aes.corebackend.entity.User;
-import com.aes.corebackend.entity.personnelmanagement.PersonalAttributes;
-import com.aes.corebackend.service.personnelmanagement.PersonalAttributesService;
-import com.fasterxml.jackson.core.JsonProcessingException;
+import com.aes.corebackend.entity.personnelmanagement.PersonalFamilyInfo;
+import com.aes.corebackend.entity.personnelmanagement.PersonalIdentificationInfo;
+import com.aes.corebackend.service.personnelmanagement.FamilyInformationService;
+import com.aes.corebackend.service.personnelmanagement.PersonalIdentificationService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -18,7 +19,6 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -27,20 +27,20 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class PersonalAttributesTest {
+public class PersonalIdentificationTest {
     @Autowired
     private MockMvc mockMvc;
 
     @InjectMocks
-    private PersonalAttributesController controller;
+    private PersonalIdentificationController controller;
 
     @Mock
-    private PersonalAttributesService service;
+    private PersonalIdentificationService service;
 
 
     ObjectMapper om = new ObjectMapper();
     User user = new User();
-    PersonalAttributesDTO attributesDTO = new PersonalAttributesDTO();
+    PersonalIdentificationInfoDTO idDTO = new PersonalIdentificationInfoDTO();
 
     @BeforeEach
     public void setup() {   //Intialize mocks with openMocks, creating a mock controller
@@ -50,78 +50,75 @@ public class PersonalAttributesTest {
                 .build();
 
         user.setId(1L);
-        user.setDesignation("agm");
-        user.setDepartment("accounts");
-        user.setEmailAddress("mdahad118@gmail.com");
-        user.setBusinessUnit("a1polymar");
-        user.setEmployeeId("0101");
+        user.setDesignation("MD");
+        user.setDepartment("Company");
+        user.setEmailAddress("hossainfurkaan@gmail.com");
+        user.setBusinessUnit("Anwar Enterprise Systems Ltd.");
+        user.setEmployeeId("0001");
 
-        attributesDTO.setReligion("Islam");
-        attributesDTO.setBirthPlace("Chittagong");
-        attributesDTO.setNationality("Bangladeshi");
-        attributesDTO.setBloodGroup("O+");
+        idDTO.setEtin("010101010101");
+        idDTO.setNationalID("012345678910");
     }
 
     @Test
-    public void createAttributesTest() throws Exception {
+    public void createFamilyInformationTest() throws Exception {
 
-        PersonnelManagementResponseDTO responseDTO = new PersonnelManagementResponseDTO("Create Attribute Success", true, null);
+        PersonnelManagementResponseDTO responseDTO = new PersonnelManagementResponseDTO("Create ID Info Success", true, null);
+        // This is the expected value as well wierdly
+        Mockito.when(service.create(idDTO, user.getId())).thenReturn(responseDTO);// initialize service with expected response
 
-        Mockito.when(service.create(attributesDTO, user.getId())).thenReturn(responseDTO);// initialize service with expected response
-
-        String jsonRequest = om.writeValueAsString(attributesDTO);  // payload
+        String jsonRequest = om.writeValueAsString(idDTO);  // payload
         MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders
-                .post("/users/1/attribute-information")
+                .post("/users/1/identification-information")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .content(jsonRequest);
 
         mockMvc.perform(mockRequest)
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.message").value("Create Attribute Success"))
+                .andExpect(jsonPath("$.message").value("Create ID Info Success"))
                 .andExpect(jsonPath("$.success").value(true));
     }
 
     @Test
     public void updateAttributesTest() throws Exception {
 
-        PersonnelManagementResponseDTO responseDTO = new PersonnelManagementResponseDTO("Update Attribute Success", true, null);
+        PersonnelManagementResponseDTO responseDTO = new PersonnelManagementResponseDTO("Update ID Info Success", true, null);
+        Mockito.when(service.update(idDTO, user.getId())).thenReturn(responseDTO);// initialize service with expected response
 
-        Mockito.when(service.update(attributesDTO, user.getId())).thenReturn(responseDTO);// initialize service with expected response
-
-        String jsonRequest = om.writeValueAsString(attributesDTO);  // payload
+        String jsonRequest = om.writeValueAsString(idDTO);  // payload
         MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders
-                .put("/users/1/attribute-information")
+                .put("/users/1/identification-information")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .content(jsonRequest);
 
         mockMvc.perform(mockRequest)
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.message").value("Update Attribute Success"))
+                .andExpect(jsonPath("$.message").value("Update ID Info Success"))
                 .andExpect(jsonPath("$.success").value(true));
     }
 
+
     @Test
     public void getAttributesTest() throws Exception {
-        PersonalAttributes attributes = PersonalAttributesDTO.getPersonalAttributesEntity(attributesDTO);
-        PersonnelManagementResponseDTO responseDTO = new PersonnelManagementResponseDTO("Personal Attribute found",
+        PersonalIdentificationInfo id = PersonalIdentificationInfoDTO.getPersonalIdentificationEntity(idDTO);
+        PersonnelManagementResponseDTO responseDTO = new PersonnelManagementResponseDTO("Identification information found",
                 true,
-                attributes);//Expected return
+                id);//Expected return
 
         Mockito.when(service.read(user.getId())).thenReturn(responseDTO);// testing service for read: Controller to Service
-                                                                            // [Checking if service is available]
+        // [Checking if service is available]
 
         MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders  //client to controller-- > just the request object
-                .get("/users/1/attribute-information")
+                .get("/users/1/identification-information")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON);
 
         mockMvc.perform(mockRequest)    //Call controller using request object
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.message").value("Personal Attribute found"))
+                .andExpect(jsonPath("$.message").value("Identification information found"))
                 .andExpect(jsonPath("$.success").value(true))
-                .andExpect(jsonPath("$.data").value(attributes));
+                .andExpect(jsonPath("$.data").value(id));
     }
-
 }
