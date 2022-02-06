@@ -39,11 +39,11 @@ public class UserCredentialService {
 
     public ResponseDTO update(UserCredential userCredential) {
 
-        UserCredential existingUerCredential = getEmployeeId(userCredential.getEmployeeId());
-        if (Objects.nonNull(existingUerCredential)) {
-            existingUerCredential.setPassword(passwordEncoder.encode(userCredential.getPassword()));
+        UserCredential existingUserCredential = getEmployeeId(userCredential.getEmployeeId());
+        if (Objects.nonNull(existingUserCredential)) {
+            existingUserCredential.setPassword(passwordEncoder.encode(userCredential.getPassword()));
         }
-        UserCredential updatedUserCredential = userCredentialRepository.save(existingUerCredential);
+        UserCredential updatedUserCredential = userCredentialRepository.save(existingUserCredential);
         return Objects.nonNull(updatedUserCredential) ?
                 new ResponseDTO("Success", true, updatedUserCredential) :
                 new ResponseDTO("Failed", false, null);

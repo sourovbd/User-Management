@@ -67,6 +67,15 @@ public class UserCredentialServiceTest {
     }
 
     @Test
+    public void getEmployeeIdTest() throws Exception {
+
+        Mockito.when(userCredentialService.getEmployeeId(userCredentialTest.getEmployeeId())).thenReturn(userCredentialTest);
+        UserCredential userCredential = userCredentialService.getEmployeeId(userCredentialTest.getEmployeeId());
+
+        assert userCredential.getEmployeeId().equals(userCredentialTest.getEmployeeId());
+    }
+
+    @Test
     public void verifyCredentialTest() throws Exception {
         UserCredentialDTO validUserCredentialDTO = new UserCredentialDTO();
         validUserCredentialDTO.setEmployeeId("012580");
