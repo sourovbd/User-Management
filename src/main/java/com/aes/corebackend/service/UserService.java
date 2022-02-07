@@ -6,8 +6,6 @@ import com.aes.corebackend.entity.User;
 import com.aes.corebackend.entity.UserCredential;
 import com.aes.corebackend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,9 +17,11 @@ import static com.aes.corebackend.util.response.APIResponseDesc.*;
 @RequiredArgsConstructor
 public class UserService {
 
-    private static APIResponse apiResponse = null;
     private final UserRepository userRepository;
+
     private final EmailSender emailSender;
+
+    private static APIResponse apiResponse = null;
 
     public APIResponse create(User user, UserDTO userDto) {
 
@@ -34,16 +34,16 @@ public class UserService {
         User createdUser = userRepository.save(user);
         if (Objects.nonNull(createdUser)) {
             emailSender.send(userDto.dtoToEntity(userDto).getEmailAddress(),"This is a test email");
-            apiResponse.setResponses(USER_CREATED_SUCCESSFULLY, TRUE, createdUser);
+            apiResponse.setResponse(USER_CREATED_SUCCESSFULLY, TRUE, createdUser);
         } else {
-            apiResponse.setResponses(USER_CREATION_FAILED, FALSE, NULL);
+            apiResponse.setResponse(USER_CREATION_FAILED, FALSE, NULL);
         }
         return apiResponse;
     }
 
     public APIResponse update(User user, long id) {
         User existingUser = userRepository.findById(id).orElse(null);
-        apiResponse.setResponses(USER_UPDATE_FAILED, FALSE, NULL);
+        apiResponse.setResponse(USER_UPDATE_FAILED, FALSE, NULL);
         if(Objects.nonNull(existingUser)) {
             existingUser.setDesignation(user.getDesignation());
             existingUser.setDepartment(user.getDepartment());
@@ -52,25 +52,25 @@ public class UserService {
             existingUser.setEmployeeId(user.getEmployeeId());
 
             userRepository.save(existingUser);
-            apiResponse.setResponses(USER_UPDATED_SUCCESSFULLY, TRUE, existingUser);
+            apiResponse.setResponse(USER_UPDATED_SUCCESSFULLY, TRUE, existingUser);
         }
         return apiResponse;
     }
 
     public APIResponse read(long id) {
-        apiResponse.setResponses(USER_NOT_FOUND, FALSE, NULL);
+        apiResponse.setResponse(USER_NOT_FOUND, FALSE, NULL);
         User existingUser = userRepository.findById(id).orElse(null);
         if(Objects.nonNull(existingUser)) {
-            apiResponse.setResponses(USER_FOUND, TRUE, existingUser);
+            apiResponse.setResponse(USER_FOUND, TRUE, existingUser);
         }
         return apiResponse;
     }
 
     public APIResponse read() {
-        apiResponse.setResponses(NO_USER_EXISTS, FALSE, NULL);
+        apiResponse.setResponse(NO_USER_EXISTS, FALSE, NULL);
         List<User> existingUsers = userRepository.findAll();
         if(Objects.nonNull(existingUsers)) {
-            apiResponse.setResponses(USER_FETCH_OK, TRUE, existingUsers);
+            apiResponse.setResponse(USER_FETCH_OK, TRUE, existingUsers);
         }
         return apiResponse;
     }

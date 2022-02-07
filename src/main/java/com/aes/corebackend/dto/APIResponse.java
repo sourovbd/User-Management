@@ -3,8 +3,6 @@ package com.aes.corebackend.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 
 @Data
 @AllArgsConstructor
@@ -15,7 +13,7 @@ public class APIResponse {
     private boolean success;
     private Object data;
 
-   public APIResponse setResponses(String message, boolean success, Object data) {
+   public APIResponse setResponse(String message, boolean success, Object data) {
        this.message = message;
        this.success = success;
        this.data = data;
