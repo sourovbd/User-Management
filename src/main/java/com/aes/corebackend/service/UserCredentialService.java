@@ -17,7 +17,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.Objects;
 
-import static com.aes.corebackend.dto.APIResponse.getResponse;
 import static com.aes.corebackend.util.response.APIResponseDesc.*;
 
 @Service
@@ -32,15 +31,16 @@ public class UserCredentialService {
 
     private final EmailSender emailSender;
 
-    private static ResponseEntity responseEntity = null;
+    private static APIResponse apiResponse = null;
 
-    public ResponseEntity<?> save(UserCredential userCredential) {
+    public APIResponse save(UserCredential userCredential) {
+
         userCredential.setPassword(passwordEncoder.encode(userCredential.getPassword()));
-        UserCredential userCredential1 = userCredentialRepository.save(userCredential);
+        UserCredential updatedUserCredential = userCredentialRepository.save(userCredential);
 
-        return Objects.nonNull(userCredential1) ?
-                getResponse(USER_CREDENTIAL_CREATED_SUCCESSFULLY, TRUE, userCredential1, HttpStatus.OK) :
-                getResponse(USER_CREDENTIAL_CREATION_FAILED, TRUE, NULL, HttpStatus.NO_CONTENT);
+        return Objects.nonNull(updatedUserCredential) ?
+                apiResponse.setResponse(USER_CREDENTIAL_CREATED_SUCCESSFULLY, TRUE, updatedUserCredential) :
+                apiResponse.setResponse(USER_CREATED_SUCCESSFULLY, TRUE, NULL);
     }
 
     public APIResponse update(UserCredential userCredential) {
@@ -50,17 +50,19 @@ public class UserCredentialService {
             existingUserCredential.setPassword(passwordEncoder.encode(userCredential.getPassword()));
         }
         UserCredential updatedUserCredential = userCredentialRepository.save(existingUserCredential);
+
         return Objects.nonNull(updatedUserCredential) ?
-                new APIResponse("Success", true, updatedUserCredential) :
-                new APIResponse("Failed", false, null);
+                apiResponse.setResponse(USER_CREDENTIAL_UPDATED_SUCCESSFULLY, TRUE, updatedUserCredential) :
+                apiResponse.setResponse(USER_CREDENTIAL_UPDATE_FAILED, FALSE, NULL);
     }
 
     public APIResponse verifyPassword(UserCredentialDTO userCredentialDTO) {
-        UserCredential userCredential =  userCredentialRepository.findByEmployeeId(userCredentialDTO.getEmployeeId())
+
+        UserCredential userCredential = userCredentialRepository.findByEmployeeId(userCredentialDTO.getEmployeeId())
                 .orElseThrow(ResourceNotFoundException::new);
         return passwordEncoder.matches(userCredentialDTO.getPassword(), userCredential.getPassword()) ?
-                new APIResponse("Valid Password", true, userCredential) :
-                new APIResponse("Invalid Password", false, null);
+                apiResponse.setResponse(VALID_PASSWORD, TRUE, userCredential) :
+                apiResponse.setResponse(INVALID_PASSWORD, FALSE, NULL);
     }
 
     public UserCredential getEmployeeId(String employeeId) {
@@ -68,22 +70,25 @@ public class UserCredentialService {
     }
 
     public APIResponse generateAndSendTempPass(String email) {
-        User user = userRepository.findByEmailAddress(email).get();
+        apiResponse.setResponse(EMPLOYEE_NOT_FOUND, FALSE, NULL);
+        User user = userRepository.findByEmailAddress(email).orElse(null);
         if (Objects.nonNull(user)) {
-            UserCredential userCredential = user.getUserCredential();
-
             String password = UserCredentialUtils.generatePassword(Constants.PASSWORD_MIN_LENGTH);
+
+            UserCredential userCredential = user.getUserCredential();
             userCredential.setPassword(password);
 
-            String messageBody = emailSender.buildEmailText(userCredential);
-            emailSender.send(user.getEmailAddress(), messageBody);
+            sendEmail(user, userCredential);
 
             userCredential.setPassword(passwordEncoder.encode(userCredential.getPassword()));
             userCredentialRepository.save(userCredential);
-            return new APIResponse("A new password is sent to your email.", true, user);
+            apiResponse.setResponse(NEW_PASSWORD_SENT, TRUE, user);
         }
-        else {
-            return new APIResponse("Employee not found.", false, null);
-        }
+        return apiResponse;
+    }
+
+    public void sendEmail(User user, UserCredential userCredential) {
+        String messageBody = emailSender.buildEmailText(userCredential);
+        emailSender.send(user.getEmailAddress(), messageBody);
     }
 }
