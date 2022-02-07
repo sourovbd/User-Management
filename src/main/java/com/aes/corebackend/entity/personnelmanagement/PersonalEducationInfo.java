@@ -1,6 +1,7 @@
 package com.aes.corebackend.entity.personnelmanagement;
 
 import com.aes.corebackend.entity.User;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -9,6 +10,7 @@ import javax.persistence.*;
 @Data
 @Entity
 @NoArgsConstructor
+@AllArgsConstructor
 public class PersonalEducationInfo {
     @Id
     @Column(name = "ID")

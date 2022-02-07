@@ -1,5 +1,6 @@
 package com.aes.corebackend.service.personnelmanagement;
 
+import com.aes.corebackend.dto.APIResponse;
 import com.aes.corebackend.dto.personnelmanagement.PersonalTrainingDTO;
 import com.aes.corebackend.dto.personnelmanagement.PersonnelManagementResponseDTO;
 import com.aes.corebackend.entity.User;
@@ -7,9 +8,14 @@ import com.aes.corebackend.entity.personnelmanagement.PersonalTrainingInfo;
 import com.aes.corebackend.repository.personnelmanagement.PersonalTrainingRepository;
 import com.aes.corebackend.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.apiguardian.api.API;
 import org.springframework.stereotype.Service;
+
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Objects;
+
+import static com.aes.corebackend.util.response.PersonnelManagementAPIResponseDescription.*;
 
 @Service
 @RequiredArgsConstructor
@@ -17,21 +23,22 @@ public class PersonalTrainingService {
 
     private final UserService userService;
     private final PersonalTrainingRepository personalTrainingRepository;
+    private APIResponse apiResponse = APIResponse.getApiResponse();
 
-    public PersonnelManagementResponseDTO create(PersonalTrainingDTO trainingDTO, Long userId) {
-        PersonnelManagementResponseDTO response = new PersonnelManagementResponseDTO("User not found", false, null);
+    public APIResponse create(PersonalTrainingDTO trainingDTO, Long userId) {
+        apiResponse.setResponse(USER_NOT_FOUND, FALSE, null);
         User user = userService.getUserByUserId(userId);
         /** check if user exists */
         if (Objects.nonNull(user)) {
             /** create training record  and build response object */
             if (this.createTraining(trainingDTO, user)) {
-                response.setMessage("Training creation successful");
-                response.setSuccess(true);
+                apiResponse.setMessage(TRAINING_CREATE_SUCCESS);
+                apiResponse.setSuccess(TRUE);
             } else {
-                response.setMessage("Training creation failed");
+                apiResponse.setMessage(TRAINING_CREATE_FAIL);
             }
         }
-        return response;
+        return apiResponse;
 
     }
 
@@ -48,8 +55,8 @@ public class PersonalTrainingService {
         return true;
     }
 
-    public PersonnelManagementResponseDTO update(PersonalTrainingDTO personalTrainingDTO, Long userId, Long trainingId) {
-        PersonnelManagementResponseDTO response = new PersonnelManagementResponseDTO("User not found", false, null);
+    public APIResponse update(PersonalTrainingDTO personalTrainingDTO, Long userId, Long trainingId) {
+        apiResponse.setResponse(USER_NOT_FOUND, FALSE, null);
         User user = userService.getUserByUserId(userId);
         /** check if user exists */
         if (Objects.nonNull(user)) {
@@ -58,16 +65,16 @@ public class PersonalTrainingService {
             if (Objects.nonNull(existingTraining)) {
                 /** update record and build response object */
                 if (this.updateTraining(personalTrainingDTO, user, trainingId)) {
-                    response.setMessage("Training update successful");
-                    response.setSuccess(true);
+                    apiResponse.setMessage(TRAINING_UPDATE_SUCCESS);
+                    apiResponse.setSuccess(TRUE);
                 } else {
-                    response.setMessage("Training update failed");
+                    apiResponse.setMessage(TRAINING_UPDATE_FAIL);
                 }
             } else {
-                response.setMessage("Training record not found");
+                apiResponse.setMessage(TRAINING_RECORD_NOT_FOUND);
             }
         }
-        return response;
+        return apiResponse;
     }
 
     private boolean updateTraining(PersonalTrainingDTO updatedTrainingDTO, User user, Long trainingId) {
@@ -84,8 +91,8 @@ public class PersonalTrainingService {
         return true;
     }
 
-    public PersonnelManagementResponseDTO read(Long userId) {
-        PersonnelManagementResponseDTO response = new PersonnelManagementResponseDTO("User not found", false, null);
+    public APIResponse read(Long userId) {
+        apiResponse.setResponse(USER_NOT_FOUND, FALSE, null);
         User user = userService.getUserByUserId(userId);
         /** check if user exists */
         if (Objects.nonNull(user)) {
@@ -94,14 +101,14 @@ public class PersonalTrainingService {
                 /** convert Entity into DTO objects */
                 ArrayList<PersonalTrainingDTO> trainingDTOS = this.convertToDTOs(trainingList);
                 /** build response object */
-                response.setData(trainingDTOS);
-                response.setSuccess(true);
-                response.setMessage("Training read successful");
+                apiResponse.setData(trainingDTOS);
+                apiResponse.setSuccess(TRUE);
+                apiResponse.setMessage(TRAINING_RECORD_FOUND); //("Training read successful");
             } else {
-                response.setMessage("Training records not found");
+                apiResponse.setMessage(TRAINING_RECORDS_FOUND); //("Training records not found");
             }
         }
-        return response;
+        return apiResponse;
     }
 
     private ArrayList<PersonalTrainingDTO> convertToDTOs(ArrayList<PersonalTrainingInfo> trainingList) {
@@ -112,8 +119,8 @@ public class PersonalTrainingService {
         return trainingDTOS;
     }
 
-    public PersonnelManagementResponseDTO read(Long userId, Long trainingId) {
-        PersonnelManagementResponseDTO response = new PersonnelManagementResponseDTO("User not found", false, null);
+    public APIResponse read(Long userId, Long trainingId) {
+        apiResponse.setResponse(USER_NOT_FOUND, FALSE, null);
         User user = userService.getUserByUserId(userId);
         /** check if user exists */
         if (Objects.nonNull(user)) {
@@ -121,13 +128,13 @@ public class PersonalTrainingService {
             /** check if training record exists */
             if (Objects.nonNull(training)) {
                 /** build response object */
-                response.setData(PersonalTrainingDTO.getPersonalTrainingDTO(training));
-                response.setMessage("Training record found");
-                response.setSuccess(true);
+                apiResponse.setData(PersonalTrainingDTO.getPersonalTrainingDTO(training));
+                apiResponse.setMessage(TRAINING_RECORD_FOUND);
+                apiResponse.setSuccess(TRUE);
             } else {
-                response.setMessage("Training record not found");
+                apiResponse.setMessage(TRAINING_RECORD_NOT_FOUND);
             }
         }
-        return response;
+        return apiResponse;
     }
 }

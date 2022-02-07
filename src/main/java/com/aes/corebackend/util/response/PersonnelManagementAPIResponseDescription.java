@@ -1,6 +1,9 @@
 package com.aes.corebackend.util.response;
 
 public class PersonnelManagementAPIResponseDescription {
+    public static final boolean TRUE = true;
+    public static final boolean FALSE = false;
+
     /** User messages */
     public static final String USER_NOT_FOUND = "User not found";
     /** Basic information messages */
@@ -25,4 +28,22 @@ public class PersonnelManagementAPIResponseDescription {
     public static final String JOB_EXPERIENCE_UPDATE_FAIL = "Job experience update failed";
     public static final String JOB_EXPERIENCE_RECORD_FOUND = "Job experience record found";
     public static final String JOB_EXPERIENCE_RECORD_NOT_FOUND = "Job experience record not found";
+
+    /** Education messages */
+    public static final String EDUCATION_CREATE_SUCCESS = "Education creation success";
+    public static final String EDUCATION_CREATE_FAIL = "Education creation failed";
+    public static final String EDUCATION_UPDATE_SUCCESS = "Education update success";
+    public static final String EDUCATION_UPDATE_FAIL = "Education update failed";
+    public static final String EDUCATION_RECORD_FOUND = "Education record found";
+    public static final String EDUCATION_RECORDS_FOUND = "Education records found";
+    public static final String EDUCATION_RECORD_NOT_FOUND = "Education record not found";
+
+    /** Training messages */
+    public static final String TRAINING_CREATE_SUCCESS = "Training creation successful";
+    public static final String TRAINING_CREATE_FAIL = "Training creation failed";
+    public static final String TRAINING_UPDATE_SUCCESS = "Training update successful";
+    public static final String TRAINING_UPDATE_FAIL = "Training update failed";
+    public static final String TRAINING_RECORD_FOUND = "Training record found";
+    public static final String TRAINING_RECORDS_FOUND = "Training records found";
+    public static final String TRAINING_RECORD_NOT_FOUND = "Training record not found";
 }
