@@ -16,6 +16,6 @@ public class EmailServiceTest {
 
     @Test
     public void sendEmailTest() {
-
+        emailService.send("test@gmail.com","this is a test email");
     }
 }
