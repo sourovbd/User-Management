@@ -19,6 +19,11 @@ public class APIResponse {
        this.data = data;
        return this;
    }
+
+   public static APIResponse getApiResposne() {
+       return new APIResponse();
+   }
+
 }
 
 
