@@ -184,6 +184,12 @@ public class UserControllerTest {
         responseDTO.setSuccess(true);
         responseDTO.setData(user);
 
+        APIResponse responseDTORead =  APIResponse.getApiResponse();
+        responseDTO.setMessage(USER_UPDATED_SUCCESSFULLY);
+        responseDTO.setSuccess(true);
+        responseDTO.setData(user);
+
+        Mockito.when(userService.read(1L)).thenReturn(responseDTORead);
         Mockito.when(userService.update(user,1L)).thenReturn(responseDTO);
         String jsonRequest = om.writeValueAsString(user);
         MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders
@@ -191,6 +197,5 @@ public class UserControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonRequest);
         mockMvc.perform(mockRequest).andExpect(status().isOk());
-    }
-*/
+    }*/
 }

@@ -97,17 +97,18 @@ public class UserServiceTest {
         assertEquals(returnedResponse.getData(),responseDTO.getData());
     }
 
-    /*@Test
+    @Test
     public void updateUserById() throws Exception {
         User user_1_temp = new User(1L,"abc@gmail.com","dgm","0101","a1polymar","accounts","EMPLOYEE",userCredential_1);
         APIResponse responseDTO = new APIResponse();
         responseDTO.setMessage("user updated successfully");
         responseDTO.setSuccess(true);
         responseDTO.setData(user_1_temp);
+        Mockito.when(userRepository.findById(1L)).thenReturn(Optional.ofNullable(user_1));
         Mockito.when(userRepository.save(user_1_temp)).thenReturn(user_1_temp);
         APIResponse returnedResponse = userService.update(user_1_temp,1L);
         assertEquals(returnedResponse.getData(),responseDTO.getData());
-    }*/
+    }
 
     public UserCredential createUserCredential(long id, String employeeId, String password, boolean flag, String roles) {
 
