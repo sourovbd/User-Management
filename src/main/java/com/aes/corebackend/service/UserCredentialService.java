@@ -15,7 +15,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.Objects;
 
-import static com.aes.corebackend.util.response.APIResponseDesc.*;
+import static com.aes.corebackend.util.response.APIResponseMessage.*;
 import static com.aes.corebackend.dto.APIResponse.getApiResposne;
 
 @Service
@@ -44,7 +44,7 @@ public class UserCredentialService {
 
     public APIResponse update(UserCredential userCredential) {
 
-        UserCredential existingUserCredential = getEmployeeId(userCredential.getEmployeeId());
+        UserCredential existingUserCredential = getEmployee(userCredential.getEmployeeId());
         if (Objects.nonNull(existingUserCredential)) {
             existingUserCredential.setPassword(passwordEncoder.encode(userCredential.getPassword()));
         }
@@ -64,7 +64,7 @@ public class UserCredentialService {
                 apiResponse.setResponse(INVALID_PASSWORD, FALSE, NULL);
     }
 
-    public UserCredential getEmployeeId(String employeeId) {
+    public UserCredential getEmployee(String employeeId) {
         return userCredentialRepository.findByEmployeeId(employeeId).orElseThrow(ResourceNotFoundException::new);
     }
 

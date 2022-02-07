@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Objects;
 
-import static com.aes.corebackend.util.response.APIResponseDesc.*;
+import static com.aes.corebackend.util.response.APIResponseMessage.*;
 import static com.aes.corebackend.dto.APIResponse.getApiResposne;
 @Service
 @RequiredArgsConstructor
