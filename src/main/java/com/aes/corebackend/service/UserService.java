@@ -21,7 +21,7 @@ public class UserService {
 
     private final EmailSender emailSender;
 
-    private static APIResponse apiResponse = null;
+    private APIResponse apiResponse = new APIResponse();
 
     public APIResponse create(User user, UserDTO userDto) {
 

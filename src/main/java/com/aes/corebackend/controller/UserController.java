@@ -38,28 +38,28 @@ public class UserController {
         }
         APIResponse apiResponse = userService.create(userDto.dtoToEntity(userDto),userDto);
 
-        return apiResponse.isSuccess() ? ok(apiResponse.getData()) : badRequest().body(apiResponse.getData());
+        return apiResponse.isSuccess() ? ok(apiResponse) : badRequest().body(apiResponse);
     }
 
     @PutMapping("/users/{id}")
     @PreAuthorize("hasAuthority('EMPLOYEE')")
     public ResponseEntity<?> updateUser(@RequestBody @Valid  UserDTO userDto, @PathVariable long id) {
         APIResponse apiResponse = userService.update(userDto.dtoToEntity(userDto),id);
-        return apiResponse.isSuccess() ? ok(apiResponse.getData()) : badRequest().body(apiResponse.getData());
+        return apiResponse.isSuccess() ? ok(apiResponse) : badRequest().body(apiResponse);
     }
 
     @GetMapping("/users/{id}")
     @PreAuthorize("hasAuthority('EMPLOYEE')")
     public ResponseEntity<?> getUserDetails(@PathVariable int id) {
         APIResponse apiResponse = userService.read(id);
-        return apiResponse.isSuccess() ? ok(apiResponse.getData()) : badRequest().body(apiResponse.getData());
+        return apiResponse.isSuccess() ? ok(apiResponse) : badRequest().body(apiResponse);
     }
 
     @GetMapping("/users")
     @PreAuthorize("hasAuthority('EMPLOYEE')")
     public ResponseEntity<?> getAllUsers() {
         APIResponse apiResponse = userService.read();
-        return apiResponse.isSuccess() ? ok(apiResponse.getData()) : badRequest().body(apiResponse.getData());
+        return apiResponse.isSuccess() ? ok(apiResponse) : badRequest().body(apiResponse);
     }
 
 }
