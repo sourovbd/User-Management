@@ -1,5 +1,6 @@
 package com.aes.corebackend.controller.personnelmanagement;
 
+import com.aes.corebackend.dto.APIResponse;
 import com.aes.corebackend.dto.personnelmanagement.PersonalBasicInfoDTO;
 import com.aes.corebackend.dto.personnelmanagement.PersonnelManagementResponseDTO;
 import com.aes.corebackend.entity.User;
@@ -7,6 +8,7 @@ import com.aes.corebackend.entity.personnelmanagement.PersonalAddressInfo;
 import com.aes.corebackend.entity.personnelmanagement.PersonalBasicInfo;
 import com.aes.corebackend.enumeration.Gender;
 import com.aes.corebackend.service.personnelmanagement.PersonalBasicInformationService;
+import com.aes.corebackend.util.response.PersonnelManagementAPIResponseDescription;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -44,6 +46,7 @@ public class PersonalBasicInformationTest {
     User user = new User();
     PersonalBasicInfo basicInfo = new PersonalBasicInfo();
     PersonalBasicInfoDTO basicInfoDTO = new PersonalBasicInfoDTO();
+    APIResponse response = APIResponse.getApiResposne();
 
     @BeforeEach
     public void setup() throws ParseException {
@@ -74,8 +77,8 @@ public class PersonalBasicInformationTest {
 
     @Test
     public void createBasicInformationTest() throws Exception {
-
-        PersonnelManagementResponseDTO response = new PersonnelManagementResponseDTO("Basic information creation successful", true, null);
+        response.setMessage(PersonnelManagementAPIResponseDescription.BASIC_INFORMATION_CREATE_SUCCESS);
+        response.setSuccess(true);
         /** initialize service with expected response*/
         Mockito.when(basicInformationService.create(basicInfoDTO, user.getId())).thenReturn(response);
 
@@ -88,17 +91,18 @@ public class PersonalBasicInformationTest {
 
         mockMvc.perform(mockRequest)
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.message").value("Basic information creation successful"))
+                .andExpect(jsonPath("$.message").value(PersonnelManagementAPIResponseDescription.BASIC_INFORMATION_CREATE_SUCCESS))
                 .andExpect(jsonPath("$.success").value(true));
     }
 
     @Test
     public void updateBasicInformationTest() throws Exception {
-        PersonnelManagementResponseDTO responseDTO = new PersonnelManagementResponseDTO("Basic information update successful", true, null);
+        response.setMessage(PersonnelManagementAPIResponseDescription.BASIC_INFORMATION_UPDATE_SUCCESS);
+        response.setSuccess(true);
         basicInfoDTO.setFirstName("Rifat");
 
         /** initialize service with expected response*/
-        Mockito.when(basicInformationService.update(basicInfoDTO, user.getId())).thenReturn(responseDTO);
+        Mockito.when(basicInformationService.update(basicInfoDTO, user.getId())).thenReturn(response);
 
         String jsonRequestPayload = om.writeValueAsString(basicInfoDTO);
         MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders
@@ -109,18 +113,18 @@ public class PersonalBasicInformationTest {
 
         mockMvc.perform(mockRequest)
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.message").value("Basic information update successful"))
+                .andExpect(jsonPath("$.message").value(PersonnelManagementAPIResponseDescription.BASIC_INFORMATION_UPDATE_SUCCESS))
                 .andExpect(jsonPath("$.success").value(true));
     }
 
     @Test
     public void readBasicInformationTest() throws Exception {
-        PersonnelManagementResponseDTO responseDTO = new PersonnelManagementResponseDTO("Basic information found",
-                true,
-                basicInfoDTO);
+        response.setMessage(PersonnelManagementAPIResponseDescription.BASIC_INFORMATION_RECORD_FOUND);
+        response.setSuccess(true);
+        response.setData(basicInfoDTO);
 
         /** initialize service with expected response*/
-        Mockito.when(basicInformationService.read(user.getId())).thenReturn(responseDTO);
+        Mockito.when(basicInformationService.read(user.getId())).thenReturn(response);
 
         MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders
                 .get("/users/1/basic-information")
@@ -129,7 +133,7 @@ public class PersonalBasicInformationTest {
 
         mockMvc.perform(mockRequest)
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.message").value("Basic information found"))
+                .andExpect(jsonPath("$.message").value(PersonnelManagementAPIResponseDescription.BASIC_INFORMATION_RECORD_FOUND))
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.data").value(basicInfoDTO));
     }
