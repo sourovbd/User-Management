@@ -14,17 +14,16 @@ import java.util.List;
 import java.util.Objects;
 
 import static com.aes.corebackend.util.response.APIResponseDesc.*;
-import static com.aes.corebackend.dto.APIResponse.getResponse;
 
 @Service
 @RequiredArgsConstructor
 public class UserService {
 
-    private static ResponseEntity responseEntity = null;
+    private static APIResponse apiResponse = null;
     private final UserRepository userRepository;
     private final EmailSender emailSender;
 
-    public ResponseEntity<?> create(User user, UserDTO userDto) {
+    public APIResponse create(User user, UserDTO userDto) {
 
         UserCredential userCredential = new UserCredential();
         userCredential.setEmployeeId(userDto.getEmployeeId());
@@ -33,55 +32,47 @@ public class UserService {
         user.setUserCredential(userCredential);
 
         User createdUser = userRepository.save(user);
-
         if (Objects.nonNull(createdUser)) {
             emailSender.send(userDto.dtoToEntity(userDto).getEmailAddress(),"This is a test email");
-            responseEntity = getResponse(USER_CREATED_SUCCESSFULLY, TRUE, createdUser, HttpStatus.OK);
+            apiResponse.setResponses(USER_CREATED_SUCCESSFULLY, TRUE, createdUser);
         } else {
-            responseEntity = getResponse(USER_CREATION_FAILED, FALSE, NULL, HttpStatus.NOT_FOUND);
+            apiResponse.setResponses(USER_CREATION_FAILED, FALSE, NULL);
         }
-        return responseEntity;
+        return apiResponse;
     }
 
     public APIResponse update(User user, long id) {
-            User existingUser = userRepository.findById(id).orElse(null);
-            APIResponse responseDTO = new APIResponse("user not found",false,null);
+        User existingUser = userRepository.findById(id).orElse(null);
+        apiResponse.setResponses(USER_UPDATE_FAILED, FALSE, NULL);
+        if(Objects.nonNull(existingUser)) {
+            existingUser.setDesignation(user.getDesignation());
+            existingUser.setDepartment(user.getDepartment());
+            existingUser.setEmailAddress(user.getEmailAddress());
+            existingUser.setBusinessUnit(user.getBusinessUnit());
+            existingUser.setEmployeeId(user.getEmployeeId());
 
-            if(Objects.nonNull(existingUser)) {
-
-                existingUser.setDesignation(user.getDesignation());
-                existingUser.setDepartment(user.getDepartment());
-                existingUser.setEmailAddress(user.getEmailAddress());
-                existingUser.setBusinessUnit(user.getBusinessUnit());
-                existingUser.setEmployeeId(user.getEmployeeId());
-
-                userRepository.save(existingUser);
-
-                responseDTO.setResponses("user updated successfully", true, existingUser);
-            }
-
-            return responseDTO;
-
+            userRepository.save(existingUser);
+            apiResponse.setResponses(USER_UPDATED_SUCCESSFULLY, TRUE, existingUser);
+        }
+        return apiResponse;
     }
 
     public APIResponse read(long id) {
-        APIResponse responseDTO = new APIResponse("user not found",false,null);
+        apiResponse.setResponses(USER_NOT_FOUND, FALSE, NULL);
         User existingUser = userRepository.findById(id).orElse(null);
-
         if(Objects.nonNull(existingUser)) {
-            responseDTO.setResponses("user found", true, existingUser);
+            apiResponse.setResponses(USER_FOUND, TRUE, existingUser);
         }
-        return responseDTO;
+        return apiResponse;
     }
 
     public APIResponse read() {
-        APIResponse responseDTO = new APIResponse("No user exist",false,null);
+        apiResponse.setResponses(NO_USER_EXISTS, FALSE, NULL);
         List<User> existingUsers = userRepository.findAll();
-
         if(Objects.nonNull(existingUsers)) {
-            responseDTO.setResponses("user fetch ok", true, existingUsers);
+            apiResponse.setResponses(USER_FETCH_OK, TRUE, existingUsers);
         }
-        return responseDTO;
+        return apiResponse;
     }
 
 }

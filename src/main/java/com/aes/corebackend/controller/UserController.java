@@ -16,6 +16,7 @@ import javax.validation.Valid;
 
 import static com.aes.corebackend.util.response.AjaxResponse.prepareErrorResponse;
 import static org.springframework.http.ResponseEntity.badRequest;
+import static org.springframework.http.ResponseEntity.ok;
 
 @Slf4j
 @RestController
@@ -35,28 +36,30 @@ public class UserController {
         if (result.hasErrors()) {
             return badRequest().body(prepareErrorResponse(result));
         }
-        return userService.create(userDto.dtoToEntity(userDto),userDto);
+        APIResponse apiResponse = userService.create(userDto.dtoToEntity(userDto),userDto);
+
+        return apiResponse.isSuccess() ? ok(apiResponse.getData()) : badRequest().body(apiResponse.getData());
     }
 
     @PutMapping("/users/{id}")
     @PreAuthorize("hasAuthority('EMPLOYEE')")
     public ResponseEntity<?> updateUser(@RequestBody @Valid  UserDTO userDto, @PathVariable long id) {
-
-        return ResponseEntity.ok(userService.update(userDto.dtoToEntity(userDto),id));
+        APIResponse apiResponse = userService.update(userDto.dtoToEntity(userDto),id);
+        return apiResponse.isSuccess() ? ok(apiResponse.getData()) : badRequest().body(apiResponse.getData());
     }
 
     @GetMapping("/users/{id}")
     @PreAuthorize("hasAuthority('EMPLOYEE')")
     public ResponseEntity<?> getUserDetails(@PathVariable int id) {
-
-        return ResponseEntity.ok(userService.read(id));
+        APIResponse apiResponse = userService.read(id);
+        return apiResponse.isSuccess() ? ok(apiResponse.getData()) : badRequest().body(apiResponse.getData());
     }
 
     @GetMapping("/users")
     @PreAuthorize("hasAuthority('EMPLOYEE')")
     public ResponseEntity<?> getAllUsers() {
-
-        return ResponseEntity.ok(userService.read());
+        APIResponse apiResponse = userService.read();
+        return apiResponse.isSuccess() ? ok(apiResponse.getData()) : badRequest().body(apiResponse.getData());
     }
 
 }

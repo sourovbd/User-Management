@@ -1,6 +1,6 @@
 package com.aes.corebackend.controller;
 
-import com.aes.corebackend.dto.ResponseDTO;
+import com.aes.corebackend.dto.APIResponse;
 import com.aes.corebackend.dto.UserDTO;
 import com.aes.corebackend.entity.User;
 import com.aes.corebackend.entity.UserCredential;
@@ -16,15 +16,12 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.JsonPathResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.internal.bytebuddy.matcher.ElementMatchers.is;
@@ -78,11 +75,11 @@ public class UserControllerTest {
         userDto.setBusinessUnit("a1polymar");
         userDto.setEmployeeId("0101");
         userDto.setRoles("EMPLOYEE");
-        ResponseDTO responseDTO = new ResponseDTO();
+        APIResponse responseDTO = new APIResponse();
         responseDTO.setMessage("user created successfully");
         responseDTO.setSuccess(true);
         responseDTO.setData(user);
-        Mockito.when(userService.create(user,userDto)).thenReturn(responseDTO);
+        Mockito.when(userService.create(user,userDto)).thenReturn();
 
         String jsonRequest = om.writeValueAsString(user);
         MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders
@@ -91,14 +88,15 @@ public class UserControllerTest {
                 .accept(MediaType.APPLICATION_JSON)
                 .content(jsonRequest);
         mockMvc.perform(mockRequest)
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.message").value("user created successfully"));
 
     }
 
     @Test
     public void getAllUsers_success() throws Exception {
         List<User> users = Lists.newArrayList(user_1,user_2,user_3);
-        ResponseDTO responseDTO =  new ResponseDTO();
+        APIResponse responseDTO =  new APIResponse();
         responseDTO.setMessage("user fetch ok");
         responseDTO.setSuccess(true);
         responseDTO.setData(users);
@@ -122,7 +120,7 @@ public class UserControllerTest {
 
     @Test
     public void getUserDetailsTest() throws Exception {
-        ResponseDTO responseDTO =  new ResponseDTO();
+        APIResponse responseDTO =  new APIResponse();
         responseDTO.setMessage("user found");
         responseDTO.setSuccess(true);
         responseDTO.setData(user_1);
