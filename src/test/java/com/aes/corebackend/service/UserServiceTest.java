@@ -57,7 +57,7 @@ public class UserServiceTest {
         user.setDepartment("accounts");
         user.setEmailAddress("mdahad118@gmail.com");
         user.setBusinessUnit("a1polymar");
-        user.setEmployeeId("0101");
+        user.setEmployeeId("101");
         user.setRoles("EMPLOYEE");
         user.setUserCredential(userCredential);
 
@@ -66,7 +66,7 @@ public class UserServiceTest {
         userDto.setDepartment("accounts");
         userDto.setEmailAddress("mdahad118@gmail.com");
         userDto.setBusinessUnit("a1polymar");
-        userDto.setEmployeeId("0101");
+        userDto.setEmployeeId("101");
         userDto.setRoles("EMPLOYEE");
 
         Mockito.when(userRepository.save(user)).thenReturn(user);
