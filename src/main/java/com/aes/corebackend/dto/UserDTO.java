@@ -1,47 +1,46 @@
-package com.aes.corebackend.entity;
+package com.aes.corebackend.dto;
 
-import lombok.AllArgsConstructor;
+import com.aes.corebackend.entity.User;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
-
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
-@Entity
-public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
-    private long id;
+@Valid
+public class UserDTO {
 
-    @Column(name = "emailAddress", unique = true)
+    private long id;
     @Pattern(regexp = "[a-zA-Z0-9.]*[@][a-zA-Z]+\\.(com|net|org)", message = "email id is invalid")
     @NotBlank(message = "email is mandatory")
     private String emailAddress;
 
     @NotBlank(message = "designation id is mandatory")
-    @Column(name = "designation")
     private String designation;
 
     @NotBlank(message = "employee id is mandatory")
-    @Column(name = "employeeId", unique = true)
     private String employeeId;
 
     @NotBlank(message = "business unit is mandatory")
-    @Column(name = "businessUnit")
     private String businessUnit;
 
     @NotBlank(message = "department is mandatory")
-    @Column(name = "department")
     private String department;
-    @Column(name = "roles")
+
     private String roles;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    private UserCredential userCredential;
+    public User dtoToEntity(UserDTO userDTO){
+
+        User user = new User();
+        user.setEmployeeId(userDTO.getEmployeeId());
+        user.setEmailAddress(userDTO.getEmailAddress());
+        user.setBusinessUnit(userDTO.getBusinessUnit());
+        user.setDepartment(userDTO.getDepartment());
+        user.setDesignation(userDTO.getDesignation());
+
+        return user;
+    }
 }

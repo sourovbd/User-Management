@@ -22,14 +22,37 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
-	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-	compileOnly 'org.projectlombok:lombok'
-	runtimeOnly 'mysql:mysql-connector-java'
-	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	compileOnly 'org.springframework.boot:spring-boot-starter-mail'
+	runtimeOnly 'mysql:mysql-connector-java'
+
+	/** lombok dependency */
+	annotationProcessor 'org.projectlombok:lombok'
+	//compileOnly 'org.projectlombok:lombok'
+
+	/** Spring Security dependencies */
+	implementation 'org.springframework.boot:spring-boot-starter-security'
 	testImplementation 'org.springframework.security:spring-security-test'
+
+	/** Swagger dependencies */
 	implementation 'io.springfox:springfox-swagger-ui:3.0.0'
+
+	/** JWT dependencies */
+	implementation 'io.jsonwebtoken:jjwt:0.2'
+	implementation 'javax.xml.bind:jaxb-api:2.3.1'
+
+	/** Unit test dependencies */
+	implementation 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
+	compileOnly group: 'org.mockito', name: 'mockito-core', version: '2.23.4'
+
+	/** Spring validation dependencies */
+	implementation 'org.passay:passay:1.6.1'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+	// https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple
+	implementation 'com.googlecode.json-simple:json-simple:1.1.1'
+
 }
 
 tasks.named('test') {
