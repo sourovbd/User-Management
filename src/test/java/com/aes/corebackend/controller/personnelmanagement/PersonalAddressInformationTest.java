@@ -1,10 +1,12 @@
 package com.aes.corebackend.controller.personnelmanagement;
 
+import com.aes.corebackend.dto.APIResponse;
 import com.aes.corebackend.dto.personnelmanagement.PersonalAddressInfoDTO;
 import com.aes.corebackend.dto.personnelmanagement.PersonnelManagementResponseDTO;
 import com.aes.corebackend.entity.User;
 import com.aes.corebackend.entity.personnelmanagement.PersonalAddressInfo;
 import com.aes.corebackend.service.personnelmanagement.PersonalAddressService;
+import com.aes.corebackend.util.response.PersonnelManagementAPIResponseDescription;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -35,6 +37,7 @@ public class PersonalAddressInformationTest {
     ObjectMapper om = new ObjectMapper();
     User user = new User();
     PersonalAddressInfoDTO addressInfoDTO = new PersonalAddressInfoDTO();
+    APIResponse response = APIResponse.getApiResposne();
 
     @BeforeEach
     public void setup() {
@@ -56,10 +59,11 @@ public class PersonalAddressInformationTest {
 
     @Test
     public void createAddressTest() throws Exception {
-        PersonnelManagementResponseDTO responseDTO = new PersonnelManagementResponseDTO("Personal address creation successful", true, null);
+        response.setMessage(PersonnelManagementAPIResponseDescription.ADDRESS_CREATE_SUCCESS);
+        response.setSuccess(true);
 
         /** initialize service with expected response*/
-        Mockito.when(addressService.create(addressInfoDTO, user.getId())).thenReturn(responseDTO);
+        Mockito.when(addressService.create(addressInfoDTO, user.getId())).thenReturn(response);
 
         String jsonRequest = om.writeValueAsString(addressInfoDTO);
         MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders
@@ -70,18 +74,19 @@ public class PersonalAddressInformationTest {
 
         mockMvc.perform(mockRequest)
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.message").value("Personal address creation successful"))
+                .andExpect(jsonPath("$.message").value(PersonnelManagementAPIResponseDescription.ADDRESS_CREATE_SUCCESS))
                 .andExpect(jsonPath("$.success").value(true));
 
     }
 
     @Test
     public void updateAddressTest() throws Exception {
-        PersonnelManagementResponseDTO responseDTO = new PersonnelManagementResponseDTO("Personal address update successful", true, null);
+        response.setMessage(PersonnelManagementAPIResponseDescription.ADDRESS_UPDATE_SUCCESS);
+        response.setSuccess(true);
         addressInfoDTO.setPresentAddress("Gulshan");
 
         /** initialize service with expected response*/
-        Mockito.when(addressService.update(addressInfoDTO, user.getId())).thenReturn(responseDTO);
+        Mockito.when(addressService.update(addressInfoDTO, user.getId())).thenReturn(response);
 
         String jsonRequest = om.writeValueAsString(addressInfoDTO);
         MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders
@@ -92,7 +97,7 @@ public class PersonalAddressInformationTest {
 
         mockMvc.perform(mockRequest)
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.message").value("Personal address update successful"))
+                .andExpect(jsonPath("$.message").value(PersonnelManagementAPIResponseDescription.ADDRESS_UPDATE_SUCCESS))
                 .andExpect(jsonPath("$.success").value(true));
 
     }
@@ -100,12 +105,12 @@ public class PersonalAddressInformationTest {
     @Test
     public void readAddressTest() throws Exception {
         PersonalAddressInfo addressEntity = PersonalAddressInfoDTO.getPersonalAddressInfoEntity(addressInfoDTO);
-        PersonnelManagementResponseDTO responseDTO = new PersonnelManagementResponseDTO("Personal address record found",
-                true,
-                addressEntity);//Expected return
+        response.setMessage(PersonnelManagementAPIResponseDescription.ADDRESS_RECORD_FOUND);
+        response.setSuccess(true);
+        response.setData(addressEntity);
 
         /** testing service for read: Controller to Service */
-        Mockito.when(addressService.read(user.getId())).thenReturn(responseDTO);
+        Mockito.when(addressService.read(user.getId())).thenReturn(response);
         // [Checking if service is available]
 
         /** client to controller-- > just the request object */
@@ -117,7 +122,7 @@ public class PersonalAddressInformationTest {
         /** Call controller using request object */
         mockMvc.perform(mockRequest)
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.message").value("Personal address record found"))
+                .andExpect(jsonPath("$.message").value(PersonnelManagementAPIResponseDescription.ADDRESS_RECORD_FOUND))
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.data").value(addressEntity));
     }

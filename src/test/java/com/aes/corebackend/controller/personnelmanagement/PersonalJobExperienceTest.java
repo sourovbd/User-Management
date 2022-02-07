@@ -1,13 +1,16 @@
 package com.aes.corebackend.controller.personnelmanagement;
 
+import com.aes.corebackend.dto.APIResponse;
 import com.aes.corebackend.dto.personnelmanagement.PersonalAddressInfoDTO;
 import com.aes.corebackend.dto.personnelmanagement.PersonalJobExperienceDTO;
 import com.aes.corebackend.dto.personnelmanagement.PersonnelManagementResponseDTO;
 import com.aes.corebackend.entity.User;
 import com.aes.corebackend.service.personnelmanagement.PersonalAddressService;
 import com.aes.corebackend.service.personnelmanagement.PersonalJobExperienceService;
+import com.aes.corebackend.util.response.PersonnelManagementAPIResponseDescription;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -40,7 +43,9 @@ public class PersonalJobExperienceTest {
     ObjectMapper om = new ObjectMapper();
     User user = new User();
     PersonalJobExperienceDTO jobExperienceDTO = new PersonalJobExperienceDTO();
+    APIResponse response = APIResponse.getApiResposne();
 
+    @BeforeEach
     public void setup() throws ParseException {
         MockitoAnnotations.openMocks(this);
         mockMvc = MockMvcBuilders
@@ -58,7 +63,7 @@ public class PersonalJobExperienceTest {
         jobExperienceDTO.setEmployerName("REVE");
         jobExperienceDTO.setDesignation("SDE");
 
-        DateFormat formatter = new SimpleDateFormat("dd-mm-yyyy");
+        DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
         jobExperienceDTO.setStartDate(formatter.parse("12-03-2017"));
         jobExperienceDTO.setEndDate(formatter.parse("12-12-2020"));
         jobExperienceDTO.setResponsibilities("development");
@@ -66,7 +71,8 @@ public class PersonalJobExperienceTest {
 
     @Test
     public void createJobExperienceTest() throws Exception {
-        PersonnelManagementResponseDTO response = new PersonnelManagementResponseDTO("Job experience creation successful", true, null);
+        response.setMessage(PersonnelManagementAPIResponseDescription.JOB_EXPERIENCE_CREATE_SUCCESS);
+        response.setSuccess(true);
         /** initialize service with expected response*/
         Mockito.when(jobExperienceService.create(jobExperienceDTO, user.getId())).thenReturn(response);
 
@@ -79,17 +85,18 @@ public class PersonalJobExperienceTest {
 
         mockMvc.perform(mockRequest)
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.message").value("Job experience creation successful"))
+                .andExpect(jsonPath("$.message").value(PersonnelManagementAPIResponseDescription.JOB_EXPERIENCE_CREATE_SUCCESS))
                 .andExpect(jsonPath("$.success").value(true));
     }
 
     @Test
     public void updateJobExperienceTest() throws Exception {
-        PersonnelManagementResponseDTO responseDTO = new PersonnelManagementResponseDTO("Experience update successful", true, null);
-        jobExperienceDTO.setResponsibilities("architecture design and development");
+        response.setMessage(PersonnelManagementAPIResponseDescription.JOB_EXPERIENCE_UPDATE_SUCCESS);
+        response.setSuccess(true);
+        jobExperienceDTO.setResponsibilities("design");
 
         /** initialize service with expected response*/
-        Mockito.when(jobExperienceService.update(jobExperienceDTO, user.getId(), 1L)).thenReturn(responseDTO);
+        Mockito.when(jobExperienceService.update(jobExperienceDTO, user.getId(), 1L)).thenReturn(response);
 
         String jsonRequestPayload = om.writeValueAsString(jobExperienceDTO);
         MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders
@@ -100,16 +107,18 @@ public class PersonalJobExperienceTest {
 
         mockMvc.perform(mockRequest)
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.message").value("Experience update successful"))
+                .andExpect(jsonPath("$.message").value(PersonnelManagementAPIResponseDescription.JOB_EXPERIENCE_UPDATE_SUCCESS))
                 .andExpect(jsonPath("$.success").value(true));
     }
 
     @Test
     public void readSingleJobExperienceTest() throws Exception {
-        PersonnelManagementResponseDTO responseDTO = new PersonnelManagementResponseDTO("Job experience read successful", true, null);
+        response.setMessage(PersonnelManagementAPIResponseDescription.JOB_EXPERIENCE_RECORD_FOUND);
+        response.setSuccess(true);
+        response.setData(jobExperienceDTO);
 
         /** initialize service with expected response*/
-        Mockito.when(jobExperienceService.read(user.getId(), 1L)).thenReturn(responseDTO);
+        Mockito.when(jobExperienceService.read(user.getId(), 1L)).thenReturn(response);
 
         MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders
                 .get("/users/1/job-experiences/1")
@@ -118,7 +127,7 @@ public class PersonalJobExperienceTest {
 
         mockMvc.perform(mockRequest)
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.message").value("Job experience read successful"))
+                .andExpect(jsonPath("$.message").value(PersonnelManagementAPIResponseDescription.JOB_EXPERIENCE_RECORD_FOUND))
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.data").value(jobExperienceDTO));
     }
