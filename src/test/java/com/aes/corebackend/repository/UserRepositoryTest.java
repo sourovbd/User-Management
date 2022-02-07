@@ -20,7 +20,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class UserRepositoryTest {
-    @Autowired
+   /* @Autowired
     private MockMvc mockMvc;
 
     @Mock
@@ -92,5 +92,5 @@ public class UserRepositoryTest {
         responseDTO.setSuccess(true);
         responseDTO.setData(user_1_temp);
         Mockito.when(userRepository.save(user_1_temp)).thenReturn(user_1_temp);
-    }
+    }*/
 }
