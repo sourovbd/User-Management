@@ -37,7 +37,7 @@ public class PersonalAddressInformationTest {
     ObjectMapper om = new ObjectMapper();
     User user = new User();
     PersonalAddressInfoDTO addressInfoDTO = new PersonalAddressInfoDTO();
-    APIResponse response = APIResponse.getApiResposne();
+    APIResponse response = APIResponse.getApiResponse();
 
     @BeforeEach
     public void setup() {

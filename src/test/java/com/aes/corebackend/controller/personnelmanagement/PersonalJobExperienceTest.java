@@ -43,7 +43,7 @@ public class PersonalJobExperienceTest {
     ObjectMapper om = new ObjectMapper();
     User user = new User();
     PersonalJobExperienceDTO jobExperienceDTO = new PersonalJobExperienceDTO();
-    APIResponse response = APIResponse.getApiResposne();
+    APIResponse response = APIResponse.getApiResponse();
 
     @BeforeEach
     public void setup() throws ParseException {

@@ -46,7 +46,7 @@ public class PersonalBasicInformationTest {
     User user = new User();
     PersonalBasicInfo basicInfo = new PersonalBasicInfo();
     PersonalBasicInfoDTO basicInfoDTO = new PersonalBasicInfoDTO();
-    APIResponse response = APIResponse.getApiResposne();
+    APIResponse response = APIResponse.getApiResponse();
 
     @BeforeEach
     public void setup() throws ParseException {
