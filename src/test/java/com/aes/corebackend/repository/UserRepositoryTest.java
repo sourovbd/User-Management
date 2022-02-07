@@ -1,22 +1,16 @@
 package com.aes.corebackend.repository;
 
-import com.aes.corebackend.dto.ResponseDTO;
+import com.aes.corebackend.dto.APIResponse;
 import com.aes.corebackend.dto.UserDTO;
 import com.aes.corebackend.entity.User;
 import com.aes.corebackend.entity.UserCredential;
-import com.aes.corebackend.service.UserCredentialService;
-import com.aes.corebackend.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,7 +18,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class UserRepositoryTest {
     @Autowired
@@ -66,7 +59,7 @@ public class UserRepositoryTest {
         userDto.setEmployeeId("0101");
         userDto.setRoles("EMPLOYEE");
 
-        ResponseDTO responseDTO = new ResponseDTO();
+        APIResponse responseDTO = new APIResponse();
         responseDTO.setMessage("user created successfully");
         responseDTO.setSuccess(true);
         responseDTO.setData(user);
@@ -76,7 +69,7 @@ public class UserRepositoryTest {
     @Test
     public void getAllUsers_success() throws Exception {
         List<User> users = new ArrayList<>(Arrays.asList(user_1,user_2,user_3));
-        ResponseDTO responseDTO = new ResponseDTO();
+        APIResponse responseDTO = new APIResponse();
         responseDTO.setMessage("user fetch ok");
         responseDTO.setSuccess(true);
         responseDTO.setData(users);
@@ -84,7 +77,7 @@ public class UserRepositoryTest {
     }
     @Test
     public void getUserDetailsTest() throws Exception {
-        ResponseDTO responseDTO = new ResponseDTO();
+        APIResponse responseDTO = new APIResponse();
         responseDTO.setMessage("user found");
         responseDTO.setSuccess(true);
         responseDTO.setData(user_1);
@@ -94,7 +87,7 @@ public class UserRepositoryTest {
     @Test
     public void updateUserById() throws Exception {
         User user_1_temp = new User(1L,"abc@gmail.com","dgm","0101","a1polymar","accounts","EMPLOYEE",userCredential_1);
-        ResponseDTO responseDTO = new ResponseDTO();
+        APIResponse responseDTO = new APIResponse();
         responseDTO.setMessage("user updated successfully");
         responseDTO.setSuccess(true);
         responseDTO.setData(user_1_temp);

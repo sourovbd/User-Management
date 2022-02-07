@@ -16,7 +16,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import java.util.Objects;
 
 import static com.aes.corebackend.util.response.APIResponseMessage.*;
-import static com.aes.corebackend.dto.APIResponse.getApiResposne;
+import static com.aes.corebackend.dto.APIResponse.getApiResponse;
 
 @Service
 @RequiredArgsConstructor
@@ -30,7 +30,7 @@ public class UserCredentialService {
 
     private final EmailSender emailSender;
 
-    private APIResponse apiResponse = getApiResposne();
+    private APIResponse apiResponse = getApiResponse();
 
     public APIResponse save(UserCredential userCredential) {
 

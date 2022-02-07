@@ -35,4 +35,8 @@ public class UserCredentialServiceTest {
         assertEquals(returnedUserCredentialFromService,mockUserCredential);
     }
 
+    public void testSave() {
+
+    }
+
 }
