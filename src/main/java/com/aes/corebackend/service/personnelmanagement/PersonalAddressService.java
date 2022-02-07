@@ -1,11 +1,12 @@
 package com.aes.corebackend.service.personnelmanagement;
 
+import com.aes.corebackend.dto.APIResponse;
 import com.aes.corebackend.dto.personnelmanagement.PersonalAddressInfoDTO;
-import com.aes.corebackend.dto.personnelmanagement.PersonnelManagementResponseDTO;
 import com.aes.corebackend.entity.User;
 import com.aes.corebackend.entity.personnelmanagement.PersonalAddressInfo;
 import com.aes.corebackend.repository.personnelmanagement.PersonalAddressInfoRepository;
 import com.aes.corebackend.service.UserService;
+import com.aes.corebackend.util.response.PersonnelManagementAPIResponseDescription;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.Objects;
@@ -16,21 +17,23 @@ public class PersonalAddressService {
 
     private final PersonalAddressInfoRepository personalAddressInfoRepository;
     private final UserService userService;
+    private APIResponse apiResponse = null;
 
-    public PersonnelManagementResponseDTO create(PersonalAddressInfoDTO personalAddressInfoDTO, Long userId) {
-        PersonnelManagementResponseDTO response = new PersonnelManagementResponseDTO("User not found", false, null);
+    public APIResponse create(PersonalAddressInfoDTO personalAddressInfoDTO, Long userId) {
+        apiResponse.setMessage(PersonnelManagementAPIResponseDescription.USER_NOT_FOUND);
+        apiResponse.setSuccess(false);
         User user = userService.getUserByUserId(userId);
         /** check if user exists */
         if (Objects.nonNull(user)) {
             /** create address record  and build response object */
             if (this.create(personalAddressInfoDTO, user)) {
-                response.setMessage("Personal address creation successful");
-                response.setSuccess(true);
+                apiResponse.setMessage(PersonnelManagementAPIResponseDescription.ADDRESS_CREATE_SUCCESS);
+                apiResponse.setSuccess(true);
             } else {
-                response.setMessage("Personal address creation failed");
+                apiResponse.setMessage(PersonnelManagementAPIResponseDescription.ADDRESS_CREATE_FAIL);
             }
         }
-        return response;
+        return apiResponse;
     }
 
     private boolean create(PersonalAddressInfoDTO addressInfoDTO, User user) {
@@ -46,8 +49,9 @@ public class PersonalAddressService {
         return true;
     }
 
-    public PersonnelManagementResponseDTO update(PersonalAddressInfoDTO updatedPersonalAddressInfoDTO, Long userId) {
-        PersonnelManagementResponseDTO response = new PersonnelManagementResponseDTO("User not found", false, null);
+    public APIResponse update(PersonalAddressInfoDTO updatedPersonalAddressInfoDTO, Long userId) {
+        apiResponse.setMessage(PersonnelManagementAPIResponseDescription.USER_NOT_FOUND);
+        apiResponse.setSuccess(false);
         User user = userService.getUserByUserId(userId);
         /** check if user exists */
         if (Objects.nonNull(user)) {
@@ -56,16 +60,16 @@ public class PersonalAddressService {
             if (Objects.nonNull(existingAddressInfo)) {
                 /** assign updated data to existing data, execute update address and build response object*/
                 if (this.update(updatedPersonalAddressInfoDTO, existingAddressInfo)) {
-                    response.setMessage("Personal address update successful");
-                    response.setSuccess(true);
+                    apiResponse.setMessage(PersonnelManagementAPIResponseDescription.ADDRESS_UPDATE_SUCCESS);
+                    apiResponse.setSuccess(true);
                 } else {
-                    response.setMessage("Personal address update failed");
+                    apiResponse.setMessage(PersonnelManagementAPIResponseDescription.ADDRESS_UPDATE_FAIL);
                 }
             } else {
-                response.setMessage("Personal address record not found");
+                apiResponse.setMessage(PersonnelManagementAPIResponseDescription.ADDRESS_RECORD_NOT_FOUND);
             }
         }
-        return response;
+        return apiResponse;
     }
 
     private boolean update(PersonalAddressInfoDTO updatedPersonalAddressInfoDTO, PersonalAddressInfo existingAddressInfo) {
@@ -80,8 +84,9 @@ public class PersonalAddressService {
         return true;
     }
 
-    public PersonnelManagementResponseDTO read(Long userId) {
-        PersonnelManagementResponseDTO response = new PersonnelManagementResponseDTO("User not found", false, null);
+    public APIResponse read(Long userId) {
+        apiResponse.setMessage(PersonnelManagementAPIResponseDescription.USER_NOT_FOUND);
+        apiResponse.setSuccess(false);
         User user = userService.getUserByUserId(userId);
         /** check if user exists */
         if (Objects.nonNull(user)) {
@@ -89,13 +94,13 @@ public class PersonalAddressService {
             /** check if address exists */
             if (Objects.nonNull(addressInfo)) {
                 /** convert Entity to DTO object and build response object */
-                response.setData(PersonalAddressInfoDTO.getPersonalAddressInfoDTO(addressInfo));
-                response.setMessage("Personal address record found");
-                response.setSuccess(true);
+                apiResponse.setData(PersonalAddressInfoDTO.getPersonalAddressInfoDTO(addressInfo));
+                apiResponse.setMessage(PersonnelManagementAPIResponseDescription.ADDRESS_RECORD_FOUND);
+                apiResponse.setSuccess(true);
             } else {
-                response.setMessage("Personal address record not found");
+                apiResponse.setMessage(PersonnelManagementAPIResponseDescription.ADDRESS_RECORD_NOT_FOUND);
             }
         }
-        return response;
+        return apiResponse;
     }
 }

@@ -1,11 +1,12 @@
 package com.aes.corebackend.service.personnelmanagement;
 
+import com.aes.corebackend.dto.APIResponse;
 import com.aes.corebackend.dto.personnelmanagement.PersonalBasicInfoDTO;
-import com.aes.corebackend.dto.personnelmanagement.PersonnelManagementResponseDTO;
 import com.aes.corebackend.entity.User;
 import com.aes.corebackend.entity.personnelmanagement.PersonalBasicInfo;
 import com.aes.corebackend.repository.personnelmanagement.PersonalBasicInfoRepository;
 import com.aes.corebackend.service.UserService;
+import com.aes.corebackend.util.response.PersonnelManagementAPIResponseDescription;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.Objects;
@@ -16,21 +17,23 @@ public class PersonalBasicInformationService {
 
     private final PersonalBasicInfoRepository personalBasicInfoRepository;
     private final UserService userService;
+    private APIResponse apiResponse = null;
 
-    public PersonnelManagementResponseDTO create(PersonalBasicInfoDTO basicInfoDTO, Long userId) {
-        PersonnelManagementResponseDTO response = new PersonnelManagementResponseDTO("User not found!", false, null);
+    public APIResponse create(PersonalBasicInfoDTO basicInfoDTO, Long userId) {
+        apiResponse.setMessage(PersonnelManagementAPIResponseDescription.USER_NOT_FOUND);
+        apiResponse.setSuccess(false);
         User user = userService.getUserByUserId(userId);
         /** check if user exists */
         if (Objects.nonNull(user)) {
             /** create user and build response object */
             if (this.create(basicInfoDTO, user)) {
-                response.setMessage("Basic information creation successful");
-                response.setSuccess(true);
+                apiResponse.setMessage(PersonnelManagementAPIResponseDescription.BASIC_INFORMATION_CREATE_SUCCESS);
+                apiResponse.setSuccess(true);
             } else {
-                response.setMessage("Basic information creation failed");
+                apiResponse.setMessage(PersonnelManagementAPIResponseDescription.BASIC_INFORMATION_CREATE_FAIL);
             }
         }
-        return response;
+        return apiResponse;
     }
 
     private boolean create(PersonalBasicInfoDTO basicInfoDTO, User user) {
@@ -46,8 +49,9 @@ public class PersonalBasicInformationService {
         return true;
     }
 
-    public PersonnelManagementResponseDTO update(PersonalBasicInfoDTO updatedBasicInfoDTO, Long userId) {
-        PersonnelManagementResponseDTO response = new PersonnelManagementResponseDTO("User not found", false, null);
+    public APIResponse update(PersonalBasicInfoDTO updatedBasicInfoDTO, Long userId) {
+        apiResponse.setMessage(PersonnelManagementAPIResponseDescription.USER_NOT_FOUND);
+        apiResponse.setSuccess(false);
         User user = userService.getUserByUserId(userId);
         /** check if user exists */
         if (Objects.nonNull(user)) {
@@ -56,16 +60,16 @@ public class PersonalBasicInformationService {
             if (Objects.nonNull(existingBasicInfo)) {
                 /** update record and build response object */
                 if (this.update(updatedBasicInfoDTO, existingBasicInfo)) {
-                    response.setMessage("Basic information update successful");
-                    response.setSuccess(true);
+                    apiResponse.setMessage(PersonnelManagementAPIResponseDescription.BASIC_INFORMATION_UPDATE_SUCCESS);
+                    apiResponse.setSuccess(true);
                 } else {
-                    response.setMessage("Basic information update failed");
+                    apiResponse.setMessage(PersonnelManagementAPIResponseDescription.BASIC_INFORMATION_UPDATE_FAIL);
                 }
             } else {
-                response.setMessage("Basic information record not found");
+                apiResponse.setMessage(PersonnelManagementAPIResponseDescription.BASIC_INFORMATION_RECORD_NOT_FOUND);
             }
         }
-        return response;
+        return apiResponse;
     }
 
     private boolean update(PersonalBasicInfoDTO basicInfoDTO, PersonalBasicInfo existingBasicInfo) {
@@ -80,8 +84,9 @@ public class PersonalBasicInformationService {
         return true;
     }
 
-    public PersonnelManagementResponseDTO read(Long userId) {
-        PersonnelManagementResponseDTO response = new PersonnelManagementResponseDTO("User not found", false, null);
+    public APIResponse read(Long userId) {
+        apiResponse.setMessage(PersonnelManagementAPIResponseDescription.USER_NOT_FOUND);
+        apiResponse.setSuccess(false);
         User user = userService.getUserByUserId(userId);
         /** check if user exists */
         if (Objects.nonNull(user)) {
@@ -89,13 +94,13 @@ public class PersonalBasicInformationService {
             /** check if basic information exists */
             if (Objects.nonNull(basicInfo)) {
                 /** convert Entity to DTO object and build response object */
-                response.setData(PersonalBasicInfoDTO.getPersonalBasicInfoDTO(basicInfo));
-                response.setMessage("Basic information found");
-                response.setSuccess(true);
+                apiResponse.setData(PersonalBasicInfoDTO.getPersonalBasicInfoDTO(basicInfo));
+                apiResponse.setMessage(PersonnelManagementAPIResponseDescription.BASIC_INFORMATION_RECORD_FOUND);
+                apiResponse.setSuccess(true);
             } else {
-                response.setMessage("Basic information not found");
+                apiResponse.setMessage(PersonnelManagementAPIResponseDescription.BASIC_INFORMATION_RECORD_NOT_FOUND);
             }
         }
-        return response;
+        return apiResponse;
     }
 }

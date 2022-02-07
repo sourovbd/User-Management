@@ -1,11 +1,12 @@
 package com.aes.corebackend.service.personnelmanagement;
 
+import com.aes.corebackend.dto.APIResponse;
 import com.aes.corebackend.dto.personnelmanagement.PersonalJobExperienceDTO;
-import com.aes.corebackend.dto.personnelmanagement.PersonnelManagementResponseDTO;
 import com.aes.corebackend.entity.User;
 import com.aes.corebackend.entity.personnelmanagement.PersonalJobExperience;
 import com.aes.corebackend.repository.personnelmanagement.PersonalJobExperienceRepository;
 import com.aes.corebackend.service.UserService;
+import com.aes.corebackend.util.response.PersonnelManagementAPIResponseDescription;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
@@ -17,21 +18,23 @@ public class PersonalJobExperienceService {
 
     private final UserService userService;
     private final PersonalJobExperienceRepository personalJobExperienceRepository;
+    private APIResponse apiResponse = null;
 
-    public PersonnelManagementResponseDTO create(PersonalJobExperienceDTO jobExperienceDTO, Long userId) {
-        PersonnelManagementResponseDTO response = new PersonnelManagementResponseDTO("User not found", false, null);
+    public APIResponse create(PersonalJobExperienceDTO jobExperienceDTO, Long userId) {
+        apiResponse.setMessage(PersonnelManagementAPIResponseDescription.USER_NOT_FOUND);
+        apiResponse.setSuccess(false);
         User user = userService.getUserByUserId(userId);
         /** check if user exists */
         if (Objects.nonNull(user)) {
             /** create job experience record and build response object */
             if (this.createJobExperience(jobExperienceDTO, user)) {
-                response.setMessage("Job experience creation successful");
-                response.setSuccess(false);
+                apiResponse.setMessage(PersonnelManagementAPIResponseDescription.JOB_EXPERIENCE_CREATE_SUCCESS);
+                apiResponse.setSuccess(true);
             } else {
-                response.setMessage("Job experience creation failed");
+                apiResponse.setMessage(PersonnelManagementAPIResponseDescription.JOB_EXPERIENCE_CREATE_FAIL);
             }
         }
-        return response;
+        return apiResponse;
     }
 
     private boolean createJobExperience(PersonalJobExperienceDTO jobExperienceDTO, User user) {
@@ -47,8 +50,9 @@ public class PersonalJobExperienceService {
         return true;
     }
 
-    public PersonnelManagementResponseDTO update(PersonalJobExperienceDTO jobExperienceDTO, Long userId, Long experienceId) {
-        PersonnelManagementResponseDTO response = new PersonnelManagementResponseDTO("User not found", false, null);
+    public APIResponse update(PersonalJobExperienceDTO jobExperienceDTO, Long userId, Long experienceId) {
+        apiResponse.setMessage(PersonnelManagementAPIResponseDescription.USER_NOT_FOUND);
+        apiResponse.setSuccess(false);
         User user = userService.getUserByUserId(userId);
         /** check if user exists */
         if (Objects.nonNull(user)) {
@@ -57,16 +61,16 @@ public class PersonalJobExperienceService {
             if (Objects.nonNull(existingJobExperience)) {
                 /** update record and build response object */
                 if (this.updateJobExperience(jobExperienceDTO, user, experienceId)) {
-                    response.setMessage("Experience update successful");
-                    response.setSuccess(true);
+                    apiResponse.setMessage(PersonnelManagementAPIResponseDescription.JOB_EXPERIENCE_UPDATE_SUCCESS);
+                    apiResponse.setSuccess(true);
                 } else {
-                    response.setMessage("Experience update failed");
+                    apiResponse.setMessage(PersonnelManagementAPIResponseDescription.JOB_EXPERIENCE_UPDATE_FAIL);
                 }
             } else {
-                response.setMessage("Experience record not found");
+                apiResponse.setMessage(PersonnelManagementAPIResponseDescription.JOB_EXPERIENCE_RECORD_NOT_FOUND);
             }
         }
-        return response;
+        return apiResponse;
     }
 
     private boolean updateJobExperience(PersonalJobExperienceDTO jobExperienceDTO, User user, Long experienceId) {
@@ -83,8 +87,9 @@ public class PersonalJobExperienceService {
         return true;
     }
 
-    public PersonnelManagementResponseDTO read(Long userId) {
-        PersonnelManagementResponseDTO response = new PersonnelManagementResponseDTO("User not found", false, null);
+    public APIResponse read(Long userId) {
+        apiResponse.setMessage(PersonnelManagementAPIResponseDescription.USER_NOT_FOUND);
+        apiResponse.setSuccess(false);
         User user = userService.getUserByUserId(userId);
         /** check if user exists */
         if (Objects.nonNull(user)) {
@@ -93,14 +98,14 @@ public class PersonalJobExperienceService {
                 /** convert Entity to DTO objects */
                 ArrayList<PersonalJobExperienceDTO> experienceDTOS = this.convertToDTOs(experienceList);
                 /** build response object */
-                response.setData(experienceDTOS);
-                response.setSuccess(true);
-                response.setMessage("Job experience read successful");
+                apiResponse.setData(experienceDTOS);
+                apiResponse.setSuccess(true);
+                apiResponse.setMessage(PersonnelManagementAPIResponseDescription.JOB_EXPERIENCE_RECORD_FOUND);
             } else {
-                response.setMessage("Job experience records not found");
+                apiResponse.setMessage(PersonnelManagementAPIResponseDescription.JOB_EXPERIENCE_RECORD_NOT_FOUND);
             }
         }
-        return response;
+        return apiResponse;
     }
 
     private ArrayList<PersonalJobExperienceDTO> convertToDTOs(ArrayList<PersonalJobExperience> experienceList) {
@@ -111,8 +116,9 @@ public class PersonalJobExperienceService {
         return experienceDTOS;
     }
 
-    public PersonnelManagementResponseDTO read(Long userId, Long experienceId) {
-        PersonnelManagementResponseDTO response = new PersonnelManagementResponseDTO("User not found", false, null);
+    public APIResponse read(Long userId, Long experienceId) {
+        apiResponse.setMessage(PersonnelManagementAPIResponseDescription.USER_NOT_FOUND);
+        apiResponse.setSuccess(false);
         User user = userService.getUserByUserId(userId);
         /** check if user exists */
         if (Objects.nonNull(user)) {
@@ -120,13 +126,13 @@ public class PersonalJobExperienceService {
             /** check if job experience record exists */
             if (Objects.nonNull(experience)) {
                 /** convert Entity to DTO and build response object */
-                response.setData(PersonalJobExperienceDTO.getPersonalJobExperienceDTO(experience));
-                response.setMessage("Job experience record found");
-                response.setSuccess(true);
+                apiResponse.setData(PersonalJobExperienceDTO.getPersonalJobExperienceDTO(experience));
+                apiResponse.setMessage(PersonnelManagementAPIResponseDescription.JOB_EXPERIENCE_RECORD_FOUND);
+                apiResponse.setSuccess(true);
             } else {
-                response.setMessage("Job experience record not found");
+                apiResponse.setMessage(PersonnelManagementAPIResponseDescription.JOB_EXPERIENCE_RECORD_NOT_FOUND);
             }
         }
-        return response;
+        return apiResponse;
     }
 }
