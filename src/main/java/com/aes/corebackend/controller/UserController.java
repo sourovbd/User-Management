@@ -61,5 +61,4 @@ public class UserController {
         APIResponse apiResponse = userService.read();
         return apiResponse.isSuccess() ? ok(apiResponse) : badRequest().body(apiResponse);
     }
-
 }

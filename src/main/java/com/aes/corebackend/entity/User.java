@@ -1,9 +1,10 @@
 package com.aes.corebackend.entity;
 
 import lombok.AllArgsConstructor;
+import com.aes.corebackend.entity.personnelmanagement.PersonalAddressInfo;
+import com.aes.corebackend.entity.personnelmanagement.PersonalBasicInfo;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
@@ -44,4 +45,12 @@ public class User {
 
     @OneToOne(cascade = CascadeType.ALL)
     private UserCredential userCredential;
+
+    /** mappedBy value points to the relationship owner */
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
+    private PersonalBasicInfo basicInfo;
+
+    /** mappedBy value points to the relationship owner */
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
+    private PersonalAddressInfo address;
 }

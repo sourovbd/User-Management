@@ -20,8 +20,8 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import static com.aes.corebackend.dto.APIResponse.getApiResposne;
-import static com.aes.corebackend.util.response.APIResponseDesc.*;
+import static com.aes.corebackend.dto.APIResponse.getApiResponse;
+import static com.aes.corebackend.util.response.APIResponseMessage.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 public class UserCredentialControllerTestTemp {
@@ -37,10 +37,10 @@ public class UserCredentialControllerTestTemp {
 
     ObjectMapper om = new ObjectMapper();
 
-    private User user = new User(1L,"abc@gmail.com","agm","012580","a1polymar","accounts","EMPLOYEE", null);
+    private User user = new User(1L,"abc@gmail.com","agm","012580","a1polymar","accounts","EMPLOYEE", null, null, null);
     private UserCredential userCredentialTest = new UserCredential(1L, "012580", "123@5Aa7", true, "EMPLOYEE");
 
-    private APIResponse expectedResponse = getApiResposne();
+    private APIResponse expectedResponse = getApiResponse();
 
     @BeforeEach
     public void setup() {
