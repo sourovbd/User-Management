@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static com.aes.corebackend.util.response.APIResponseDesc.*;
-
+import static com.aes.corebackend.dto.APIResponse.getApiResposne;
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -21,7 +21,7 @@ public class UserService {
 
     private final EmailSender emailSender;
 
-    private APIResponse apiResponse = new APIResponse();
+    private APIResponse apiResponse = getApiResposne();
 
     public APIResponse create(User user, UserDTO userDto) {
 

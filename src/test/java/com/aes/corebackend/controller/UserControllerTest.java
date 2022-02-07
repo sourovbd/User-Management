@@ -84,7 +84,7 @@ public class UserControllerTest {
         responseDTO.setMessage("user created successfully");
         responseDTO.setSuccess(true);
         responseDTO.setData(user);
-        Mockito.when(userService.create(user,userDto)).thenReturn();
+        Mockito.when(userService.create(user,userDto)).thenReturn(responseDTO);
 
         String jsonRequest = om.writeValueAsString(user);
         MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders

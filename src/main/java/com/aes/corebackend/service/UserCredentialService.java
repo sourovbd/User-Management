@@ -10,14 +10,13 @@ import com.aes.corebackend.repository.UserRepository;
 import com.aes.corebackend.util.Constants;
 import com.aes.corebackend.util.UserCredentialUtils;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.Objects;
 
 import static com.aes.corebackend.util.response.APIResponseDesc.*;
+import static com.aes.corebackend.dto.APIResponse.getApiResposne;
 
 @Service
 @RequiredArgsConstructor
@@ -31,7 +30,7 @@ public class UserCredentialService {
 
     private final EmailSender emailSender;
 
-    private static APIResponse apiResponse = null;
+    private APIResponse apiResponse = getApiResposne();
 
     public APIResponse save(UserCredential userCredential) {
 

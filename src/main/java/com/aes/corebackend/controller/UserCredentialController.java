@@ -37,7 +37,7 @@ public class UserCredentialController {
             return badRequest().body(prepareErrorResponse(result));
         }
         APIResponse apiResponse = userCredentialService.save(userCredentialDTO.to(userCredentialDTO));
-        return apiResponse.isSuccess() ? ok(apiResponse.getData()) : badRequest().body(apiResponse.getData());
+        return apiResponse.isSuccess() ? ok(apiResponse) : badRequest().body(apiResponse);
 
     }
 
@@ -49,7 +49,7 @@ public class UserCredentialController {
             return badRequest().body(prepareErrorResponse(result));
         }
         APIResponse apiResponse = userCredentialService.update(userCredentialDTO.to(userCredentialDTO));
-        return apiResponse.isSuccess() ? ok(apiResponse.getData()) : badRequest().body(apiResponse.getData());
+        return apiResponse.isSuccess() ? ok(apiResponse) : badRequest().body(apiResponse);
     }
 
     /** During login */
@@ -57,7 +57,7 @@ public class UserCredentialController {
     @PreAuthorize("hasAuthority('EMPLOYEE')")
     public ResponseEntity<?> verifyCredential(@RequestBody UserCredentialDTO userCredentialDTO) {
         APIResponse apiResponse = userCredentialService.verifyPassword(userCredentialDTO);
-        return apiResponse.isSuccess() ? ok(apiResponse.getData()) : badRequest().body(apiResponse.getData());
+        return apiResponse.isSuccess() ? ok(apiResponse) : badRequest().body(apiResponse);
     }
 
     @PostMapping("/users/forgot-password")
@@ -68,7 +68,7 @@ public class UserCredentialController {
             return badRequest().body(prepareErrorResponse(result));
         }
         APIResponse apiResponse = userCredentialService.generateAndSendTempPass(forgotPasswordDTO.getEmailAddress());
-        return  apiResponse.isSuccess() ? ok(apiResponse.getData()) : badRequest().body(apiResponse.getData());
+        return  apiResponse.isSuccess() ? ok(apiResponse) : badRequest().body(apiResponse);
     }
 
 }
