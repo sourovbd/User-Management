@@ -92,12 +92,12 @@ public class PersonalIdentificationService {
             //If data is NonNull--> respond responstDTO with data
             if(Objects.nonNull(idInfo)){
                 PersonalIdentificationInfoDTO idDTO = PersonalIdentificationInfoDTO.getPersonalIdentificationDTO(idInfo);
-                responseDTO.setMessage("Personal Attribute found");
+                responseDTO.setMessage("Identification information found");
                 responseDTO.setSuccess(true);
                 responseDTO.setData(idDTO);
                 return responseDTO;
             }else{
-                responseDTO.setMessage("ID Info not found");
+                responseDTO.setMessage("Identification information not found");
                 responseDTO.setSuccess(true);
                 return responseDTO;
             }
