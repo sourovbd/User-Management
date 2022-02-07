@@ -33,7 +33,7 @@ import java.util.TimeZone;
 
 public class UserCredentialControllerTest {
 
-    @MockBean
+   /* @MockBean
     private UserCredentialService userCredentialService;
 
     @Autowired
@@ -55,5 +55,5 @@ public class UserCredentialControllerTest {
         user.setUserCredential(userCredential);
         System.out.println("user: "+user);
 
-    }
+    }*/
 }

@@ -19,7 +19,7 @@ import static com.aes.corebackend.util.response.APIResponseMessage.*;
 
 public class UserCredentialServiceTest_old {
 
-    private static final Logger logger = LoggerFactory.getLogger(UserCredentialServiceTest_old.class);
+    /*private static final Logger logger = LoggerFactory.getLogger(UserCredentialServiceTest_old.class);
 
     @InjectMocks
     private UserCredentialService userCredentialService;
@@ -123,5 +123,5 @@ public class UserCredentialServiceTest_old {
 
         actualResponse = userCredentialService.generateAndSendTempPass(email);
         assert actualResponse.getMessage().equals(expectedResponse.getMessage());
-    }
+    }*/
 }

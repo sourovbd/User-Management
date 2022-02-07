@@ -39,7 +39,7 @@ public class UserControllerTest {
     @Mock
     private UserService userService;
 
-    ObjectMapper om = new ObjectMapper();
+   /* ObjectMapper om = new ObjectMapper();
     UserCredential userCredential_1 = new UserCredential(1, "101", "a1wq", true, "EMPLOYEE");
     UserCredential userCredential_2 = new UserCredential(2, "102", "a1wq", true, "EMPLOYEE");
     UserCredential userCredential_3 = new UserCredential(3, "103", "a1wq", true, "EMPLOYEE");
@@ -162,6 +162,6 @@ public class UserControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonRequest);
         mockMvc.perform(mockRequest).andExpect(status().isOk());
-    }
+    }*/
 
 }
