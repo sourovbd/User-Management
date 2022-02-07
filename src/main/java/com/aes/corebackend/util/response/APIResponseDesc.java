@@ -17,4 +17,8 @@ public class APIResponseDesc {
     public static final String USER_FOUND = "user found";
     public static final String NO_USER_EXISTS = "No user exist";
     public static final String USER_FETCH_OK = "user fetch ok";
+    public static final String VALID_PASSWORD = "Valid Password";
+    public static final String INVALID_PASSWORD = "Invalid Password";
+    public static final String NEW_PASSWORD_SENT= "A new password is sent to your email.";
+    public static final String EMPLOYEE_NOT_FOUND = "Employee not found.";
 }
