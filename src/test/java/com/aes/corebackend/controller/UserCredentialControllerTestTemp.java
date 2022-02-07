@@ -1,7 +1,7 @@
 package com.aes.corebackend.controller;
 
+import com.aes.corebackend.dto.APIResponse;
 import com.aes.corebackend.dto.ForgotPasswordDTO;
-import com.aes.corebackend.dto.ResponseDTO;
 import com.aes.corebackend.dto.UserCredentialDTO;
 import com.aes.corebackend.entity.User;
 import com.aes.corebackend.entity.UserCredential;
@@ -20,6 +20,7 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import static com.aes.corebackend.dto.APIResponse.getApiResposne;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 public class UserCredentialControllerTestTemp {
@@ -38,7 +39,7 @@ public class UserCredentialControllerTestTemp {
     private User user = new User(1L,"abc@gmail.com","agm","012580","a1polymar","accounts","EMPLOYEE", null);
     private UserCredential userCredentialTest = new UserCredential(1L, "012580", "123@5Aa7", true, "EMPLOYEE");
 
-    private ResponseDTO expectedResponse = new ResponseDTO();
+    private APIResponse expectedResponse = getApiResposne();
 
     @BeforeEach
     public void setup() {
@@ -58,7 +59,7 @@ public class UserCredentialControllerTestTemp {
         userCredentialDTO.setActive(true);
         userCredentialDTO.setRoles("EMPLOYEE");
 
-        expectedResponse.setResponses("Password must be 8 or more characters in length.", false, null);
+        expectedResponse.setResponse("Password must be 8 or more characters in length.", false, null);
         badRequestHandler("/users-credential", om.writeValueAsString(userCredentialDTO), expectedResponse);
 
         userCredentialDTO.setPassword("123456Aa");
@@ -82,12 +83,12 @@ public class UserCredentialControllerTestTemp {
         badRequestHandler("/users-credential", om.writeValueAsString(userCredentialDTO), expectedResponse);
 
         userCredentialDTO.setPassword(userCredentialTest.getPassword());
-        expectedResponse.setResponses("Saved Successfully", true, userCredentialTest);
+        expectedResponse.setResponse("Saved Successfully", true, userCredentialTest);
         Mockito.when(userCredentialService.save(userCredentialTest)).thenReturn(expectedResponse);
         successRequestHandler("/users-credential", om.writeValueAsString(userCredentialDTO), expectedResponse);
 
         userCredentialDTO.setPassword(userCredentialTest.getPassword());
-        expectedResponse.setResponses("Save Failed", false, null);
+        expectedResponse.setResponse("Save Failed", false, null);
         Mockito.when(userCredentialService.save(userCredentialTest)).thenReturn(expectedResponse);
         successRequestHandler("/users-credential", om.writeValueAsString(userCredentialDTO), expectedResponse);
     }
@@ -100,11 +101,11 @@ public class UserCredentialControllerTestTemp {
         userCredentialDTO.setPassword("12345@Aa");
 
         userCredentialTest.setPassword(userCredentialDTO.getPassword());
-        expectedResponse.setResponses("Success", true, userCredentialTest);
+        expectedResponse.setResponse("Success", true, userCredentialTest);
         Mockito.when(userCredentialService.update(userCredentialDTO.to(userCredentialDTO))).thenReturn(expectedResponse);
         successRequestHandler("/users/reset-password", om.writeValueAsString(userCredentialDTO), expectedResponse);
 
-        expectedResponse.setResponses("Failed", false, null);
+        expectedResponse.setResponse("Failed", false, null);
         Mockito.when(userCredentialService.update(userCredentialDTO.to(userCredentialDTO))).thenReturn(expectedResponse);
         successRequestHandler("/users/reset-password", om.writeValueAsString(userCredentialDTO), expectedResponse);
     }
@@ -116,12 +117,12 @@ public class UserCredentialControllerTestTemp {
         userCredentialDTO.setPassword("123@5Aa7");
 
         user.setUserCredential(userCredentialTest);
-        expectedResponse.setResponses("Valid Password", true, user);
+        expectedResponse.setResponse("Valid Password", true, user);
         Mockito.when(userCredentialService.verifyPassword(userCredentialDTO)).thenReturn(expectedResponse);
         successRequestHandler("/users/verify-credential", om.writeValueAsString(userCredentialDTO), expectedResponse);
 
         userCredentialDTO.setPassword("123%5Aa7");
-        expectedResponse.setResponses("Invalid Password", false, null);
+        expectedResponse.setResponse("Invalid Password", false, null);
         successRequestHandler("/users/verify-credential", om.writeValueAsString(userCredentialDTO), expectedResponse);
     }
 
@@ -130,17 +131,17 @@ public class UserCredentialControllerTestTemp {
         ForgotPasswordDTO forgotPasswordDTO = new ForgotPasswordDTO();
 
         forgotPasswordDTO.setEmailAddress("ab c@yahoo.com");
-        expectedResponse.setResponses("email id is invalid", false, null);
+        expectedResponse.setResponse("email id is invalid", false, null);
         Mockito.when(userCredentialService.generateAndSendTempPass(forgotPasswordDTO.getEmailAddress())).thenReturn(expectedResponse);
         badRequestHandler("/users/forgot-password", om.writeValueAsString(forgotPasswordDTO), expectedResponse);
 
         forgotPasswordDTO.setEmailAddress("abc@yahoo.com");
-        expectedResponse.setResponses("A new password is sent to your email.", true, userCredentialTest);
+        expectedResponse.setResponse("A new password is sent to your email.", true, userCredentialTest);
         Mockito.when(userCredentialService.generateAndSendTempPass(forgotPasswordDTO.getEmailAddress())).thenReturn(expectedResponse);
         successRequestHandler("/users/forgot-password", om.writeValueAsString(forgotPasswordDTO), expectedResponse);
     }
 
-    private void successRequestHandler(String uri, String requestJsonContent, ResponseDTO expectedResponse) throws Exception {
+    private void successRequestHandler(String uri, String requestJsonContent, APIResponse expectedResponse) throws Exception {
 
         mockMvc.perform(MockMvcRequestBuilders
                         .post(uri)
@@ -153,7 +154,7 @@ public class UserCredentialControllerTestTemp {
                 .andExpect(jsonPath("$.data").value(expectedResponse.getData()));
     }
 
-    private void badRequestHandler(String uri, String requestJsonContent, ResponseDTO expectedResponse) throws Exception {
+    private void badRequestHandler(String uri, String requestJsonContent, APIResponse expectedResponse) throws Exception {
 
         mockMvc.perform(MockMvcRequestBuilders
                         .post(uri)

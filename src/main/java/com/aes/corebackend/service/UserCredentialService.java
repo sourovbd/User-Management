@@ -39,7 +39,7 @@ public class UserCredentialService {
 
         return Objects.nonNull(updatedUserCredential) ?
                 apiResponse.setResponse(USER_CREDENTIAL_CREATED_SUCCESSFULLY, TRUE, updatedUserCredential) :
-                apiResponse.setResponse(USER_CREATED_SUCCESSFULLY, TRUE, NULL);
+                apiResponse.setResponse(USER_CREDENTIAL_CREATION_FAILED, TRUE, NULL);
     }
 
     public APIResponse update(UserCredential userCredential) {
