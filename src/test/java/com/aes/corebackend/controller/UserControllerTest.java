@@ -11,14 +11,17 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -32,7 +35,8 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
+@ExtendWith(SpringExtension.class)
+@SpringBootTest
 public class UserControllerTest {
     @Autowired
     private MockMvc mockMvc;
@@ -107,7 +111,6 @@ public class UserControllerTest {
         Mockito.when(userService.read()).thenReturn(responseDTO);
         mockMvc.perform(MockMvcRequestBuilders
                         .get("/users")
-                        .header(HttpHeaders.AUTHORIZATION, "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIwMTI1MTkiLCJleHAiOjE2NDM4MTk4ODAsImlhdCI6MTY0Mzc4Mzg4MH0.5LF-tn-BGh20YpushocQv9pNLPaI1P_MDsxriO6w3zc")
                         .contentType(MediaType.APPLICATION_JSON))
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.message").value("user fetch ok"))
@@ -131,7 +134,6 @@ public class UserControllerTest {
         Mockito.when(userService.read(1L)).thenReturn(responseDTO);
         mockMvc.perform(MockMvcRequestBuilders
                         .get("/users/1")
-                        .header(HttpHeaders.AUTHORIZATION, "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIwMTI1MTkiLCJleHAiOjE2NDM4MTk4ODAsImlhdCI6MTY0Mzc4Mzg4MH0.5LF-tn-BGh20YpushocQv9pNLPaI1P_MDsxriO6w3zc")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message").value("user found"))
@@ -145,6 +147,21 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$.data.roles").value("EMPLOYEE"))
                 .andExpect(jsonPath("$.data.userCredential.active").value(true))
                 .andExpect(jsonPath("$.data.userCredential.password").value("a1wq"));
+
+    }
+
+    @Test
+    public void getUserDetailsFailTest() throws Exception {
+        APIResponse responseDTO =  APIResponse.getApiResposne();
+        responseDTO.setMessage("user not found");
+        responseDTO.setSuccess(false);
+        responseDTO.setData(null);
+        Mockito.when(userService.read(100)).thenReturn(responseDTO);
+        mockMvc.perform(MockMvcRequestBuilders
+                        .get("/users/100")
+                        .contentType(MediaType.APPLICATION_JSON))
+                        .andExpect(status().isBadRequest())
+                        .andExpect(jsonPath("$.message").value("user not found"));
 
     }
 

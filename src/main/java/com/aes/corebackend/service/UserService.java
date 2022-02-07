@@ -58,7 +58,8 @@ public class UserService {
     }
 
     public APIResponse read(long id) {
-        apiResponse.setResponse(USER_NOT_FOUND, FALSE, NULL);
+        APIResponse apiResponse = new APIResponse(USER_NOT_FOUND, FALSE, NULL);
+        //apiResponse.setResponse(USER_NOT_FOUND, FALSE, NULL);
         User existingUser = userRepository.findById(id).orElse(null);
         if(Objects.nonNull(existingUser)) {
             apiResponse.setResponse(USER_FOUND, TRUE, existingUser);
