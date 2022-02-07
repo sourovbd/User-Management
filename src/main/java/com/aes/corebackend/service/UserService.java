@@ -11,8 +11,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Objects;
 
-import static com.aes.corebackend.util.response.APIResponseDesc.*;
-import static com.aes.corebackend.dto.APIResponse.getApiResposne;
+import static com.aes.corebackend.util.response.APIResponseMessage.*;
+import static com.aes.corebackend.dto.APIResponse.getApiResponse;
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -21,7 +21,7 @@ public class UserService {
 
     private final EmailSender emailSender;
 
-    private APIResponse apiResponse = getApiResposne();
+    private APIResponse apiResponse = getApiResponse();
 
     public APIResponse create(User user, UserDTO userDto) {
 

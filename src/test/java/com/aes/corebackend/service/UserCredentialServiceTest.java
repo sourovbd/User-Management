@@ -1,122 +1,42 @@
 package com.aes.corebackend.service;
 
-//import com.aes.corebackend.dto.ResponseDTO;
-import com.aes.corebackend.dto.APIResponse;
-import com.aes.corebackend.dto.UserCredentialDTO;
 import com.aes.corebackend.entity.UserCredential;
-import org.junit.jupiter.api.BeforeEach;
+import com.aes.corebackend.repository.UserCredentialRepository;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import static com.aes.corebackend.dto.APIResponse.getApiResposne;
-import static com.aes.corebackend.util.response.APIResponseDesc.*;
+import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+@ExtendWith(SpringExtension.class)
+@SpringBootTest
 public class UserCredentialServiceTest {
 
-    private static final Logger logger = LoggerFactory.getLogger(UserCredentialServiceTest.class);
-
-    @InjectMocks
+    @Autowired
     private UserCredentialService userCredentialService;
 
-    private UserCredential userCredentialTest = new UserCredential(1L, "012580", "123@5Aa", true, "EMPLOYEE");
-
-    private APIResponse expectedResponse = getApiResposne();
-
-    @BeforeEach
-    public void setup() {
-        MockitoAnnotations.openMocks(this);
-        userCredentialService = Mockito.mock(UserCredentialService.class);
-    }
+    @MockBean
+    private UserCredentialRepository userCredentialRepository;
 
     @Test
-    public void saveTest() throws Exception {
+    @DisplayName("Test getEmployee by employee id Success")
+    public void testGetEmployee() {
+        UserCredential mockUserCredential = new UserCredential(1, "012580", "123@5Aa", true, "EMPLOYEE");
+        Mockito.when(userCredentialRepository.findByEmployeeId(mockUserCredential.getEmployeeId())).thenReturn(Optional.of(mockUserCredential));
 
-        expectedResponse.setResponse(USER_CREDENTIAL_CREATED_SUCCESSFULLY, TRUE, userCredentialTest);
-        Mockito.when(userCredentialService.save(userCredentialTest)).thenReturn(expectedResponse);
-        APIResponse actualResponse = userCredentialService.save(userCredentialTest);
-        assert actualResponse.getMessage().equals(expectedResponse.getMessage());
-
-        expectedResponse.setResponse(USER_CREDENTIAL_CREATION_FAILED, FALSE, null);
-        Mockito.when(userCredentialService.save(userCredentialTest)).thenReturn(expectedResponse);
-        actualResponse = userCredentialService.save(userCredentialTest);
-        assert actualResponse.getMessage().equals(expectedResponse.getMessage());
+        UserCredential returnedUserCredentialFromService = userCredentialService.getEmployee("012580");
+        assertEquals(returnedUserCredentialFromService,mockUserCredential);
     }
 
-    @Test
-    public void updateTest_success() {
-        UserCredential updatedUserCredential = new UserCredential();
-        updatedUserCredential.setEmployeeId("012580");
-        updatedUserCredential.setPassword("123$5Aa");
+    public void testSave() {
 
-        userCredentialTest.setPassword("123$5Aa");
-        expectedResponse.setResponse(USER_CREDENTIAL_UPDATED_SUCCESSFULLY, TRUE, userCredentialTest);
-        Mockito.when(userCredentialService.update(updatedUserCredential)).thenReturn(expectedResponse);
-
-        APIResponse actualResponse = userCredentialService.update(updatedUserCredential);
-        System.out.println(actualResponse.toString());
-        assert actualResponse.getMessage().equals(expectedResponse.getMessage());
-
-
-        updatedUserCredential.setEmployeeId("013580");
-        expectedResponse.setResponse(USER_CREDENTIAL_UPDATE_FAILED, FALSE, null);
-        Mockito.when(userCredentialService.update(updatedUserCredential)).thenReturn(expectedResponse);
-
-        actualResponse = userCredentialService.update(updatedUserCredential);
-        System.out.println(actualResponse.toString());
-        assert actualResponse.getMessage().equals(expectedResponse.getMessage());
     }
 
-    @Test
-    public void getEmployeeIdTest() throws Exception {
-
-        Mockito.when(userCredentialService.getEmployeeId(userCredentialTest.getEmployeeId())).thenReturn(userCredentialTest);
-        UserCredential userCredential = userCredentialService.getEmployeeId(userCredentialTest.getEmployeeId());
-
-        assert userCredential.getEmployeeId().equals(userCredentialTest.getEmployeeId());
-    }
-
-    @Test
-    public void verifyCredentialTest() throws Exception {
-        UserCredentialDTO validUserCredentialDTO = new UserCredentialDTO();
-        validUserCredentialDTO.setEmployeeId("012580");
-        validUserCredentialDTO.setPassword("123@5Aa");
-
-        expectedResponse.setResponse(VALID_PASSWORD, TRUE, userCredentialTest);
-        Mockito.when(userCredentialService.verifyPassword(validUserCredentialDTO)).thenReturn(expectedResponse);
-
-        APIResponse actualResponse = userCredentialService.verifyPassword(validUserCredentialDTO);
-        assert actualResponse.getMessage().equals(expectedResponse.getMessage());
-
-
-        UserCredentialDTO invalidUserCredentialDTO = new UserCredentialDTO();
-        invalidUserCredentialDTO.setEmployeeId("012580");
-        invalidUserCredentialDTO.setPassword("123&5Aa");
-
-        expectedResponse.setResponse(INVALID_PASSWORD, FALSE, null);
-        Mockito.when(userCredentialService.verifyPassword(invalidUserCredentialDTO)).thenReturn(expectedResponse);
-
-        actualResponse = userCredentialService.verifyPassword(invalidUserCredentialDTO);
-        assert actualResponse.getMessage().equals(expectedResponse.getMessage());
-    }
-
-    @Test
-    public void generateAndSendTempPassTest() throws Exception {
-        String email = "abc@gmail.com";
-
-        expectedResponse.setResponse(NEW_PASSWORD_SENT, TRUE, userCredentialTest);
-        Mockito.when(userCredentialService.generateAndSendTempPass(email)).thenReturn(expectedResponse);
-
-        APIResponse actualResponse = userCredentialService.generateAndSendTempPass(email);
-        assert actualResponse.getMessage().equals(expectedResponse.getMessage());
-
-        expectedResponse.setResponse(EMPLOYEE_NOT_FOUND, FALSE, null);
-        Mockito.when(userCredentialService.generateAndSendTempPass(email)).thenReturn(expectedResponse);
-
-        actualResponse = userCredentialService.generateAndSendTempPass(email);
-        assert actualResponse.getMessage().equals(expectedResponse.getMessage());
-    }
 }

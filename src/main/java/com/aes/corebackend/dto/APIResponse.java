@@ -20,7 +20,7 @@ public class APIResponse {
        return this;
    }
 
-   public static APIResponse getApiResposne() {
+   public static APIResponse getApiResponse() {
        return new APIResponse();
    }
 

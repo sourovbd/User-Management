@@ -1,6 +1,4 @@
 package com.aes.corebackend.service;
-
-import com.aes.corebackend.controller.UserController;
 import com.aes.corebackend.dto.APIResponse;
 import com.aes.corebackend.dto.UserDTO;
 import com.aes.corebackend.entity.User;
@@ -11,7 +9,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,16 +22,13 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.doReturn;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -74,6 +68,7 @@ public class UserServiceTest {
         userDto.setBusinessUnit("a1polymar");
         userDto.setEmployeeId("0101");
         userDto.setRoles("EMPLOYEE");
+
         Mockito.when(userRepository.save(user)).thenReturn(user);
         APIResponse returnedResponse = userService.create(user,userDto);
         assertEquals(returnedResponse.getData(),user);
@@ -82,7 +77,7 @@ public class UserServiceTest {
     @Test
     public void getAllUsers_success() throws Exception {
         List<User> users = new ArrayList<>(Arrays.asList(user_1,user_2,user_3));
-        APIResponse responseDTO= new APIResponse();
+        APIResponse responseDTO = new APIResponse();
         responseDTO.setMessage("user fetch ok");
         responseDTO.setSuccess(true);
         responseDTO.setData(users);
