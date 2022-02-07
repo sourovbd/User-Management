@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import static com.aes.corebackend.util.response.APIResponseMessage.*;
 import static com.aes.corebackend.dto.APIResponse.getApiResponse;
@@ -76,4 +77,11 @@ public class UserService {
         return apiResponse;
     }
 
+    public User getUserByUserId(Long userId) {
+        Optional<User> user = userRepository.findById(userId);
+        if (user.isEmpty()) {
+            return null;
+        }
+        return user.get();
+    }
 }
