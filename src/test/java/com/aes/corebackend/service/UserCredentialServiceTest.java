@@ -1,8 +1,8 @@
 package com.aes.corebackend.service;
 
-import com.aes.corebackend.dto.APIResponse;
 import com.aes.corebackend.entity.UserCredential;
 import com.aes.corebackend.repository.UserCredentialRepository;
+import com.aes.corebackend.util.response.APIResponse;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,7 +14,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Optional;
 
-import static com.aes.corebackend.dto.APIResponse.getApiResponse;
+import static com.aes.corebackend.util.response.APIResponse.getApiResponse;
 import static com.aes.corebackend.util.response.APIResponseMessage.TRUE;
 import static com.aes.corebackend.util.response.APIResponseMessage.USER_CREDENTIAL_CREATED_SUCCESSFULLY;
 import static org.junit.jupiter.api.Assertions.assertEquals;
