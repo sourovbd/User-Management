@@ -99,14 +99,21 @@ public class UserServiceTest {
 
     @Test
     public void updateUserById() throws Exception {
-        User user_1_temp = new User(1L,"abc@gmail.com","dgm","0101","a1polymar","accounts","EMPLOYEE",userCredential_1);
+        User user_1_temp = new User(1L,"abc@gmail.com","dgm","0101","a1polymar","accounts","EMPLOYEE",userCredential_1, null, null);
         APIResponse responseDTO = new APIResponse();
         responseDTO.setMessage("user updated successfully");
         responseDTO.setSuccess(true);
         responseDTO.setData(user_1_temp);
+        UserDTO userDto = new UserDTO();
+        userDto.setDesignation("dgm");
+        userDto.setDepartment("accounts");
+        userDto.setEmailAddress("abc@gmail.com");
+        userDto.setBusinessUnit("a1polymar");
+        userDto.setEmployeeId("0101");
+        userDto.setRoles("EMPLOYEE");
         Mockito.when(userRepository.findById(1L)).thenReturn(Optional.ofNullable(user_1));
         Mockito.when(userRepository.save(user_1_temp)).thenReturn(user_1_temp);
-        APIResponse returnedResponse = userService.update(user_1_temp,1L);
+        APIResponse returnedResponse = userService.update(userDto ,1L);
         assertEquals(returnedResponse.getData(),responseDTO.getData());
     }
 
@@ -117,6 +124,6 @@ public class UserServiceTest {
 
     public User createUser(long id, String emailAddress, String designation, String employeeId, String businessUnit, String department, String roles, UserCredential userCredential) {
 
-        return new User(id, emailAddress, designation, employeeId, businessUnit, department, roles, userCredential);
+        return new User(id, emailAddress, designation, employeeId, businessUnit, department, roles, userCredential, null, null);
     }
 }

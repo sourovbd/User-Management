@@ -43,11 +43,8 @@ public class UserController {
 
     @PutMapping("/users/{id}")
     @PreAuthorize("hasAuthority('EMPLOYEE')")
-    public ResponseEntity<?> updateUser(@RequestBody @Valid  UserDTO userDto, @PathVariable long id, BindingResult result) {
-        if (result.hasErrors()) {
-            return badRequest().body(prepareErrorResponse(result));
-        }
-        APIResponse apiResponse = userService.update(userDto.dtoToEntity(userDto),id);
+    public ResponseEntity<?> updateUser(@RequestBody @Valid  UserDTO userDto, @PathVariable long id) {
+        APIResponse apiResponse = userService.update(userDto,id);
         return apiResponse.isSuccess() ? ok(apiResponse) : badRequest().body(apiResponse);
     }
 
@@ -64,5 +61,4 @@ public class UserController {
         APIResponse apiResponse = userService.read();
         return apiResponse.isSuccess() ? ok(apiResponse) : badRequest().body(apiResponse);
     }
-
 }

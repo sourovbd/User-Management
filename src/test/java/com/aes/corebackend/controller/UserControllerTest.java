@@ -5,24 +5,20 @@ import com.aes.corebackend.dto.UserDTO;
 import com.aes.corebackend.entity.User;
 import com.aes.corebackend.entity.UserCredential;
 import com.aes.corebackend.service.EmailSender;
-import com.aes.corebackend.service.EmailService;
 import com.aes.corebackend.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -30,12 +26,10 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.List;
 
-import static com.aes.corebackend.util.response.APIResponseMessage.*;
 import static org.assertj.core.internal.bytebuddy.matcher.ElementMatchers.is;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
-
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -53,9 +47,9 @@ public class UserControllerTest {
     UserCredential userCredential_1 = new UserCredential(1, "101", "a1wq", true, "EMPLOYEE");
     UserCredential userCredential_2 = new UserCredential(2, "102", "a1wq", true, "EMPLOYEE");
     UserCredential userCredential_3 = new UserCredential(3, "103", "a1wq", true, "EMPLOYEE");
-    User user_1 = new User(1L, "abc@gmail.com", "agm", "101", "a1polymar", "accounts", "EMPLOYEE", userCredential_1);
-    User user_2 = new User(2L, "abd@gmail.com", "agm", "102", "a1polymar", "accounts", "EMPLOYEE", userCredential_2);
-    User user_3 = new User(3L, "abe@gmail.com", "agm", "103", "a1polymar", "accounts", "EMPLOYEE", userCredential_3);
+    User user_1 = createUser(1L,"abc@gmail.com","agm","101","a1polymar","accounts","EMPLOYEE",userCredential_1);
+    User user_2 = createUser(2L,"abd@gmail.com","agm","102","a1polymar","accounts","EMPLOYEE",userCredential_2);
+    User user_3 = createUser(3L,"abe@gmail.com","agm","103","a1polymar","accounts","EMPLOYEE",userCredential_3);
 
     @BeforeEach
     public void setup() {
@@ -65,58 +59,49 @@ public class UserControllerTest {
                 .build();
     }
 
-    /*@Test
+    @Test
     public void createUserTest() throws Exception {
-       *//* UserCredential userCredential = new UserCredential(1L, "100", "a1wq", true, "EMPLOYEE");
-        User user = new User();
-        user.setId(1L);
-        user.setDesignation("agm");
-        user.setDepartment("accounts");
-        user.setEmailAddress("a@gmail.com");
-        user.setBusinessUnit("a1polymar");
-        user.setEmployeeId("100");
-        user.setRoles("EMPLOYEE");
-        user.setUserCredential(userCredential);*//*
-
+        UserCredential userCredential = new UserCredential(1L, "101", "a1wq", true, "EMPLOYEE");
+        User user = createUser(1L,"mdahad118@gmail.com","agm","101","a1polymar","accounts","EMPLOYEE",userCredential);
         UserDTO userDto = new UserDTO();
         userDto.setDesignation("agm");
         userDto.setDepartment("accounts");
-        userDto.setEmailAddress("abc@gmail.com");
+        userDto.setEmailAddress("mdahad118@gmail.com");
         userDto.setBusinessUnit("a1polymar");
         userDto.setEmployeeId("101");
         userDto.setRoles("EMPLOYEE");
-
-        APIResponse responseDTO = new APIResponse();
-        responseDTO.setMessage(USER_CREATED_SUCCESSFULLY);
+        APIResponse responseDTO = APIResponse.getApiResponse();
+        responseDTO.setMessage("user created successfully");
         responseDTO.setSuccess(true);
-        responseDTO.setData(user_1);
+        responseDTO.setData(user);
+        Mockito.when(userService.create(userDto.dtoToEntity(userDto),userDto)).thenReturn(responseDTO);
 
-        Mockito.when(userService.create(user_1,userDto)).thenReturn(responseDTO);
-
-        String jsonRequest = om.writeValueAsString(user_1);
+        String jsonRequest = om.writeValueAsString(userDto);
         MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders
                 .post("/users")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .content(jsonRequest);
         mockMvc.perform(mockRequest)
-                .andExpect(status().isOk());
-                //.andExpect(jsonPath("$.message").value(USER_CREATED_SUCCESSFULLY));
-    }*/
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.message").value("user created successfully"));
+
+    }
 
     @Test
     public void getAllUsers_success() throws Exception {
         List<User> users = Lists.newArrayList(user_1,user_2,user_3);
         APIResponse responseDTO =  new APIResponse();
-        responseDTO.setMessage(USER_FETCH_OK);
+        responseDTO.setMessage("user fetch ok");
         responseDTO.setSuccess(true);
         responseDTO.setData(users);
         Mockito.when(userService.read()).thenReturn(responseDTO);
         mockMvc.perform(MockMvcRequestBuilders
                         .get("/users")
+                        .header(HttpHeaders.AUTHORIZATION, "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIwMTI1MTkiLCJleHAiOjE2NDM4MTk4ODAsImlhdCI6MTY0Mzc4Mzg4MH0.5LF-tn-BGh20YpushocQv9pNLPaI1P_MDsxriO6w3zc")
                         .contentType(MediaType.APPLICATION_JSON))
                         .andExpect(status().isOk())
-                        .andExpect(jsonPath("$.message").value(USER_FETCH_OK))
+                        .andExpect(jsonPath("$.message").value("user fetch ok"))
                         .andExpect(jsonPath("$.data[0].id").value(1L))
                         .andExpect(jsonPath("$.data[0].emailAddress").value("abc@gmail.com"))
                         .andExpect(jsonPath("$.data[0].designation").value("agm"))
@@ -131,15 +116,16 @@ public class UserControllerTest {
     @Test
     public void getUserDetailsTest() throws Exception {
         APIResponse responseDTO =  new APIResponse();
-        responseDTO.setMessage(USER_FOUND);
+        responseDTO.setMessage("user found");
         responseDTO.setSuccess(true);
         responseDTO.setData(user_1);
         Mockito.when(userService.read(1L)).thenReturn(responseDTO);
         mockMvc.perform(MockMvcRequestBuilders
                         .get("/users/1")
+                        .header(HttpHeaders.AUTHORIZATION, "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIwMTI1MTkiLCJleHAiOjE2NDM4MTk4ODAsImlhdCI6MTY0Mzc4Mzg4MH0.5LF-tn-BGh20YpushocQv9pNLPaI1P_MDsxriO6w3zc")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.message").value(USER_FOUND))
+                .andExpect(jsonPath("$.message").value("user found"))
                 .andExpect(jsonPath("$.data").value(user_1))
                 .andExpect(jsonPath("$.data.id").value(1L))
                 .andExpect(jsonPath("$.data.emailAddress").value("abc@gmail.com"))
@@ -154,50 +140,33 @@ public class UserControllerTest {
     }
 
     @Test
-    public void getUserDetailsFailTest() throws Exception {
-        APIResponse responseDTO =  APIResponse.getApiResponse();
-        responseDTO.setMessage(USER_NOT_FOUND);
-        responseDTO.setSuccess(false);
-        responseDTO.setData(null);
-        Mockito.when(userService.read(100)).thenReturn(responseDTO);
-        mockMvc.perform(MockMvcRequestBuilders
-                        .get("/users/100")
-                        .contentType(MediaType.APPLICATION_JSON))
-                        .andExpect(status().isBadRequest())
-                        .andExpect(jsonPath("$.message").value(USER_NOT_FOUND));
-
-    }
-
-    /*@Test
     public void updateUserById() throws Exception {
-        UserCredential userCredential = new UserCredential(1L,"101","a1wq",true,"EMPLOYEE");
-        User user = new User();
-        user.setId(1L);
-        user.setDesignation("agm");
-        user.setDepartment("accounts");
-        user.setEmailAddress("mdahad118@gmail.com");
-        user.setBusinessUnit("a1polymar");
-        user.setEmployeeId("101");
-        user.setRoles("EMPLOYEE");
-        user.setUserCredential(userCredential);
-
-        APIResponse responseDTO =  APIResponse.getApiResponse();
-        responseDTO.setMessage(USER_UPDATED_SUCCESSFULLY);
+        User user_1_temp = new User(1L,"abc@gmail.com","dgm","0101","a1polymar","accounts","EMPLOYEE",userCredential_1, null, null);
+        APIResponse responseDTO = new APIResponse();
+        responseDTO.setMessage("user updated successfully");
         responseDTO.setSuccess(true);
-        responseDTO.setData(user);
+        responseDTO.setData(user_1_temp);
+        UserDTO userDto = new UserDTO();
+        userDto.setId(1L);
+        userDto.setDesignation("dgm");
+        userDto.setDepartment("accounts");
+        userDto.setEmailAddress("mdahad118@gmail.com");
+        userDto.setBusinessUnit("a1polymar");
+        userDto.setEmployeeId("101");
+        userDto.setRoles("EMPLOYEE");
 
-        APIResponse responseDTORead =  APIResponse.getApiResponse();
-        responseDTO.setMessage(USER_UPDATED_SUCCESSFULLY);
-        responseDTO.setSuccess(true);
-        responseDTO.setData(user);
+        Mockito.when(userService.update(userDto,1L)).thenReturn(responseDTO);
 
-        Mockito.when(userService.read(1L)).thenReturn(responseDTORead);
-        Mockito.when(userService.update(user,1L)).thenReturn(responseDTO);
-        String jsonRequest = om.writeValueAsString(user);
+        String jsonRequest = om.writeValueAsString(userDto);
         MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders
                 .put("/users/1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonRequest);
         mockMvc.perform(mockRequest).andExpect(status().isOk());
-    }*/
+    }
+    public User createUser(long id, String emailAddress, String designation, String employeeId, String businessUnit, String department, String roles, UserCredential userCredential) {
+
+        return new User(id, emailAddress, designation, employeeId, businessUnit, department, roles, userCredential, null, null);
+    }
+
 }
