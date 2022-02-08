@@ -5,6 +5,7 @@ import com.aes.corebackend.dto.personnelmanagement.PersonnelManagementResponseDT
 import com.aes.corebackend.service.personnelmanagement.PersonalBasicInformationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +19,7 @@ public class PersonalBasicInfoController {
     private final PersonalBasicInformationService personalBasicInformationService;
 
     @PostMapping(value = "/users/{userId}/basic-information")
+    @PreAuthorize("hasAuthority('EMPLOYEE')")
     public ResponseEntity<?> createPersonalBasicInfo(@RequestBody @Valid PersonalBasicInfoDTO personalBasicInfoDTO, BindingResult result, @PathVariable Long userId) {
         if(result.hasErrors()){
             System.out.println("has errors in post basic info");
@@ -27,6 +29,7 @@ public class PersonalBasicInfoController {
     }
 
     @PutMapping(value = "/users/{userId}/basic-information")
+    @PreAuthorize("hasAuthority('EMPLOYEE')")
     public ResponseEntity<?> updatePersonalBasicInfo(@Valid @RequestBody PersonalBasicInfoDTO basicInfoDTO, BindingResult result, @PathVariable Long userId) {
         if(result.hasErrors()){
             return ResponseEntity.ok(new PersonnelManagementResponseDTO(result.getFieldError().getDefaultMessage(), false, null));
@@ -35,6 +38,7 @@ public class PersonalBasicInfoController {
     }
 
     @GetMapping(value = "/users/{userId}/basic-information")
+    @PreAuthorize("hasAuthority('EMPLOYEE')")
     public ResponseEntity<?> getPersonalBasicInfo(@PathVariable Long userId) {
         return ResponseEntity.ok(personalBasicInformationService.read(userId));
     }

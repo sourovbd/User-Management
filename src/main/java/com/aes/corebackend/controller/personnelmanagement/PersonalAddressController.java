@@ -5,6 +5,7 @@ import com.aes.corebackend.dto.personnelmanagement.PersonnelManagementResponseDT
 import com.aes.corebackend.service.personnelmanagement.PersonalAddressService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +19,7 @@ public class PersonalAddressController {
     private final PersonalAddressService personalAddressService;
 
     @PostMapping(value = "/users/{userId}/personal-address")
+    @PreAuthorize("hasAuthority('EMPLOYEE')")
     public ResponseEntity<?> createPersonalAddress(@Valid @RequestBody PersonalAddressInfoDTO addressInfoDTO, BindingResult result, @PathVariable Long userId) {
         if(result.hasErrors()){
             return ResponseEntity.ok(new PersonnelManagementResponseDTO(result.getFieldError().getDefaultMessage(), false, null));
@@ -26,6 +28,7 @@ public class PersonalAddressController {
     }
 
     @PutMapping(value = "/users/{userId}/personal-address")
+    @PreAuthorize("hasAuthority('EMPLOYEE')")
     public ResponseEntity<?> updatePersonalAddress(@Valid @RequestBody PersonalAddressInfoDTO personalAddressInfoDTO, BindingResult result, @PathVariable Long userId) {
         if(result.hasErrors()){
             return ResponseEntity.ok(new PersonnelManagementResponseDTO(result.getFieldError().getDefaultMessage(), false, null));
@@ -34,6 +37,7 @@ public class PersonalAddressController {
     }
 
     @GetMapping(value = "/users/{userId}/personal-address")
+    @PreAuthorize("hasAuthority('EMPLOYEE')")
     public ResponseEntity<?> getPersonalAddress(@PathVariable Long userId) {
         return ResponseEntity.ok(personalAddressService.read(userId));
     }

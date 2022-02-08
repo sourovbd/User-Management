@@ -5,6 +5,7 @@ import com.aes.corebackend.dto.personnelmanagement.PersonnelManagementResponseDT
 import com.aes.corebackend.service.personnelmanagement.PersonalJobExperienceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +20,7 @@ public class JobExperienceController {
     private final PersonalJobExperienceService personalJobExperienceService;
 
     @PostMapping(value = "/users/{userId}/job-experiences")
+    @PreAuthorize("hasAuthority('EMPLOYEE')")
     public ResponseEntity<?> createJobExperience(@Valid @RequestBody PersonalJobExperienceDTO personalJobExperienceDTO, BindingResult result, @PathVariable Long userId) {
         if(result.hasErrors()){
             return ResponseEntity.ok(new PersonnelManagementResponseDTO(result.getFieldError().getDefaultMessage(), false, null));
@@ -27,6 +29,7 @@ public class JobExperienceController {
     }
 
     @PutMapping(value = "/users/{userId}/job-experiences/{experienceId}")
+    @PreAuthorize("hasAuthority('EMPLOYEE')")
     public ResponseEntity<?> updatePersonalJobExperience(@Valid @RequestBody PersonalJobExperienceDTO personalJobExperienceDTO, BindingResult result, @PathVariable Long userId, @PathVariable Long experienceId) {
         if(result.hasErrors()){
             return ResponseEntity.ok(new PersonnelManagementResponseDTO(result.getFieldError().getDefaultMessage(), false, null));
@@ -35,11 +38,13 @@ public class JobExperienceController {
     }
 
     @GetMapping(value = "/users/{userId}/job-experiences")
+    @PreAuthorize("hasAuthority('EMPLOYEE')")
     public ResponseEntity<?> getPersonalJobExperiences(@PathVariable Long userId) {
         return ResponseEntity.ok(personalJobExperienceService.read(userId));
     }
 
     @GetMapping(value = "/users/{userId}/job-experiences/{experienceId}")
+    @PreAuthorize("hasAuthority('EMPLOYEE')")
     public ResponseEntity<?> getPersonalJobExperience(@PathVariable Long userId, @PathVariable Long experienceId) {
         return ResponseEntity.ok(personalJobExperienceService.read(userId, experienceId));
     }
