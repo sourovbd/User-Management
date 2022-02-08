@@ -18,7 +18,7 @@ public class PersonalJobExperienceService {
 
     private final UserService userService;
     private final PersonalJobExperienceRepository personalJobExperienceRepository;
-    private APIResponse apiResponse = null;
+    private APIResponse apiResponse = APIResponse.getApiResponse();
 
     public APIResponse create(PersonalJobExperienceDTO jobExperienceDTO, Long userId) {
         apiResponse.setMessage(PersonnelManagementAPIResponseDescription.USER_NOT_FOUND);

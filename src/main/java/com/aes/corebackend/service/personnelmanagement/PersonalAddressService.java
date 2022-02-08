@@ -17,7 +17,7 @@ public class PersonalAddressService {
 
     private final PersonalAddressInfoRepository personalAddressInfoRepository;
     private final UserService userService;
-    private APIResponse apiResponse = null;
+    private APIResponse apiResponse = APIResponse.getApiResponse();
 
     public APIResponse create(PersonalAddressInfoDTO personalAddressInfoDTO, Long userId) {
         apiResponse.setMessage(PersonnelManagementAPIResponseDescription.USER_NOT_FOUND);
