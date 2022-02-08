@@ -42,7 +42,7 @@ public class APIResponse implements Serializable {
         this.status = status;
     }
 
-    public APIResponse(String message, boolean success, Object data) {
+    public APIResponse(String message, boolean success, Object data, AjaxResponseStatus status ) {
         this.message = message;
         this.success = success;
         this.data = data;
@@ -90,7 +90,7 @@ public class APIResponse implements Serializable {
         return response;
     }
 
-    public APIResponse setResponse(String message, boolean success, Object data) {
+    public APIResponse setResponse(String message, boolean success, Object data, AjaxResponseStatus status) {
         this.message = message;
         this.success = success;
         this.data = data;

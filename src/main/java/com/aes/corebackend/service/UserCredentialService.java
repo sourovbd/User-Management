@@ -17,6 +17,8 @@ import java.util.Objects;
 
 import static com.aes.corebackend.util.response.APIResponseMessage.*;
 import static com.aes.corebackend.util.response.APIResponse.getApiResponse;
+import static com.aes.corebackend.util.response.AjaxResponseStatus.ERROR;
+import static com.aes.corebackend.util.response.AjaxResponseStatus.SUCCESS;
 
 @Service
 @RequiredArgsConstructor
@@ -38,8 +40,8 @@ public class UserCredentialService {
         UserCredential updatedUserCredential = userCredentialRepository.save(userCredential);
 
         return Objects.nonNull(updatedUserCredential) ?
-                apiResponse.setResponse(USER_CREDENTIAL_CREATED_SUCCESSFULLY, TRUE, updatedUserCredential) :
-                apiResponse.setResponse(USER_CREDENTIAL_CREATION_FAILED, TRUE, NULL);
+                apiResponse.setResponse(USER_CREDENTIAL_CREATED_SUCCESSFULLY, TRUE, updatedUserCredential, SUCCESS) :
+                apiResponse.setResponse(USER_CREDENTIAL_CREATION_FAILED, TRUE, NULL, ERROR);
     }
 
     public APIResponse update(UserCredential userCredential) {
@@ -51,8 +53,8 @@ public class UserCredentialService {
         UserCredential updatedUserCredential = userCredentialRepository.save(existingUserCredential);
 
         return Objects.nonNull(updatedUserCredential) ?
-                apiResponse.setResponse(USER_CREDENTIAL_UPDATED_SUCCESSFULLY, TRUE, updatedUserCredential) :
-                apiResponse.setResponse(USER_CREDENTIAL_UPDATE_FAILED, FALSE, NULL);
+                apiResponse.setResponse(USER_CREDENTIAL_UPDATED_SUCCESSFULLY, TRUE, updatedUserCredential, SUCCESS) :
+                apiResponse.setResponse(USER_CREDENTIAL_UPDATE_FAILED, FALSE, NULL, ERROR);
     }
 
     public APIResponse verifyPassword(UserCredentialDTO userCredentialDTO) {
@@ -60,8 +62,8 @@ public class UserCredentialService {
         UserCredential userCredential = userCredentialRepository.findByEmployeeId(userCredentialDTO.getEmployeeId())
                 .orElseThrow(ResourceNotFoundException::new);
         return passwordEncoder.matches(userCredentialDTO.getPassword(), userCredential.getPassword()) ?
-                apiResponse.setResponse(VALID_PASSWORD, TRUE, userCredential) :
-                apiResponse.setResponse(INVALID_PASSWORD, FALSE, NULL);
+                apiResponse.setResponse(VALID_PASSWORD, TRUE, userCredential, SUCCESS) :
+                apiResponse.setResponse(INVALID_PASSWORD, FALSE, NULL, ERROR);
     }
 
     public UserCredential getEmployee(String employeeId) {
