@@ -30,9 +30,7 @@ public class UserCredentialController {
     private static final Logger logger = LoggerFactory.getLogger(UserCredentialController.class);
 
     @PostMapping("/users-credential")
-    @PreAuthorize("hasAuthority('EMPLOYEE')")
     public ResponseEntity<?> saveCredential(@RequestBody @Valid UserCredentialDTO userCredentialDTO, BindingResult result) throws Exception {
-
         if (result.hasErrors()) {
             return badRequest().body(prepareErrorResponse(result));
         }

@@ -6,6 +6,7 @@ import com.aes.corebackend.service.personnelmanagement.FamilyInformationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +19,7 @@ public class FamilyInformationController {
     private final FamilyInformationService familyInformationService;
 
     @PostMapping(value = "/users/{userId}/family-information")
+    @PreAuthorize("hasAnyAuthority('EMPLOYEE', 'SYS_ADMIN')")
     public ResponseEntity<?> createFamilyInfo(@Valid @RequestBody PersonalFamilyInfoDTO familyInfoDTO, BindingResult result, @PathVariable Long userId) {
         if(result.hasErrors()){
             return ResponseEntity.ok(new PersonnelManagementResponseDTO(result.getFieldError().getDefaultMessage(), false, null));
@@ -26,6 +28,8 @@ public class FamilyInformationController {
     }
 
     @PutMapping(value = "/users/{userId}/family-information")
+    @PreAuthorize("hasAnyAuthority('EMPLOYEE', 'SYS_ADMIN')")
+
     public ResponseEntity<?> updateFamilyInfo(@Valid @RequestBody PersonalFamilyInfoDTO familyInfoDTO, BindingResult result, @PathVariable Long userId) {
         if(result.hasErrors()){
             return ResponseEntity.ok(new PersonnelManagementResponseDTO(result.getFieldError().getDefaultMessage(), false, null));
@@ -34,6 +38,7 @@ public class FamilyInformationController {
     }
 
     @GetMapping(value = "/users/{userId}/family-information")
+    @PreAuthorize("hasAnyAuthority('EMPLOYEE', 'SYS_ADMIN')")
     public ResponseEntity<?> getFamilyInfo(@PathVariable Long userId) {
         return ResponseEntity.ok(familyInformationService.read(userId));
     }

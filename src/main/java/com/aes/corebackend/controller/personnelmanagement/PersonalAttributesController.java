@@ -10,6 +10,7 @@ import com.aes.corebackend.service.personnelmanagement.PersonalAttributesService
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +25,7 @@ public class PersonalAttributesController {
     private final PersonalAttributesService personalAttributesService;
 
     @PostMapping(value = "/users/{userId}/attribute-information")
+    @PreAuthorize("hasAnyAuthority('EMPLOYEE', 'SYS_ADMIN')")
     public ResponseEntity<?> createAttributesInfo(@Valid @RequestBody PersonalAttributesDTO attributesDTO, BindingResult result, @PathVariable Long userId) {
         if(result.hasErrors()){
             return ResponseEntity.ok(new PersonnelManagementResponseDTO(result.getFieldError().getDefaultMessage(), false, null));
@@ -32,6 +34,7 @@ public class PersonalAttributesController {
     }
 
     @PutMapping(value = "/users/{userId}/attribute-information")
+    @PreAuthorize("hasAnyAuthority('EMPLOYEE', 'SYS_ADMIN')")
     public ResponseEntity<?> updateAttributesInfo(@Valid @RequestBody PersonalAttributesDTO attributesDTO, BindingResult result, @PathVariable Long userId) {
         if(result.hasErrors()){
             return ResponseEntity.ok(new PersonnelManagementResponseDTO(result.getFieldError().getDefaultMessage(), false, null));
@@ -40,6 +43,7 @@ public class PersonalAttributesController {
     }
 
     @GetMapping(value = "/users/{userId}/attribute-information")
+    @PreAuthorize("hasAnyAuthority('EMPLOYEE', 'SYS_ADMIN')")
     public ResponseEntity<?> getPersonalBasicInfo(@PathVariable Long userId) {
         return ResponseEntity.ok(personalAttributesService.read(userId));
     }
