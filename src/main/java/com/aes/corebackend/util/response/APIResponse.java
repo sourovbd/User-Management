@@ -39,7 +39,6 @@ public class APIResponse implements Serializable {
 
 
     public APIResponse(AjaxResponseStatus status) {
-
         this.status = status;
     }
 
@@ -53,9 +52,7 @@ public class APIResponse implements Serializable {
         if (isNull(errors)) {
             errors = new ArrayList<>();
         }
-
         errors.add(msg);
-
         return this;
     }
 
@@ -69,24 +66,19 @@ public class APIResponse implements Serializable {
             errors = new ArrayList<>();
             fieldsErrors.put(fieldName, errors);
         }
-
         errors.add(msg);
-
         return this;
     }
 
     public static APIResponse success(Object data) {
-
         return new APIResponse(SUCCESS).setData(data);
     }
 
     public static APIResponse error() {
-
         return new APIResponse(ERROR);
     }
 
     public static APIResponse error(String msg) {
-
         return error().addErrorMessage(msg);
     }
 
@@ -95,7 +87,6 @@ public class APIResponse implements Serializable {
         for (FieldError fe : result.getFieldErrors()) {
             response.addFieldError(fe.getField(), fe.getDefaultMessage());
         }
-
         return response;
     }
 

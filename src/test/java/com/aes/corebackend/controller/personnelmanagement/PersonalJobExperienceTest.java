@@ -4,6 +4,7 @@ import com.aes.corebackend.dto.APIResponse;
 import com.aes.corebackend.dto.personnelmanagement.PersonalJobExperienceDTO;
 import com.aes.corebackend.entity.User;
 import com.aes.corebackend.service.personnelmanagement.PersonalJobExperienceService;
+import com.aes.corebackend.util.response.APIResponse;
 import com.aes.corebackend.util.response.PersonnelManagementAPIResponseDescription;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
