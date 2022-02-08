@@ -28,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class UserCredentialControllerTestTemp {
 
-    @Autowired
+   /* @Autowired
     private MockMvc mockMvc;
 
     @Mock
@@ -167,5 +167,5 @@ public class UserCredentialControllerTestTemp {
                 .andExpect(jsonPath("$.message").value(expectedResponse.getMessage()))
                 .andExpect(jsonPath("$.success").value(expectedResponse.isSuccess()))
                 .andExpect(jsonPath("$.data").value(expectedResponse.getData()));
-    }
+    }*/
 }
