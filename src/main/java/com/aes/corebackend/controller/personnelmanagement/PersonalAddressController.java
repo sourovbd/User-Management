@@ -1,7 +1,7 @@
 package com.aes.corebackend.controller.personnelmanagement;
 
+import com.aes.corebackend.dto.APIResponse;
 import com.aes.corebackend.dto.personnelmanagement.PersonalAddressInfoDTO;
-import com.aes.corebackend.dto.personnelmanagement.PersonnelManagementResponseDTO;
 import com.aes.corebackend.service.personnelmanagement.PersonalAddressService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +12,10 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+import static com.aes.corebackend.util.response.AjaxResponse.prepareErrorResponse;
+import static org.springframework.http.ResponseEntity.badRequest;
+import static org.springframework.http.ResponseEntity.ok;
+
 @Controller
 @RequiredArgsConstructor
 public class PersonalAddressController {
@@ -21,24 +25,27 @@ public class PersonalAddressController {
     @PostMapping(value = "/users/{userId}/personal-address")
     @PreAuthorize("hasAuthority('EMPLOYEE')")
     public ResponseEntity<?> createPersonalAddress(@Valid @RequestBody PersonalAddressInfoDTO addressInfoDTO, BindingResult result, @PathVariable Long userId) {
-        if(result.hasErrors()){
-            return ResponseEntity.ok(new PersonnelManagementResponseDTO(result.getFieldError().getDefaultMessage(), false, null));
+        if (result.hasErrors()) {
+            return badRequest().body(prepareErrorResponse(result));
         }
-        return ResponseEntity.ok(personalAddressService.create(addressInfoDTO, userId));
+        APIResponse apiResponse = personalAddressService.create(addressInfoDTO, userId);
+        return apiResponse.isSuccess() ? ok(apiResponse) : badRequest().body(apiResponse);
     }
 
     @PutMapping(value = "/users/{userId}/personal-address")
     @PreAuthorize("hasAuthority('EMPLOYEE')")
     public ResponseEntity<?> updatePersonalAddress(@Valid @RequestBody PersonalAddressInfoDTO personalAddressInfoDTO, BindingResult result, @PathVariable Long userId) {
-        if(result.hasErrors()){
-            return ResponseEntity.ok(new PersonnelManagementResponseDTO(result.getFieldError().getDefaultMessage(), false, null));
+        if (result.hasErrors()) {
+            return badRequest().body(prepareErrorResponse(result));
         }
-        return ResponseEntity.ok(personalAddressService.update(personalAddressInfoDTO, userId));
+        APIResponse apiResponse = personalAddressService.update(personalAddressInfoDTO, userId);
+        return apiResponse.isSuccess() ? ok(apiResponse) : badRequest().body(apiResponse);
     }
 
     @GetMapping(value = "/users/{userId}/personal-address")
     @PreAuthorize("hasAuthority('EMPLOYEE')")
     public ResponseEntity<?> getPersonalAddress(@PathVariable Long userId) {
-        return ResponseEntity.ok(personalAddressService.read(userId));
+        APIResponse apiResponse = personalAddressService.read(userId);
+        return apiResponse.isSuccess() ? ok(apiResponse) : badRequest().body(apiResponse);
     }
 }
