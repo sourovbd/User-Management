@@ -1,6 +1,5 @@
 package com.aes.corebackend.service;
 
-import com.aes.corebackend.dto.APIResponse;
 import com.aes.corebackend.dto.UserCredentialDTO;
 import com.aes.corebackend.entity.User;
 import com.aes.corebackend.entity.UserCredential;
@@ -9,6 +8,7 @@ import com.aes.corebackend.repository.UserCredentialRepository;
 import com.aes.corebackend.repository.UserRepository;
 import com.aes.corebackend.util.Constants;
 import com.aes.corebackend.util.UserCredentialUtils;
+import com.aes.corebackend.util.response.APIResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -16,7 +16,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import java.util.Objects;
 
 import static com.aes.corebackend.util.response.APIResponseMessage.*;
-import static com.aes.corebackend.dto.APIResponse.getApiResponse;
+import static com.aes.corebackend.util.response.APIResponse.getApiResponse;
 
 @Service
 @RequiredArgsConstructor

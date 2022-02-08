@@ -1,16 +1,18 @@
 package com.aes.corebackend.service.personnelmanagement;
 
-import com.aes.corebackend.dto.APIResponse;
 import com.aes.corebackend.dto.personnelmanagement.PersonalJobExperienceDTO;
 import com.aes.corebackend.entity.User;
 import com.aes.corebackend.entity.personnelmanagement.PersonalJobExperience;
 import com.aes.corebackend.repository.personnelmanagement.PersonalJobExperienceRepository;
 import com.aes.corebackend.service.UserService;
+import com.aes.corebackend.util.response.APIResponse;
 import com.aes.corebackend.util.response.PersonnelManagementAPIResponseDescription;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Objects;
+
+import static com.aes.corebackend.util.response.APIResponse.getApiResponse;
 
 @Service
 @RequiredArgsConstructor
@@ -18,7 +20,7 @@ public class PersonalJobExperienceService {
 
     private final UserService userService;
     private final PersonalJobExperienceRepository personalJobExperienceRepository;
-    private APIResponse apiResponse = null;
+    private APIResponse apiResponse = getApiResponse();
 
     public APIResponse create(PersonalJobExperienceDTO jobExperienceDTO, Long userId) {
         apiResponse.setMessage(PersonnelManagementAPIResponseDescription.USER_NOT_FOUND);

@@ -1,14 +1,10 @@
 package com.aes.corebackend.controller.personnelmanagement;
 
 import com.aes.corebackend.dto.APIResponse;
-import com.aes.corebackend.dto.personnelmanagement.PersonalAddressInfoDTO;
 import com.aes.corebackend.dto.personnelmanagement.PersonalJobExperienceDTO;
-import com.aes.corebackend.dto.personnelmanagement.PersonnelManagementResponseDTO;
 import com.aes.corebackend.entity.User;
-import com.aes.corebackend.service.personnelmanagement.PersonalAddressService;
 import com.aes.corebackend.service.personnelmanagement.PersonalJobExperienceService;
 import com.aes.corebackend.util.response.PersonnelManagementAPIResponseDescription;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

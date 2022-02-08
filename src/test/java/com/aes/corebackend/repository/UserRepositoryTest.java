@@ -1,22 +1,5 @@
 package com.aes.corebackend.repository;
 
-import com.aes.corebackend.dto.APIResponse;
-import com.aes.corebackend.dto.UserDTO;
-import com.aes.corebackend.entity.User;
-import com.aes.corebackend.entity.UserCredential;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.web.servlet.MockMvc;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class UserRepositoryTest {
