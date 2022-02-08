@@ -1,10 +1,10 @@
 package com.aes.corebackend.service;
 
-import com.aes.corebackend.dto.APIResponse;
 import com.aes.corebackend.dto.UserDTO;
 import com.aes.corebackend.entity.User;
 import com.aes.corebackend.entity.UserCredential;
 import com.aes.corebackend.repository.UserRepository;
+import com.aes.corebackend.util.response.APIResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +13,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 import static com.aes.corebackend.util.response.APIResponseMessage.*;
-import static com.aes.corebackend.dto.APIResponse.getApiResponse;
+import static com.aes.corebackend.util.response.APIResponse.getApiResponse;
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -59,8 +59,7 @@ public class UserService {
     }
 
     public APIResponse read(long id) {
-        APIResponse apiResponse = new APIResponse(USER_NOT_FOUND, FALSE, NULL);
-        //apiResponse.setResponse(USER_NOT_FOUND, FALSE, NULL);
+        apiResponse.setResponse(USER_NOT_FOUND, FALSE, NULL);
         User existingUser = userRepository.findById(id).orElse(null);
         if(Objects.nonNull(existingUser)) {
             apiResponse.setResponse(USER_FOUND, TRUE, existingUser);

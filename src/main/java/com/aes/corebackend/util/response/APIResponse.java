@@ -21,27 +21,35 @@ import static java.util.Objects.isNull;
 @Accessors(chain = true)
 @NoArgsConstructor
 @AllArgsConstructor
-public class AjaxResponse implements Serializable {
+public class APIResponse implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     private AjaxResponseStatus status;
 
+    private boolean success;
+
     private Object data;
 
-    private String msg;
+    private String message;
 
     private List<String> errors;
 
     private Map<String, List<String>> fieldsErrors;
 
 
-    public AjaxResponse(AjaxResponseStatus status) {
+    public APIResponse(AjaxResponseStatus status) {
 
         this.status = status;
     }
 
-    public AjaxResponse addErrorMessage(String msg) {
+    public APIResponse(String message, boolean success, Object data) {
+        this.message = message;
+        this.success = success;
+        this.data = data;
+    }
+
+    public APIResponse addErrorMessage(String msg) {
         if (isNull(errors)) {
             errors = new ArrayList<>();
         }
@@ -51,7 +59,7 @@ public class AjaxResponse implements Serializable {
         return this;
     }
 
-    public AjaxResponse addFieldError(String fieldName, String msg) {
+    public APIResponse addFieldError(String fieldName, String msg) {
         if (isNull(fieldsErrors)) {
             fieldsErrors = new HashMap<>();
         }
@@ -67,28 +75,39 @@ public class AjaxResponse implements Serializable {
         return this;
     }
 
-    public static AjaxResponse success(Object data) {
+    public static APIResponse success(Object data) {
 
-        return new AjaxResponse(SUCCESS).setData(data);
+        return new APIResponse(SUCCESS).setData(data);
     }
 
-    public static AjaxResponse error() {
+    public static APIResponse error() {
 
-        return new AjaxResponse(ERROR);
+        return new APIResponse(ERROR);
     }
 
-    public static AjaxResponse error(String msg) {
+    public static APIResponse error(String msg) {
 
         return error().addErrorMessage(msg);
     }
 
-    public static AjaxResponse prepareErrorResponse(BindingResult result) {
-        AjaxResponse response = AjaxResponse.error();
+    public static APIResponse prepareErrorResponse(BindingResult result) {
+        APIResponse response = APIResponse.error();
         for (FieldError fe : result.getFieldErrors()) {
             response.addFieldError(fe.getField(), fe.getDefaultMessage());
         }
 
         return response;
+    }
+
+    public APIResponse setResponse(String message, boolean success, Object data) {
+        this.message = message;
+        this.success = success;
+        this.data = data;
+        return this;
+    }
+
+    public static APIResponse getApiResponse() {
+        return new APIResponse();
     }
 
 }
