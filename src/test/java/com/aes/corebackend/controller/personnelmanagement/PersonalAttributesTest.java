@@ -2,6 +2,7 @@ package com.aes.corebackend.controller.personnelmanagement;
 
 
 import com.aes.corebackend.controller.personnelmanagement.PersonalAttributesController;
+import com.aes.corebackend.dto.APIResponse;
 import com.aes.corebackend.dto.personnelmanagement.PersonalAttributesDTO;
 import com.aes.corebackend.dto.personnelmanagement.PersonnelManagementResponseDTO;
 import com.aes.corebackend.entity.User;
@@ -65,7 +66,7 @@ public class PersonalAttributesTest {
     @Test
     public void createAttributesTest() throws Exception {
 
-        PersonnelManagementResponseDTO responseDTO = new PersonnelManagementResponseDTO("Create Attribute Success", true, null);
+        APIResponse responseDTO = new APIResponse("Create Attribute Success", true, null);
 
         Mockito.when(service.create(attributesDTO, user.getId())).thenReturn(responseDTO);// initialize service with expected response
 
@@ -85,7 +86,7 @@ public class PersonalAttributesTest {
     @Test
     public void updateAttributesTest() throws Exception {
 
-        PersonnelManagementResponseDTO responseDTO = new PersonnelManagementResponseDTO("Update Attribute Success", true, null);
+        APIResponse responseDTO = new APIResponse("Update Attribute Success", true, null);
 
         Mockito.when(service.update(attributesDTO, user.getId())).thenReturn(responseDTO);// initialize service with expected response
 
@@ -105,7 +106,7 @@ public class PersonalAttributesTest {
     @Test
     public void getAttributesTest() throws Exception {
         PersonalAttributes attributes = PersonalAttributesDTO.getPersonalAttributesEntity(attributesDTO);
-        PersonnelManagementResponseDTO responseDTO = new PersonnelManagementResponseDTO("Personal Attribute found",
+        APIResponse responseDTO = new APIResponse("Personal Attribute found",
                 true,
                 attributes);//Expected return
 

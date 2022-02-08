@@ -46,4 +46,22 @@ public class PersonnelManagementAPIResponseDescription {
     public static final String TRAINING_RECORD_FOUND = "Training record found";
     public static final String TRAINING_RECORDS_FOUND = "Training records found";
     public static final String TRAINING_RECORD_NOT_FOUND = "Training record not found";
+
+    /** Family Information messages */
+
+    public static final String FAMILY_CREATE_SUCCESS = "Family creation successful";
+    public static final String FAMILY_CREATE_FAIL = "Family creation failed";
+    public static final String FAMILY_UPDATE_SUCCESS = "Family update successful";
+    public static final String FAMILY_UPDATE_FAIL = "Family update failed";
+    public static final String FAMILY_RECORD_FOUND = "Family record found";
+    public static final String FAMILY_RECORD_NOT_FOUND = "Family record not found";
+
+    /** Attributes Information messages */
+
+    public static final String ATTRIBUTES_CREATE_SUCCESS = "Attribute creation successful";
+    public static final String ATTRIBUTES_CREATE_FAIL = "Attribute creation failed";
+    public static final String ATTRIBUTES_UPDATE_SUCCESS = "Attribute update successful";
+    public static final String ATTRIBUTES_UPDATE_FAIL = "Attribute update failed";
+    public static final String ATTRIBUTES_RECORD_FOUND = "Attribute record found";
+    public static final String ATTRIBUTES_RECORD_NOT_FOUND = "Attribute record not found";
 }
