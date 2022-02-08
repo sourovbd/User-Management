@@ -1,6 +1,7 @@
 package com.aes.corebackend.controller.personnelmanagement;
 
 import com.aes.corebackend.controller.personnelmanagement.FamilyInformationController;
+import com.aes.corebackend.dto.APIResponse;
 import com.aes.corebackend.dto.personnelmanagement.PersonalAttributesDTO;
 import com.aes.corebackend.dto.personnelmanagement.PersonalFamilyInfoDTO;
 import com.aes.corebackend.dto.personnelmanagement.PersonnelManagementResponseDTO;
@@ -62,11 +63,10 @@ public class FamilyInformationTest {
 
     @Test
     public void createFamilyInformationTest() throws Exception {
-        // Mock service
-        PersonnelManagementResponseDTO responseDTO = new PersonnelManagementResponseDTO("Create Family Info Success", true, null);
-        Mockito.when(service.create(familyDTO, user.getId())).thenReturn(responseDTO);// Mock service
 
-        //To check if controller is calling the service [in this case the mock service above]
+        APIResponse responseDTO = new APIResponse("Create Family Info Success", true, null);
+
+        Mockito.when(service.create(familyDTO, user.getId())).thenReturn(responseDTO);// initialize service with expected response
 
         String jsonRequest = om.writeValueAsString(familyDTO);  // payload
         MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders
@@ -77,14 +77,14 @@ public class FamilyInformationTest {
 
         mockMvc.perform(mockRequest)
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.message").value(responseDTO.getMessage()))
+                .andExpect(jsonPath("$.message").value("Create Family Info Success"))
                 .andExpect(jsonPath("$.success").value(true));
     }
 
     @Test
-    public void updateFamilyInformationTest() throws Exception {
+    public void updateAttributesTest() throws Exception {
 
-        PersonnelManagementResponseDTO responseDTO = new PersonnelManagementResponseDTO("Update Family Info Success", true, null);
+        APIResponse responseDTO = new APIResponse("Update Family Info Success", true, null);
         familyDTO.setMothersName("Neela Manwar");
         Mockito.when(service.update(familyDTO, user.getId())).thenReturn(responseDTO);// initialize service with expected response
 
@@ -102,9 +102,9 @@ public class FamilyInformationTest {
     }
 
     @Test
-    public void getFamilyInformationTest() throws Exception {
+    public void getAttributesTest() throws Exception {
         PersonalFamilyInfo family = PersonalFamilyInfoDTO.getPersonalFamilyEntity(familyDTO);
-        PersonnelManagementResponseDTO responseDTO = new PersonnelManagementResponseDTO("Family Information found",
+        APIResponse responseDTO = new APIResponse("Family Information found",
                 true,
                 family);//Expected return
 
