@@ -44,7 +44,7 @@ public class UserController {
     @PutMapping("/users/{id}")
     @PreAuthorize("hasAuthority('EMPLOYEE')")
     public ResponseEntity<?> updateUser(@RequestBody @Valid  UserDTO userDto, @PathVariable long id) {
-        APIResponse apiResponse = userService.update(userDto.dtoToEntity(userDto),id);
+        APIResponse apiResponse = userService.update(userDto,id);
         return apiResponse.isSuccess() ? ok(apiResponse) : badRequest().body(apiResponse);
     }
 

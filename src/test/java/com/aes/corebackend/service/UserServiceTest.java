@@ -104,9 +104,16 @@ public class UserServiceTest {
         responseDTO.setMessage("user updated successfully");
         responseDTO.setSuccess(true);
         responseDTO.setData(user_1_temp);
+        UserDTO userDto = new UserDTO();
+        userDto.setDesignation("dgm");
+        userDto.setDepartment("accounts");
+        userDto.setEmailAddress("abc@gmail.com");
+        userDto.setBusinessUnit("a1polymar");
+        userDto.setEmployeeId("0101");
+        userDto.setRoles("EMPLOYEE");
         Mockito.when(userRepository.findById(1L)).thenReturn(Optional.ofNullable(user_1));
         Mockito.when(userRepository.save(user_1_temp)).thenReturn(user_1_temp);
-        APIResponse returnedResponse = userService.update(user_1_temp,1L);
+        APIResponse returnedResponse = userService.update(userDto ,1L);
         assertEquals(returnedResponse.getData(),responseDTO.getData());
     }
 
