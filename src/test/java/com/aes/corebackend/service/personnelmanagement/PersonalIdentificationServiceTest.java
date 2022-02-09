@@ -1,6 +1,6 @@
 package com.aes.corebackend.service.personnelmanagement;
 
-import com.aes.corebackend.dto.APIResponse;
+import com.aes.corebackend.util.response.APIResponse;
 import com.aes.corebackend.dto.personnelmanagement.PersonalIdentificationInfoDTO;
 import com.aes.corebackend.entity.User;
 import com.aes.corebackend.entity.personnelmanagement.PersonalIdentificationInfo;
@@ -17,6 +17,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import static com.aes.corebackend.util.response.AjaxResponseStatus.SUCCESS;
 import static com.aes.corebackend.util.response.PersonnelManagementAPIResponseDescription.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -60,7 +61,7 @@ public class PersonalIdentificationServiceTest {
     public void createTest() {
 
         APIResponse expectedResponse = new APIResponse();
-        expectedResponse.setResponse(IDENTIFICATION_CREATE_SUCCESS, TRUE, null);
+        expectedResponse.setResponse(IDENTIFICATION_CREATE_SUCCESS, TRUE, null, SUCCESS);
 
         Mockito.when(userService.getUserByUserId(1L)).thenReturn(user);
         Mockito.when(personalIdentificationRepository.save(personalIdentificationInfo))
@@ -75,7 +76,7 @@ public class PersonalIdentificationServiceTest {
     public void updateTest() throws Exception {
 
         APIResponse expectedResponse = new APIResponse();
-        expectedResponse.setResponse(IDENTIFICATION_UPDATE_SUCCESS, TRUE, null);
+        expectedResponse.setResponse(IDENTIFICATION_UPDATE_SUCCESS, TRUE, null, SUCCESS);
 
         Mockito.when(userService.getUserByUserId(1L)).thenReturn(user);
         Mockito.when(personalIdentificationRepository.findPersonalIdentificationInfoByUserId(1L))
@@ -90,7 +91,7 @@ public class PersonalIdentificationServiceTest {
     public void readTest() throws Exception {
 
         APIResponse expectedResponse = new APIResponse();
-        expectedResponse.setResponse(IDENTIFICATION_RECORD_FOUND, TRUE, PersonalIdentificationInfoDTO.getPersonalIdentificationDTO(personalIdentificationInfo));
+        expectedResponse.setResponse(IDENTIFICATION_RECORD_FOUND, TRUE, PersonalIdentificationInfoDTO.getPersonalIdentificationDTO(personalIdentificationInfo), SUCCESS);
 
         Mockito.when(userService.getUserByUserId(1L)).thenReturn(user);
         Mockito.when(personalIdentificationRepository.findPersonalIdentificationInfoByUserId(1L))

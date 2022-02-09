@@ -80,10 +80,7 @@ public class UserService {
     }
 
     public User getUserByUserId(Long userId) {
-        Optional<User> user = userRepository.findById(userId);
-        if (user.isEmpty()) {
-            return null;
-        }
-        return user.get();
+        User user = userRepository.findById(userId).orElse(null);
+        return user;
     }
 }

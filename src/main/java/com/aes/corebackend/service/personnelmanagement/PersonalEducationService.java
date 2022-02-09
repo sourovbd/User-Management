@@ -1,19 +1,18 @@
 package com.aes.corebackend.service.personnelmanagement;
 
-import com.aes.corebackend.dto.APIResponse;
+import com.aes.corebackend.util.response.APIResponse;
 import com.aes.corebackend.dto.personnelmanagement.PersonalEducationDTO;
-import com.aes.corebackend.dto.personnelmanagement.PersonnelManagementResponseDTO;
 import com.aes.corebackend.entity.User;
 import com.aes.corebackend.entity.personnelmanagement.PersonalEducationInfo;
 import com.aes.corebackend.repository.personnelmanagement.PersonalEducationRepository;
 import com.aes.corebackend.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.AbstractPropertyAccessor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import static com.aes.corebackend.util.response.AjaxResponseStatus.ERROR;
+import static com.aes.corebackend.util.response.AjaxResponseStatus.SUCCESS;
 import static com.aes.corebackend.util.response.PersonnelManagementAPIResponseDescription.*;
 
 @Service
@@ -27,13 +26,14 @@ public class PersonalEducationService {
     private APIResponse apiResponse = APIResponse.getApiResponse();
 
     public APIResponse create(PersonalEducationDTO educationDTO, Long userId) {
-        apiResponse.setResponse(USER_NOT_FOUND, FALSE, null);
+        apiResponse.setResponse(USER_NOT_FOUND, FALSE, null, ERROR);
         User user = userService.getUserByUserId(userId);
 
         if (Objects.nonNull(user)) {
             if (create(educationDTO, user)) {
                 apiResponse.setMessage(EDUCATION_CREATE_SUCCESS);
                 apiResponse.setSuccess(TRUE);
+                apiResponse.setStatus(SUCCESS);
             } else {
                 apiResponse.setMessage(EDUCATION_CREATE_FAIL);
             }
@@ -54,7 +54,7 @@ public class PersonalEducationService {
     }
 
     public APIResponse update(PersonalEducationDTO educationDTO, Long userId, Long educationId) {
-        apiResponse.setResponse(USER_NOT_FOUND, FALSE, null);
+        apiResponse.setResponse(USER_NOT_FOUND, FALSE, null, ERROR);
         User user = userService.getUserByUserId(userId);
 
         if (Objects.nonNull(user)) {
@@ -63,6 +63,7 @@ public class PersonalEducationService {
                 if (update(educationDTO, user, educationId)) {
                     apiResponse.setMessage(EDUCATION_UPDATE_SUCCESS);
                     apiResponse.setSuccess(TRUE);
+                    apiResponse.setStatus(SUCCESS);
                 } else {
                     apiResponse.setMessage(EDUCATION_UPDATE_FAIL);
                 }
@@ -87,7 +88,7 @@ public class PersonalEducationService {
 
 
     public APIResponse read(Long userId) {
-        apiResponse.setResponse(USER_NOT_FOUND, FALSE, null);
+        apiResponse.setResponse(USER_NOT_FOUND, FALSE, null, ERROR);
         User user = userService.getUserByUserId(userId);
 
         if (Objects.nonNull(user)) {
@@ -97,6 +98,7 @@ public class PersonalEducationService {
                 apiResponse.setData(educationDTOs);
                 apiResponse.setSuccess(TRUE);
                 apiResponse.setMessage(EDUCATION_RECORDS_FOUND);
+                apiResponse.setStatus(SUCCESS);
             } else {
                 apiResponse.setMessage(EDUCATION_RECORD_NOT_FOUND);
             }
@@ -113,7 +115,7 @@ public class PersonalEducationService {
     }
 
     public APIResponse read(Long userId, Long educationId) {
-        apiResponse.setResponse(USER_NOT_FOUND, FALSE, null);
+        apiResponse.setResponse(USER_NOT_FOUND, FALSE, null, ERROR);
         User user = userService.getUserByUserId(userId);
 
         if (Objects.nonNull(user)) {
@@ -123,6 +125,7 @@ public class PersonalEducationService {
                 apiResponse.setData(educationDTO);
                 apiResponse.setMessage(EDUCATION_RECORD_FOUND);
                 apiResponse.setSuccess(TRUE);
+                apiResponse.setStatus(SUCCESS);
             } else {
                 apiResponse.setMessage(EDUCATION_RECORD_NOT_FOUND);
             }
