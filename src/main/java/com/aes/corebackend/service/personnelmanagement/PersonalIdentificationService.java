@@ -99,7 +99,6 @@ public class PersonalIdentificationService {
                 apiResponse.setSuccess(TRUE);
                 apiResponse.setData(idDTO);
                 apiResponse.setStatus(SUCCESS);
-                return apiResponse;
             } else {
                 apiResponse.setMessage(IDENTIFICATION_RECORD_NOT_FOUND);
             }

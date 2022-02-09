@@ -24,7 +24,7 @@ public class FamilyInformationController {
     @PostMapping(value = "/users/{userId}/family-information")
     @PreAuthorize("hasAnyAuthority('EMPLOYEE', 'SYS_ADMIN')")
     public ResponseEntity<?> createFamilyInfo(@Valid @RequestBody PersonalFamilyInfoDTO familyInfoDTO, BindingResult result, @PathVariable Long userId) {
-        if(result.hasErrors()){
+        if (result.hasErrors()) {
             return badRequest().body(prepareErrorResponse(result));
         }
         APIResponse apiResponse = familyInformationService.create(familyInfoDTO, userId);
@@ -35,7 +35,7 @@ public class FamilyInformationController {
     @PreAuthorize("hasAnyAuthority('EMPLOYEE', 'SYS_ADMIN')")
 
     public ResponseEntity<?> updateFamilyInfo(@Valid @RequestBody PersonalFamilyInfoDTO familyInfoDTO, BindingResult result, @PathVariable Long userId) {
-        if(result.hasErrors()){
+        if (result.hasErrors()) {
             return badRequest().body(prepareErrorResponse(result));
         }
         APIResponse apiResponse = familyInformationService.update(familyInfoDTO, userId);

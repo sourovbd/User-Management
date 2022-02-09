@@ -1,17 +1,12 @@
 package com.aes.corebackend.service.personnelmanagement;
 
 import com.aes.corebackend.util.response.APIResponse;
-import com.aes.corebackend.dto.personnelmanagement.PersonalAttributesDTO;
 import com.aes.corebackend.dto.personnelmanagement.PersonalFamilyInfoDTO;
-import com.aes.corebackend.dto.personnelmanagement.PersonnelManagementResponseDTO;
 import com.aes.corebackend.entity.User;
-import com.aes.corebackend.entity.personnelmanagement.PersonalAttributes;
 import com.aes.corebackend.entity.personnelmanagement.PersonalFamilyInfo;
 import com.aes.corebackend.repository.personnelmanagement.PersonalFamilyInfoRepository;
 import com.aes.corebackend.service.UserService;
-import com.aes.corebackend.util.response.AjaxResponseStatus;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
@@ -36,16 +31,15 @@ public class FamilyInformationService {
         /** Check if User Exists */
         apiResponse.setResponse(USER_NOT_FOUND, FALSE, null, ERROR);
         User user = userService.getUserByUserId(userId);
-        if(Objects.nonNull(user)){
+        if (Objects.nonNull(user)) {
             /** convert DTO to Entity */
-            if(this.create(familyInfoDTO, user)){
+            if (this.create(familyInfoDTO, user)) {
                 apiResponse.setMessage(FAMILY_CREATE_SUCCESS);
                 apiResponse.setSuccess(TRUE);
                 apiResponse.setStatus(SUCCESS);
-            }else{
+            } else {
                 apiResponse.setMessage(FAMILY_CREATE_FAIL);
             }
-
         }
         return apiResponse;
     }

@@ -26,7 +26,7 @@ public class PersonalAttributesController {
     @PostMapping(value = "/users/{userId}/attribute-information")
     @PreAuthorize("hasAnyAuthority('EMPLOYEE', 'SYS_ADMIN')")
     public ResponseEntity<?> createAttributesInfo(@Valid @RequestBody PersonalAttributesDTO attributesDTO, BindingResult result, @PathVariable Long userId) {
-        if(result.hasErrors()){
+        if (result.hasErrors()) {
             return badRequest().body(prepareErrorResponse(result));
         }
         APIResponse apiResponse = personalAttributesService.create(attributesDTO, userId);
@@ -36,7 +36,7 @@ public class PersonalAttributesController {
     @PutMapping(value = "/users/{userId}/attribute-information")
     @PreAuthorize("hasAnyAuthority('EMPLOYEE', 'SYS_ADMIN')")
     public ResponseEntity<?> updateAttributesInfo(@Valid @RequestBody PersonalAttributesDTO attributesDTO, BindingResult result, @PathVariable Long userId) {
-        if(result.hasErrors()){
+        if (result.hasErrors()) {
             return badRequest().body(prepareErrorResponse(result));
         }
         APIResponse apiResponse = personalAttributesService.update(attributesDTO, userId);
