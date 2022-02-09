@@ -1,6 +1,6 @@
 package com.aes.corebackend.service.personnelmanagement;
 
-import com.aes.corebackend.dto.APIResponse;
+import com.aes.corebackend.util.response.APIResponse;
 import com.aes.corebackend.dto.personnelmanagement.PersonalJobExperienceDTO;
 import com.aes.corebackend.entity.User;
 import com.aes.corebackend.entity.personnelmanagement.PersonalJobExperience;
@@ -13,14 +13,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-
 import static com.aes.corebackend.util.response.PersonnelManagementAPIResponseDescription.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static com.aes.corebackend.util.response.AjaxResponseStatus.SUCCESS;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -82,7 +81,7 @@ public class PersonalJobExperienceServiceTest {
 
     @Test
     public void createPersonalJobExperienceTest() {
-        expectedResponse.setResponse(JOB_EXPERIENCE_CREATE_SUCCESS, TRUE, null);
+        expectedResponse.setResponse(JOB_EXPERIENCE_CREATE_SUCCESS, TRUE, null, SUCCESS);
 
         Mockito.when(userService.getUserByUserId(1L)).thenReturn(user);
         Mockito.when(personalJobExperienceRepository.save(personalJobExperience1)).thenReturn(personalJobExperience1);
@@ -93,7 +92,7 @@ public class PersonalJobExperienceServiceTest {
 
     @Test
     public void updatePersonalJobExperienceTest() {
-        expectedResponse.setResponse(JOB_EXPERIENCE_UPDATE_SUCCESS, TRUE, null);
+        expectedResponse.setResponse(JOB_EXPERIENCE_UPDATE_SUCCESS, TRUE, null, SUCCESS);
 
         Mockito.when(userService.getUserByUserId(1L)).thenReturn(user);
         Mockito.when(personalJobExperienceRepository.findPersonalJobExperienceByIdAndUserId(1L, 1L)).thenReturn(personalJobExperience1);
@@ -105,7 +104,7 @@ public class PersonalJobExperienceServiceTest {
     @Test
     public void readSingleJobExperience() {
 
-        expectedResponse.setResponse(JOB_EXPERIENCE_RECORD_FOUND, TRUE, personalJobExperienceDTO1);
+        expectedResponse.setResponse(JOB_EXPERIENCE_RECORD_FOUND, TRUE, personalJobExperienceDTO1, SUCCESS);
 
         Mockito.when(userService.getUserByUserId(1L)).thenReturn(user);
         Mockito.when(personalJobExperienceRepository.findPersonalJobExperienceByIdAndUserId(1L, 1L)).thenReturn(personalJobExperience1);
@@ -120,7 +119,7 @@ public class PersonalJobExperienceServiceTest {
         ArrayList<PersonalJobExperienceDTO> jobExperienceDTOList = new ArrayList<>();
         jobExperienceDTOList.add(personalJobExperienceDTO1);
         jobExperienceDTOList.add(personalJobExperienceDTO2);
-        expectedResponse.setResponse(JOB_EXPERIENCE_RECORD_FOUND, TRUE, jobExperienceDTOList);
+        expectedResponse.setResponse(JOB_EXPERIENCE_RECORD_FOUND, TRUE, jobExperienceDTOList, SUCCESS);
 
         ArrayList<PersonalJobExperience> jobExperienceEntityList = new ArrayList<>();
         jobExperienceEntityList.add(personalJobExperience1);

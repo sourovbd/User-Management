@@ -1,6 +1,6 @@
 package com.aes.corebackend.service.personnelmanagement;
 
-import com.aes.corebackend.dto.APIResponse;
+import com.aes.corebackend.util.response.APIResponse;
 import com.aes.corebackend.dto.personnelmanagement.PersonalBasicInfoDTO;
 import com.aes.corebackend.entity.User;
 import com.aes.corebackend.entity.personnelmanagement.PersonalBasicInfo;
@@ -15,13 +15,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-
 import static com.aes.corebackend.util.response.PersonnelManagementAPIResponseDescription.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static com.aes.corebackend.util.response.AjaxResponseStatus.SUCCESS;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -66,7 +65,7 @@ public class PersonalBasicInfoServiceTest {
 
     @Test
     public void createPersonalBasicInformationTest() {
-        expectedResponse.setResponse(BASIC_INFORMATION_CREATE_SUCCESS, TRUE, null);
+        expectedResponse.setResponse(BASIC_INFORMATION_CREATE_SUCCESS, TRUE, null, SUCCESS);
 
         Mockito.when(userService.getUserByUserId(1L)).thenReturn(user);
         Mockito.when(personalBasicInfoRepository.save(personalBasicInfo)).thenReturn(personalBasicInfo);
@@ -78,7 +77,7 @@ public class PersonalBasicInfoServiceTest {
     @Test
     public void updatePersonalBasicInformationTest() {
         personalBasicInfoDTO.setFirstName("mdjahangir");
-        expectedResponse.setResponse(BASIC_INFORMATION_UPDATE_SUCCESS, TRUE, null);
+        expectedResponse.setResponse(BASIC_INFORMATION_UPDATE_SUCCESS, TRUE, null, SUCCESS);
 
         Mockito.when(userService.getUserByUserId(1L)).thenReturn(user);
         Mockito.when(personalBasicInfoRepository.findPersonalBasicInfoByUserId(1L)).thenReturn(personalBasicInfo);
@@ -89,7 +88,7 @@ public class PersonalBasicInfoServiceTest {
 
     @Test
     public void readPersonalBasicInformationTest() {
-        expectedResponse.setResponse(BASIC_INFORMATION_RECORD_FOUND, TRUE, personalBasicInfoDTO);
+        expectedResponse.setResponse(BASIC_INFORMATION_RECORD_FOUND, TRUE, personalBasicInfoDTO, SUCCESS);
 
         Mockito.when(userService.getUserByUserId(1L)).thenReturn(user);
         Mockito.when(personalBasicInfoRepository.findPersonalBasicInfoByUserId(1L)).thenReturn(personalBasicInfo);

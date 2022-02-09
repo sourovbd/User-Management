@@ -1,13 +1,12 @@
 package com.aes.corebackend.service.personnelmanagement;
 
 
-import com.aes.corebackend.dto.APIResponse;
+import com.aes.corebackend.util.response.APIResponse;
 import com.aes.corebackend.dto.personnelmanagement.PersonalTrainingDTO;
 import com.aes.corebackend.entity.User;
 import com.aes.corebackend.entity.personnelmanagement.PersonalTrainingInfo;
 import com.aes.corebackend.repository.personnelmanagement.PersonalTrainingRepository;
 import com.aes.corebackend.service.UserService;
-import com.aes.corebackend.service.personnelmanagement.PersonalTrainingService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,14 +16,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-
 import static com.aes.corebackend.util.response.PersonnelManagementAPIResponseDescription.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static com.aes.corebackend.util.response.AjaxResponseStatus.SUCCESS;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -83,7 +81,7 @@ public class PersonalTrainingServiceTest {
     public void createTest() {
 
         APIResponse expectedResponse = new APIResponse();
-        expectedResponse.setResponse(TRAINING_CREATE_SUCCESS, TRUE, null);
+        expectedResponse.setResponse(TRAINING_CREATE_SUCCESS, TRUE, null, SUCCESS);
 
         Mockito.when(userService.getUserByUserId(1L)).thenReturn(user);
         Mockito.when(personalTrainingRepository.save(personalTrainingInfo1))
@@ -98,7 +96,7 @@ public class PersonalTrainingServiceTest {
     public void updateTest() {
 
         APIResponse expectedResponse = new APIResponse();
-        expectedResponse.setResponse(TRAINING_UPDATE_SUCCESS, TRUE, null);
+        expectedResponse.setResponse(TRAINING_UPDATE_SUCCESS, TRUE, null, SUCCESS);
 
         Mockito.when(userService.getUserByUserId(1L)).thenReturn(user);
         Mockito.when(personalTrainingRepository.findPersonalTrainingInfoByIdAndUserId(1L, 1L))
@@ -121,7 +119,7 @@ public class PersonalTrainingServiceTest {
         trainingDTOs.add(PersonalTrainingDTO.getPersonalTrainingDTO(personalTrainingInfo2));
 
         APIResponse expectedResponse = new APIResponse();
-        expectedResponse.setResponse(TRAINING_RECORDS_FOUND, TRUE, trainingDTOs);
+        expectedResponse.setResponse(TRAINING_RECORDS_FOUND, TRUE, trainingDTOs, SUCCESS);
 
         Mockito.when(userService.getUserByUserId(1L)).thenReturn(user);
         Mockito.when(personalTrainingRepository.findPersonalTrainingInfosByUserId(1L))
@@ -135,7 +133,7 @@ public class PersonalTrainingServiceTest {
     @DisplayName("Single training record for a user")
     public void readTest() throws Exception {
         APIResponse expectedResponse = new APIResponse();
-        expectedResponse.setResponse(TRAINING_RECORD_FOUND, TRUE, PersonalTrainingDTO.getPersonalTrainingDTO(personalTrainingInfo1));
+        expectedResponse.setResponse(TRAINING_RECORD_FOUND, TRUE, PersonalTrainingDTO.getPersonalTrainingDTO(personalTrainingInfo1), SUCCESS);
 
         Mockito.when(userService.getUserByUserId(1L)).thenReturn(user);
         Mockito.when(personalTrainingRepository.findPersonalTrainingInfoByIdAndUserId(1l, 1L))

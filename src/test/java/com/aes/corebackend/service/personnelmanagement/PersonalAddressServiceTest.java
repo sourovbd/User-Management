@@ -1,6 +1,6 @@
 package com.aes.corebackend.service.personnelmanagement;
 
-import com.aes.corebackend.dto.APIResponse;
+import com.aes.corebackend.util.response.APIResponse;
 import com.aes.corebackend.dto.personnelmanagement.PersonalAddressInfoDTO;
 import com.aes.corebackend.entity.User;
 import com.aes.corebackend.entity.personnelmanagement.PersonalAddressInfo;
@@ -14,9 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-
 import static com.aes.corebackend.util.response.PersonnelManagementAPIResponseDescription.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static com.aes.corebackend.util.response.AjaxResponseStatus.SUCCESS;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -56,7 +56,7 @@ public class PersonalAddressServiceTest {
 
     @Test
     public void createPersonalAddressTest() {
-        expectedResponse.setResponse(ADDRESS_CREATE_SUCCESS, TRUE, null);
+        expectedResponse.setResponse(ADDRESS_CREATE_SUCCESS, TRUE, null, SUCCESS);
 
         Mockito.when(userService.getUserByUserId(1L)).thenReturn(user);
         Mockito.when(personalAddressInfoRepository.save(personalAddressInfo)).thenReturn(personalAddressInfo);
@@ -67,7 +67,7 @@ public class PersonalAddressServiceTest {
 
     @Test
     public void updatePersonalAddressTest() {
-        expectedResponse.setResponse(ADDRESS_UPDATE_SUCCESS, TRUE, null);
+        expectedResponse.setResponse(ADDRESS_UPDATE_SUCCESS, TRUE, null, SUCCESS);
         personalAddressInfo.setPermanentAddress("CTG");
         personalAddressInfoDTO.setPermanentAddress("CTG");
 
@@ -80,7 +80,7 @@ public class PersonalAddressServiceTest {
 
     @Test
     public void readPersonalAddressTest() {
-        expectedResponse.setResponse(ADDRESS_RECORD_FOUND, TRUE, personalAddressInfoDTO);
+        expectedResponse.setResponse(ADDRESS_RECORD_FOUND, TRUE, personalAddressInfoDTO, SUCCESS);
 
         Mockito.when(userService.getUserByUserId(1L)).thenReturn(user);
         Mockito.when(personalAddressInfoRepository.findPersonalAddressInfoByUserId(1L)).thenReturn(personalAddressInfo);
