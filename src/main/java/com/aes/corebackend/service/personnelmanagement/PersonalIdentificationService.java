@@ -1,41 +1,41 @@
 package com.aes.corebackend.service.personnelmanagement;
 
-import com.aes.corebackend.dto.personnelmanagement.PersonalAttributesDTO;
+import com.aes.corebackend.dto.APIResponse;
 import com.aes.corebackend.dto.personnelmanagement.PersonalIdentificationInfoDTO;
-import com.aes.corebackend.dto.personnelmanagement.PersonnelManagementResponseDTO;
 import com.aes.corebackend.entity.User;
-import com.aes.corebackend.entity.personnelmanagement.PersonalAttributes;
 import com.aes.corebackend.entity.personnelmanagement.PersonalIdentificationInfo;
 import com.aes.corebackend.repository.personnelmanagement.PersonalIdentificationInfoRepository;
 import com.aes.corebackend.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
 
+import static com.aes.corebackend.util.response.PersonnelManagementAPIResponseDescription.*;
+
 @Service
+@RequiredArgsConstructor
 public class PersonalIdentificationService {
-    @Autowired
-    PersonalIdentificationInfoRepository repository;
-    @Autowired
-    UserService userService;
 
+    private final PersonalIdentificationInfoRepository repository;
+    private final UserService userService;
+    private APIResponse apiResponse = APIResponse.getApiResponse();
 
-    public PersonnelManagementResponseDTO create(PersonalIdentificationInfoDTO idDTO, Long userId) {
-        PersonnelManagementResponseDTO responseDTO = new PersonnelManagementResponseDTO("User not found!", false, null);
+    public APIResponse create(PersonalIdentificationInfoDTO idDTO, Long userId) {
+        apiResponse.setResponse(USER_NOT_FOUND, FALSE, null);
         User user = userService.getUserByUserId(userId);
-        if(Objects.nonNull(user)){
-            if(create(idDTO, user)){
-                responseDTO.setMessage("Create ID Info Success");
-                responseDTO.setSuccess(true);
-            }else{
-                responseDTO.setMessage("Create ID info Fail");
+        if (Objects.nonNull(user)) {
+            if (create(idDTO, user)) {
+                apiResponse.setMessage(IDENTIFICATION_CREATE_SUCCESS);
+                apiResponse.setSuccess(TRUE);
+            } else {
+                apiResponse.setMessage(IDENTIFICATION_CREATE_FAIL);
             }
         }
-        return responseDTO;
+        return apiResponse;
     }
 
-    private boolean create(PersonalIdentificationInfoDTO idDTO, User user){
+    private boolean create(PersonalIdentificationInfoDTO idDTO, User user) {
         PersonalIdentificationInfo id = PersonalIdentificationInfoDTO.getPersonalIdentificationEntity(idDTO);
         id.setUser(user);
         try {
@@ -47,26 +47,26 @@ public class PersonalIdentificationService {
     }
 
 
-    public PersonnelManagementResponseDTO update(PersonalIdentificationInfoDTO idDTO, Long userId) {
-        //check if user exists
-        PersonnelManagementResponseDTO responseDTO = new PersonnelManagementResponseDTO("User not found!", false, null);
+    public APIResponse update(PersonalIdentificationInfoDTO idDTO, Long userId) {
+        /** check if user exists */
+        apiResponse.setResponse(USER_NOT_FOUND, FALSE, null);
         User user = userService.getUserByUserId(userId);
-        //if exists: convert DTO to entity and call create service
+        /** if exists: convert DTO to entity and call create service */
         if(Objects.nonNull(user)){
-            //check if record exists
+            /** check if record exists */
             PersonalIdentificationInfo currentData = repository.findPersonalIdentificationInfoByUserId(userId);
-            if(Objects.nonNull(currentData)){
-                if(this.update(idDTO, currentData)){
-                    responseDTO.setMessage("Update ID Info Success");
-                    responseDTO.setSuccess(true);
-                }else{
-                    responseDTO.setMessage("Update ID info Fail");
+            if (Objects.nonNull(currentData)) {
+                if (this.update(idDTO, currentData)) {
+                    apiResponse.setMessage(IDENTIFICATION_UPDATE_SUCCESS);
+                    apiResponse.setSuccess(true);
+                } else {
+                    apiResponse.setMessage(IDENTIFICATION_UPDATE_FAIL);
                 }
-            }else{
-                responseDTO.setMessage("Identification record not found");
+            } else {
+                apiResponse.setMessage(IDENTIFICATION_RECORD_NOT_FOUND);
             }
         }
-        return responseDTO;
+        return apiResponse;
     }
 
     private boolean update(PersonalIdentificationInfoDTO idDTO, PersonalIdentificationInfo currentData) {
@@ -80,37 +80,33 @@ public class PersonalIdentificationService {
         return true;
     }
 
-    // Read
-
-    public PersonnelManagementResponseDTO read(Long userId) {
-        PersonnelManagementResponseDTO responseDTO = new PersonnelManagementResponseDTO("User not found!", false, null);
+    public APIResponse read(Long userId) {
+        apiResponse.setResponse(USER_NOT_FOUND, FALSE, null);
         User user = userService.getUserByUserId(userId);
-        //if exists: convert DTO to entity and call create service
-        if(Objects.nonNull(user)){
-            //Get data by user
+
+        /** if exists: convert DTO to entity and call create service */
+        if (Objects.nonNull(user)) {
+            /** Get data by user */
             PersonalIdentificationInfo idInfo = fetchData(userId);
-            //If data is NonNull--> respond responstDTO with data
-            if(Objects.nonNull(idInfo)){
+            /** If data is NonNull--> respond responstDTO with data */
+            if (Objects.nonNull(idInfo)) {
                 PersonalIdentificationInfoDTO idDTO = PersonalIdentificationInfoDTO.getPersonalIdentificationDTO(idInfo);
-                responseDTO.setMessage("Identification information found");
-                responseDTO.setSuccess(true);
-                responseDTO.setData(idDTO);
-                return responseDTO;
-            }else{
-                responseDTO.setMessage("Identification information not found");
-                responseDTO.setSuccess(true);
-                return responseDTO;
+                apiResponse.setMessage(IDENTIFICATION_RECORD_FOUND);
+                apiResponse.setSuccess(TRUE);
+                apiResponse.setData(idDTO);
+                return apiResponse;
+            } else {
+                apiResponse.setMessage(IDENTIFICATION_RECORD_NOT_FOUND);
             }
-        }else{
-            return responseDTO;
         }
+        return apiResponse;
     }
 
     private PersonalIdentificationInfo fetchData(Long userId) {
         try {
             PersonalIdentificationInfo idInfo = repository.findPersonalIdentificationInfoByUserId(userId);
             return idInfo;
-        }catch (Exception e){
+        } catch (Exception e) {
             return null;
         }
     }
