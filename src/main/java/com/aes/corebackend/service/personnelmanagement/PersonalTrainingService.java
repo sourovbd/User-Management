@@ -2,7 +2,6 @@ package com.aes.corebackend.service.personnelmanagement;
 
 import com.aes.corebackend.dto.APIResponse;
 import com.aes.corebackend.dto.personnelmanagement.PersonalTrainingDTO;
-import com.aes.corebackend.dto.personnelmanagement.PersonnelManagementResponseDTO;
 import com.aes.corebackend.entity.User;
 import com.aes.corebackend.entity.personnelmanagement.PersonalTrainingInfo;
 import com.aes.corebackend.repository.personnelmanagement.PersonalTrainingRepository;
@@ -103,9 +102,9 @@ public class PersonalTrainingService {
                 /** build response object */
                 apiResponse.setData(trainingDTOS);
                 apiResponse.setSuccess(TRUE);
-                apiResponse.setMessage(TRAINING_RECORD_FOUND); //("Training read successful");
+                apiResponse.setMessage(TRAINING_RECORDS_FOUND);
             } else {
-                apiResponse.setMessage(TRAINING_RECORDS_FOUND); //("Training records not found");
+                apiResponse.setMessage(TRAINING_RECORD_NOT_FOUND);
             }
         }
         return apiResponse;
