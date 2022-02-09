@@ -71,7 +71,7 @@ public class UserCredentialService {
     }
 
     public APIResponse generateAndSendTempPass(String email) {
-        apiResponse.setResponse(EMPLOYEE_NOT_FOUND, FALSE, NULL);
+        apiResponse.setResponse(EMPLOYEE_NOT_FOUND, FALSE, NULL,ERROR);
         User user = userRepository.findByEmailAddress(email).orElse(null);
         if (Objects.nonNull(user)) {
             String password = UserCredentialUtils.generatePassword(Constants.PASSWORD_MIN_LENGTH);
@@ -83,7 +83,7 @@ public class UserCredentialService {
 
             userCredential.setPassword(passwordEncoder.encode(userCredential.getPassword()));
             userCredentialRepository.save(userCredential);
-            apiResponse.setResponse(NEW_PASSWORD_SENT, TRUE, user);
+            apiResponse.setResponse(NEW_PASSWORD_SENT, TRUE, user, SUCCESS);
         }
         return apiResponse;
     }
