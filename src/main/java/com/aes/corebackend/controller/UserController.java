@@ -31,7 +31,7 @@ public class UserController {
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
     @PostMapping("/users")
-    @PreAuthorize("hasAuthority('EMPLOYEE')")
+    @PreAuthorize("hasAuthority('SYS_ADMIN')")
     public ResponseEntity<?> create(@Valid @RequestBody UserDTO userDto, BindingResult result) {
         if (result.hasErrors()) {
             return badRequest().body(prepareErrorResponse(result));
@@ -42,21 +42,21 @@ public class UserController {
     }
 
     @PutMapping("/users/{id}")
-    @PreAuthorize("hasAuthority('EMPLOYEE')")
+    @PreAuthorize("hasAuthority('SYS_ADMIN')")
     public ResponseEntity<?> updateUser(@RequestBody @Valid  UserDTO userDto, @PathVariable long id) {
         APIResponse apiResponse = userService.update(userDto,id);
         return apiResponse.isSuccess() ? ok(apiResponse) : badRequest().body(apiResponse);
     }
 
     @GetMapping("/users/{id}")
-    @PreAuthorize("hasAuthority('EMPLOYEE')")
+    @PreAuthorize("hasAuthority('SYS_ADMIN')")
     public ResponseEntity<?> getUserDetails(@PathVariable int id) {
         APIResponse apiResponse = userService.read(id);
         return apiResponse.isSuccess() ? ok(apiResponse) : badRequest().body(apiResponse);
     }
 
     @GetMapping("/users")
-    @PreAuthorize("hasAuthority('EMPLOYEE')")
+    @PreAuthorize("hasAuthority('SYS_ADMIN')")
     public ResponseEntity<?> getAllUsers() {
         APIResponse apiResponse = userService.read();
         return apiResponse.isSuccess() ? ok(apiResponse) : badRequest().body(apiResponse);

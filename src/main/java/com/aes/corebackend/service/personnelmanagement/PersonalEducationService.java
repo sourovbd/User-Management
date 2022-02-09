@@ -1,36 +1,44 @@
 package com.aes.corebackend.service.personnelmanagement;
 
+import com.aes.corebackend.dto.APIResponse;
 import com.aes.corebackend.dto.personnelmanagement.PersonalEducationDTO;
 import com.aes.corebackend.dto.personnelmanagement.PersonnelManagementResponseDTO;
 import com.aes.corebackend.entity.User;
 import com.aes.corebackend.entity.personnelmanagement.PersonalEducationInfo;
 import com.aes.corebackend.repository.personnelmanagement.PersonalEducationRepository;
 import com.aes.corebackend.service.UserService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.AbstractPropertyAccessor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Objects;
 
-@Service
-public class PersonalEducationService {
-    @Autowired
-    PersonalEducationRepository repository;
-    @Autowired
-    UserService userService;
+import static com.aes.corebackend.util.response.PersonnelManagementAPIResponseDescription.*;
 
-    public PersonnelManagementResponseDTO create(PersonalEducationDTO educationDTO, Long userId) {
-        PersonnelManagementResponseDTO response = new PersonnelManagementResponseDTO("User not found", false, null);
+@Service
+@RequiredArgsConstructor
+public class PersonalEducationService {
+
+    private final PersonalEducationRepository repository;
+
+    private final UserService userService;
+
+    private APIResponse apiResponse = APIResponse.getApiResponse();
+
+    public APIResponse create(PersonalEducationDTO educationDTO, Long userId) {
+        apiResponse.setResponse(USER_NOT_FOUND, FALSE, null);
         User user = userService.getUserByUserId(userId);
+
         if (Objects.nonNull(user)) {
-            if(create(educationDTO, user)){
-                response.setMessage("Education creation success");
-                response.setSuccess(true);
-            }else{
-                response.setMessage("Education creation failed");
-                response.setSuccess(true);
+            if (create(educationDTO, user)) {
+                apiResponse.setMessage(EDUCATION_CREATE_SUCCESS);
+                apiResponse.setSuccess(TRUE);
+            } else {
+                apiResponse.setMessage(EDUCATION_CREATE_FAIL);
             }
         }
-        return response;
+        return apiResponse;
     }
 
     private boolean create(PersonalEducationDTO educationDTO,  User user){
@@ -45,25 +53,24 @@ public class PersonalEducationService {
         }
     }
 
-    public PersonnelManagementResponseDTO update(PersonalEducationDTO educationDTO, Long userId, Long educationId) {
-        PersonnelManagementResponseDTO response = new PersonnelManagementResponseDTO("User not found", false, null);
+    public APIResponse update(PersonalEducationDTO educationDTO, Long userId, Long educationId) {
+        apiResponse.setResponse(USER_NOT_FOUND, FALSE, null);
         User user = userService.getUserByUserId(userId);
+
         if (Objects.nonNull(user)) {
             PersonalEducationInfo currentInfo = repository.findPersonalEducationInfoByIdAndUserId(educationId, userId);
-            if (Objects.nonNull(currentInfo)){// if a record exists with these id values
-                if (update(educationDTO, user, educationId)){
-                    response.setMessage("Education update success");
-                    response.setSuccess(true);
+            if (Objects.nonNull(currentInfo)) { /** if a record exists with these id values */
+                if (update(educationDTO, user, educationId)) {
+                    apiResponse.setMessage(EDUCATION_UPDATE_SUCCESS);
+                    apiResponse.setSuccess(TRUE);
                 } else {
-                    response.setMessage("Education update fail");
-                    response.setSuccess(true);
+                    apiResponse.setMessage(EDUCATION_UPDATE_FAIL);
                 }
             } else {
-                response.setMessage("Education record not found");
-                response.setSuccess(false);
+                apiResponse.setMessage(EDUCATION_RECORD_NOT_FOUND);
             }
         }
-        return response;
+        return apiResponse;
     }
 
     private boolean update(PersonalEducationDTO educationDTO, User user, Long updateId) {
@@ -79,22 +86,22 @@ public class PersonalEducationService {
     }
 
 
-    public PersonnelManagementResponseDTO read(Long userId) {
-        PersonnelManagementResponseDTO response = new PersonnelManagementResponseDTO("User not found", false, null);
+    public APIResponse read(Long userId) {
+        apiResponse.setResponse(USER_NOT_FOUND, FALSE, null);
         User user = userService.getUserByUserId(userId);
 
-        if(Objects.nonNull(user)){
+        if (Objects.nonNull(user)) {
             ArrayList<PersonalEducationInfo> educationList = repository.findPersonalEducationInfoByUserId(userId);
-            if(educationList.size() > 0){
+            if (educationList.size() > 0) {
                 ArrayList<PersonalEducationDTO> educationDTOs = convertToDTOs(educationList);
-                response.setData(educationDTOs);
-                response.setSuccess(true);
-                response.setMessage("Education Read Success");
-            }else {
-                response.setMessage("No education records found!");
+                apiResponse.setData(educationDTOs);
+                apiResponse.setSuccess(TRUE);
+                apiResponse.setMessage(EDUCATION_RECORDS_FOUND);
+            } else {
+                apiResponse.setMessage(EDUCATION_RECORD_NOT_FOUND);
             }
         }
-        return response;
+        return apiResponse;
     }
 
     private ArrayList<PersonalEducationDTO> convertToDTOs(ArrayList<PersonalEducationInfo> educationList) {
@@ -105,20 +112,21 @@ public class PersonalEducationService {
         return educationDTOs;
     }
 
-    public PersonnelManagementResponseDTO read(Long userId, Long educationId) {
-        PersonnelManagementResponseDTO response = new PersonnelManagementResponseDTO("User not found", false, null);
+    public APIResponse read(Long userId, Long educationId) {
+        apiResponse.setResponse(USER_NOT_FOUND, FALSE, null);
         User user = userService.getUserByUserId(userId);
-        if(Objects.nonNull(user)){
+
+        if (Objects.nonNull(user)) {
             PersonalEducationInfo education = repository.findPersonalEducationInfoByIdAndUserId(educationId, userId);
-            if(Objects.nonNull(education)){// if a record exists with these id values
+            if (Objects.nonNull(education)) { /** if a record exists with these id values */
                 PersonalEducationDTO educationDTO = PersonalEducationDTO.getPersonalEducationDTO(education);
-                response.setData(educationDTO);
-                response.setMessage("Read Education Success");
-            }else{
-                response.setMessage("Education Record Not found!");
+                apiResponse.setData(educationDTO);
+                apiResponse.setMessage(EDUCATION_RECORD_FOUND);
+                apiResponse.setSuccess(TRUE);
+            } else {
+                apiResponse.setMessage(EDUCATION_RECORD_NOT_FOUND);
             }
-            response.setSuccess(true);
         }
-        return response;
+        return apiResponse;
     }
 }

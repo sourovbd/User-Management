@@ -1,5 +1,6 @@
 package com.aes.corebackend.service.personnelmanagement;
 
+import com.aes.corebackend.dto.APIResponse;
 import com.aes.corebackend.dto.personnelmanagement.PersonalAttributesDTO;
 import com.aes.corebackend.dto.personnelmanagement.PersonalFamilyInfoDTO;
 import com.aes.corebackend.dto.personnelmanagement.PersonnelManagementResponseDTO;
@@ -13,6 +14,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.Objects;
 
+import static com.aes.corebackend.util.response.PersonnelManagementAPIResponseDescription.*;
+
 @Service
 public class FamilyInformationService {
     @Autowired
@@ -22,17 +25,17 @@ public class FamilyInformationService {
 
 ///     CREATE
 
-    public PersonnelManagementResponseDTO create(PersonalFamilyInfoDTO familyInfoDTO, Long userId) {
+    public APIResponse create(PersonalFamilyInfoDTO familyInfoDTO, Long userId) {
         //Check if User Exists
-        PersonnelManagementResponseDTO responseDTO = new PersonnelManagementResponseDTO("User not found!", false, null);
+        APIResponse responseDTO = new APIResponse(USER_NOT_FOUND, false, null);
         User user = userService.getUserByUserId(userId);
         if(Objects.nonNull(user)){
             //convert DTO to Entity
             if(this.create(familyInfoDTO, user)){
-                responseDTO.setMessage("Create Family Info Success");
+                responseDTO.setMessage(FAMILY_CREATE_SUCCESS);
                 responseDTO.setSuccess(true);
             }else{
-                responseDTO.setMessage("Create Family Info Fail");
+                responseDTO.setMessage(FAMILY_CREATE_FAIL);
             }
 
         }
@@ -53,21 +56,21 @@ public class FamilyInformationService {
     ///     UPDATE
 
 
-    public PersonnelManagementResponseDTO update(PersonalFamilyInfoDTO familyInfoDTO, Long userId) {
+    public APIResponse update(PersonalFamilyInfoDTO familyInfoDTO, Long userId) {
         //Check if User Exists
-        PersonnelManagementResponseDTO responseDTO = new PersonnelManagementResponseDTO("User not found!", false, null);
+        APIResponse responseDTO = new APIResponse(USER_NOT_FOUND, false, null);
         User user = userService.getUserByUserId(userId);
         if(Objects.nonNull(user)){
             PersonalFamilyInfo currentData = personalFamilyInfoRepository.findPersonalFamilyInfoByUserId(userId);
             if(Objects.nonNull(currentData)) {//Check if record exists to update
                 if (update(familyInfoDTO, currentData)) {
-                    responseDTO.setMessage("Update Family Info Success");
+                    responseDTO.setMessage(FAMILY_UPDATE_SUCCESS);
                     responseDTO.setSuccess(true);
                 } else {
-                    responseDTO.setMessage("Update Family Info Fail");
+                    responseDTO.setMessage(FAMILY_UPDATE_FAIL);
                 }
             } else {
-                responseDTO.setMessage("Family Record Not found for user");
+                responseDTO.setMessage(FAMILY_RECORD_NOT_FOUND);
             }
         }
         return responseDTO;
@@ -86,8 +89,8 @@ public class FamilyInformationService {
 
     ///// READ
 
-    public PersonnelManagementResponseDTO read(Long userId) {// also not returning the right value
-        PersonnelManagementResponseDTO responseDTO = new PersonnelManagementResponseDTO("User not found!", false, null);
+    public APIResponse read(Long userId) {// also not returning the right value
+        APIResponse responseDTO = new APIResponse(USER_NOT_FOUND, false, null);
         User user = userService.getUserByUserId(userId);
         //if exists: convert DTO to entity and call create service
         if(Objects.nonNull(user)){
@@ -96,12 +99,12 @@ public class FamilyInformationService {
             //If data is NonNull--> respond responstDTO with data
             if(Objects.nonNull(familyInfo)){
                 PersonalFamilyInfoDTO familyInfoDTO = PersonalFamilyInfoDTO.getPersonalFamilyDTO(familyInfo);
-                responseDTO.setMessage("Family Information found");
+                responseDTO.setMessage(FAMILY_RECORD_FOUND);
                 responseDTO.setSuccess(true);
                 responseDTO.setData(familyInfoDTO);
                 return responseDTO;
             }else{
-                responseDTO.setMessage("Family Information not found");
+                responseDTO.setMessage(FAMILY_RECORD_NOT_FOUND);
                 responseDTO.setSuccess(true);
                 return responseDTO;
             }

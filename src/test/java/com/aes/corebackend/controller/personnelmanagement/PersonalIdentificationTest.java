@@ -1,14 +1,9 @@
 package com.aes.corebackend.controller.personnelmanagement;
 
-import com.aes.corebackend.controller.personnelmanagement.FamilyInformationController;
-import com.aes.corebackend.controller.personnelmanagement.PersonalIdentificationController;
-import com.aes.corebackend.dto.personnelmanagement.PersonalFamilyInfoDTO;
+import com.aes.corebackend.dto.APIResponse;
 import com.aes.corebackend.dto.personnelmanagement.PersonalIdentificationInfoDTO;
-import com.aes.corebackend.dto.personnelmanagement.PersonnelManagementResponseDTO;
 import com.aes.corebackend.entity.User;
-import com.aes.corebackend.entity.personnelmanagement.PersonalFamilyInfo;
 import com.aes.corebackend.entity.personnelmanagement.PersonalIdentificationInfo;
-import com.aes.corebackend.service.personnelmanagement.FamilyInformationService;
 import com.aes.corebackend.service.personnelmanagement.PersonalIdentificationService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,10 +19,12 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import static com.aes.corebackend.util.response.PersonnelManagementAPIResponseDescription.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class PersonalIdentificationTest {
+
     @Autowired
     private MockMvc mockMvc;
 
@@ -37,13 +34,12 @@ public class PersonalIdentificationTest {
     @Mock
     private PersonalIdentificationService service;
 
-
     ObjectMapper om = new ObjectMapper();
     User user = new User();
     PersonalIdentificationInfoDTO idDTO = new PersonalIdentificationInfoDTO();
 
     @BeforeEach
-    public void setup() {   //Intialize mocks with openMocks, creating a mock controller
+    public void setup() {   //Initialize mocks with openMocks, creating a mock controller
         MockitoAnnotations.openMocks(this);
         mockMvc = MockMvcBuilders
                 .standaloneSetup(controller)
@@ -63,9 +59,10 @@ public class PersonalIdentificationTest {
     @Test
     public void createIdentificationTest() throws Exception {
 
-        PersonnelManagementResponseDTO responseDTO = new PersonnelManagementResponseDTO("Create ID Info Success", true, null);
-        // This is the expected value as well wierdly
-        Mockito.when(service.create(idDTO, user.getId())).thenReturn(responseDTO);// initialize service with expected response
+        APIResponse expectedResponse = new APIResponse();
+        expectedResponse.setResponse(IDENTIFICATION_CREATE_SUCCESS, TRUE, null); // This is the expected value as well wierdly
+
+        Mockito.when(service.create(idDTO, user.getId())).thenReturn(expectedResponse); // initialize service with expected response
 
         String jsonRequest = om.writeValueAsString(idDTO);  // payload
         MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders
@@ -76,15 +73,15 @@ public class PersonalIdentificationTest {
 
         mockMvc.perform(mockRequest)
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.message").value("Create ID Info Success"))
-                .andExpect(jsonPath("$.success").value(true));
+                .andExpect(jsonPath("$.message").value(IDENTIFICATION_CREATE_SUCCESS))
+                .andExpect(jsonPath("$.success").value(TRUE));
     }
 
     @Test
     public void updateAIdentificationTest() throws Exception {
 
-        PersonnelManagementResponseDTO responseDTO = new PersonnelManagementResponseDTO("Update ID Info Success", true, null);
-        Mockito.when(service.update(idDTO, user.getId())).thenReturn(responseDTO);// initialize service with expected response
+        APIResponse expectedResponse = new APIResponse(IDENTIFICATION_UPDATE_SUCCESS, TRUE, null);
+        Mockito.when(service.update(idDTO, user.getId())).thenReturn(expectedResponse);// initialize service with expected response
 
         String jsonRequest = om.writeValueAsString(idDTO);  // payload
         MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders
@@ -95,19 +92,17 @@ public class PersonalIdentificationTest {
 
         mockMvc.perform(mockRequest)
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.message").value("Update ID Info Success"))
-                .andExpect(jsonPath("$.success").value(true));
+                .andExpect(jsonPath("$.message").value(IDENTIFICATION_UPDATE_SUCCESS))
+                .andExpect(jsonPath("$.success").value(TRUE));
     }
 
 
     @Test
     public void getIdentificationTest() throws Exception {
         PersonalIdentificationInfo id = PersonalIdentificationInfoDTO.getPersonalIdentificationEntity(idDTO);
-        PersonnelManagementResponseDTO responseDTO = new PersonnelManagementResponseDTO("Identification information found",
-                true,
-                id);//Expected return
+        APIResponse expectedResponse = new APIResponse(IDENTIFICATION_RECORD_FOUND, TRUE, id);//Expected return
 
-        Mockito.when(service.read(user.getId())).thenReturn(responseDTO);// testing service for read: Controller to Service
+        Mockito.when(service.read(user.getId())).thenReturn(expectedResponse);// testing service for read: Controller to Service
         // [Checking if service is available]
 
         MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders  //client to controller-- > just the request object
@@ -117,7 +112,7 @@ public class PersonalIdentificationTest {
 
         mockMvc.perform(mockRequest)    //Call controller using request object
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.message").value("Identification information found"))
+                .andExpect(jsonPath("$.message").value(IDENTIFICATION_RECORD_FOUND))
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.data").value(id));
     }

@@ -1,6 +1,7 @@
 package com.aes.corebackend.service.personnelmanagement;
 
 
+import com.aes.corebackend.dto.APIResponse;
 import com.aes.corebackend.dto.personnelmanagement.PersonalAttributesDTO;
 import com.aes.corebackend.dto.personnelmanagement.PersonnelManagementResponseDTO;
 import com.aes.corebackend.entity.User;
@@ -12,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
+import static com.aes.corebackend.util.response.PersonnelManagementAPIResponseDescription.*;
+
 
 @Service
 public class PersonalAttributesService {
@@ -21,23 +24,21 @@ public class PersonalAttributesService {
     UserService userService;
 
 
-    public PersonnelManagementResponseDTO create(PersonalAttributesDTO attributesDTO, Long userId) {
+    public APIResponse create(PersonalAttributesDTO attributesDTO, Long userId) {
         //check if user exists
-        PersonnelManagementResponseDTO responseDTO = new PersonnelManagementResponseDTO("User not found!", false, null);
+        APIResponse responseDTO = new APIResponse(USER_NOT_FOUND, false, null);
         User user = userService.getUserByUserId(userId);
         //if exists: convert DTO to entity and call create service
         if(Objects.nonNull(user)){
             if(this.create(attributesDTO, user)){
-                responseDTO.setMessage("Create Attribute Success");
+                responseDTO.setMessage(ATTRIBUTES_CREATE_SUCCESS);
                 responseDTO.setSuccess(true);
-                return responseDTO;
+
             }else{
-                responseDTO.setMessage("Create Attribute Fail");
-                return responseDTO;
+                responseDTO.setMessage(ATTRIBUTES_CREATE_FAIL);
             }
-        }else{
-            return responseDTO;
         }
+        return responseDTO;
     }
 
     private boolean create(PersonalAttributesDTO attributesDTO, User user) {
@@ -52,9 +53,9 @@ public class PersonalAttributesService {
     }
 
 
-    public PersonnelManagementResponseDTO update(PersonalAttributesDTO attributesDTO, Long userId) {// error in update
+    public APIResponse update(PersonalAttributesDTO attributesDTO, Long userId) {// error in update
         //check if user exists
-        PersonnelManagementResponseDTO responseDTO = new PersonnelManagementResponseDTO("User not found!", false, null);
+        APIResponse responseDTO = new APIResponse(USER_NOT_FOUND, false, null);
         User user = userService.getUserByUserId(userId);
         //if exists: convert DTO to entity and call create service
         if(Objects.nonNull(user)){
@@ -62,13 +63,13 @@ public class PersonalAttributesService {
             PersonalAttributes currentData = personalAttributesRepository.findPersonalAttributesByUserId(userId);
             if(Objects.nonNull(currentData)) {
                 if (this.update(attributesDTO, currentData)) {
-                    responseDTO.setMessage("Update Attribute Success");
+                    responseDTO.setMessage(ATTRIBUTES_UPDATE_SUCCESS);
                     responseDTO.setSuccess(true);
                 } else {
-                    responseDTO.setMessage("Update Attribute Fail");
+                    responseDTO.setMessage(ATTRIBUTES_UPDATE_FAIL);
                 }
             } else {
-                responseDTO.setMessage("Attribute Record not found");
+                responseDTO.setMessage(ATTRIBUTES_RECORD_NOT_FOUND);
             }
         }
             return responseDTO;
@@ -87,8 +88,8 @@ public class PersonalAttributesService {
 
     /////  READ
 
-    public PersonnelManagementResponseDTO read(Long userId) {
-        PersonnelManagementResponseDTO responseDTO = new PersonnelManagementResponseDTO("User not found!", false, null);
+    public APIResponse read(Long userId) {
+        APIResponse responseDTO = new APIResponse(USER_NOT_FOUND, false, null);
         User user = userService.getUserByUserId(userId);
         //if exists: convert DTO to entity and call create service
         if(Objects.nonNull(user)){
@@ -97,12 +98,12 @@ public class PersonalAttributesService {
             //If data is NonNull--> respond responstDTO with data
             if(Objects.nonNull(attributes)){
                 PersonalAttributesDTO attributesDTO = PersonalAttributesDTO.getPersonalAttributesDTO(attributes);
-                responseDTO.setMessage("Personal Attribute found");
+                responseDTO.setMessage(ATTRIBUTES_RECORD_FOUND);
                 responseDTO.setSuccess(true);
                 responseDTO.setData(attributesDTO);
                 return responseDTO;
             }else{
-                responseDTO.setMessage("Personal Attribute not found");
+                responseDTO.setMessage(ATTRIBUTES_RECORD_NOT_FOUND);
                 responseDTO.setSuccess(true);
                 return responseDTO;
             }
