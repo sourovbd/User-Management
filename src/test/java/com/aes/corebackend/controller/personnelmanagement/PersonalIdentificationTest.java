@@ -1,6 +1,6 @@
 package com.aes.corebackend.controller.personnelmanagement;
 
-import com.aes.corebackend.dto.APIResponse;
+import com.aes.corebackend.util.response.APIResponse;
 import com.aes.corebackend.dto.personnelmanagement.PersonalIdentificationInfoDTO;
 import com.aes.corebackend.entity.User;
 import com.aes.corebackend.entity.personnelmanagement.PersonalIdentificationInfo;
@@ -19,6 +19,7 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import static com.aes.corebackend.util.response.AjaxResponseStatus.SUCCESS;
 import static com.aes.corebackend.util.response.PersonnelManagementAPIResponseDescription.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -60,7 +61,7 @@ public class PersonalIdentificationTest {
     public void createIdentificationTest() throws Exception {
 
         APIResponse expectedResponse = new APIResponse();
-        expectedResponse.setResponse(IDENTIFICATION_CREATE_SUCCESS, TRUE, null); // This is the expected value as well wierdly
+        expectedResponse.setResponse(IDENTIFICATION_CREATE_SUCCESS, TRUE, null, SUCCESS); // This is the expected value as well wierdly
 
         Mockito.when(service.create(idDTO, user.getId())).thenReturn(expectedResponse); // initialize service with expected response
 
@@ -80,7 +81,7 @@ public class PersonalIdentificationTest {
     @Test
     public void updateAIdentificationTest() throws Exception {
 
-        APIResponse expectedResponse = new APIResponse(IDENTIFICATION_UPDATE_SUCCESS, TRUE, null);
+        APIResponse expectedResponse = new APIResponse(IDENTIFICATION_UPDATE_SUCCESS, TRUE, null, SUCCESS);
         Mockito.when(service.update(idDTO, user.getId())).thenReturn(expectedResponse);// initialize service with expected response
 
         String jsonRequest = om.writeValueAsString(idDTO);  // payload
@@ -100,7 +101,7 @@ public class PersonalIdentificationTest {
     @Test
     public void getIdentificationTest() throws Exception {
         PersonalIdentificationInfo id = PersonalIdentificationInfoDTO.getPersonalIdentificationEntity(idDTO);
-        APIResponse expectedResponse = new APIResponse(IDENTIFICATION_RECORD_FOUND, TRUE, id);//Expected return
+        APIResponse expectedResponse = new APIResponse(IDENTIFICATION_RECORD_FOUND, TRUE, id, SUCCESS);//Expected return
 
         Mockito.when(service.read(user.getId())).thenReturn(expectedResponse);// testing service for read: Controller to Service
         // [Checking if service is available]

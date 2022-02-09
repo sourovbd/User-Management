@@ -2,7 +2,7 @@ package com.aes.corebackend.controller.personnelmanagement;
 
 
 import com.aes.corebackend.controller.personnelmanagement.PersonalAttributesController;
-import com.aes.corebackend.dto.APIResponse;
+import com.aes.corebackend.util.response.APIResponse;
 import com.aes.corebackend.dto.personnelmanagement.PersonalAttributesDTO;
 import com.aes.corebackend.dto.personnelmanagement.PersonnelManagementResponseDTO;
 import com.aes.corebackend.entity.User;
@@ -25,6 +25,7 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import static com.aes.corebackend.util.response.AjaxResponseStatus.SUCCESS;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -66,7 +67,7 @@ public class PersonalAttributesTest {
     @Test
     public void createAttributesTest() throws Exception {
 
-        APIResponse responseDTO = new APIResponse("Create Attribute Success", true, null);
+        APIResponse responseDTO = new APIResponse("Create Attribute Success", true, null, SUCCESS);
 
         Mockito.when(service.create(attributesDTO, user.getId())).thenReturn(responseDTO);// initialize service with expected response
 
@@ -86,7 +87,7 @@ public class PersonalAttributesTest {
     @Test
     public void updateAttributesTest() throws Exception {
 
-        APIResponse responseDTO = new APIResponse("Update Attribute Success", true, null);
+        APIResponse responseDTO = new APIResponse("Update Attribute Success", true, null, SUCCESS);
 
         Mockito.when(service.update(attributesDTO, user.getId())).thenReturn(responseDTO);// initialize service with expected response
 
@@ -108,7 +109,7 @@ public class PersonalAttributesTest {
         PersonalAttributes attributes = PersonalAttributesDTO.getPersonalAttributesEntity(attributesDTO);
         APIResponse responseDTO = new APIResponse("Personal Attribute found",
                 true,
-                attributes);//Expected return
+                attributes, SUCCESS);//Expected return
 
         Mockito.when(service.read(user.getId())).thenReturn(responseDTO);// testing service for read: Controller to Service
                                                                             // [Checking if service is available]

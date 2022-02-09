@@ -1,6 +1,6 @@
 package com.aes.corebackend.service.personnelmanagement;
 
-import com.aes.corebackend.dto.APIResponse;
+import com.aes.corebackend.util.response.APIResponse;
 import com.aes.corebackend.dto.personnelmanagement.PersonalIdentificationInfoDTO;
 import com.aes.corebackend.entity.User;
 import com.aes.corebackend.entity.personnelmanagement.PersonalIdentificationInfo;
@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.Objects;
 
+import static com.aes.corebackend.util.response.AjaxResponseStatus.ERROR;
+import static com.aes.corebackend.util.response.AjaxResponseStatus.SUCCESS;
 import static com.aes.corebackend.util.response.PersonnelManagementAPIResponseDescription.*;
 
 @Service
@@ -22,12 +24,13 @@ public class PersonalIdentificationService {
     private APIResponse apiResponse = APIResponse.getApiResponse();
 
     public APIResponse create(PersonalIdentificationInfoDTO idDTO, Long userId) {
-        apiResponse.setResponse(USER_NOT_FOUND, FALSE, null);
+        apiResponse.setResponse(USER_NOT_FOUND, FALSE, null, ERROR);
         User user = userService.getUserByUserId(userId);
         if (Objects.nonNull(user)) {
             if (create(idDTO, user)) {
                 apiResponse.setMessage(IDENTIFICATION_CREATE_SUCCESS);
                 apiResponse.setSuccess(TRUE);
+                apiResponse.setStatus(SUCCESS);
             } else {
                 apiResponse.setMessage(IDENTIFICATION_CREATE_FAIL);
             }
@@ -49,7 +52,7 @@ public class PersonalIdentificationService {
 
     public APIResponse update(PersonalIdentificationInfoDTO idDTO, Long userId) {
         /** check if user exists */
-        apiResponse.setResponse(USER_NOT_FOUND, FALSE, null);
+        apiResponse.setResponse(USER_NOT_FOUND, FALSE, null, ERROR);
         User user = userService.getUserByUserId(userId);
         /** if exists: convert DTO to entity and call create service */
         if(Objects.nonNull(user)){
@@ -58,7 +61,8 @@ public class PersonalIdentificationService {
             if (Objects.nonNull(currentData)) {
                 if (this.update(idDTO, currentData)) {
                     apiResponse.setMessage(IDENTIFICATION_UPDATE_SUCCESS);
-                    apiResponse.setSuccess(true);
+                    apiResponse.setSuccess(TRUE);
+                    apiResponse.setStatus(SUCCESS);
                 } else {
                     apiResponse.setMessage(IDENTIFICATION_UPDATE_FAIL);
                 }
@@ -81,7 +85,7 @@ public class PersonalIdentificationService {
     }
 
     public APIResponse read(Long userId) {
-        apiResponse.setResponse(USER_NOT_FOUND, FALSE, null);
+        apiResponse.setResponse(USER_NOT_FOUND, FALSE, null, ERROR);
         User user = userService.getUserByUserId(userId);
 
         /** if exists: convert DTO to entity and call create service */
@@ -94,6 +98,7 @@ public class PersonalIdentificationService {
                 apiResponse.setMessage(IDENTIFICATION_RECORD_FOUND);
                 apiResponse.setSuccess(TRUE);
                 apiResponse.setData(idDTO);
+                apiResponse.setStatus(SUCCESS);
                 return apiResponse;
             } else {
                 apiResponse.setMessage(IDENTIFICATION_RECORD_NOT_FOUND);
