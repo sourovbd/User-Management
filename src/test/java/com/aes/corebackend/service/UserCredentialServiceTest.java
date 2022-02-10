@@ -34,7 +34,7 @@ public class UserCredentialServiceTest {
 
     private APIResponse expectedResponse = getApiResponse();
 
-    private UserCredential mockUserCredential = new UserCredential(1L, "012580", "123@5Aa", true, "EMPLOYEE");
+    private UserCredential mockUserCredential = new UserCredential(1, "012580", "123@5Aa", true, "EMPLOYEE");
 
     @Test
     @DisplayName("Test getmployee by employee id - Success")
@@ -45,15 +45,16 @@ public class UserCredentialServiceTest {
         assertEquals(returnedUserCredentialFromService,mockUserCredential);
     }
 
-    @Test
+    /*@Test
     @DisplayName("Test save Employee by employee id - Success")
     public void testSave() {
+        testGetEmployee();
         expectedResponse.setResponse(USER_CREDENTIAL_CREATED_SUCCESSFULLY, TRUE, mockUserCredential, SUCCESS);
         Mockito.when(userCredentialRepository.save(mockUserCredential)).thenReturn((UserCredential)expectedResponse.getData());
 
-        APIResponse actualResponse = userCredentialService.save(mockUserCredential);
+        APIResponse actualResponse = userCredentialService.update(mockUserCredential);
         assertNotNull(actualResponse.getData(), "The saved user credential should not be null.");
         assertEquals(actualResponse, expectedResponse);
-    }
+    }*/
 
 }
