@@ -6,7 +6,7 @@ import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
 
 public class EmailServiceTest {
-    @InjectMocks
+    /*@InjectMocks
     private EmailService emailService;
 
     @BeforeEach
@@ -16,6 +16,6 @@ public class EmailServiceTest {
 
     @Test
     public void sendEmailTest() {
-
-    }
+        emailService.send("test@gmail.com","this is a test email");
+    }*/
 }

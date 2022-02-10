@@ -27,6 +27,7 @@ public class PersonnelManagementAPIResponseDescription {
     public static final String JOB_EXPERIENCE_UPDATE_SUCCESS = "Job experience update successful";
     public static final String JOB_EXPERIENCE_UPDATE_FAIL = "Job experience update failed";
     public static final String JOB_EXPERIENCE_RECORD_FOUND = "Job experience record found";
+    public static final String JOB_EXPERIENCE_RECORDS_FOUND = "Job experience records found";
     public static final String JOB_EXPERIENCE_RECORD_NOT_FOUND = "Job experience record not found";
 
     /** Education messages */

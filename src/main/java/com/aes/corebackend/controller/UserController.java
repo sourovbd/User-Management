@@ -1,8 +1,8 @@
 package com.aes.corebackend.controller;
 
 import com.aes.corebackend.dto.*;
-import com.aes.corebackend.service.UserCredentialService;
 import com.aes.corebackend.service.UserService;
+import com.aes.corebackend.util.response.APIResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
-import static com.aes.corebackend.util.response.AjaxResponse.prepareErrorResponse;
+import static com.aes.corebackend.util.response.APIResponse.prepareErrorResponse;
 import static org.springframework.http.ResponseEntity.badRequest;
 import static org.springframework.http.ResponseEntity.ok;
 
@@ -24,8 +24,6 @@ import static org.springframework.http.ResponseEntity.ok;
 public class UserController {
 
     private final UserService userService;
-
-    private final UserCredentialService userCredentialService;
 
     /** static is used so that it only happens once */
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
@@ -44,7 +42,7 @@ public class UserController {
     @PutMapping("/users/{id}")
     @PreAuthorize("hasAuthority('SYS_ADMIN')")
     public ResponseEntity<?> updateUser(@RequestBody @Valid  UserDTO userDto, @PathVariable long id) {
-        APIResponse apiResponse = userService.update(userDto.dtoToEntity(userDto),id);
+        APIResponse apiResponse = userService.update(userDto,id);
         return apiResponse.isSuccess() ? ok(apiResponse) : badRequest().body(apiResponse);
     }
 

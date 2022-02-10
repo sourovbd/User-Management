@@ -40,6 +40,7 @@ public class UserDTO {
         user.setBusinessUnit(userDTO.getBusinessUnit());
         user.setDepartment(userDTO.getDepartment());
         user.setDesignation(userDTO.getDesignation());
+        user.setRoles(userDTO.getRoles());
 
         return user;
     }

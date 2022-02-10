@@ -1,32 +1,8 @@
 package com.aes.corebackend.controller;
 
-import com.aes.corebackend.dto.APIResponse;
-import com.aes.corebackend.dto.ForgotPasswordDTO;
-import com.aes.corebackend.dto.UserCredentialDTO;
-import com.aes.corebackend.entity.User;
-import com.aes.corebackend.entity.UserCredential;
-import com.aes.corebackend.service.UserCredentialService;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-
-import static com.aes.corebackend.dto.APIResponse.getApiResponse;
-import static com.aes.corebackend.util.response.APIResponseMessage.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
 public class UserCredentialControllerTestTemp {
 
-    @Autowired
+   /* @Autowired
     private MockMvc mockMvc;
 
     @Mock
@@ -39,7 +15,6 @@ public class UserCredentialControllerTestTemp {
 
     private User user = new User(1L,"abc@gmail.com","agm","012580","a1polymar","accounts","EMPLOYEE", null, null, null);
     private UserCredential userCredentialTest = new UserCredential(1L, "012580", "123@5Aa7", true, "EMPLOYEE");
-
     private APIResponse expectedResponse = getApiResponse();
 
     @BeforeEach
@@ -60,42 +35,38 @@ public class UserCredentialControllerTestTemp {
         userCredentialDTO.setActive(true);
         userCredentialDTO.setRoles("EMPLOYEE");
 
-        mockMvc.perform(MockMvcRequestBuilders
-                        .post("/users-credential")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .content(om.writeValueAsString(userCredentialDTO)))
-                .andExpect(status().is4xxClientError())
-                .andExpect(jsonPath("$.fieldsErrors.password").value("Password must be 8 or more characters in length."));
+        expectedResponse.setResponse("Password must be 8 or more characters in length.", false, null);
+        badRequestHandler("/users-credential", om.writeValueAsString(userCredentialDTO), expectedResponse);
 
         userCredentialDTO.setPassword("123456Aa");
-        mockMvc.perform(MockMvcRequestBuilders
-                        .post("/users-credential")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .content(om.writeValueAsString(userCredentialDTO)))
-                .andExpect(status().is4xxClientError())
-                .andExpect(jsonPath("$.fieldsErrors.password").value("Password must contain 1 or more special characters."));
+        expectedResponse.setMessage("Password must contain 1 or more special characters.");
+        badRequestHandler("/users-credential", om.writeValueAsString(userCredentialDTO), expectedResponse);
 
         userCredentialDTO.setPassword("123456@a");
-        mockMvc.perform(MockMvcRequestBuilders
-                        .post("/users-credential")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .content(om.writeValueAsString(userCredentialDTO)))
-                .andExpect(status().is4xxClientError())
-                .andExpect(jsonPath("$.fieldsErrors.password").value("Password must contain 1 or more uppercase characters."));
+        expectedResponse.setMessage("Password must contain 1 or more uppercase characters.");
+        badRequestHandler("/users-credential", om.writeValueAsString(userCredentialDTO), expectedResponse);
 
+        userCredentialDTO.setPassword("123456@A");
+        expectedResponse.setMessage("Password must contain 1 or more lowercase characters.");
+        badRequestHandler("/users-credential", om.writeValueAsString(userCredentialDTO), expectedResponse);
+
+        userCredentialDTO.setPassword("bbbccc@Aa");
+        expectedResponse.setMessage("Password must contain 1 or more digit characters.");
+        badRequestHandler("/users-credential", om.writeValueAsString(userCredentialDTO), expectedResponse);
+
+        userCredentialDTO.setPassword("bbb 1cc@Aa");
+        expectedResponse.setMessage("Password contains a whitespace character.");
+        badRequestHandler("/users-credential", om.writeValueAsString(userCredentialDTO), expectedResponse);
 
         userCredentialDTO.setPassword(userCredentialTest.getPassword());
-        expectedResponse.setResponse(USER_CREDENTIAL_CREATED_SUCCESSFULLY, TRUE, userCredentialTest);
+        expectedResponse.setResponse("Saved Successfully", true, userCredentialTest);
         Mockito.when(userCredentialService.save(userCredentialTest)).thenReturn(expectedResponse);
         successRequestHandler("/users-credential", om.writeValueAsString(userCredentialDTO), expectedResponse);
 
         userCredentialDTO.setPassword(userCredentialTest.getPassword());
-        expectedResponse.setResponse(USER_CREDENTIAL_CREATION_FAILED, FALSE, null);
+        expectedResponse.setResponse("Save Failed", false, null);
         Mockito.when(userCredentialService.save(userCredentialTest)).thenReturn(expectedResponse);
-        badRequestHandler("/users-credential", om.writeValueAsString(userCredentialDTO), expectedResponse);
+        successRequestHandler("/users-credential", om.writeValueAsString(userCredentialDTO), expectedResponse);
     }
 
     @Test
@@ -106,13 +77,13 @@ public class UserCredentialControllerTestTemp {
         userCredentialDTO.setPassword("12345@Aa");
 
         userCredentialTest.setPassword(userCredentialDTO.getPassword());
-        expectedResponse.setResponse(USER_CREDENTIAL_UPDATED_SUCCESSFULLY, TRUE, userCredentialTest);
+        expectedResponse.setResponse("Success", true, userCredentialTest);
         Mockito.when(userCredentialService.update(userCredentialDTO.to(userCredentialDTO))).thenReturn(expectedResponse);
         successRequestHandler("/users/reset-password", om.writeValueAsString(userCredentialDTO), expectedResponse);
 
-        expectedResponse.setResponse(USER_CREDENTIAL_UPDATE_FAILED, FALSE, null);
+        expectedResponse.setResponse("Failed", false, null);
         Mockito.when(userCredentialService.update(userCredentialDTO.to(userCredentialDTO))).thenReturn(expectedResponse);
-        badRequestHandler("/users/reset-password", om.writeValueAsString(userCredentialDTO), expectedResponse);
+        successRequestHandler("/users/reset-password", om.writeValueAsString(userCredentialDTO), expectedResponse);
     }
 
     @Test
@@ -122,30 +93,26 @@ public class UserCredentialControllerTestTemp {
         userCredentialDTO.setPassword("123@5Aa7");
 
         user.setUserCredential(userCredentialTest);
-        expectedResponse.setResponse(VALID_PASSWORD, TRUE, user);
+        expectedResponse.setResponse("Valid Password", true, user);
         Mockito.when(userCredentialService.verifyPassword(userCredentialDTO)).thenReturn(expectedResponse);
         successRequestHandler("/users/verify-credential", om.writeValueAsString(userCredentialDTO), expectedResponse);
 
         userCredentialDTO.setPassword("123%5Aa7");
-        expectedResponse.setResponse(INVALID_PASSWORD, FALSE, null);
-        badRequestHandler("/users/verify-credential", om.writeValueAsString(userCredentialDTO), expectedResponse);
+        expectedResponse.setResponse("Invalid Password", false, null);
+        successRequestHandler("/users/verify-credential", om.writeValueAsString(userCredentialDTO), expectedResponse);
     }
 
     @Test
     public void forgotPasswordTest() throws Exception {
         ForgotPasswordDTO forgotPasswordDTO = new ForgotPasswordDTO();
-        forgotPasswordDTO.setEmailAddress("ab c@yahoo.com");
 
-        mockMvc.perform(MockMvcRequestBuilders
-                        .post("/users/forgot-password")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .content(om.writeValueAsString(forgotPasswordDTO)))
-                .andExpect(status().is4xxClientError())
-                .andExpect(jsonPath("$.fieldsErrors.emailAddress").value("email id is invalid"));
+        forgotPasswordDTO.setEmailAddress("ab c@yahoo.com");
+        expectedResponse.setResponse("email id is invalid", false, null);
+        Mockito.when(userCredentialService.generateAndSendTempPass(forgotPasswordDTO.getEmailAddress())).thenReturn(expectedResponse);
+        badRequestHandler("/users/forgot-password", om.writeValueAsString(forgotPasswordDTO), expectedResponse);
 
         forgotPasswordDTO.setEmailAddress("abc@yahoo.com");
-        expectedResponse.setResponse(NEW_PASSWORD_SENT, TRUE, userCredentialTest);
+        expectedResponse.setResponse("A new password is sent to your email.", true, userCredentialTest);
         Mockito.when(userCredentialService.generateAndSendTempPass(forgotPasswordDTO.getEmailAddress())).thenReturn(expectedResponse);
         successRequestHandler("/users/forgot-password", om.writeValueAsString(forgotPasswordDTO), expectedResponse);
     }
@@ -174,5 +141,5 @@ public class UserCredentialControllerTestTemp {
                 .andExpect(jsonPath("$.message").value(expectedResponse.getMessage()))
                 .andExpect(jsonPath("$.success").value(expectedResponse.isSuccess()))
                 .andExpect(jsonPath("$.data").value(expectedResponse.getData()));
-    }
+    }*/
 }

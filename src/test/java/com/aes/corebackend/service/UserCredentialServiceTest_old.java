@@ -1,21 +1,6 @@
 package com.aes.corebackend.service;
 
 //import com.aes.corebackend.dto.ResponseDTO;
-import com.aes.corebackend.dto.APIResponse;
-import com.aes.corebackend.dto.UserCredentialDTO;
-import com.aes.corebackend.entity.UserCredential;
-import com.aes.corebackend.repository.UserCredentialRepository;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import static com.aes.corebackend.dto.APIResponse.getApiResponse;
-import static com.aes.corebackend.util.response.APIResponseMessage.*;
 
 public class UserCredentialServiceTest_old {
 

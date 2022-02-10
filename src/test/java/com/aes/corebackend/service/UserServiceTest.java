@@ -1,26 +1,35 @@
 package com.aes.corebackend.service;
-
-import com.aes.corebackend.dto.APIResponse;
 import com.aes.corebackend.dto.UserDTO;
 import com.aes.corebackend.entity.User;
 import com.aes.corebackend.entity.UserCredential;
+import com.aes.corebackend.repository.UserRepository;
+import com.aes.corebackend.util.response.APIResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-
+@ExtendWith(SpringExtension.class)
+@SpringBootTest
 public class UserServiceTest {
-    @InjectMocks
+    @Autowired
     private UserService userService;
+
+    @MockBean
+    private UserRepository userRepository;
 
     ObjectMapper om = new ObjectMapper();
     UserCredential userCredential_1 = createUserCredential(1,"101","a1wq",true,"EMPLOYEE");
@@ -30,11 +39,6 @@ public class UserServiceTest {
     User user_2 = createUser(2L,"abd@gmail.com","agm","102","a1polymar","accounts","EMPLOYEE",userCredential_2);
     User user_3 = createUser(3L,"abe@gmail.com","agm","103","a1polymar","accounts","EMPLOYEE",userCredential_3);
 
-    @BeforeEach
-    public void setup() {
-        MockitoAnnotations.openMocks(this);
-        userService = Mockito.mock(UserService.class);
-    }
 
     @Test
     public void createUserTest() throws Exception {
@@ -45,7 +49,7 @@ public class UserServiceTest {
         user.setDepartment("accounts");
         user.setEmailAddress("mdahad118@gmail.com");
         user.setBusinessUnit("a1polymar");
-        user.setEmployeeId("0101");
+        user.setEmployeeId("101");
         user.setRoles("EMPLOYEE");
         user.setUserCredential(userCredential);
 
@@ -54,16 +58,12 @@ public class UserServiceTest {
         userDto.setDepartment("accounts");
         userDto.setEmailAddress("mdahad118@gmail.com");
         userDto.setBusinessUnit("a1polymar");
-        userDto.setEmployeeId("0101");
+        userDto.setEmployeeId("101");
         userDto.setRoles("EMPLOYEE");
 
-        APIResponse responseDTO = new APIResponse();
-        responseDTO.setMessage("user created successfully");
-        responseDTO.setSuccess(true);
-        responseDTO.setData(user);
-        Mockito.when(userService.create(user,userDto)).thenReturn(responseDTO);
-        assertEquals(userService.create(user,userDto).getMessage(),responseDTO.getMessage());
-        assertEquals(userService.create(user,userDto).getData(),responseDTO.getData());
+        Mockito.when(userRepository.save(user)).thenReturn(user);
+        APIResponse returnedResponse = userService.create(user,userDto);
+        assertEquals(returnedResponse.getData(),user);
     }
 
     @Test
@@ -73,7 +73,9 @@ public class UserServiceTest {
         responseDTO.setMessage("user fetch ok");
         responseDTO.setSuccess(true);
         responseDTO.setData(users);
-        Mockito.when(userService.read()).thenReturn(responseDTO);
+        Mockito.when(userRepository.findAll()).thenReturn(users);
+        APIResponse returnedResponse = userService.read();
+        assertEquals(returnedResponse.getData(),responseDTO.getData());
     }
 
     @Test
@@ -82,7 +84,9 @@ public class UserServiceTest {
         responseDTO.setMessage("user found");
         responseDTO.setSuccess(true);
         responseDTO.setData(user_1);
-        Mockito.when(userService.read(1L)).thenReturn(responseDTO);
+        Mockito.when(userRepository.findById(1L)).thenReturn(Optional.ofNullable(user_1));
+        APIResponse returnedResponse = userService.read(1L);
+        assertEquals(returnedResponse.getData(),responseDTO.getData());
     }
 
     @Test
@@ -91,10 +95,18 @@ public class UserServiceTest {
         APIResponse responseDTO = new APIResponse();
         responseDTO.setMessage("user updated successfully");
         responseDTO.setSuccess(true);
-        responseDTO.setData(null);
-        Mockito.when(userService.update(user_1_temp,1L)).thenReturn(responseDTO);
-        assertEquals(userService.update(user_1_temp,1L).getMessage(),responseDTO.getMessage());
-        assertEquals(userService.update(user_1_temp,1L).getData(),responseDTO.getData());
+        responseDTO.setData(user_1_temp);
+        UserDTO userDto = new UserDTO();
+        userDto.setDesignation("dgm");
+        userDto.setDepartment("accounts");
+        userDto.setEmailAddress("abc@gmail.com");
+        userDto.setBusinessUnit("a1polymar");
+        userDto.setEmployeeId("0101");
+        userDto.setRoles("EMPLOYEE");
+        Mockito.when(userRepository.findById(1L)).thenReturn(Optional.ofNullable(user_1));
+        Mockito.when(userRepository.save(user_1_temp)).thenReturn(user_1_temp);
+        APIResponse returnedResponse = userService.update(userDto ,1L);
+        assertEquals(returnedResponse.getData(),responseDTO.getData());
     }
 
     public UserCredential createUserCredential(long id, String employeeId, String password, boolean flag, String roles) {

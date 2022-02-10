@@ -1,6 +1,5 @@
 package com.aes.corebackend.controller.personnelmanagement;
 
-import com.aes.corebackend.dto.APIResponse;
 import com.aes.corebackend.dto.personnelmanagement.PersonalAddressInfoDTO;
 import com.aes.corebackend.service.personnelmanagement.PersonalAddressService;
 import lombok.RequiredArgsConstructor;
@@ -9,12 +8,11 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
-
-import static com.aes.corebackend.util.response.AjaxResponse.prepareErrorResponse;
+import com.aes.corebackend.util.response.APIResponse;
 import static org.springframework.http.ResponseEntity.badRequest;
 import static org.springframework.http.ResponseEntity.ok;
+import static com.aes.corebackend.util.response.APIResponse.prepareErrorResponse;
 
 @Controller
 @RequiredArgsConstructor
