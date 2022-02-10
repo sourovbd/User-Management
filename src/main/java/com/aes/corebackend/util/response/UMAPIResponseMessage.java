@@ -1,6 +1,6 @@
 package com.aes.corebackend.util.response;
 
-public class APIResponseMessage {
+public class UMAPIResponseMessage {
 
     public static final boolean TRUE = true;
     public static final boolean FALSE = false;

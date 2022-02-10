@@ -1,9 +1,10 @@
 package com.aes.corebackend.controller;
 
-import com.aes.corebackend.dto.UserDTO;
-import com.aes.corebackend.entity.User;
-import com.aes.corebackend.entity.UserCredential;
-import com.aes.corebackend.service.UserService;
+import com.aes.corebackend.controller.usermanagement.UserController;
+import com.aes.corebackend.dto.usermanagement.UserDTO;
+import com.aes.corebackend.entity.usermanagement.User;
+import com.aes.corebackend.entity.usermanagement.UserCredential;
+import com.aes.corebackend.service.usermanagement.UserService;
 import com.aes.corebackend.util.response.APIResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.assertj.core.util.Lists;

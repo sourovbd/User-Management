@@ -2,19 +2,19 @@ package com.aes.corebackend.service.personnelmanagement;
 
 import com.aes.corebackend.util.response.APIResponse;
 import com.aes.corebackend.dto.personnelmanagement.PersonalFamilyInfoDTO;
-import com.aes.corebackend.entity.User;
+import com.aes.corebackend.entity.usermanagement.User;
 import com.aes.corebackend.entity.personnelmanagement.PersonalFamilyInfo;
 import com.aes.corebackend.repository.personnelmanagement.PersonalFamilyInfoRepository;
-import com.aes.corebackend.service.UserService;
+import com.aes.corebackend.service.usermanagement.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
 
 import static com.aes.corebackend.util.response.APIResponse.getApiResponse;
-import static com.aes.corebackend.util.response.AjaxResponseStatus.ERROR;
-import static com.aes.corebackend.util.response.AjaxResponseStatus.SUCCESS;
-import static com.aes.corebackend.util.response.PersonnelManagementAPIResponseDescription.*;
+import static com.aes.corebackend.util.response.APIResponseStatus.ERROR;
+import static com.aes.corebackend.util.response.APIResponseStatus.SUCCESS;
+import static com.aes.corebackend.util.response.PMAPIResponseMessage.*;
 
 @Service
 @RequiredArgsConstructor

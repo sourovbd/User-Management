@@ -1,6 +1,6 @@
 package com.aes.corebackend.entity.personnelmanagement;
 
-import com.aes.corebackend.entity.User;
+import com.aes.corebackend.entity.usermanagement.User;
 import com.aes.corebackend.enumeration.Gender;
 import com.aes.corebackend.util.Constants;
 import lombok.Data;
@@ -11,7 +11,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.*;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
-import java.time.LocalDate;
 import java.util.Date;
 
 @Entity

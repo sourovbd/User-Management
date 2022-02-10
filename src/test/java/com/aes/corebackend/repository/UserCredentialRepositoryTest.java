@@ -1,6 +1,7 @@
 package com.aes.corebackend.repository;
 
-import com.aes.corebackend.entity.UserCredential;
+import com.aes.corebackend.entity.usermanagement.UserCredential;
+import com.aes.corebackend.repository.usermanagement.UserCredentialRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;

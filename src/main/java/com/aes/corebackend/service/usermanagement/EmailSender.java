@@ -1,6 +1,6 @@
-package com.aes.corebackend.service;
+package com.aes.corebackend.service.usermanagement;
 
-import com.aes.corebackend.entity.UserCredential;
+import com.aes.corebackend.entity.usermanagement.UserCredential;
 
 public interface EmailSender {
 

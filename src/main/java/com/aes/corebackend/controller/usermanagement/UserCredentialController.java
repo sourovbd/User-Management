@@ -1,8 +1,8 @@
-package com.aes.corebackend.controller;
+package com.aes.corebackend.controller.usermanagement;
 
-import com.aes.corebackend.dto.ForgotPasswordDTO;
-import com.aes.corebackend.dto.UserCredentialDTO;
-import com.aes.corebackend.service.UserCredentialService;
+import com.aes.corebackend.dto.usermanagement.ForgotPasswordDTO;
+import com.aes.corebackend.dto.usermanagement.UserCredentialDTO;
+import com.aes.corebackend.service.usermanagement.UserCredentialService;
 import com.aes.corebackend.util.response.APIResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,7 +34,7 @@ public class UserCredentialController {
         if (result.hasErrors()) {
             return badRequest().body(prepareErrorResponse(result));
         }
-        APIResponse apiResponse = userCredentialService.save(userCredentialDTO.to(userCredentialDTO));
+        APIResponse apiResponse = userCredentialService.update(userCredentialDTO.to(userCredentialDTO));
         return apiResponse.isSuccess() ? ok(apiResponse) : badRequest().body(apiResponse);
 
     }

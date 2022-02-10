@@ -1,7 +1,7 @@
 package com.aes.corebackend.entity.personnelmanagement;
 
 
-import com.aes.corebackend.entity.User;
+import com.aes.corebackend.entity.usermanagement.User;
 import com.aes.corebackend.util.Constants;
 import lombok.Data;
 import lombok.NoArgsConstructor;

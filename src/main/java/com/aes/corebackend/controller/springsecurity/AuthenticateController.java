@@ -1,14 +1,13 @@
-package com.aes.corebackend.controller;
+package com.aes.corebackend.controller.springsecurity;
 
-import com.aes.corebackend.dto.AuthenticationRequest;
-import com.aes.corebackend.dto.AuthenticationResponse;
-import com.aes.corebackend.service.CustomUserDetailsService;
+import com.aes.corebackend.dto.springsecurity.AuthenticationRequest;
+import com.aes.corebackend.dto.springsecurity.AuthenticationResponse;
+import com.aes.corebackend.service.springsecurity.CustomUserDetailsService;
 import com.aes.corebackend.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;

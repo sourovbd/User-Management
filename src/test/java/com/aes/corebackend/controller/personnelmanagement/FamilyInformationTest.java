@@ -1,12 +1,8 @@
 package com.aes.corebackend.controller.personnelmanagement;
 
-import com.aes.corebackend.controller.personnelmanagement.FamilyInformationController;
 import com.aes.corebackend.util.response.APIResponse;
-import com.aes.corebackend.dto.personnelmanagement.PersonalAttributesDTO;
 import com.aes.corebackend.dto.personnelmanagement.PersonalFamilyInfoDTO;
-import com.aes.corebackend.dto.personnelmanagement.PersonnelManagementResponseDTO;
-import com.aes.corebackend.entity.User;
-import com.aes.corebackend.entity.personnelmanagement.PersonalAttributes;
+import com.aes.corebackend.entity.usermanagement.User;
 import com.aes.corebackend.entity.personnelmanagement.PersonalFamilyInfo;
 import com.aes.corebackend.service.personnelmanagement.FamilyInformationService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -23,7 +19,7 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import static com.aes.corebackend.util.response.AjaxResponseStatus.SUCCESS;
+import static com.aes.corebackend.util.response.APIResponseStatus.SUCCESS;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 

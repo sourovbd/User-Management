@@ -1,21 +1,20 @@
-package com.aes.corebackend.service;
+package com.aes.corebackend.service.usermanagement;
 
-import com.aes.corebackend.dto.UserDTO;
-import com.aes.corebackend.entity.User;
-import com.aes.corebackend.entity.UserCredential;
-import com.aes.corebackend.repository.UserRepository;
+import com.aes.corebackend.dto.usermanagement.UserDTO;
+import com.aes.corebackend.entity.usermanagement.User;
+import com.aes.corebackend.entity.usermanagement.UserCredential;
+import com.aes.corebackend.repository.usermanagement.UserRepository;
 import com.aes.corebackend.util.response.APIResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
-import static com.aes.corebackend.util.response.APIResponseMessage.*;
+import static com.aes.corebackend.util.response.UMAPIResponseMessage.*;
 import static com.aes.corebackend.util.response.APIResponse.getApiResponse;
-import static com.aes.corebackend.util.response.AjaxResponseStatus.ERROR;
-import static com.aes.corebackend.util.response.AjaxResponseStatus.SUCCESS;
+import static com.aes.corebackend.util.response.APIResponseStatus.ERROR;
+import static com.aes.corebackend.util.response.APIResponseStatus.SUCCESS;
 
 @Service
 @RequiredArgsConstructor

@@ -1,6 +1,6 @@
-package com.aes.corebackend.service;
+package com.aes.corebackend.service.springsecurity;
 
-import com.aes.corebackend.entity.UserCredential;
+import com.aes.corebackend.entity.usermanagement.UserCredential;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

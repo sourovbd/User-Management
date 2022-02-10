@@ -1,4 +1,4 @@
-package com.aes.corebackend.entity;
+package com.aes.corebackend.entity.usermanagement;
 
 import lombok.AllArgsConstructor;
 import com.aes.corebackend.entity.personnelmanagement.PersonalAddressInfo;

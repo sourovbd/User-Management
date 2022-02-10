@@ -1,4 +1,4 @@
-package com.aes.corebackend.dto;
+package com.aes.corebackend.dto.springsecurity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
