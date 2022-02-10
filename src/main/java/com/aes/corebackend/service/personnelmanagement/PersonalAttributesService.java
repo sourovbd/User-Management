@@ -108,7 +108,6 @@ public class PersonalAttributesService {
                 apiResponse.setData(attributesDTO);
             } else {
                 apiResponse.setMessage(ATTRIBUTES_RECORD_NOT_FOUND);
-                apiResponse.setSuccess(TRUE);
             }
         }
         return apiResponse;

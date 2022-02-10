@@ -6,7 +6,6 @@ import com.aes.corebackend.entity.User;
 import com.aes.corebackend.entity.personnelmanagement.PersonalIdentificationInfo;
 import com.aes.corebackend.repository.personnelmanagement.PersonalIdentificationInfoRepository;
 import com.aes.corebackend.service.UserService;
-import com.aes.corebackend.service.personnelmanagement.PersonalIdentificationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,6 +16,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import static com.aes.corebackend.util.response.AjaxResponseStatus.ERROR;
 import static com.aes.corebackend.util.response.AjaxResponseStatus.SUCCESS;
 import static com.aes.corebackend.util.response.PersonnelManagementAPIResponseDescription.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -37,9 +37,10 @@ public class PersonalIdentificationServiceTest {
     private User user = new User();
     private PersonalIdentificationInfo personalIdentificationInfo = new PersonalIdentificationInfo();
     private PersonalIdentificationInfoDTO personalIdentificationInfoDTO = new PersonalIdentificationInfoDTO();
+    private APIResponse expectedResponse = APIResponse.getApiResponse();
 
     @BeforeEach
-    private void personalIdentificationSetup() {
+    private void initAll() {
         user.setId(1L);
         user.setDesignation("agm");
         user.setDepartment("accounts");
@@ -58,11 +59,9 @@ public class PersonalIdentificationServiceTest {
 
     @Test
     @DisplayName("This is create - success")
-    public void createTest() {
+    public void createTest_success() {
 
-        APIResponse expectedResponse = new APIResponse();
         expectedResponse.setResponse(IDENTIFICATION_CREATE_SUCCESS, TRUE, null, SUCCESS);
-
         Mockito.when(userService.getUserByUserId(1L)).thenReturn(user);
         Mockito.when(personalIdentificationRepository.save(personalIdentificationInfo))
                 .thenReturn(personalIdentificationInfo);
@@ -72,12 +71,23 @@ public class PersonalIdentificationServiceTest {
     }
 
     @Test
+    @DisplayName("This is create - failed")
+    public void createTest_failed() {
+
+        expectedResponse.setResponse(IDENTIFICATION_CREATE_FAIL, FALSE, null, ERROR);
+        Mockito.when(userService.getUserByUserId(1L)).thenReturn(user);
+        Mockito.when(personalIdentificationRepository.save(Mockito.any(PersonalIdentificationInfo.class)))
+                .thenThrow(new RuntimeException());
+
+        APIResponse actualResponse = personalIdentificationService.create(personalIdentificationInfoDTO, 1L);
+        assertEquals(actualResponse, expectedResponse);
+    }
+
+    @Test
     @DisplayName("This is update - success")
-    public void updateTest() throws Exception {
+    public void updateTest_success() throws Exception {
 
-        APIResponse expectedResponse = new APIResponse();
         expectedResponse.setResponse(IDENTIFICATION_UPDATE_SUCCESS, TRUE, null, SUCCESS);
-
         Mockito.when(userService.getUserByUserId(1L)).thenReturn(user);
         Mockito.when(personalIdentificationRepository.findPersonalIdentificationInfoByUserId(1L))
                 .thenReturn(personalIdentificationInfo);
@@ -87,15 +97,41 @@ public class PersonalIdentificationServiceTest {
     }
 
     @Test
-    @DisplayName("This is read - success")
-    public void readTest() throws Exception {
+    @DisplayName("This is update - failed")
+    public void updateTest_failed() throws Exception {
 
-        APIResponse expectedResponse = new APIResponse();
-        expectedResponse.setResponse(IDENTIFICATION_RECORD_FOUND, TRUE, PersonalIdentificationInfoDTO.getPersonalIdentificationDTO(personalIdentificationInfo), SUCCESS);
-
+        expectedResponse.setResponse(IDENTIFICATION_UPDATE_FAIL, FALSE, null, ERROR);
         Mockito.when(userService.getUserByUserId(1L)).thenReturn(user);
         Mockito.when(personalIdentificationRepository.findPersonalIdentificationInfoByUserId(1L))
                 .thenReturn(personalIdentificationInfo);
+        Mockito.when(personalIdentificationRepository.save(Mockito.any(PersonalIdentificationInfo.class)))
+                .thenThrow(new RuntimeException());
+
+        APIResponse actualResponse = personalIdentificationService.update(personalIdentificationInfoDTO, 1L);
+        assertEquals(actualResponse, expectedResponse);
+    }
+
+    @Test
+    @DisplayName("This is read - success")
+    public void readTest_success() throws Exception {
+
+        expectedResponse.setResponse(IDENTIFICATION_RECORD_FOUND, TRUE, PersonalIdentificationInfoDTO.getPersonalIdentificationDTO(personalIdentificationInfo), SUCCESS);
+        Mockito.when(userService.getUserByUserId(1L)).thenReturn(user);
+        Mockito.when(personalIdentificationRepository.findPersonalIdentificationInfoByUserId(1L))
+                .thenReturn(personalIdentificationInfo);
+
+        APIResponse actualResponse = personalIdentificationService.read(1L);
+        assertEquals(actualResponse, expectedResponse);
+    }
+
+    @Test
+    @DisplayName("This is read - failed")
+    public void readTest_failed() throws Exception {
+
+        expectedResponse.setResponse(IDENTIFICATION_RECORD_NOT_FOUND, FALSE, null, ERROR);
+        Mockito.when(userService.getUserByUserId(1L)).thenReturn(user);
+        Mockito.when(personalIdentificationRepository.findPersonalIdentificationInfoByUserId(1L))
+                .thenReturn(null);
 
         APIResponse actualResponse = personalIdentificationService.read(1L);
         assertEquals(actualResponse, expectedResponse);
