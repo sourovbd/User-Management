@@ -1,6 +1,5 @@
 package com.aes.corebackend.service.personnelmanagement;
 
-
 import com.aes.corebackend.util.response.APIResponse;
 import com.aes.corebackend.dto.personnelmanagement.PersonalTrainingDTO;
 import com.aes.corebackend.entity.User;
@@ -20,6 +19,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import static com.aes.corebackend.util.response.AjaxResponseStatus.ERROR;
 import static com.aes.corebackend.util.response.PersonnelManagementAPIResponseDescription.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static com.aes.corebackend.util.response.AjaxResponseStatus.SUCCESS;
@@ -41,11 +41,11 @@ public class PersonalTrainingServiceTest {
     private PersonalTrainingInfo personalTrainingInfo1 = new PersonalTrainingInfo();
     private PersonalTrainingInfo personalTrainingInfo2 = new PersonalTrainingInfo();
     private PersonalTrainingDTO personalTrainingDTO = new PersonalTrainingDTO();
-
-    private DateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy");
+    private final DateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy");
+    private APIResponse expectedResponse = APIResponse.getApiResponse();
 
     @BeforeEach
-    private void personalTrainingSetup() throws ParseException {
+    private void setup() throws ParseException {
         user.setId(1L);
         user.setDesignation("agm");
         user.setDepartment("accounts");
@@ -77,10 +77,8 @@ public class PersonalTrainingServiceTest {
     }
 
     @Test
-    @DisplayName("This is create - success")
-    public void createTest() {
-
-        APIResponse expectedResponse = new APIResponse();
+    @DisplayName("create training record - success")
+    public void createTrainingRecordSuccessTest() {
         expectedResponse.setResponse(TRAINING_CREATE_SUCCESS, TRUE, null, SUCCESS);
 
         Mockito.when(userService.getUserByUserId(1L)).thenReturn(user);
@@ -92,10 +90,22 @@ public class PersonalTrainingServiceTest {
     }
 
     @Test
-    @DisplayName("Update training record")
-    public void updateTest() {
+    @DisplayName("create training record - failure")
+    public void createTrainingRecordFailureUserNotFoundTest() {
+        expectedResponse.setResponse(USER_NOT_FOUND, FALSE, null, ERROR);
 
-        APIResponse expectedResponse = new APIResponse();
+        Mockito.when(userService.getUserByUserId(1L)).thenReturn(null);
+        Mockito.when(personalTrainingRepository.save(personalTrainingInfo1))
+                .thenReturn(personalTrainingInfo1);
+
+        APIResponse actualResponse = personalTrainingService.create(personalTrainingDTO, 1L);
+        assertEquals(actualResponse, expectedResponse);
+    }
+
+
+    @Test
+    @DisplayName("Update training record - success")
+    public void updateTrainingRecordSuccessTest() {
         expectedResponse.setResponse(TRAINING_UPDATE_SUCCESS, TRUE, null, SUCCESS);
 
         Mockito.when(userService.getUserByUserId(1L)).thenReturn(user);
@@ -107,9 +117,21 @@ public class PersonalTrainingServiceTest {
     }
 
     @Test
-    @DisplayName("All training records for a user")
-    public void readTrainingsTest() throws Exception {
+    @DisplayName("Update training record - failure")
+    public void updateTrainingRecordFailureUserNotFoundTest() {
+        expectedResponse.setResponse(USER_NOT_FOUND, FALSE, null, ERROR);
 
+        Mockito.when(userService.getUserByUserId(1L)).thenReturn(null);
+        Mockito.when(personalTrainingRepository.findPersonalTrainingInfoByIdAndUserId(1L, 1L))
+                .thenReturn(personalTrainingInfo1);
+
+        APIResponse actualResponse = personalTrainingService.update(personalTrainingDTO, 1L, 1L);
+        assertEquals(actualResponse, expectedResponse);
+    }
+
+    @Test
+    @DisplayName("All training records for a user - success")
+    public void readMultipleTrainingRecordsSuccessTest() throws Exception {
         ArrayList<PersonalTrainingInfo> trainingList = new ArrayList<>();
         trainingList.add(personalTrainingInfo1);
         trainingList.add(personalTrainingInfo2);
@@ -130,12 +152,45 @@ public class PersonalTrainingServiceTest {
     }
 
     @Test
-    @DisplayName("Single training record for a user")
-    public void readTest() throws Exception {
-        APIResponse expectedResponse = new APIResponse();
+    @DisplayName("All training records for a user - failure")
+    public void readMultipleTrainingRecordsFailureUserNotFoundTest() throws Exception {
+        ArrayList<PersonalTrainingInfo> trainingList = new ArrayList<>();
+        trainingList.add(personalTrainingInfo1);
+        trainingList.add(personalTrainingInfo2);
+
+        ArrayList<PersonalTrainingDTO> trainingDTOs = new ArrayList<>();
+        trainingDTOs.add(PersonalTrainingDTO.getPersonalTrainingDTO(personalTrainingInfo1));
+        trainingDTOs.add(PersonalTrainingDTO.getPersonalTrainingDTO(personalTrainingInfo2));
+
+        expectedResponse.setResponse(USER_NOT_FOUND, FALSE, null, ERROR);
+
+        Mockito.when(userService.getUserByUserId(1L)).thenReturn(null);
+        Mockito.when(personalTrainingRepository.findPersonalTrainingInfosByUserId(1L))
+                .thenReturn(trainingList);
+
+        APIResponse actualResponse = personalTrainingService.read(1L);
+        assertEquals(actualResponse, expectedResponse);
+    }
+
+    @Test
+    @DisplayName("Single training record for a user - success")
+    public void readSingleTrainingRecordSuccessTest() throws Exception {
         expectedResponse.setResponse(TRAINING_RECORD_FOUND, TRUE, PersonalTrainingDTO.getPersonalTrainingDTO(personalTrainingInfo1), SUCCESS);
 
         Mockito.when(userService.getUserByUserId(1L)).thenReturn(user);
+        Mockito.when(personalTrainingRepository.findPersonalTrainingInfoByIdAndUserId(1l, 1L))
+                .thenReturn(personalTrainingInfo1);
+
+        APIResponse actualResponse = personalTrainingService.read(1L, 1L);
+        assertEquals(actualResponse, expectedResponse);
+    }
+
+    @Test
+    @DisplayName("Single training record for a user - failure")
+    public void readSingleTrainingRecordFailureUserNotFoundTest() throws Exception {
+        expectedResponse.setResponse(USER_NOT_FOUND, FALSE, null, ERROR);
+
+        Mockito.when(userService.getUserByUserId(1L)).thenReturn(null);
         Mockito.when(personalTrainingRepository.findPersonalTrainingInfoByIdAndUserId(1l, 1L))
                 .thenReturn(personalTrainingInfo1);
 

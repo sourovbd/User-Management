@@ -7,6 +7,7 @@ import com.aes.corebackend.entity.personnelmanagement.PersonalTrainingInfo;
 import com.aes.corebackend.service.personnelmanagement.PersonalTrainingService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -17,18 +18,16 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-
 import static com.aes.corebackend.util.response.PersonnelManagementAPIResponseDescription.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static com.aes.corebackend.util.response.AjaxResponseStatus.SUCCESS;
 
-public class PersonalTrainingTest {
+public class PersonalTrainingControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -45,8 +44,8 @@ public class PersonalTrainingTest {
     private PersonalTrainingInfo personalTrainingInfo1 = new PersonalTrainingInfo();
     private PersonalTrainingInfo personalTrainingInfo2 = new PersonalTrainingInfo();
     private PersonalTrainingDTO personalTrainingDTO = new PersonalTrainingDTO();
-
     private final DateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy");
+    private APIResponse expectedResponse = APIResponse.getApiResponse();
 
     @BeforeEach
     public void setup() throws ParseException {
@@ -54,14 +53,12 @@ public class PersonalTrainingTest {
         mockMvc = MockMvcBuilders
                 .standaloneSetup(personalTrainingController)
                 .build();
-
         personalTrainingSetup();
     }
 
     @Test
-    public void createPersonalTrainingTest() throws Exception {
-
-        APIResponse expectedResponse = new APIResponse();
+    @DisplayName("create training record - success")
+    public void createPersonalTrainingSuccessTest() throws Exception {
         expectedResponse.setResponse(TRAINING_CREATE_SUCCESS, TRUE, null, SUCCESS);
         Mockito.when(personalTrainingService.create(personalTrainingDTO, 1L)).thenReturn(expectedResponse);
 
@@ -77,9 +74,8 @@ public class PersonalTrainingTest {
     }
 
     @Test
-    public void updatePersonalTrainingTest() throws Exception {
-
-        APIResponse expectedResponse = new APIResponse();
+    @DisplayName("update training record - success")
+    public void updatePersonalTrainingSuccessTest() throws Exception {
         expectedResponse.setResponse(TRAINING_UPDATE_SUCCESS, TRUE, null, SUCCESS);
         Mockito.when(personalTrainingService.update(personalTrainingDTO, 1L, 1L)).thenReturn(expectedResponse);
 
@@ -95,13 +91,12 @@ public class PersonalTrainingTest {
     }
 
     @Test
-    public void getPersonalTrainingsTest() throws Exception {
-
+    @DisplayName("read multiple training record - success")
+    public void readMultiplePersonalTrainingRecordsSuccessTest() throws Exception {
         ArrayList<PersonalTrainingDTO> trainingDTOs = new ArrayList<>();
         trainingDTOs.add(PersonalTrainingDTO.getPersonalTrainingDTO(personalTrainingInfo1));
         trainingDTOs.add(PersonalTrainingDTO.getPersonalTrainingDTO(personalTrainingInfo2));
 
-        APIResponse expectedResponse = new APIResponse();
         expectedResponse.setResponse(TRAINING_RECORDS_FOUND, TRUE, om.writeValueAsString(trainingDTOs), SUCCESS);
         Mockito.when(personalTrainingService.read(1L)).thenReturn(expectedResponse);
 
@@ -114,9 +109,8 @@ public class PersonalTrainingTest {
     }
 
     @Test
-    public void getPersonalTrainingTest() throws Exception {
-
-        APIResponse expectedResponse = new APIResponse();
+    @DisplayName("read single training record - success")
+    public void readSinglePersonalTrainingRecordSuccessTest() throws Exception {
         expectedResponse.setResponse(TRAINING_RECORD_FOUND, TRUE, personalTrainingInfo1, SUCCESS);
         Mockito.when(personalTrainingService.read(1L, 1L)).thenReturn(expectedResponse);
 
