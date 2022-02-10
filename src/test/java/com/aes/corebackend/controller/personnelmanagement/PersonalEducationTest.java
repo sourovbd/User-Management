@@ -1,12 +1,13 @@
 package com.aes.corebackend.controller.personnelmanagement;
 
 import com.aes.corebackend.controller.personnelmanagement.PersonalEducationController;
-import com.aes.corebackend.dto.APIResponse;
+import com.aes.corebackend.util.response.APIResponse;
 import com.aes.corebackend.dto.personnelmanagement.PersonalEducationDTO;
 import com.aes.corebackend.dto.personnelmanagement.PersonnelManagementResponseDTO;
 import com.aes.corebackend.entity.User;
 import com.aes.corebackend.entity.personnelmanagement.PersonalEducationInfo;
 import com.aes.corebackend.service.personnelmanagement.PersonalEducationService;
+import com.aes.corebackend.util.response.AjaxResponseStatus;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,6 +22,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.ArrayList;
 
+import static com.aes.corebackend.util.response.AjaxResponseStatus.SUCCESS;
 import static com.aes.corebackend.util.response.PersonnelManagementAPIResponseDescription.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -58,7 +60,7 @@ public class PersonalEducationTest {
         educationDTOs.add(PersonalEducationDTO.getPersonalEducationDTO(personalEducationInfoHSC));
         educationDTOs.add(PersonalEducationDTO.getPersonalEducationDTO(personalEducationInfoBSC));
 
-        APIResponse expectedResponse = new APIResponse(EDUCATION_RECORDS_FOUND, true, om.writeValueAsString(educationDTOs));
+        APIResponse expectedResponse = new APIResponse(EDUCATION_RECORDS_FOUND, true, om.writeValueAsString(educationDTOs), SUCCESS);
         Mockito.when(personalEducationService.read(1L)).thenReturn(expectedResponse);
 
         mockMvc.perform(MockMvcRequestBuilders
@@ -72,7 +74,7 @@ public class PersonalEducationTest {
     @Test
     public void getPersonalEducationTest() throws Exception {
 
-        APIResponse expectedResponse = new APIResponse(EDUCATION_RECORD_FOUND, TRUE, PersonalEducationDTO.getPersonalEducationDTO(personalEducationInfoSSC));
+        APIResponse expectedResponse = new APIResponse(EDUCATION_RECORD_FOUND, TRUE, PersonalEducationDTO.getPersonalEducationDTO(personalEducationInfoSSC), SUCCESS);
         Mockito.when(personalEducationService.read(1L, 1L)).thenReturn(expectedResponse);
 
         mockMvc.perform(MockMvcRequestBuilders

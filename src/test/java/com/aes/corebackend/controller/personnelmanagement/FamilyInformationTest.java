@@ -1,7 +1,7 @@
 package com.aes.corebackend.controller.personnelmanagement;
 
 import com.aes.corebackend.controller.personnelmanagement.FamilyInformationController;
-import com.aes.corebackend.dto.APIResponse;
+import com.aes.corebackend.util.response.APIResponse;
 import com.aes.corebackend.dto.personnelmanagement.PersonalAttributesDTO;
 import com.aes.corebackend.dto.personnelmanagement.PersonalFamilyInfoDTO;
 import com.aes.corebackend.dto.personnelmanagement.PersonnelManagementResponseDTO;
@@ -23,6 +23,7 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import static com.aes.corebackend.util.response.AjaxResponseStatus.SUCCESS;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -64,7 +65,7 @@ public class FamilyInformationTest {
     @Test
     public void createFamilyInformationTest() throws Exception {
 
-        APIResponse responseDTO = new APIResponse("Create Family Info Success", true, null);
+        APIResponse responseDTO = new APIResponse("Create Family Info Success", true, null, SUCCESS);
 
         Mockito.when(service.create(familyDTO, user.getId())).thenReturn(responseDTO);// initialize service with expected response
 
@@ -84,7 +85,7 @@ public class FamilyInformationTest {
     @Test
     public void updateAttributesTest() throws Exception {
 
-        APIResponse responseDTO = new APIResponse("Update Family Info Success", true, null);
+        APIResponse responseDTO = new APIResponse("Update Family Info Success", true, null, SUCCESS);
         familyDTO.setMothersName("Neela Manwar");
         Mockito.when(service.update(familyDTO, user.getId())).thenReturn(responseDTO);// initialize service with expected response
 
@@ -106,7 +107,7 @@ public class FamilyInformationTest {
         PersonalFamilyInfo family = PersonalFamilyInfoDTO.getPersonalFamilyEntity(familyDTO);
         APIResponse responseDTO = new APIResponse("Family Information found",
                 true,
-                family);//Expected return
+                family, SUCCESS);//Expected return
 
         Mockito.when(service.read(user.getId())).thenReturn(responseDTO);// testing service for read: Controller to Service
         // [Checking if service is available]

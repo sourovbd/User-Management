@@ -19,6 +19,7 @@ import static com.aes.corebackend.util.response.APIResponseMessage.TRUE;
 import static com.aes.corebackend.util.response.APIResponseMessage.USER_CREDENTIAL_CREATED_SUCCESSFULLY;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static com.aes.corebackend.util.response.AjaxResponseStatus.SUCCESS;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -46,7 +47,7 @@ public class UserCredentialServiceTest {
     @Test
     @DisplayName("Test save Employee by employee id - Success")
     public void testSave() {
-        expectedResponse.setResponse(USER_CREDENTIAL_CREATED_SUCCESSFULLY, TRUE, mockUserCredential);
+        expectedResponse.setResponse(USER_CREDENTIAL_CREATED_SUCCESSFULLY, TRUE, mockUserCredential, SUCCESS);
         Mockito.when(userCredentialRepository.save(mockUserCredential)).thenReturn((UserCredential)expectedResponse.getData());
 
         APIResponse actualResponse = userCredentialService.save(mockUserCredential);

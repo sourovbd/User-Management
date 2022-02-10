@@ -14,6 +14,9 @@ import java.util.Optional;
 
 import static com.aes.corebackend.util.response.APIResponseMessage.*;
 import static com.aes.corebackend.util.response.APIResponse.getApiResponse;
+import static com.aes.corebackend.util.response.AjaxResponseStatus.ERROR;
+import static com.aes.corebackend.util.response.AjaxResponseStatus.SUCCESS;
+
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -34,16 +37,16 @@ public class UserService {
         User createdUser = userRepository.save(user);
         if (Objects.nonNull(createdUser)) {
             emailSender.send(userDto.dtoToEntity(userDto).getEmailAddress(),"This is a test email");
-            apiResponse.setResponse(USER_CREATED_SUCCESSFULLY, TRUE, createdUser);
+            apiResponse.setResponse(USER_CREATED_SUCCESSFULLY, TRUE, createdUser, SUCCESS);
         } else {
-            apiResponse.setResponse(USER_CREATION_FAILED, FALSE, NULL);
+            apiResponse.setResponse(USER_CREATION_FAILED, FALSE, NULL, ERROR);
         }
         return apiResponse;
     }
 
     public APIResponse update(UserDTO userDto, long id) {
         User existingUser = userRepository.findById(id).orElse(null);
-        apiResponse.setResponse(USER_UPDATE_FAILED, FALSE, NULL);
+        apiResponse.setResponse(USER_UPDATE_FAILED, FALSE, NULL, ERROR);
         if(Objects.nonNull(existingUser)) {
             existingUser.setDesignation(userDto.getDesignation());
             existingUser.setDepartment(userDto.getDepartment());
@@ -53,34 +56,31 @@ public class UserService {
             existingUser.setRoles(userDto.getRoles());
 
             userRepository.save(existingUser);
-            apiResponse.setResponse(USER_UPDATED_SUCCESSFULLY, TRUE, existingUser);
+            apiResponse.setResponse(USER_UPDATED_SUCCESSFULLY, TRUE, existingUser, SUCCESS);
         }
         return apiResponse;
     }
 
     public APIResponse read(long id) {
-        apiResponse.setResponse(USER_NOT_FOUND, FALSE, NULL);
+        apiResponse.setResponse(USER_NOT_FOUND, FALSE, NULL, ERROR);
         User existingUser = userRepository.findById(id).orElse(null);
         if(Objects.nonNull(existingUser)) {
-            apiResponse.setResponse(USER_FOUND, TRUE, existingUser);
+            apiResponse.setResponse(USER_FOUND, TRUE, existingUser, SUCCESS);
         }
         return apiResponse;
     }
 
     public APIResponse read() {
-        apiResponse.setResponse(NO_USER_EXISTS, FALSE, NULL);
+        apiResponse.setResponse(NO_USER_EXISTS, FALSE, NULL, ERROR);
         List<User> existingUsers = userRepository.findAll();
         if(Objects.nonNull(existingUsers)) {
-            apiResponse.setResponse(USER_FETCH_OK, TRUE, existingUsers);
+            apiResponse.setResponse(USER_FETCH_OK, TRUE, existingUsers, SUCCESS);
         }
         return apiResponse;
     }
 
     public User getUserByUserId(Long userId) {
-        Optional<User> user = userRepository.findById(userId);
-        if (user.isEmpty()) {
-            return null;
-        }
-        return user.get();
+        User user = userRepository.findById(userId).orElse(null);
+        return user;
     }
 }
