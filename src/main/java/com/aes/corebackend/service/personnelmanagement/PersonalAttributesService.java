@@ -35,9 +35,7 @@ public class PersonalAttributesService {
         /** if exists: convert DTO to entity and call create service */
         if (Objects.nonNull(user)) {
             if (this.create(attributesDTO, user)) {
-                apiResponse.setMessage(ATTRIBUTES_CREATE_SUCCESS);
-                apiResponse.setSuccess(TRUE);
-                apiResponse.setStatus(SUCCESS);
+                apiResponse.setResponse(ATTRIBUTES_CREATE_SUCCESS, TRUE, null, SUCCESS);
             } else {
                 apiResponse.setMessage(ATTRIBUTES_CREATE_FAIL);
             }
@@ -67,9 +65,7 @@ public class PersonalAttributesService {
             PersonalAttributes currentData = personalAttributesRepository.findPersonalAttributesByUserId(userId);
             if (Objects.nonNull(currentData)) {
                 if (this.update(attributesDTO, currentData)) {
-                    apiResponse.setMessage(ATTRIBUTES_UPDATE_SUCCESS);
-                    apiResponse.setSuccess(TRUE);
-                    apiResponse.setStatus(SUCCESS);
+                    apiResponse.setResponse(ATTRIBUTES_UPDATE_SUCCESS, TRUE, null, SUCCESS);
                 } else {
                     apiResponse.setMessage(ATTRIBUTES_UPDATE_FAIL);
                 }
@@ -102,10 +98,7 @@ public class PersonalAttributesService {
             /** If data is NonNull--> respond responstDTO with data */
             if (Objects.nonNull(attributes)) {
                 PersonalAttributesDTO attributesDTO = PersonalAttributesDTO.getPersonalAttributesDTO(attributes);
-                apiResponse.setMessage(ATTRIBUTES_RECORD_FOUND);
-                apiResponse.setSuccess(TRUE);
-                apiResponse.setStatus(SUCCESS);
-                apiResponse.setData(attributesDTO);
+                apiResponse.setResponse(ATTRIBUTES_RECORD_FOUND, TRUE, attributesDTO, SUCCESS);
             } else {
                 apiResponse.setMessage(ATTRIBUTES_RECORD_NOT_FOUND);
             }

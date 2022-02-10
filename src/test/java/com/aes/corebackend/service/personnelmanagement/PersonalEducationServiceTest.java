@@ -44,7 +44,7 @@ public class PersonalEducationServiceTest {
     private APIResponse expectedResponse = APIResponse.getApiResponse();
 
     @BeforeEach
-    public void initAll() {
+    public void setup() {
         personalEducationDTO.setDegreeName("SSC");
         personalEducationDTO.setInstitutionName("ABC High School");
         personalEducationDTO.setGpaScale(5.00f);
@@ -54,7 +54,7 @@ public class PersonalEducationServiceTest {
 
     @Test
     @DisplayName("This is create - success")
-    public void createTest_success() throws Exception {
+    public void createTestSuccess() {
 
         expectedResponse.setResponse(EDUCATION_CREATE_SUCCESS, TRUE, null, SUCCESS);
         Mockito.when(userService.getUserByUserId(1L)).thenReturn(user);
@@ -67,7 +67,7 @@ public class PersonalEducationServiceTest {
 
     @Test
     @DisplayName("This is create - failed")
-    public void createTest_failed() throws Exception {
+    public void createTestFailed() {
 
         expectedResponse.setResponse(EDUCATION_CREATE_FAIL, FALSE, null, ERROR);
         Mockito.when(userService.getUserByUserId(1L)).thenReturn(user);
@@ -80,7 +80,7 @@ public class PersonalEducationServiceTest {
 
     @Test
     @DisplayName("This is update - success")
-    public void updateTest_success() throws Exception {
+    public void updateTestSuccess() {
 
         expectedResponse.setResponse(EDUCATION_UPDATE_SUCCESS, TRUE, null, SUCCESS);
         Mockito.when(userService.getUserByUserId(1L)).thenReturn(user);
@@ -93,7 +93,7 @@ public class PersonalEducationServiceTest {
 
     @Test
     @DisplayName("This is update - failed")
-    public void updateTest_failed() throws Exception {
+    public void updateTestFailed() {
 
         expectedResponse.setResponse(EDUCATION_UPDATE_FAIL, FALSE, null, ERROR);
         Mockito.when(userService.getUserByUserId(1L)).thenReturn(user);
@@ -108,7 +108,7 @@ public class PersonalEducationServiceTest {
 
     @Test
     @DisplayName("This is read - all education records for a user - success")
-    public void readEducationsTest_success() throws Exception {
+    public void readEducationsTestSuccess() {
 
         ArrayList<PersonalEducationInfo> educationInfoList = new ArrayList<>();
         educationInfoList.add(personalEducationInfoSSC);
@@ -131,7 +131,7 @@ public class PersonalEducationServiceTest {
 
     @Test
     @DisplayName("This is read - all education records for a user - failed")
-    public void readEducationsTest_failed() throws Exception {
+    public void readEducationsTestFailed() {
 
         expectedResponse.setResponse(EDUCATION_RECORD_NOT_FOUND, FALSE, null, ERROR);
         Mockito.when(userService.getUserByUserId(1L)).thenReturn(user);
@@ -144,7 +144,7 @@ public class PersonalEducationServiceTest {
 
     @Test
     @DisplayName("This is read - a single record - success")
-    public void readTest_success() throws Exception {
+    public void readTestSuccess() {
 
         expectedResponse.setResponse(EDUCATION_RECORD_FOUND, TRUE, PersonalEducationDTO.getPersonalEducationDTO(personalEducationInfoSSC), SUCCESS);
         Mockito.when(userService.getUserByUserId(1L)).thenReturn(user);
@@ -157,7 +157,7 @@ public class PersonalEducationServiceTest {
 
     @Test
     @DisplayName("This is read - a single record - failed")
-    public void readTest_failed() throws Exception {
+    public void readTestFailed() {
 
         expectedResponse.setResponse(EDUCATION_RECORD_NOT_FOUND, FALSE, null, ERROR);
         Mockito.when(userService.getUserByUserId(1L)).thenReturn(user);

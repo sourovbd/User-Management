@@ -61,8 +61,19 @@ public class FamilyInformationServiceTest {
     }
 
     @Test
+    @DisplayName("This is create - no user")
+    public void createTestNoUser() {
+
+        expectedResponse.setResponse(USER_NOT_FOUND, FALSE, null, ERROR);
+        Mockito.when(userService.getUserByUserId(1L)).thenReturn(user);
+
+        APIResponse actualResponse = familyInformationService.create(personalFamilyInfoDTO, 2L);
+        assertEquals(expectedResponse, actualResponse);
+    }
+
+    @Test
     @DisplayName("This is create - success")
-    public void createTest_success() throws Exception {
+    public void createTestSuccess() {
 
         expectedResponse.setResponse(FAMILY_CREATE_SUCCESS, TRUE, null, SUCCESS);
         Mockito.when(userService.getUserByUserId(1L)).thenReturn(user);
@@ -75,7 +86,7 @@ public class FamilyInformationServiceTest {
 
     @Test
     @DisplayName("This is create - failed")
-    public void createTest_failed() throws Exception {
+    public void createTestFailed() {
 
         expectedResponse.setResponse(FAMILY_CREATE_FAIL, FALSE, null, ERROR);
         Mockito.when(userService.getUserByUserId(1L)).thenReturn(user);
@@ -88,7 +99,7 @@ public class FamilyInformationServiceTest {
 
     @Test
     @DisplayName("This is update - success")
-    public void updateTest_success() throws Exception {
+    public void updateTestSuccess() {
 
         expectedResponse.setResponse(FAMILY_UPDATE_SUCCESS, TRUE, null, SUCCESS);
         Mockito.when(userService.getUserByUserId(1L)).thenReturn(user);
@@ -101,7 +112,7 @@ public class FamilyInformationServiceTest {
 
     @Test
     @DisplayName("This is update - failed")
-    public void updateTest_failed() throws Exception {
+    public void updateTestFailed() {
 
         expectedResponse.setResponse(FAMILY_UPDATE_FAIL, FALSE, null, ERROR);
         Mockito.when(userService.getUserByUserId(1L)).thenReturn(user);
@@ -115,7 +126,7 @@ public class FamilyInformationServiceTest {
 
     @Test
     @DisplayName("This is read - success")
-    public void readTest_success() throws Exception {
+    public void readTestSuccess() {
 
         expectedResponse.setResponse(FAMILY_RECORD_FOUND, TRUE, PersonalFamilyInfoDTO.getPersonalFamilyDTO(personalFamilyInfo), SUCCESS);
         Mockito.when(userService.getUserByUserId(1L)).thenReturn(user);
@@ -128,7 +139,7 @@ public class FamilyInformationServiceTest {
 
     @Test
     @DisplayName("This is read - failed")
-    public void readTest_failed() throws Exception {
+    public void readTestFailed() {
 
         expectedResponse.setResponse(FAMILY_RECORD_NOT_FOUND, FALSE, null, ERROR);
         Mockito.when(userService.getUserByUserId(1L)).thenReturn(user);
@@ -136,6 +147,7 @@ public class FamilyInformationServiceTest {
                 .thenReturn(null);
 
         APIResponse actualResponse = familyInformationService.read(1L);
+        System.out.println(actualResponse.toString());
         assertEquals(expectedResponse, actualResponse);
     }
 }
