@@ -1,15 +1,17 @@
 package com.aes.corebackend.service.personnelmanagement;
 
-import com.aes.corebackend.dto.APIResponse;
+import com.aes.corebackend.util.response.APIResponse;
 import com.aes.corebackend.dto.personnelmanagement.PersonalBasicInfoDTO;
 import com.aes.corebackend.entity.User;
 import com.aes.corebackend.entity.personnelmanagement.PersonalBasicInfo;
 import com.aes.corebackend.repository.personnelmanagement.PersonalBasicInfoRepository;
 import com.aes.corebackend.service.UserService;
-import com.aes.corebackend.util.response.PersonnelManagementAPIResponseDescription;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.Objects;
+import static com.aes.corebackend.util.response.AjaxResponseStatus.ERROR;
+import static com.aes.corebackend.util.response.AjaxResponseStatus.SUCCESS;
+import static com.aes.corebackend.util.response.PersonnelManagementAPIResponseDescription.*;
 
 @Service
 @RequiredArgsConstructor
@@ -20,17 +22,15 @@ public class PersonalBasicInformationService {
     private APIResponse apiResponse = APIResponse.getApiResponse();
 
     public APIResponse create(PersonalBasicInfoDTO basicInfoDTO, Long userId) {
-        apiResponse.setMessage(PersonnelManagementAPIResponseDescription.USER_NOT_FOUND);
-        apiResponse.setSuccess(false);
+        apiResponse.setResponse(USER_NOT_FOUND, FALSE, null, ERROR);
         User user = userService.getUserByUserId(userId);
         /** check if user exists */
         if (Objects.nonNull(user)) {
             /** create user and build response object */
             if (this.create(basicInfoDTO, user)) {
-                apiResponse.setMessage(PersonnelManagementAPIResponseDescription.BASIC_INFORMATION_CREATE_SUCCESS);
-                apiResponse.setSuccess(true);
+                apiResponse.setResponse(BASIC_INFORMATION_CREATE_SUCCESS, TRUE, null, SUCCESS);
             } else {
-                apiResponse.setMessage(PersonnelManagementAPIResponseDescription.BASIC_INFORMATION_CREATE_FAIL);
+                apiResponse.setMessage(BASIC_INFORMATION_CREATE_FAIL);
             }
         }
         return apiResponse;
@@ -50,8 +50,7 @@ public class PersonalBasicInformationService {
     }
 
     public APIResponse update(PersonalBasicInfoDTO updatedBasicInfoDTO, Long userId) {
-        apiResponse.setMessage(PersonnelManagementAPIResponseDescription.USER_NOT_FOUND);
-        apiResponse.setSuccess(false);
+        apiResponse.setResponse(USER_NOT_FOUND, FALSE, null, ERROR);
         User user = userService.getUserByUserId(userId);
         /** check if user exists */
         if (Objects.nonNull(user)) {
@@ -60,13 +59,12 @@ public class PersonalBasicInformationService {
             if (Objects.nonNull(existingBasicInfo)) {
                 /** update record and build response object */
                 if (this.update(updatedBasicInfoDTO, existingBasicInfo)) {
-                    apiResponse.setMessage(PersonnelManagementAPIResponseDescription.BASIC_INFORMATION_UPDATE_SUCCESS);
-                    apiResponse.setSuccess(true);
+                    apiResponse.setResponse(BASIC_INFORMATION_UPDATE_SUCCESS, TRUE, null, SUCCESS);
                 } else {
-                    apiResponse.setMessage(PersonnelManagementAPIResponseDescription.BASIC_INFORMATION_UPDATE_FAIL);
+                    apiResponse.setMessage(BASIC_INFORMATION_UPDATE_FAIL);
                 }
             } else {
-                apiResponse.setMessage(PersonnelManagementAPIResponseDescription.BASIC_INFORMATION_RECORD_NOT_FOUND);
+                apiResponse.setMessage(BASIC_INFORMATION_RECORD_NOT_FOUND);
             }
         }
         return apiResponse;
@@ -85,8 +83,7 @@ public class PersonalBasicInformationService {
     }
 
     public APIResponse read(Long userId) {
-        apiResponse.setMessage(PersonnelManagementAPIResponseDescription.USER_NOT_FOUND);
-        apiResponse.setSuccess(false);
+        apiResponse.setResponse(USER_NOT_FOUND, FALSE, null, ERROR);
         User user = userService.getUserByUserId(userId);
         /** check if user exists */
         if (Objects.nonNull(user)) {
@@ -94,11 +91,9 @@ public class PersonalBasicInformationService {
             /** check if basic information exists */
             if (Objects.nonNull(basicInfo)) {
                 /** convert Entity to DTO object and build response object */
-                apiResponse.setData(PersonalBasicInfoDTO.getPersonalBasicInfoDTO(basicInfo));
-                apiResponse.setMessage(PersonnelManagementAPIResponseDescription.BASIC_INFORMATION_RECORD_FOUND);
-                apiResponse.setSuccess(true);
+                apiResponse.setResponse(BASIC_INFORMATION_RECORD_FOUND, TRUE, PersonalBasicInfoDTO.getPersonalBasicInfoDTO(basicInfo), SUCCESS);
             } else {
-                apiResponse.setMessage(PersonnelManagementAPIResponseDescription.BASIC_INFORMATION_RECORD_NOT_FOUND);
+                apiResponse.setMessage(BASIC_INFORMATION_RECORD_NOT_FOUND);
             }
         }
         return apiResponse;

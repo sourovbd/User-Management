@@ -1,6 +1,6 @@
 package com.aes.corebackend.controller.personnelmanagement;
 
-import com.aes.corebackend.dto.APIResponse;
+import com.aes.corebackend.util.response.APIResponse;
 import com.aes.corebackend.dto.personnelmanagement.PersonalIdentificationInfoDTO;
 import com.aes.corebackend.service.personnelmanagement.PersonalIdentificationService;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
-import static com.aes.corebackend.util.response.AjaxResponse.prepareErrorResponse;
+import static com.aes.corebackend.util.response.APIResponse.prepareErrorResponse;
 import static org.springframework.http.ResponseEntity.badRequest;
 import static org.springframework.http.ResponseEntity.ok;
 

@@ -1,6 +1,5 @@
 package com.aes.corebackend.service;
 
-import com.aes.corebackend.dto.APIResponse;
 import com.aes.corebackend.dto.UserCredentialDTO;
 import com.aes.corebackend.entity.User;
 import com.aes.corebackend.entity.UserCredential;
@@ -9,6 +8,7 @@ import com.aes.corebackend.repository.UserCredentialRepository;
 import com.aes.corebackend.repository.UserRepository;
 import com.aes.corebackend.util.Constants;
 import com.aes.corebackend.util.UserCredentialUtils;
+import com.aes.corebackend.util.response.APIResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -16,7 +16,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import java.util.Objects;
 
 import static com.aes.corebackend.util.response.APIResponseMessage.*;
-import static com.aes.corebackend.dto.APIResponse.getApiResponse;
+import static com.aes.corebackend.util.response.APIResponse.getApiResponse;
+import static com.aes.corebackend.util.response.AjaxResponseStatus.ERROR;
+import static com.aes.corebackend.util.response.AjaxResponseStatus.SUCCESS;
 
 @Service
 @RequiredArgsConstructor
@@ -38,8 +40,8 @@ public class UserCredentialService {
         UserCredential updatedUserCredential = userCredentialRepository.save(userCredential);
 
         return Objects.nonNull(updatedUserCredential) ?
-                apiResponse.setResponse(USER_CREDENTIAL_CREATED_SUCCESSFULLY, TRUE, updatedUserCredential) :
-                apiResponse.setResponse(USER_CREDENTIAL_CREATION_FAILED, TRUE, NULL);
+                apiResponse.setResponse(USER_CREDENTIAL_CREATED_SUCCESSFULLY, TRUE, updatedUserCredential, SUCCESS) :
+                apiResponse.setResponse(USER_CREDENTIAL_CREATION_FAILED, TRUE, NULL, ERROR);
     }
 
     public APIResponse update(UserCredential userCredential) {
@@ -51,8 +53,8 @@ public class UserCredentialService {
         UserCredential updatedUserCredential = userCredentialRepository.save(existingUserCredential);
 
         return Objects.nonNull(updatedUserCredential) ?
-                apiResponse.setResponse(USER_CREDENTIAL_UPDATED_SUCCESSFULLY, TRUE, updatedUserCredential) :
-                apiResponse.setResponse(USER_CREDENTIAL_UPDATE_FAILED, FALSE, NULL);
+                apiResponse.setResponse(USER_CREDENTIAL_UPDATED_SUCCESSFULLY, TRUE, updatedUserCredential, SUCCESS) :
+                apiResponse.setResponse(USER_CREDENTIAL_UPDATE_FAILED, FALSE, NULL, ERROR);
     }
 
     public APIResponse verifyPassword(UserCredentialDTO userCredentialDTO) {
@@ -60,8 +62,8 @@ public class UserCredentialService {
         UserCredential userCredential = userCredentialRepository.findByEmployeeId(userCredentialDTO.getEmployeeId())
                 .orElseThrow(ResourceNotFoundException::new);
         return passwordEncoder.matches(userCredentialDTO.getPassword(), userCredential.getPassword()) ?
-                apiResponse.setResponse(VALID_PASSWORD, TRUE, userCredential) :
-                apiResponse.setResponse(INVALID_PASSWORD, FALSE, NULL);
+                apiResponse.setResponse(VALID_PASSWORD, TRUE, userCredential, SUCCESS) :
+                apiResponse.setResponse(INVALID_PASSWORD, FALSE, NULL, ERROR);
     }
 
     public UserCredential getEmployee(String employeeId) {
@@ -69,7 +71,7 @@ public class UserCredentialService {
     }
 
     public APIResponse generateAndSendTempPass(String email) {
-        apiResponse.setResponse(EMPLOYEE_NOT_FOUND, FALSE, NULL);
+        apiResponse.setResponse(EMPLOYEE_NOT_FOUND, FALSE, NULL,ERROR);
         User user = userRepository.findByEmailAddress(email).orElse(null);
         if (Objects.nonNull(user)) {
             String password = UserCredentialUtils.generatePassword(Constants.PASSWORD_MIN_LENGTH);
@@ -81,7 +83,7 @@ public class UserCredentialService {
 
             userCredential.setPassword(passwordEncoder.encode(userCredential.getPassword()));
             userCredentialRepository.save(userCredential);
-            apiResponse.setResponse(NEW_PASSWORD_SENT, TRUE, user);
+            apiResponse.setResponse(NEW_PASSWORD_SENT, TRUE, user, SUCCESS);
         }
         return apiResponse;
     }

@@ -1,14 +1,10 @@
 package com.aes.corebackend.controller.personnelmanagement;
 
-import com.aes.corebackend.dto.APIResponse;
-import com.aes.corebackend.dto.personnelmanagement.PersonalAddressInfoDTO;
 import com.aes.corebackend.dto.personnelmanagement.PersonalJobExperienceDTO;
-import com.aes.corebackend.dto.personnelmanagement.PersonnelManagementResponseDTO;
 import com.aes.corebackend.entity.User;
-import com.aes.corebackend.service.personnelmanagement.PersonalAddressService;
 import com.aes.corebackend.service.personnelmanagement.PersonalJobExperienceService;
+import com.aes.corebackend.util.response.APIResponse;
 import com.aes.corebackend.util.response.PersonnelManagementAPIResponseDescription;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,6 +22,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -43,6 +41,7 @@ public class PersonalJobExperienceTest {
     ObjectMapper om = new ObjectMapper();
     User user = new User();
     PersonalJobExperienceDTO jobExperienceDTO = new PersonalJobExperienceDTO();
+    PersonalJobExperienceDTO jobExperienceDTO2 = new PersonalJobExperienceDTO();
     APIResponse response = APIResponse.getApiResponse();
 
     @BeforeEach
@@ -67,6 +66,13 @@ public class PersonalJobExperienceTest {
         jobExperienceDTO.setStartDate(formatter.parse("12-03-2017"));
         jobExperienceDTO.setEndDate(formatter.parse("12-12-2020"));
         jobExperienceDTO.setResponsibilities("development");
+
+        jobExperienceDTO2.setId(2L);
+        jobExperienceDTO2.setEmployerName("Nascenia");
+        jobExperienceDTO2.setDesignation("JrDeveloper");
+        jobExperienceDTO2.setStartDate(formatter.parse("01-10-2015"));
+        jobExperienceDTO2.setEndDate(formatter.parse("12-02-2017"));
+        jobExperienceDTO2.setResponsibilities("development");
     }
 
     @Test
@@ -130,5 +136,30 @@ public class PersonalJobExperienceTest {
                 .andExpect(jsonPath("$.message").value(PersonnelManagementAPIResponseDescription.JOB_EXPERIENCE_RECORD_FOUND))
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.data").value(jobExperienceDTO));
+    }
+
+    @Test
+    public void readMultipleJobExperienceTest() throws Exception {
+        ArrayList jobExperiences = new ArrayList<>();
+        jobExperiences.add(jobExperienceDTO);
+        jobExperiences.add(jobExperienceDTO2);
+
+        response.setMessage(PersonnelManagementAPIResponseDescription.JOB_EXPERIENCE_RECORDS_FOUND);
+        response.setSuccess(true);
+        response.setData(om.writeValueAsString(jobExperiences));
+
+        /** initialize service with expected response*/
+        Mockito.when(jobExperienceService.read(user.getId())).thenReturn(response);
+
+        MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders
+                .get("/users/1/job-experiences")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON);
+
+        mockMvc.perform(mockRequest)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.message").value(response.getMessage()))
+                .andExpect(jsonPath("$.success").value(response.isSuccess()))
+                .andExpect(jsonPath("$.data").value(response.getData()));
     }
 }

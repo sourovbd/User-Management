@@ -1,19 +1,17 @@
 package com.aes.corebackend.service.personnelmanagement;
 
-import com.aes.corebackend.dto.APIResponse;
 import com.aes.corebackend.dto.personnelmanagement.PersonalTrainingDTO;
 import com.aes.corebackend.entity.User;
 import com.aes.corebackend.entity.personnelmanagement.PersonalTrainingInfo;
 import com.aes.corebackend.repository.personnelmanagement.PersonalTrainingRepository;
 import com.aes.corebackend.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.apiguardian.api.API;
 import org.springframework.stereotype.Service;
-
-import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Objects;
-
+import com.aes.corebackend.util.response.APIResponse;
+import static com.aes.corebackend.util.response.AjaxResponseStatus.ERROR;
+import static com.aes.corebackend.util.response.AjaxResponseStatus.SUCCESS;
 import static com.aes.corebackend.util.response.PersonnelManagementAPIResponseDescription.*;
 
 @Service
@@ -25,14 +23,13 @@ public class PersonalTrainingService {
     private APIResponse apiResponse = APIResponse.getApiResponse();
 
     public APIResponse create(PersonalTrainingDTO trainingDTO, Long userId) {
-        apiResponse.setResponse(USER_NOT_FOUND, FALSE, null);
+        apiResponse.setResponse(USER_NOT_FOUND, FALSE, null, ERROR);
         User user = userService.getUserByUserId(userId);
         /** check if user exists */
         if (Objects.nonNull(user)) {
             /** create training record  and build response object */
             if (this.createTraining(trainingDTO, user)) {
-                apiResponse.setMessage(TRAINING_CREATE_SUCCESS);
-                apiResponse.setSuccess(TRUE);
+                apiResponse.setResponse(TRAINING_CREATE_SUCCESS, TRUE, null, SUCCESS);
             } else {
                 apiResponse.setMessage(TRAINING_CREATE_FAIL);
             }
@@ -55,7 +52,7 @@ public class PersonalTrainingService {
     }
 
     public APIResponse update(PersonalTrainingDTO personalTrainingDTO, Long userId, Long trainingId) {
-        apiResponse.setResponse(USER_NOT_FOUND, FALSE, null);
+        apiResponse.setResponse(USER_NOT_FOUND, FALSE, null, ERROR);
         User user = userService.getUserByUserId(userId);
         /** check if user exists */
         if (Objects.nonNull(user)) {
@@ -64,8 +61,7 @@ public class PersonalTrainingService {
             if (Objects.nonNull(existingTraining)) {
                 /** update record and build response object */
                 if (this.updateTraining(personalTrainingDTO, user, trainingId)) {
-                    apiResponse.setMessage(TRAINING_UPDATE_SUCCESS);
-                    apiResponse.setSuccess(TRUE);
+                    apiResponse.setResponse(TRAINING_UPDATE_SUCCESS, TRUE, null, SUCCESS);
                 } else {
                     apiResponse.setMessage(TRAINING_UPDATE_FAIL);
                 }
@@ -91,7 +87,7 @@ public class PersonalTrainingService {
     }
 
     public APIResponse read(Long userId) {
-        apiResponse.setResponse(USER_NOT_FOUND, FALSE, null);
+        apiResponse.setResponse(USER_NOT_FOUND, FALSE, null, ERROR);
         User user = userService.getUserByUserId(userId);
         /** check if user exists */
         if (Objects.nonNull(user)) {
@@ -100,9 +96,7 @@ public class PersonalTrainingService {
                 /** convert Entity into DTO objects */
                 ArrayList<PersonalTrainingDTO> trainingDTOS = this.convertToDTOs(trainingList);
                 /** build response object */
-                apiResponse.setData(trainingDTOS);
-                apiResponse.setSuccess(TRUE);
-                apiResponse.setMessage(TRAINING_RECORDS_FOUND);
+                apiResponse.setResponse(TRAINING_RECORDS_FOUND, TRUE, trainingDTOS, SUCCESS);
             } else {
                 apiResponse.setMessage(TRAINING_RECORD_NOT_FOUND);
             }
@@ -119,7 +113,7 @@ public class PersonalTrainingService {
     }
 
     public APIResponse read(Long userId, Long trainingId) {
-        apiResponse.setResponse(USER_NOT_FOUND, FALSE, null);
+        apiResponse.setResponse(USER_NOT_FOUND, FALSE, null, ERROR);
         User user = userService.getUserByUserId(userId);
         /** check if user exists */
         if (Objects.nonNull(user)) {
@@ -127,9 +121,7 @@ public class PersonalTrainingService {
             /** check if training record exists */
             if (Objects.nonNull(training)) {
                 /** build response object */
-                apiResponse.setData(PersonalTrainingDTO.getPersonalTrainingDTO(training));
-                apiResponse.setMessage(TRAINING_RECORD_FOUND);
-                apiResponse.setSuccess(TRUE);
+                apiResponse.setResponse(TRAINING_RECORD_FOUND, TRUE, PersonalTrainingDTO.getPersonalTrainingDTO(training), SUCCESS);
             } else {
                 apiResponse.setMessage(TRAINING_RECORD_NOT_FOUND);
             }

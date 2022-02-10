@@ -1,6 +1,6 @@
 package com.aes.corebackend.controller.personnelmanagement;
 
-import com.aes.corebackend.dto.APIResponse;
+import com.aes.corebackend.util.response.APIResponse;
 import com.aes.corebackend.dto.personnelmanagement.PersonalTrainingDTO;
 import com.aes.corebackend.entity.User;
 import com.aes.corebackend.entity.personnelmanagement.PersonalTrainingInfo;
@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import static com.aes.corebackend.util.response.PersonnelManagementAPIResponseDescription.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static com.aes.corebackend.util.response.AjaxResponseStatus.SUCCESS;
 
 public class PersonalTrainingTest {
 
@@ -61,7 +62,7 @@ public class PersonalTrainingTest {
     public void createPersonalTrainingTest() throws Exception {
 
         APIResponse expectedResponse = new APIResponse();
-        expectedResponse.setResponse(TRAINING_CREATE_SUCCESS, TRUE, null);
+        expectedResponse.setResponse(TRAINING_CREATE_SUCCESS, TRUE, null, SUCCESS);
         Mockito.when(personalTrainingService.create(personalTrainingDTO, 1L)).thenReturn(expectedResponse);
 
         mockMvc.perform(MockMvcRequestBuilders
@@ -79,7 +80,7 @@ public class PersonalTrainingTest {
     public void updatePersonalTrainingTest() throws Exception {
 
         APIResponse expectedResponse = new APIResponse();
-        expectedResponse.setResponse(TRAINING_UPDATE_SUCCESS, TRUE, null);
+        expectedResponse.setResponse(TRAINING_UPDATE_SUCCESS, TRUE, null, SUCCESS);
         Mockito.when(personalTrainingService.update(personalTrainingDTO, 1L, 1L)).thenReturn(expectedResponse);
 
         mockMvc.perform(MockMvcRequestBuilders
@@ -101,7 +102,7 @@ public class PersonalTrainingTest {
         trainingDTOs.add(PersonalTrainingDTO.getPersonalTrainingDTO(personalTrainingInfo2));
 
         APIResponse expectedResponse = new APIResponse();
-        expectedResponse.setResponse(TRAINING_RECORDS_FOUND, TRUE, om.writeValueAsString(trainingDTOs));
+        expectedResponse.setResponse(TRAINING_RECORDS_FOUND, TRUE, om.writeValueAsString(trainingDTOs), SUCCESS);
         Mockito.when(personalTrainingService.read(1L)).thenReturn(expectedResponse);
 
         mockMvc.perform(MockMvcRequestBuilders
@@ -116,7 +117,7 @@ public class PersonalTrainingTest {
     public void getPersonalTrainingTest() throws Exception {
 
         APIResponse expectedResponse = new APIResponse();
-        expectedResponse.setResponse(TRAINING_RECORD_FOUND, TRUE, personalTrainingInfo1);
+        expectedResponse.setResponse(TRAINING_RECORD_FOUND, TRUE, personalTrainingInfo1, SUCCESS);
         Mockito.when(personalTrainingService.read(1L, 1L)).thenReturn(expectedResponse);
 
         mockMvc.perform(MockMvcRequestBuilders

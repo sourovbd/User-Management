@@ -1,44 +1,48 @@
 package com.aes.corebackend.service.personnelmanagement;
 
 
-import com.aes.corebackend.dto.APIResponse;
+import com.aes.corebackend.util.response.APIResponse;
 import com.aes.corebackend.dto.personnelmanagement.PersonalAttributesDTO;
-import com.aes.corebackend.dto.personnelmanagement.PersonnelManagementResponseDTO;
 import com.aes.corebackend.entity.User;
 import com.aes.corebackend.entity.personnelmanagement.PersonalAttributes;
-import com.aes.corebackend.repository.UserRepository;
 import com.aes.corebackend.repository.personnelmanagement.PersonalAttributesRepository;
 import com.aes.corebackend.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
+
+import static com.aes.corebackend.util.response.APIResponse.getApiResponse;
+import static com.aes.corebackend.util.response.AjaxResponseStatus.ERROR;
+import static com.aes.corebackend.util.response.AjaxResponseStatus.SUCCESS;
 import static com.aes.corebackend.util.response.PersonnelManagementAPIResponseDescription.*;
 
 
 @Service
+@RequiredArgsConstructor
 public class PersonalAttributesService {
-    @Autowired
-    PersonalAttributesRepository personalAttributesRepository;
-    @Autowired
-    UserService userService;
 
+    private final PersonalAttributesRepository personalAttributesRepository;
+
+    private final UserService userService;
+
+    private APIResponse apiResponse = getApiResponse();
 
     public APIResponse create(PersonalAttributesDTO attributesDTO, Long userId) {
-        //check if user exists
-        APIResponse responseDTO = new APIResponse(USER_NOT_FOUND, false, null);
+        /** check if user exists */
+        apiResponse.setResponse(USER_NOT_FOUND, FALSE, null, ERROR);
         User user = userService.getUserByUserId(userId);
-        //if exists: convert DTO to entity and call create service
-        if(Objects.nonNull(user)){
-            if(this.create(attributesDTO, user)){
-                responseDTO.setMessage(ATTRIBUTES_CREATE_SUCCESS);
-                responseDTO.setSuccess(true);
-
-            }else{
-                responseDTO.setMessage(ATTRIBUTES_CREATE_FAIL);
+        /** if exists: convert DTO to entity and call create service */
+        if (Objects.nonNull(user)) {
+            if (this.create(attributesDTO, user)) {
+                apiResponse.setMessage(ATTRIBUTES_CREATE_SUCCESS);
+                apiResponse.setSuccess(TRUE);
+                apiResponse.setStatus(SUCCESS);
+            } else {
+                apiResponse.setMessage(ATTRIBUTES_CREATE_FAIL);
             }
         }
-        return responseDTO;
+        return apiResponse;
     }
 
     private boolean create(PersonalAttributesDTO attributesDTO, User user) {
@@ -53,26 +57,27 @@ public class PersonalAttributesService {
     }
 
 
-    public APIResponse update(PersonalAttributesDTO attributesDTO, Long userId) {// error in update
-        //check if user exists
-        APIResponse responseDTO = new APIResponse(USER_NOT_FOUND, false, null);
+    public APIResponse update(PersonalAttributesDTO attributesDTO, Long userId) {/**  error in update */
+        /** check if user exists */
+        apiResponse.setResponse(USER_NOT_FOUND, FALSE, null, ERROR);
         User user = userService.getUserByUserId(userId);
-        //if exists: convert DTO to entity and call create service
-        if(Objects.nonNull(user)){
-            //check if record exists
+        /** if exists: convert DTO to entity and call create service */
+        if (Objects.nonNull(user)) {
+            /** check if record exists */
             PersonalAttributes currentData = personalAttributesRepository.findPersonalAttributesByUserId(userId);
-            if(Objects.nonNull(currentData)) {
+            if (Objects.nonNull(currentData)) {
                 if (this.update(attributesDTO, currentData)) {
-                    responseDTO.setMessage(ATTRIBUTES_UPDATE_SUCCESS);
-                    responseDTO.setSuccess(true);
+                    apiResponse.setMessage(ATTRIBUTES_UPDATE_SUCCESS);
+                    apiResponse.setSuccess(TRUE);
+                    apiResponse.setStatus(SUCCESS);
                 } else {
-                    responseDTO.setMessage(ATTRIBUTES_UPDATE_FAIL);
+                    apiResponse.setMessage(ATTRIBUTES_UPDATE_FAIL);
                 }
             } else {
-                responseDTO.setMessage(ATTRIBUTES_RECORD_NOT_FOUND);
+                apiResponse.setMessage(ATTRIBUTES_RECORD_NOT_FOUND);
             }
         }
-            return responseDTO;
+        return apiResponse;
     }
 
     private boolean update(PersonalAttributesDTO attributesDTO, PersonalAttributes currentData) {
@@ -86,37 +91,34 @@ public class PersonalAttributesService {
         return true;
     }
 
-    /////  READ
-
+    /**  READ */
     public APIResponse read(Long userId) {
-        APIResponse responseDTO = new APIResponse(USER_NOT_FOUND, false, null);
+        apiResponse.setResponse(USER_NOT_FOUND, FALSE, null, ERROR);
         User user = userService.getUserByUserId(userId);
-        //if exists: convert DTO to entity and call create service
-        if(Objects.nonNull(user)){
-            //Get data by user
+        /** if exists: convert DTO to entity and call create service */
+        if (Objects.nonNull(user)) {
+            /** Get data by user */
             PersonalAttributes attributes = fetchData(userId);
-            //If data is NonNull--> respond responstDTO with data
-            if(Objects.nonNull(attributes)){
+            /** If data is NonNull--> respond responstDTO with data */
+            if (Objects.nonNull(attributes)) {
                 PersonalAttributesDTO attributesDTO = PersonalAttributesDTO.getPersonalAttributesDTO(attributes);
-                responseDTO.setMessage(ATTRIBUTES_RECORD_FOUND);
-                responseDTO.setSuccess(true);
-                responseDTO.setData(attributesDTO);
-                return responseDTO;
-            }else{
-                responseDTO.setMessage(ATTRIBUTES_RECORD_NOT_FOUND);
-                responseDTO.setSuccess(true);
-                return responseDTO;
+                apiResponse.setMessage(ATTRIBUTES_RECORD_FOUND);
+                apiResponse.setSuccess(TRUE);
+                apiResponse.setStatus(SUCCESS);
+                apiResponse.setData(attributesDTO);
+            } else {
+                apiResponse.setMessage(ATTRIBUTES_RECORD_NOT_FOUND);
+                apiResponse.setSuccess(TRUE);
             }
-        }else{
-            return responseDTO;
         }
+        return apiResponse;
     }
 
-    private PersonalAttributes fetchData(Long userId){
+    private PersonalAttributes fetchData(Long userId) {
         try {
             PersonalAttributes attributes = personalAttributesRepository.findPersonalAttributesByUserId(userId);
             return attributes;
-        }catch (Exception e){
+        } catch (Exception e) {
             return null;
         }
     }

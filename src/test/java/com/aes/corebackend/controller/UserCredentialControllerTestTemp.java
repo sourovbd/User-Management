@@ -1,31 +1,5 @@
 package com.aes.corebackend.controller;
 
-import com.aes.corebackend.dto.APIResponse;
-import com.aes.corebackend.dto.ForgotPasswordDTO;
-import com.aes.corebackend.dto.UserCredentialDTO;
-import com.aes.corebackend.entity.User;
-import com.aes.corebackend.entity.UserCredential;
-import com.aes.corebackend.service.UserCredentialService;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-
-import static com.aes.corebackend.dto.APIResponse.getApiResponse;
-
-import static com.aes.corebackend.util.response.APIResponseMessage.*;
-
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
 public class UserCredentialControllerTestTemp {
 
    /* @Autowired
