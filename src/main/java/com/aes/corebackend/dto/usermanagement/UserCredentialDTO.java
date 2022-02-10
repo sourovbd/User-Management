@@ -1,7 +1,7 @@
-package com.aes.corebackend.dto;
+package com.aes.corebackend.dto.usermanagement;
 
 import com.aes.corebackend.annotation.ValidPassword;
-import com.aes.corebackend.entity.UserCredential;
+import com.aes.corebackend.entity.usermanagement.UserCredential;
 import lombok.Data;
 
 @Data

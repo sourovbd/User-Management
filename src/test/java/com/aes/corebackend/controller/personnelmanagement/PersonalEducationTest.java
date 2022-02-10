@@ -1,13 +1,10 @@
 package com.aes.corebackend.controller.personnelmanagement;
 
-import com.aes.corebackend.controller.personnelmanagement.PersonalEducationController;
 import com.aes.corebackend.util.response.APIResponse;
 import com.aes.corebackend.dto.personnelmanagement.PersonalEducationDTO;
-import com.aes.corebackend.dto.personnelmanagement.PersonnelManagementResponseDTO;
-import com.aes.corebackend.entity.User;
+import com.aes.corebackend.entity.usermanagement.User;
 import com.aes.corebackend.entity.personnelmanagement.PersonalEducationInfo;
 import com.aes.corebackend.service.personnelmanagement.PersonalEducationService;
-import com.aes.corebackend.util.response.AjaxResponseStatus;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,8 +19,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.ArrayList;
 
-import static com.aes.corebackend.util.response.AjaxResponseStatus.SUCCESS;
-import static com.aes.corebackend.util.response.PersonnelManagementAPIResponseDescription.*;
+import static com.aes.corebackend.util.response.APIResponseStatus.SUCCESS;
+import static com.aes.corebackend.util.response.PMAPIResponseMessage.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 

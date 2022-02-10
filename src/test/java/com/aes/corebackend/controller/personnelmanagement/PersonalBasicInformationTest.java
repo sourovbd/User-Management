@@ -1,13 +1,13 @@
 package com.aes.corebackend.controller.personnelmanagement;
 
 import com.aes.corebackend.dto.personnelmanagement.PersonalBasicInfoDTO;
-import com.aes.corebackend.entity.User;
+import com.aes.corebackend.entity.usermanagement.User;
 import com.aes.corebackend.entity.personnelmanagement.PersonalAddressInfo;
 import com.aes.corebackend.entity.personnelmanagement.PersonalBasicInfo;
 import com.aes.corebackend.enumeration.Gender;
 import com.aes.corebackend.service.personnelmanagement.PersonalBasicInformationService;
 import com.aes.corebackend.util.response.APIResponse;
-import com.aes.corebackend.util.response.PersonnelManagementAPIResponseDescription;
+import com.aes.corebackend.util.response.PMAPIResponseMessage;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -74,7 +74,7 @@ public class PersonalBasicInformationTest {
 
     @Test
     public void createBasicInformationTest() throws Exception {
-        response.setMessage(PersonnelManagementAPIResponseDescription.BASIC_INFORMATION_CREATE_SUCCESS);
+        response.setMessage(PMAPIResponseMessage.BASIC_INFORMATION_CREATE_SUCCESS);
         response.setSuccess(true);
         /** initialize service with expected response*/
         Mockito.when(basicInformationService.create(basicInfoDTO, user.getId())).thenReturn(response);
@@ -88,13 +88,13 @@ public class PersonalBasicInformationTest {
 
         mockMvc.perform(mockRequest)
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.message").value(PersonnelManagementAPIResponseDescription.BASIC_INFORMATION_CREATE_SUCCESS))
+                .andExpect(jsonPath("$.message").value(PMAPIResponseMessage.BASIC_INFORMATION_CREATE_SUCCESS))
                 .andExpect(jsonPath("$.success").value(true));
     }
 
     @Test
     public void updateBasicInformationTest() throws Exception {
-        response.setMessage(PersonnelManagementAPIResponseDescription.BASIC_INFORMATION_UPDATE_SUCCESS);
+        response.setMessage(PMAPIResponseMessage.BASIC_INFORMATION_UPDATE_SUCCESS);
         response.setSuccess(true);
         basicInfoDTO.setFirstName("Rifat");
 
@@ -110,13 +110,13 @@ public class PersonalBasicInformationTest {
 
         mockMvc.perform(mockRequest)
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.message").value(PersonnelManagementAPIResponseDescription.BASIC_INFORMATION_UPDATE_SUCCESS))
+                .andExpect(jsonPath("$.message").value(PMAPIResponseMessage.BASIC_INFORMATION_UPDATE_SUCCESS))
                 .andExpect(jsonPath("$.success").value(true));
     }
 
     @Test
     public void readBasicInformationTest() throws Exception {
-        response.setMessage(PersonnelManagementAPIResponseDescription.BASIC_INFORMATION_RECORD_FOUND);
+        response.setMessage(PMAPIResponseMessage.BASIC_INFORMATION_RECORD_FOUND);
         response.setSuccess(true);
         response.setData(basicInfoDTO);
 
@@ -130,7 +130,7 @@ public class PersonalBasicInformationTest {
 
         mockMvc.perform(mockRequest)
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.message").value(PersonnelManagementAPIResponseDescription.BASIC_INFORMATION_RECORD_FOUND))
+                .andExpect(jsonPath("$.message").value(PMAPIResponseMessage.BASIC_INFORMATION_RECORD_FOUND))
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.data").value(basicInfoDTO));
     }

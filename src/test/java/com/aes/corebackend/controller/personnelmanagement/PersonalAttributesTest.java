@@ -1,17 +1,13 @@
 package com.aes.corebackend.controller.personnelmanagement;
 
 
-import com.aes.corebackend.controller.personnelmanagement.PersonalAttributesController;
 import com.aes.corebackend.util.response.APIResponse;
 import com.aes.corebackend.dto.personnelmanagement.PersonalAttributesDTO;
-import com.aes.corebackend.dto.personnelmanagement.PersonnelManagementResponseDTO;
-import com.aes.corebackend.entity.User;
+import com.aes.corebackend.entity.usermanagement.User;
 import com.aes.corebackend.entity.personnelmanagement.PersonalAttributes;
 import com.aes.corebackend.service.personnelmanagement.PersonalAttributesService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -19,13 +15,12 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import static com.aes.corebackend.util.response.AjaxResponseStatus.SUCCESS;
+import static com.aes.corebackend.util.response.APIResponseStatus.SUCCESS;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 

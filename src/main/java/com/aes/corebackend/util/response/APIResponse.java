@@ -13,8 +13,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.aes.corebackend.util.response.AjaxResponseStatus.ERROR;
-import static com.aes.corebackend.util.response.AjaxResponseStatus.SUCCESS;
+import static com.aes.corebackend.util.response.APIResponseStatus.ERROR;
+import static com.aes.corebackend.util.response.APIResponseStatus.SUCCESS;
 import static java.util.Objects.isNull;
 
 @Data
@@ -25,7 +25,7 @@ public class APIResponse implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private AjaxResponseStatus status;
+    private APIResponseStatus status;
 
     private boolean success;
 
@@ -38,11 +38,11 @@ public class APIResponse implements Serializable {
     private Map<String, List<String>> fieldsErrors;
 
 
-    public APIResponse(AjaxResponseStatus status) {
+    public APIResponse(APIResponseStatus status) {
         this.status = status;
     }
 
-    public APIResponse(String message, boolean success, Object data, AjaxResponseStatus status ) {
+    public APIResponse(String message, boolean success, Object data, APIResponseStatus status ) {
         this.message = message;
         this.success = success;
         this.data = data;
@@ -91,7 +91,7 @@ public class APIResponse implements Serializable {
         return response;
     }
 
-    public APIResponse setResponse(String message, boolean success, Object data, AjaxResponseStatus status) {
+    public APIResponse setResponse(String message, boolean success, Object data, APIResponseStatus status) {
         this.message = message;
         this.success = success;
         this.data = data;

@@ -1,7 +1,7 @@
-package com.aes.corebackend.controller;
+package com.aes.corebackend.controller.usermanagement;
 
-import com.aes.corebackend.dto.*;
-import com.aes.corebackend.service.UserService;
+import com.aes.corebackend.dto.usermanagement.UserDTO;
+import com.aes.corebackend.service.usermanagement.UserService;
 import com.aes.corebackend.util.response.APIResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

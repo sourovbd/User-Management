@@ -1,10 +1,10 @@
 package com.aes.corebackend.controller.personnelmanagement;
 
 import com.aes.corebackend.dto.personnelmanagement.PersonalJobExperienceDTO;
-import com.aes.corebackend.entity.User;
+import com.aes.corebackend.entity.usermanagement.User;
 import com.aes.corebackend.service.personnelmanagement.PersonalJobExperienceService;
 import com.aes.corebackend.util.response.APIResponse;
-import com.aes.corebackend.util.response.PersonnelManagementAPIResponseDescription;
+import com.aes.corebackend.util.response.PMAPIResponseMessage;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,7 +23,6 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -77,7 +76,7 @@ public class PersonalJobExperienceTest {
 
     @Test
     public void createJobExperienceTest() throws Exception {
-        response.setMessage(PersonnelManagementAPIResponseDescription.JOB_EXPERIENCE_CREATE_SUCCESS);
+        response.setMessage(PMAPIResponseMessage.JOB_EXPERIENCE_CREATE_SUCCESS);
         response.setSuccess(true);
         /** initialize service with expected response*/
         Mockito.when(jobExperienceService.create(jobExperienceDTO, user.getId())).thenReturn(response);
@@ -91,13 +90,13 @@ public class PersonalJobExperienceTest {
 
         mockMvc.perform(mockRequest)
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.message").value(PersonnelManagementAPIResponseDescription.JOB_EXPERIENCE_CREATE_SUCCESS))
+                .andExpect(jsonPath("$.message").value(PMAPIResponseMessage.JOB_EXPERIENCE_CREATE_SUCCESS))
                 .andExpect(jsonPath("$.success").value(true));
     }
 
     @Test
     public void updateJobExperienceTest() throws Exception {
-        response.setMessage(PersonnelManagementAPIResponseDescription.JOB_EXPERIENCE_UPDATE_SUCCESS);
+        response.setMessage(PMAPIResponseMessage.JOB_EXPERIENCE_UPDATE_SUCCESS);
         response.setSuccess(true);
         jobExperienceDTO.setResponsibilities("design");
 
@@ -113,13 +112,13 @@ public class PersonalJobExperienceTest {
 
         mockMvc.perform(mockRequest)
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.message").value(PersonnelManagementAPIResponseDescription.JOB_EXPERIENCE_UPDATE_SUCCESS))
+                .andExpect(jsonPath("$.message").value(PMAPIResponseMessage.JOB_EXPERIENCE_UPDATE_SUCCESS))
                 .andExpect(jsonPath("$.success").value(true));
     }
 
     @Test
     public void readSingleJobExperienceTest() throws Exception {
-        response.setMessage(PersonnelManagementAPIResponseDescription.JOB_EXPERIENCE_RECORD_FOUND);
+        response.setMessage(PMAPIResponseMessage.JOB_EXPERIENCE_RECORD_FOUND);
         response.setSuccess(true);
         response.setData(jobExperienceDTO);
 
@@ -133,7 +132,7 @@ public class PersonalJobExperienceTest {
 
         mockMvc.perform(mockRequest)
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.message").value(PersonnelManagementAPIResponseDescription.JOB_EXPERIENCE_RECORD_FOUND))
+                .andExpect(jsonPath("$.message").value(PMAPIResponseMessage.JOB_EXPERIENCE_RECORD_FOUND))
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.data").value(jobExperienceDTO));
     }
@@ -144,7 +143,7 @@ public class PersonalJobExperienceTest {
         jobExperiences.add(jobExperienceDTO);
         jobExperiences.add(jobExperienceDTO2);
 
-        response.setMessage(PersonnelManagementAPIResponseDescription.JOB_EXPERIENCE_RECORDS_FOUND);
+        response.setMessage(PMAPIResponseMessage.JOB_EXPERIENCE_RECORDS_FOUND);
         response.setSuccess(true);
         response.setData(om.writeValueAsString(jobExperiences));
 

@@ -1,9 +1,7 @@
-package com.aes.corebackend.service;
+package com.aes.corebackend.service.usermanagement;
 
-import com.aes.corebackend.entity.UserCredential;
-import lombok.NoArgsConstructor;
+import com.aes.corebackend.entity.usermanagement.UserCredential;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;

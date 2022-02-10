@@ -1,6 +1,6 @@
 package com.aes.corebackend.filter;
 
-import com.aes.corebackend.service.CustomUserDetailsService;
+import com.aes.corebackend.service.springsecurity.CustomUserDetailsService;
 import com.aes.corebackend.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

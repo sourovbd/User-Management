@@ -1,6 +1,6 @@
-package com.aes.corebackend.repository;
+package com.aes.corebackend.repository.usermanagement;
 
-import com.aes.corebackend.entity.User;
+import com.aes.corebackend.entity.usermanagement.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

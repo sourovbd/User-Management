@@ -1,24 +1,24 @@
-package com.aes.corebackend.service;
+package com.aes.corebackend.service.usermanagement;
 
-import com.aes.corebackend.dto.UserCredentialDTO;
-import com.aes.corebackend.entity.User;
-import com.aes.corebackend.entity.UserCredential;
+import com.aes.corebackend.dto.usermanagement.UserCredentialDTO;
+import com.aes.corebackend.entity.usermanagement.User;
+import com.aes.corebackend.entity.usermanagement.UserCredential;
 import com.aes.corebackend.exception.ResourceNotFoundException;
-import com.aes.corebackend.repository.UserCredentialRepository;
-import com.aes.corebackend.repository.UserRepository;
+import com.aes.corebackend.repository.usermanagement.UserCredentialRepository;
+import com.aes.corebackend.repository.usermanagement.UserRepository;
 import com.aes.corebackend.util.Constants;
-import com.aes.corebackend.util.UserCredentialUtils;
 import com.aes.corebackend.util.response.APIResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.Objects;
+import java.util.Random;
 
-import static com.aes.corebackend.util.response.APIResponseMessage.*;
+import static com.aes.corebackend.util.response.UMAPIResponseMessage.*;
 import static com.aes.corebackend.util.response.APIResponse.getApiResponse;
-import static com.aes.corebackend.util.response.AjaxResponseStatus.ERROR;
-import static com.aes.corebackend.util.response.AjaxResponseStatus.SUCCESS;
+import static com.aes.corebackend.util.response.APIResponseStatus.ERROR;
+import static com.aes.corebackend.util.response.APIResponseStatus.SUCCESS;
 
 @Service
 @RequiredArgsConstructor
@@ -33,16 +33,6 @@ public class UserCredentialService {
     private final EmailSender emailSender;
 
     private APIResponse apiResponse = getApiResponse();
-
-    public APIResponse save(UserCredential userCredential) {
-
-        userCredential.setPassword(passwordEncoder.encode(userCredential.getPassword()));
-        UserCredential updatedUserCredential = userCredentialRepository.save(userCredential);
-
-        return Objects.nonNull(updatedUserCredential) ?
-                apiResponse.setResponse(USER_CREDENTIAL_CREATED_SUCCESSFULLY, TRUE, updatedUserCredential, SUCCESS) :
-                apiResponse.setResponse(USER_CREDENTIAL_CREATION_FAILED, TRUE, NULL, ERROR);
-    }
 
     public APIResponse update(UserCredential userCredential) {
 
@@ -74,7 +64,7 @@ public class UserCredentialService {
         apiResponse.setResponse(EMPLOYEE_NOT_FOUND, FALSE, NULL,ERROR);
         User user = userRepository.findByEmailAddress(email).orElse(null);
         if (Objects.nonNull(user)) {
-            String password = UserCredentialUtils.generatePassword(Constants.PASSWORD_MIN_LENGTH);
+            String password = generatePassword(Constants.PASSWORD_MIN_LENGTH);
 
             UserCredential userCredential = user.getUserCredential();
             userCredential.setPassword(password);
@@ -91,5 +81,14 @@ public class UserCredentialService {
     public void sendEmail(User user, UserCredential userCredential) {
         String messageBody = emailSender.buildEmailText(userCredential);
         emailSender.send(user.getEmailAddress(), messageBody);
+    }
+
+    public String generatePassword(Integer length) {
+        Long min = (long) Math.pow(10, length - 1);
+        Long max = (long) Math.pow(10, length) - 1;
+
+        Random random = new Random();
+        String password = Long.toString(random.nextLong(max - min) + min);
+        return password;
     }
 }
