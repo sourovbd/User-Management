@@ -25,5 +25,9 @@ jobs:
       with:
         java-version: '17'
         distribution: 'temurin'
+    - name: install maildev
+      run: npm install maildev
+    - name: run maildev
+      run: maildev
     - name: Build with Gradle
       run: ./gradlew build
