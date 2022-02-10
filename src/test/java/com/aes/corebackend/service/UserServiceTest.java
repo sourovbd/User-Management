@@ -35,6 +35,9 @@ public class UserServiceTest {
     @Mock
     private UserRepository userRepository;
 
+    @Mock
+    private EmailSender emailSender;
+
     ObjectMapper om = new ObjectMapper();
     UserCredential userCredential_1 = createUserCredential(1,"101","a1wq",true,"EMPLOYEE");
     UserCredential userCredential_2 = createUserCredential(2,"102","a1wq",true,"EMPLOYEE");
@@ -47,7 +50,7 @@ public class UserServiceTest {
     public void setup() {
         MockitoAnnotations.openMocks(this);
     }
-    /*@Test
+    @Test
     public void createUserTest() throws Exception {
         UserCredential userCredential = new UserCredential(1,"101","a1wq",true,"EMPLOYEE");
         User user = new User();
@@ -71,7 +74,7 @@ public class UserServiceTest {
         Mockito.when(userRepository.save(user)).thenReturn(user);
         APIResponse returnedResponse = userService.create(user,userDto);
         assertEquals(returnedResponse.getData(),user);
-    }*/
+    }
 
     @Test
     public void getAllUsers_success() throws Exception {
