@@ -95,6 +95,7 @@ public class APIResponse implements Serializable {
         this.message = message;
         this.success = success;
         this.data = data;
+        this.status = status;
         return this;
     }
 
