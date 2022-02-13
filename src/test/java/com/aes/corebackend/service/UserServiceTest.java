@@ -3,17 +3,24 @@ import com.aes.corebackend.dto.usermanagement.UserDTO;
 import com.aes.corebackend.entity.usermanagement.User;
 import com.aes.corebackend.entity.usermanagement.UserCredential;
 import com.aes.corebackend.repository.usermanagement.UserRepository;
+import com.aes.corebackend.service.usermanagement.EmailSender;
 import com.aes.corebackend.service.usermanagement.UserService;
 import com.aes.corebackend.util.response.APIResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 
 import java.util.ArrayList;
@@ -23,14 +30,15 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@ExtendWith(SpringExtension.class)
-@SpringBootTest
 public class UserServiceTest {
-    @Autowired
+    @InjectMocks
     private UserService userService;
 
-    @MockBean
+    @Mock
     private UserRepository userRepository;
+
+    @Mock
+    private EmailSender emailSender;
 
     ObjectMapper om = new ObjectMapper();
     UserCredential userCredential_1 = createUserCredential(1,"101","a1wq",true,"EMPLOYEE");
@@ -40,7 +48,10 @@ public class UserServiceTest {
     User user_2 = createUser(2L,"abd@gmail.com","agm","102","a1polymar","accounts","EMPLOYEE",userCredential_2);
     User user_3 = createUser(3L,"abe@gmail.com","agm","103","a1polymar","accounts","EMPLOYEE",userCredential_3);
 
-
+    @BeforeEach
+    public void setup() {
+        MockitoAnnotations.openMocks(this);
+    }
     @Test
     public void createUserTest() throws Exception {
         UserCredential userCredential = new UserCredential(1,"101","a1wq",true,"EMPLOYEE");
