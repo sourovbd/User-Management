@@ -40,7 +40,7 @@ public class PersonalAttributesServiceTest {
     private APIResponse expectedResponse = APIResponse.getApiResponse();
 
     @BeforeEach
-    public void initAll() {
+    public void setup() {
         personalAttributes.setId(1L);
         personalAttributes.setBirthPlace("BD");
         personalAttributes.setBloodGroup("O+");
@@ -56,7 +56,7 @@ public class PersonalAttributesServiceTest {
 
     @Test
     @DisplayName("This is create - success")
-    public void createTestSuccess() {
+    public void createSuccessTest() {
 
         expectedResponse.setResponse(ATTRIBUTES_CREATE_SUCCESS, TRUE, null, SUCCESS);
         Mockito.when(userService.getUserByUserId(1L)).thenReturn(user);
@@ -69,7 +69,7 @@ public class PersonalAttributesServiceTest {
 
     @Test
     @DisplayName("This is create - failed")
-    public void createTestFailed() {
+    public void createFailedTest() {
 
         expectedResponse.setResponse(ATTRIBUTES_CREATE_FAIL, FALSE, null, ERROR);
         Mockito.when(userService.getUserByUserId(1L)).thenReturn(user);
@@ -82,7 +82,7 @@ public class PersonalAttributesServiceTest {
 
     @Test
     @DisplayName("This is update - success")
-    public void updateTestSuccess() {
+    public void updateSuccessTest() {
 
         expectedResponse.setResponse(ATTRIBUTES_UPDATE_SUCCESS, TRUE, null, SUCCESS);
         Mockito.when(userService.getUserByUserId(1L)).thenReturn(user);
@@ -95,7 +95,7 @@ public class PersonalAttributesServiceTest {
 
     @Test
     @DisplayName("This is update - failed")
-    public void updateTestFailed() {
+    public void updateFailedTest() {
 
         expectedResponse.setResponse(ATTRIBUTES_UPDATE_FAIL, FALSE, null, ERROR);
         Mockito.when(userService.getUserByUserId(1L)).thenReturn(user);
@@ -110,7 +110,7 @@ public class PersonalAttributesServiceTest {
 
     @Test
     @DisplayName("This is read - success")
-    public void readTestSuccess() {
+    public void readSuccessTest() {
 
         expectedResponse.setResponse(ATTRIBUTES_RECORD_FOUND, TRUE, PersonalAttributesDTO.getPersonalAttributesDTO(personalAttributes), SUCCESS);
         Mockito.when(userService.getUserByUserId(1L)).thenReturn(user);
@@ -123,7 +123,7 @@ public class PersonalAttributesServiceTest {
 
     @Test
     @DisplayName("This is read - failed")
-    public void readTestFailed() {
+    public void readFailedTest() {
 
         expectedResponse.setResponse(ATTRIBUTES_RECORD_NOT_FOUND, FALSE, null, ERROR);
         Mockito.when(userService.getUserByUserId(1L)).thenReturn(user);

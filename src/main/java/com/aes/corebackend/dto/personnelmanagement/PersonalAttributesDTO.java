@@ -21,8 +21,11 @@ public class PersonalAttributesDTO {
     @Length(min = 0, max = 255, message = "Birth place: Character Length exceeds of 255")
     @Pattern(regexp = "^[a-zA-z]+$", message = "Birth place: Field cannot have numeric or special characters")
     private String birthPlace;
-    //a-zA-z
-    //max length 30
+
+    /**
+     * a-zA-z
+     * max length 30
+     * */
     @Length(min = 0, max = 30, message = "Nationality: Character Length exceeds of 30")
     @Pattern(regexp = "^[a-zA-z]+$", message = "Nationality: Field cannot have numeric or special characters")
     private String nationality;

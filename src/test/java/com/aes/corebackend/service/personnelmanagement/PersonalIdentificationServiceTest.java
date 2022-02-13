@@ -59,7 +59,7 @@ public class PersonalIdentificationServiceTest {
 
     @Test
     @DisplayName("This is create - success")
-    public void createTestSuccess() {
+    public void createSuccessTest() {
 
         expectedResponse.setResponse(IDENTIFICATION_CREATE_SUCCESS, TRUE, null, SUCCESS);
         Mockito.when(userService.getUserByUserId(1L)).thenReturn(user);
@@ -72,7 +72,7 @@ public class PersonalIdentificationServiceTest {
 
     @Test
     @DisplayName("This is create - failed")
-    public void createTestFailed() {
+    public void createFailedTest() {
 
         expectedResponse.setResponse(IDENTIFICATION_CREATE_FAIL, FALSE, null, ERROR);
         Mockito.when(userService.getUserByUserId(1L)).thenReturn(user);
@@ -85,7 +85,7 @@ public class PersonalIdentificationServiceTest {
 
     @Test
     @DisplayName("This is update - success")
-    public void updateTestSuccess() {
+    public void updateSuccessTest() {
 
         expectedResponse.setResponse(IDENTIFICATION_UPDATE_SUCCESS, TRUE, null, SUCCESS);
         Mockito.when(userService.getUserByUserId(1L)).thenReturn(user);
@@ -98,7 +98,7 @@ public class PersonalIdentificationServiceTest {
 
     @Test
     @DisplayName("This is update - failed")
-    public void updateTestFailed() {
+    public void updateFailedTest() {
 
         expectedResponse.setResponse(IDENTIFICATION_UPDATE_FAIL, FALSE, null, ERROR);
         Mockito.when(userService.getUserByUserId(1L)).thenReturn(user);
@@ -113,7 +113,7 @@ public class PersonalIdentificationServiceTest {
 
     @Test
     @DisplayName("This is read - success")
-    public void readTestSuccess() {
+    public void readSuccessTest() {
 
         expectedResponse.setResponse(IDENTIFICATION_RECORD_FOUND, TRUE, PersonalIdentificationInfoDTO.getPersonalIdentificationDTO(personalIdentificationInfo), SUCCESS);
         Mockito.when(userService.getUserByUserId(1L)).thenReturn(user);
@@ -126,7 +126,7 @@ public class PersonalIdentificationServiceTest {
 
     @Test
     @DisplayName("This is read - failed")
-    public void readTestFailed() {
+    public void readFailedTest() {
 
         expectedResponse.setResponse(IDENTIFICATION_RECORD_NOT_FOUND, FALSE, null, ERROR);
         Mockito.when(userService.getUserByUserId(1L)).thenReturn(user);
