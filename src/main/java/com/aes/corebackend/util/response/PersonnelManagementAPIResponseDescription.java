@@ -66,13 +66,11 @@ public class PersonnelManagementAPIResponseDescription {
     public static final String ATTRIBUTES_RECORD_FOUND = "Attribute record found";
     public static final String ATTRIBUTES_RECORD_NOT_FOUND = "Attribute record not found";
 
-
-    /** Attributes Information messages */
-
-    public static final String IDENTIFICATION_CREATE_SUCCESS = "Create ID Info Success";
-    public static final String IDENTIFICATION_CREATE_FAIL = "Create ID Info Fail";
-    public static final String IDENTIFICATION_UPDATE_SUCCESS = "Update ID Info Success";
-    public static final String IDENTIFICATION_UPDATE_FAIL = "Update ID Info Fail";
+    /** Identification Information messages */
+    public static final String IDENTIFICATION_CREATE_SUCCESS = "Identification information creation successful";
+    public static final String IDENTIFICATION_CREATE_FAIL = "Identification information creation failed";
+    public static final String IDENTIFICATION_UPDATE_SUCCESS = "Identification information update successful";
+    public static final String IDENTIFICATION_UPDATE_FAIL = "Identification information update failed";
     public static final String IDENTIFICATION_RECORD_FOUND = "Identification information found";
     public static final String IDENTIFICATION_RECORD_NOT_FOUND = "Identification information not found";
 }
