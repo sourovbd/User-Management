@@ -1,8 +1,9 @@
 package com.aes.corebackend.repository;
 
-import com.aes.corebackend.dto.UserDTO;
-import com.aes.corebackend.entity.User;
-import com.aes.corebackend.entity.UserCredential;
+
+import com.aes.corebackend.entity.usermanagement.User;
+import com.aes.corebackend.entity.usermanagement.UserCredential;
+import com.aes.corebackend.repository.usermanagement.UserRepository;
 import com.aes.corebackend.util.response.APIResponse;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
