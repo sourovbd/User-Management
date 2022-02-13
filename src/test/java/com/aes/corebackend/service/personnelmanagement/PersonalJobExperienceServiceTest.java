@@ -6,6 +6,7 @@ import com.aes.corebackend.entity.User;
 import com.aes.corebackend.entity.personnelmanagement.PersonalJobExperience;
 import com.aes.corebackend.repository.personnelmanagement.PersonalJobExperienceRepository;
 import com.aes.corebackend.service.UserService;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
@@ -17,6 +18,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import static com.aes.corebackend.util.response.AjaxResponseStatus.ERROR;
 import static com.aes.corebackend.util.response.PersonnelManagementAPIResponseDescription.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static com.aes.corebackend.util.response.AjaxResponseStatus.SUCCESS;
@@ -39,8 +41,8 @@ public class PersonalJobExperienceServiceTest {
     private PersonalJobExperience personalJobExperience2 = new PersonalJobExperience();
     private PersonalJobExperienceDTO personalJobExperienceDTO1 = new PersonalJobExperienceDTO();
     private PersonalJobExperienceDTO personalJobExperienceDTO2 = new PersonalJobExperienceDTO();
-    APIResponse expectedResponse = APIResponse.getApiResponse();
-    DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+    private APIResponse expectedResponse = APIResponse.getApiResponse();
+    private final DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
 
     private void setup() throws ParseException {
         user.setId(1L);
@@ -80,7 +82,8 @@ public class PersonalJobExperienceServiceTest {
     }
 
     @Test
-    public void createPersonalJobExperienceTest() {
+    @DisplayName("create job experience record - success")
+    public void createPersonalJobExperienceSuccessTest() {
         expectedResponse.setResponse(JOB_EXPERIENCE_CREATE_SUCCESS, TRUE, null, SUCCESS);
 
         Mockito.when(userService.getUserByUserId(1L)).thenReturn(user);
@@ -91,7 +94,20 @@ public class PersonalJobExperienceServiceTest {
     }
 
     @Test
-    public void updatePersonalJobExperienceTest() {
+    @DisplayName("create job experience record - failure")
+    public void createPersonalJobExperienceFailureUserNotFoundTest() {
+        expectedResponse.setResponse(USER_NOT_FOUND, FALSE, null, ERROR);
+
+        Mockito.when(userService.getUserByUserId(1L)).thenReturn(null);
+        Mockito.when(personalJobExperienceRepository.save(personalJobExperience1)).thenReturn(personalJobExperience1);
+
+        APIResponse actualResponse = personalJobExperienceService.create(personalJobExperienceDTO1, 1L);
+        assertEquals(actualResponse, expectedResponse);
+    }
+
+    @Test
+    @DisplayName("update job experience record - success")
+    public void updatePersonalJobExperienceSuccessTest() {
         expectedResponse.setResponse(JOB_EXPERIENCE_UPDATE_SUCCESS, TRUE, null, SUCCESS);
 
         Mockito.when(userService.getUserByUserId(1L)).thenReturn(user);
@@ -102,7 +118,20 @@ public class PersonalJobExperienceServiceTest {
     }
 
     @Test
-    public void readSingleJobExperience() {
+    @DisplayName("update job experience record - failure")
+    public void updatePersonalJobExperienceFailureUserNotFoundTest() {
+        expectedResponse.setResponse(USER_NOT_FOUND, FALSE, null, ERROR);
+
+        Mockito.when(userService.getUserByUserId(1L)).thenReturn(null);
+        Mockito.when(personalJobExperienceRepository.findPersonalJobExperienceByIdAndUserId(1L, 1L)).thenReturn(personalJobExperience1);
+
+        APIResponse actualResponse = personalJobExperienceService.update(personalJobExperienceDTO1, 1L, 1L);
+        assertEquals(actualResponse, expectedResponse);
+    }
+
+    @Test
+    @DisplayName("read single job experience record - success")
+    public void readSingleJobExperienceSuccessTest() {
 
         expectedResponse.setResponse(JOB_EXPERIENCE_RECORD_FOUND, TRUE, personalJobExperienceDTO1, SUCCESS);
 
@@ -114,7 +143,21 @@ public class PersonalJobExperienceServiceTest {
     }
 
     @Test
-    public void readMultipleJobExperience() {
+    @DisplayName("read single job experience record - failure")
+    public void readSingleJobExperienceFailureUserNotFoundTest() {
+
+        expectedResponse.setResponse(USER_NOT_FOUND, FALSE, null, ERROR);
+
+        Mockito.when(userService.getUserByUserId(1L)).thenReturn(null);
+        Mockito.when(personalJobExperienceRepository.findPersonalJobExperienceByIdAndUserId(1L, 1L)).thenReturn(personalJobExperience1);
+
+        APIResponse actualResponse = personalJobExperienceService.read(1L, 1L);
+        assertEquals(actualResponse, expectedResponse);
+    }
+
+    @Test
+    @DisplayName("read multiple job experience record - success")
+    public void readMultipleJobExperienceSuccessTest() {
 
         ArrayList<PersonalJobExperienceDTO> jobExperienceDTOList = new ArrayList<>();
         jobExperienceDTOList.add(personalJobExperienceDTO1);
@@ -126,6 +169,26 @@ public class PersonalJobExperienceServiceTest {
         jobExperienceEntityList.add(personalJobExperience2);
 
         Mockito.when(userService.getUserByUserId(1L)).thenReturn(user);
+        Mockito.when(personalJobExperienceRepository.findPersonalJobExperiencesByUserId(1L)).thenReturn(jobExperienceEntityList);
+
+        APIResponse actualResponse = personalJobExperienceService.read(1L);
+        assertEquals(expectedResponse, actualResponse);
+    }
+
+    @Test
+    @DisplayName("read multiple job experience record - failure")
+    public void readMultipleJobExperienceFailureUserNotFoundTest() {
+
+        ArrayList<PersonalJobExperienceDTO> jobExperienceDTOList = new ArrayList<>();
+        jobExperienceDTOList.add(personalJobExperienceDTO1);
+        jobExperienceDTOList.add(personalJobExperienceDTO2);
+        expectedResponse.setResponse(USER_NOT_FOUND, FALSE, null, ERROR);
+
+        ArrayList<PersonalJobExperience> jobExperienceEntityList = new ArrayList<>();
+        jobExperienceEntityList.add(personalJobExperience1);
+        jobExperienceEntityList.add(personalJobExperience2);
+
+        Mockito.when(userService.getUserByUserId(1L)).thenReturn(null);
         Mockito.when(personalJobExperienceRepository.findPersonalJobExperiencesByUserId(1L)).thenReturn(jobExperienceEntityList);
 
         APIResponse actualResponse = personalJobExperienceService.read(1L);
