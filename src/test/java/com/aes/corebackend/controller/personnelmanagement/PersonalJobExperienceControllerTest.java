@@ -4,9 +4,9 @@ import com.aes.corebackend.dto.personnelmanagement.PersonalJobExperienceDTO;
 import com.aes.corebackend.entity.User;
 import com.aes.corebackend.service.personnelmanagement.PersonalJobExperienceService;
 import com.aes.corebackend.util.response.APIResponse;
-import com.aes.corebackend.util.response.PersonnelManagementAPIResponseDescription;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -18,17 +18,16 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
-
+import static com.aes.corebackend.util.response.AjaxResponseStatus.SUCCESS;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static com.aes.corebackend.util.response.PersonnelManagementAPIResponseDescription.*;
 
-public class PersonalJobExperienceTest {
+public class PersonalJobExperienceControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
@@ -38,11 +37,11 @@ public class PersonalJobExperienceTest {
     @Mock
     private PersonalJobExperienceService jobExperienceService;
 
-    ObjectMapper om = new ObjectMapper();
-    User user = new User();
-    PersonalJobExperienceDTO jobExperienceDTO = new PersonalJobExperienceDTO();
-    PersonalJobExperienceDTO jobExperienceDTO2 = new PersonalJobExperienceDTO();
-    APIResponse response = APIResponse.getApiResponse();
+    private ObjectMapper om = new ObjectMapper();
+    private User user = new User();
+    private PersonalJobExperienceDTO jobExperienceDTO = new PersonalJobExperienceDTO();
+    private PersonalJobExperienceDTO jobExperienceDTO2 = new PersonalJobExperienceDTO();
+    private APIResponse expectedResponse = APIResponse.getApiResponse();
 
     @BeforeEach
     public void setup() throws ParseException {
@@ -76,11 +75,11 @@ public class PersonalJobExperienceTest {
     }
 
     @Test
-    public void createJobExperienceTest() throws Exception {
-        response.setMessage(PersonnelManagementAPIResponseDescription.JOB_EXPERIENCE_CREATE_SUCCESS);
-        response.setSuccess(true);
+    @DisplayName("create job experience record - success")
+    public void createJobExperienceSuccessTest() throws Exception {
+        expectedResponse.setResponse(JOB_EXPERIENCE_CREATE_SUCCESS, TRUE, null, SUCCESS);
         /** initialize service with expected response*/
-        Mockito.when(jobExperienceService.create(jobExperienceDTO, user.getId())).thenReturn(response);
+        Mockito.when(jobExperienceService.create(jobExperienceDTO, user.getId())).thenReturn(expectedResponse);
 
         String jsonRequestPayload = om.writeValueAsString(jobExperienceDTO);
         MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders
@@ -91,18 +90,17 @@ public class PersonalJobExperienceTest {
 
         mockMvc.perform(mockRequest)
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.message").value(PersonnelManagementAPIResponseDescription.JOB_EXPERIENCE_CREATE_SUCCESS))
-                .andExpect(jsonPath("$.success").value(true));
+                .andExpect(jsonPath("$.message").value(JOB_EXPERIENCE_CREATE_SUCCESS))
+                .andExpect(jsonPath("$.success").value(TRUE));
     }
 
     @Test
-    public void updateJobExperienceTest() throws Exception {
-        response.setMessage(PersonnelManagementAPIResponseDescription.JOB_EXPERIENCE_UPDATE_SUCCESS);
-        response.setSuccess(true);
+    @DisplayName("update job experience record - success")
+    public void updateJobExperienceSuccessTest() throws Exception {
+        expectedResponse.setResponse(JOB_EXPERIENCE_UPDATE_SUCCESS, TRUE, null, SUCCESS);
         jobExperienceDTO.setResponsibilities("design");
-
         /** initialize service with expected response*/
-        Mockito.when(jobExperienceService.update(jobExperienceDTO, user.getId(), 1L)).thenReturn(response);
+        Mockito.when(jobExperienceService.update(jobExperienceDTO, user.getId(), 1L)).thenReturn(expectedResponse);
 
         String jsonRequestPayload = om.writeValueAsString(jobExperienceDTO);
         MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders
@@ -113,18 +111,18 @@ public class PersonalJobExperienceTest {
 
         mockMvc.perform(mockRequest)
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.message").value(PersonnelManagementAPIResponseDescription.JOB_EXPERIENCE_UPDATE_SUCCESS))
-                .andExpect(jsonPath("$.success").value(true));
+                .andExpect(jsonPath("$.message").value(expectedResponse.getMessage()))
+                .andExpect(jsonPath("$.data").value(expectedResponse.getData()))
+                .andExpect(jsonPath("$.status").value(expectedResponse.getStatus().toString()))
+                .andExpect(jsonPath("$.success").value(expectedResponse.isSuccess()));
     }
 
     @Test
-    public void readSingleJobExperienceTest() throws Exception {
-        response.setMessage(PersonnelManagementAPIResponseDescription.JOB_EXPERIENCE_RECORD_FOUND);
-        response.setSuccess(true);
-        response.setData(jobExperienceDTO);
-
+    @DisplayName("read single job experience record - success")
+    public void readSingleJobExperienceRecordSuccessTest() throws Exception {
+        expectedResponse.setResponse(JOB_EXPERIENCE_RECORD_FOUND, TRUE, jobExperienceDTO, SUCCESS);
         /** initialize service with expected response*/
-        Mockito.when(jobExperienceService.read(user.getId(), 1L)).thenReturn(response);
+        Mockito.when(jobExperienceService.read(user.getId(), 1L)).thenReturn(expectedResponse);
 
         MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders
                 .get("/users/1/job-experiences/1")
@@ -133,23 +131,23 @@ public class PersonalJobExperienceTest {
 
         mockMvc.perform(mockRequest)
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.message").value(PersonnelManagementAPIResponseDescription.JOB_EXPERIENCE_RECORD_FOUND))
-                .andExpect(jsonPath("$.success").value(true))
+                .andExpect(jsonPath("$.message").value(JOB_EXPERIENCE_RECORD_FOUND))
+                .andExpect(jsonPath("$.success").value(TRUE))
+                .andExpect(jsonPath("$.status").value(expectedResponse.getStatus().toString()))
                 .andExpect(jsonPath("$.data").value(jobExperienceDTO));
     }
 
     @Test
-    public void readMultipleJobExperienceTest() throws Exception {
+    @DisplayName("read multiple job experience record - success")
+    public void readMultipleJobExperienceRecordsSuccessTest() throws Exception {
         ArrayList jobExperiences = new ArrayList<>();
         jobExperiences.add(jobExperienceDTO);
         jobExperiences.add(jobExperienceDTO2);
 
-        response.setMessage(PersonnelManagementAPIResponseDescription.JOB_EXPERIENCE_RECORDS_FOUND);
-        response.setSuccess(true);
-        response.setData(om.writeValueAsString(jobExperiences));
+        expectedResponse.setResponse(JOB_EXPERIENCE_RECORDS_FOUND, TRUE, om.writeValueAsString(jobExperiences), SUCCESS);
 
         /** initialize service with expected response*/
-        Mockito.when(jobExperienceService.read(user.getId())).thenReturn(response);
+        Mockito.when(jobExperienceService.read(user.getId())).thenReturn(expectedResponse);
 
         MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders
                 .get("/users/1/job-experiences")
@@ -158,8 +156,9 @@ public class PersonalJobExperienceTest {
 
         mockMvc.perform(mockRequest)
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.message").value(response.getMessage()))
-                .andExpect(jsonPath("$.success").value(response.isSuccess()))
-                .andExpect(jsonPath("$.data").value(response.getData()));
+                .andExpect(jsonPath("$.message").value(expectedResponse.getMessage()))
+                .andExpect(jsonPath("$.success").value(expectedResponse.isSuccess()))
+                .andExpect(jsonPath("$.status").value(expectedResponse.getStatus().toString()))
+                .andExpect(jsonPath("$.data").value(expectedResponse.getData()));
     }
 }
