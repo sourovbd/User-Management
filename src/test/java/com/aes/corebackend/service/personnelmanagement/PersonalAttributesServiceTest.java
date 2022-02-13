@@ -56,7 +56,7 @@ public class PersonalAttributesServiceTest {
 
     @Test
     @DisplayName("This is create - success")
-    public void createTest_success() throws Exception {
+    public void createTestSuccess() {
 
         expectedResponse.setResponse(ATTRIBUTES_CREATE_SUCCESS, TRUE, null, SUCCESS);
         Mockito.when(userService.getUserByUserId(1L)).thenReturn(user);
@@ -69,7 +69,7 @@ public class PersonalAttributesServiceTest {
 
     @Test
     @DisplayName("This is create - failed")
-    public void createTest_failed() throws Exception {
+    public void createTestFailed() {
 
         expectedResponse.setResponse(ATTRIBUTES_CREATE_FAIL, FALSE, null, ERROR);
         Mockito.when(userService.getUserByUserId(1L)).thenReturn(user);
@@ -82,7 +82,7 @@ public class PersonalAttributesServiceTest {
 
     @Test
     @DisplayName("This is update - success")
-    public void updateTest_success() throws Exception {
+    public void updateTestSuccess() {
 
         expectedResponse.setResponse(ATTRIBUTES_UPDATE_SUCCESS, TRUE, null, SUCCESS);
         Mockito.when(userService.getUserByUserId(1L)).thenReturn(user);
@@ -95,7 +95,7 @@ public class PersonalAttributesServiceTest {
 
     @Test
     @DisplayName("This is update - failed")
-    public void updateTest_failed() throws Exception {
+    public void updateTestFailed() {
 
         expectedResponse.setResponse(ATTRIBUTES_UPDATE_FAIL, FALSE, null, ERROR);
         Mockito.when(userService.getUserByUserId(1L)).thenReturn(user);
@@ -110,7 +110,7 @@ public class PersonalAttributesServiceTest {
 
     @Test
     @DisplayName("This is read - success")
-    public void readTest_success() throws Exception {
+    public void readTestSuccess() {
 
         expectedResponse.setResponse(ATTRIBUTES_RECORD_FOUND, TRUE, PersonalAttributesDTO.getPersonalAttributesDTO(personalAttributes), SUCCESS);
         Mockito.when(userService.getUserByUserId(1L)).thenReturn(user);
@@ -123,7 +123,7 @@ public class PersonalAttributesServiceTest {
 
     @Test
     @DisplayName("This is read - failed")
-    public void readTest_failed() throws Exception {
+    public void readTestFailed() {
 
         expectedResponse.setResponse(ATTRIBUTES_RECORD_NOT_FOUND, FALSE, null, ERROR);
         Mockito.when(userService.getUserByUserId(1L)).thenReturn(user);

@@ -31,9 +31,7 @@ public class PersonalEducationService {
 
         if (Objects.nonNull(user)) {
             if (create(educationDTO, user)) {
-                apiResponse.setMessage(EDUCATION_CREATE_SUCCESS);
-                apiResponse.setSuccess(TRUE);
-                apiResponse.setStatus(SUCCESS);
+                apiResponse.setResponse(EDUCATION_CREATE_SUCCESS, TRUE, null, SUCCESS);
             } else {
                 apiResponse.setMessage(EDUCATION_CREATE_FAIL);
             }
@@ -61,9 +59,7 @@ public class PersonalEducationService {
             PersonalEducationInfo currentInfo = repository.findPersonalEducationInfoByIdAndUserId(educationId, userId);
             if (Objects.nonNull(currentInfo)) { /** if a record exists with these id values */
                 if (update(educationDTO, user, educationId)) {
-                    apiResponse.setMessage(EDUCATION_UPDATE_SUCCESS);
-                    apiResponse.setSuccess(TRUE);
-                    apiResponse.setStatus(SUCCESS);
+                    apiResponse.setResponse(EDUCATION_UPDATE_SUCCESS, TRUE, null, SUCCESS);
                 } else {
                     apiResponse.setMessage(EDUCATION_UPDATE_FAIL);
                 }
@@ -95,10 +91,7 @@ public class PersonalEducationService {
             ArrayList<PersonalEducationInfo> educationList = repository.findPersonalEducationInfoByUserId(userId);
             if (educationList.size() > 0) {
                 ArrayList<PersonalEducationDTO> educationDTOs = convertToDTOs(educationList);
-                apiResponse.setData(educationDTOs);
-                apiResponse.setSuccess(TRUE);
-                apiResponse.setMessage(EDUCATION_RECORDS_FOUND);
-                apiResponse.setStatus(SUCCESS);
+                apiResponse.setResponse(EDUCATION_RECORDS_FOUND, TRUE, educationDTOs, SUCCESS);
             } else {
                 apiResponse.setMessage(EDUCATION_RECORD_NOT_FOUND);
             }
@@ -122,10 +115,7 @@ public class PersonalEducationService {
             PersonalEducationInfo education = repository.findPersonalEducationInfoByIdAndUserId(educationId, userId);
             if (Objects.nonNull(education)) { /** if a record exists with these id values */
                 PersonalEducationDTO educationDTO = PersonalEducationDTO.getPersonalEducationDTO(education);
-                apiResponse.setData(educationDTO);
-                apiResponse.setMessage(EDUCATION_RECORD_FOUND);
-                apiResponse.setSuccess(TRUE);
-                apiResponse.setStatus(SUCCESS);
+                apiResponse.setResponse(EDUCATION_RECORD_FOUND, TRUE, educationDTO, SUCCESS);
             } else {
                 apiResponse.setMessage(EDUCATION_RECORD_NOT_FOUND);
             }
