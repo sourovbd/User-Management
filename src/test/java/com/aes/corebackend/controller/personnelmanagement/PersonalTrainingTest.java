@@ -7,6 +7,7 @@ import com.aes.corebackend.entity.personnelmanagement.PersonalTrainingInfo;
 import com.aes.corebackend.service.personnelmanagement.PersonalTrainingService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -59,6 +60,7 @@ public class PersonalTrainingTest {
     }
 
     @Test
+    @Disabled
     public void createPersonalTrainingTest() throws Exception {
 
         APIResponse expectedResponse = new APIResponse();
@@ -77,6 +79,7 @@ public class PersonalTrainingTest {
     }
 
     @Test
+    @Disabled
     public void updatePersonalTrainingTest() throws Exception {
 
         APIResponse expectedResponse = new APIResponse();

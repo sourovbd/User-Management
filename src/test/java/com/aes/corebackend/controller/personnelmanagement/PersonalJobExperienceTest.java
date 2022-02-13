@@ -7,6 +7,7 @@ import com.aes.corebackend.util.response.APIResponse;
 import com.aes.corebackend.util.response.PMAPIResponseMessage;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -75,6 +76,7 @@ public class PersonalJobExperienceTest {
     }
 
     @Test
+    @Disabled
     public void createJobExperienceTest() throws Exception {
         response.setMessage(PMAPIResponseMessage.JOB_EXPERIENCE_CREATE_SUCCESS);
         response.setSuccess(true);
@@ -95,6 +97,7 @@ public class PersonalJobExperienceTest {
     }
 
     @Test
+    @Disabled
     public void updateJobExperienceTest() throws Exception {
         response.setMessage(PMAPIResponseMessage.JOB_EXPERIENCE_UPDATE_SUCCESS);
         response.setSuccess(true);
