@@ -1,7 +1,7 @@
 package com.aes.corebackend.controller.personnelmanagement;
 
 import com.aes.corebackend.dto.personnelmanagement.PersonalAddressInfoDTO;
-import com.aes.corebackend.entity.User;
+import com.aes.corebackend.entity.usermanagement.User;
 import com.aes.corebackend.entity.personnelmanagement.PersonalAddressInfo;
 import com.aes.corebackend.service.personnelmanagement.PersonalAddressService;
 import com.aes.corebackend.util.response.APIResponse;
@@ -18,11 +18,11 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import static com.aes.corebackend.util.response.AjaxResponseStatus.ERROR;
-import static com.aes.corebackend.util.response.AjaxResponseStatus.SUCCESS;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static com.aes.corebackend.util.response.PersonnelManagementAPIResponseDescription.*;
+import static com.aes.corebackend.util.response.APIResponseStatus.*;
+import static com.aes.corebackend.util.response.PMAPIResponseMessage.*;
+
 
 public class PersonalAddressInformationControllerTest {
     @Autowired

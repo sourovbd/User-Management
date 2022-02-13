@@ -2,7 +2,7 @@ package com.aes.corebackend.controller.personnelmanagement;
 
 import com.aes.corebackend.util.response.APIResponse;
 import com.aes.corebackend.dto.personnelmanagement.PersonalTrainingDTO;
-import com.aes.corebackend.entity.User;
+import com.aes.corebackend.entity.usermanagement.User;
 import com.aes.corebackend.entity.personnelmanagement.PersonalTrainingInfo;
 import com.aes.corebackend.service.personnelmanagement.PersonalTrainingService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -22,11 +22,11 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import static com.aes.corebackend.util.response.AjaxResponseStatus.ERROR;
-import static com.aes.corebackend.util.response.PersonnelManagementAPIResponseDescription.*;
+
+import static com.aes.corebackend.util.response.PMAPIResponseMessage.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static com.aes.corebackend.util.response.AjaxResponseStatus.SUCCESS;
+import static com.aes.corebackend.util.response.APIResponseStatus.*;
 
 public class PersonalTrainingControllerTest {
 

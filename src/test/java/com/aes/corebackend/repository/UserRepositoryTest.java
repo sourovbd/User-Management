@@ -1,12 +1,27 @@
 package com.aes.corebackend.repository;
 
+
+import com.aes.corebackend.entity.usermanagement.User;
+import com.aes.corebackend.entity.usermanagement.UserCredential;
+import com.aes.corebackend.repository.usermanagement.UserRepository;
+import com.aes.corebackend.util.response.APIResponse;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+ @DataJpaTest
 public class UserRepositoryTest {
-   /* @Autowired
-    private MockMvc mockMvc;
 
-    @Mock
+    @Autowired
     private UserRepository userRepository;
 
     UserCredential userCredential_1 = new UserCredential(1,"101","a1wq",true,"EMPLOYEE");
@@ -15,11 +30,6 @@ public class UserRepositoryTest {
     User user_1 = new User(1L,"abc@gmail.com","agm","101","a1polymar","accounts","EMPLOYEE",userCredential_1, null, null);
     User user_2 = new User(2L,"abd@gmail.com","agm","102","a1polymar","accounts","EMPLOYEE",userCredential_2, null, null);
     User user_3 = new User(3L,"abe@gmail.com","agm","103","a1polymar","accounts","EMPLOYEE",userCredential_3, null, null);
-
-    @BeforeEach
-    public void setup() {
-        MockitoAnnotations.openMocks(this);
-    }
 
     @Test
     public void createUserTest() {
@@ -32,21 +42,13 @@ public class UserRepositoryTest {
         user.setBusinessUnit("a1polymar");
         user.setEmployeeId("0101");
         user.setRoles("EMPLOYEE");
-        user.setUserCredential(userCredential);
-
-        UserDTO userDto = new UserDTO();
-        userDto.setDesignation("agm");
-        userDto.setDepartment("accounts");
-        userDto.setEmailAddress("mdahad118@gmail.com");
-        userDto.setBusinessUnit("a1polymar");
-        userDto.setEmployeeId("0101");
-        userDto.setRoles("EMPLOYEE");
+         user.setUserCredential(userCredential);
 
         APIResponse responseDTO = new APIResponse();
         responseDTO.setMessage("user created successfully");
         responseDTO.setSuccess(true);
         responseDTO.setData(user);
-        Mockito.when(userRepository.save(user)).thenReturn(user);
+        userRepository.save(user);
     }
 
     @Test
@@ -56,7 +58,7 @@ public class UserRepositoryTest {
         responseDTO.setMessage("user fetch ok");
         responseDTO.setSuccess(true);
         responseDTO.setData(users);
-        Mockito.when(userRepository.findAll()).thenReturn(users);
+        userRepository.findAll();
     }
     @Test
     public void getUserDetailsTest() throws Exception {
@@ -64,7 +66,7 @@ public class UserRepositoryTest {
         responseDTO.setMessage("user found");
         responseDTO.setSuccess(true);
         responseDTO.setData(user_1);
-        Mockito.when(userRepository.findById(1L)).thenReturn(Optional.ofNullable(user_1));
+        userRepository.findById(1L);
     }
 
     @Test
@@ -74,6 +76,6 @@ public class UserRepositoryTest {
         responseDTO.setMessage("user updated successfully");
         responseDTO.setSuccess(true);
         responseDTO.setData(user_1_temp);
-        Mockito.when(userRepository.save(user_1_temp)).thenReturn(user_1_temp);
-    }*/
+        userRepository.save(user_1_temp);
+    }
 }

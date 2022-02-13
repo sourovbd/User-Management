@@ -1,14 +1,10 @@
 package com.aes.corebackend.service.personnelmanagement;
 
-import com.aes.corebackend.dto.personnelmanagement.PersonnelManagementResponseDTO;
-import com.aes.corebackend.entity.User;
 import com.aes.corebackend.entity.personnelmanagement.*;
 import com.aes.corebackend.repository.personnelmanagement.*;
-import com.aes.corebackend.service.UserService;
+import com.aes.corebackend.service.usermanagement.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.Objects;
 
 @Service
 public class PersonalInformationService {
