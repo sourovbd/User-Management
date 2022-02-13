@@ -81,7 +81,7 @@ public class PersonalAddressServiceTest {
     }
 
     @Test
-    @DisplayName("update training record - success")
+    @DisplayName("update address record - success")
     public void updatePersonalAddressSuccessTest() {
         expectedResponse.setResponse(ADDRESS_UPDATE_SUCCESS, TRUE, null, SUCCESS);
         personalAddressInfo.setPermanentAddress("CTG");

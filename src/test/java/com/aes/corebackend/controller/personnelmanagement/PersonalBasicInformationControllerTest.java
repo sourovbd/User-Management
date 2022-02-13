@@ -20,6 +20,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import static com.aes.corebackend.util.response.AjaxResponseStatus.ERROR;
 import static com.aes.corebackend.util.response.AjaxResponseStatus.SUCCESS;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -93,6 +94,31 @@ public class PersonalBasicInformationControllerTest {
     }
 
     @Test
+    @DisplayName("create basic information record - failure - DTO validation error")
+    public void createBasicInfoFailureDTOValidationErrorAnd400BadRequestTest() throws Exception {
+        expectedResponse.setResponse(BASIC_INFORMATION_CREATE_FAIL, FALSE, null, ERROR);
+        /** initialize service with expected response*/
+        Mockito.when(basicInformationService.create(basicInfoDTO, user.getId())).thenReturn(expectedResponse);
+        /** update dto with invalid value */
+        basicInfoDTO.setFirstName("jahangir67");
+
+        String jsonRequest = om.writeValueAsString(basicInfoDTO);
+        mockMvc.perform(MockMvcRequestBuilders
+                        .post("/users/1/basic-information")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .content(jsonRequest))
+                /** when dto validation fails we receive bad request 400 as api response*/
+                .andExpect(status().isBadRequest())
+                //TODO need to set when/before building fieldErrors
+//                .andExpect(jsonPath("$.message").value(expectedResponse.getMessage()))
+                .andExpect(jsonPath("$.success").value(expectedResponse.isSuccess()))
+                .andExpect(jsonPath("$.data").value(expectedResponse.getData()))
+                .andExpect(jsonPath("$.fieldsErrors").isNotEmpty())
+                .andExpect(jsonPath("$.status").value(expectedResponse.getStatus().toString()));
+    }
+
+    @Test
     @DisplayName("update basic info record - success")
     public void updateBasicInformationSuccessTest() throws Exception {
         expectedResponse.setResponse(BASIC_INFORMATION_UPDATE_SUCCESS, TRUE, null, SUCCESS);
@@ -114,6 +140,31 @@ public class PersonalBasicInformationControllerTest {
     }
 
     @Test
+    @DisplayName("update basic information record - failure - DTO validation error")
+    public void updateBasicInfoFailureDTOValidationErrorAnd400BadRequestTest() throws Exception {
+        expectedResponse.setResponse(BASIC_INFORMATION_UPDATE_FAIL, FALSE, null, ERROR);
+        /** initialize service with expected response*/
+        Mockito.when(basicInformationService.create(basicInfoDTO, user.getId())).thenReturn(expectedResponse);
+        /** update dto with invalid value */
+        basicInfoDTO.setFirstName("1200"); /** need to fix validation rule, currently accepting only alphabets */
+
+        String jsonRequest = om.writeValueAsString(basicInfoDTO);
+        mockMvc.perform(MockMvcRequestBuilders
+                        .put("/users/1/basic-information")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .content(jsonRequest))
+                /** when dto validation fails we receive bad request 400 as api response*/
+                .andExpect(status().isBadRequest())
+                //TODO need to set when/before building fieldErrors
+//                .andExpect(jsonPath("$.message").value(expectedResponse.getMessage()))
+                .andExpect(jsonPath("$.success").value(expectedResponse.isSuccess()))
+                .andExpect(jsonPath("$.data").value(expectedResponse.getData()))
+                .andExpect(jsonPath("$.fieldsErrors").isNotEmpty())
+                .andExpect(jsonPath("$.status").value(expectedResponse.getStatus().toString()));
+    }
+
+    @Test
     @DisplayName("read basic info record - success")
     public void readBasicInformationSuccessTest() throws Exception {
         expectedResponse.setResponse(BASIC_INFORMATION_RECORD_FOUND, TRUE, basicInfoDTO, SUCCESS);
@@ -128,5 +179,23 @@ public class PersonalBasicInformationControllerTest {
                 .andExpect(jsonPath("$.success").value(expectedResponse.isSuccess()))
                 .andExpect(jsonPath("$.data").value(expectedResponse.getData()))
                 .andExpect(jsonPath("$.status").value(expectedResponse.getStatus().toString()));
+    }
+
+    @Test
+    @DisplayName("read basic information record - failure - path variable validation error")
+    public void readBasicInformationFailurePathVariableUserIdValidationErrorAnd400BadRequestTest() throws Exception {
+        expectedResponse.setResponse(BASIC_INFORMATION_RECORD_NOT_FOUND, FALSE, null, ERROR);
+        /** testing service for read: Controller to Service */
+        /** [Checking if service is available] */
+        Mockito.when(basicInformationService.read(user.getId())).thenReturn(expectedResponse);
+
+        /** client to controller-- > just the request object */
+        /** Call controller using request object */
+        mockMvc.perform(MockMvcRequestBuilders
+                        .get("/users/abc/basic-information")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+        //TODO more to look into this - path variable validation
     }
 }

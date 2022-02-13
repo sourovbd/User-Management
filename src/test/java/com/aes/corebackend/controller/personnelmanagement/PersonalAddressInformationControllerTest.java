@@ -18,7 +18,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-
 import static com.aes.corebackend.util.response.AjaxResponseStatus.ERROR;
 import static com.aes.corebackend.util.response.AjaxResponseStatus.SUCCESS;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -175,9 +174,8 @@ public class PersonalAddressInformationControllerTest {
     }
 
     @Test
-    @DisplayName("read address record - success - path variable validation error")
+    @DisplayName("read address record - failure - path variable validation error")
     public void readAddressFailurePathVariableUserIdValidationErrorAnd400BadRequestTest() throws Exception {
-        PersonalAddressInfo addressEntity = PersonalAddressInfoDTO.getPersonalAddressInfoEntity(addressInfoDTO);
         expectedResponse.setResponse(ADDRESS_RECORD_NOT_FOUND, FALSE, null, ERROR);
 
         /** testing service for read: Controller to Service */

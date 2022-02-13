@@ -22,6 +22,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import static com.aes.corebackend.util.response.AjaxResponseStatus.ERROR;
 import static com.aes.corebackend.util.response.PersonnelManagementAPIResponseDescription.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -74,6 +75,24 @@ public class PersonalTrainingControllerTest {
     }
 
     @Test
+    @DisplayName("create training record - failure - DTO validation error")
+    public void createPersonalTrainingFailureDTOValidationERRORAnd400BadRequestTest() throws Exception {
+        expectedResponse.setResponse(TRAINING_CREATE_FAIL, FALSE, null, ERROR);
+        Mockito.when(personalTrainingService.create(personalTrainingDTO, 1L)).thenReturn(expectedResponse);
+
+        mockMvc.perform(MockMvcRequestBuilders
+                        .post("/users/1/trainings")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .content(om.writeValueAsString(personalTrainingDTO)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value(expectedResponse.getMessage()))
+                .andExpect(jsonPath("$.success").value(expectedResponse.isSuccess()))
+                .andExpect(jsonPath("$.status").value(expectedResponse.getStatus().toString()))
+                .andExpect(jsonPath("$.data").value(expectedResponse.getData()));
+    }
+
+    @Test
     @DisplayName("update training record - success")
     public void updatePersonalTrainingSuccessTest() throws Exception {
         expectedResponse.setResponse(TRAINING_UPDATE_SUCCESS, TRUE, null, SUCCESS);
@@ -87,6 +106,24 @@ public class PersonalTrainingControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message").value(expectedResponse.getMessage()))
                 .andExpect(jsonPath("$.success").value(expectedResponse.isSuccess()))
+                .andExpect(jsonPath("$.data").value(expectedResponse.getData()));
+    }
+
+    @Test
+    @DisplayName("update training record - failure - DTO validation failure")
+    public void updatePersonalTrainingFailureDTOValidationErrorAnd400BadRequestTest() throws Exception {
+        expectedResponse.setResponse(TRAINING_UPDATE_FAIL, FALSE, null, ERROR);
+        Mockito.when(personalTrainingService.update(personalTrainingDTO, 1L, 1L)).thenReturn(expectedResponse);
+
+        mockMvc.perform(MockMvcRequestBuilders
+                        .put("/users/1/trainings/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .content(om.writeValueAsString(personalTrainingDTO)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value(expectedResponse.getMessage()))
+                .andExpect(jsonPath("$.success").value(expectedResponse.isSuccess()))
+                .andExpect(jsonPath("$.status").value(expectedResponse.getStatus().toString()))
                 .andExpect(jsonPath("$.data").value(expectedResponse.getData()));
     }
 
@@ -109,6 +146,22 @@ public class PersonalTrainingControllerTest {
     }
 
     @Test
+    @DisplayName("read multiple training record - failure - path variable validation error")
+    public void readMultiplePersonalTrainingRecordsFailurePathVariableUserIdValidationErrorAnd400BadRequestTest() throws Exception {
+        expectedResponse.setResponse(TRAINING_RECORD_NOT_FOUND, FALSE, null, ERROR);
+        Mockito.when(personalTrainingService.read(1L)).thenReturn(expectedResponse);
+
+        mockMvc.perform(MockMvcRequestBuilders
+                        .get("/users/abc/trainings"))
+                .andExpect(status().isBadRequest());
+                //TODO need to fix message issue
+//                .andExpect(jsonPath("$.message").value(expectedResponse.getMessage()))
+//                .andExpect(jsonPath("$.status").value(expectedResponse.getStatus().toString()))
+//                .andExpect(jsonPath("$.success").value(expectedResponse.isSuccess()))
+//                .andExpect(jsonPath("$.data").value(expectedResponse.getData()));
+    }
+
+    @Test
     @DisplayName("read single training record - success")
     public void readSinglePersonalTrainingRecordSuccessTest() throws Exception {
         expectedResponse.setResponse(TRAINING_RECORD_FOUND, TRUE, personalTrainingInfo1, SUCCESS);
@@ -119,7 +172,24 @@ public class PersonalTrainingControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message").value(expectedResponse.getMessage()))
                 .andExpect(jsonPath("$.success").value(expectedResponse.isSuccess()))
+                .andExpect(jsonPath("$.status").value(expectedResponse.getStatus().toString()))
                 .andExpect(jsonPath("$.data").value(expectedResponse.getData()));
+    }
+
+    @Test
+    @DisplayName("read single training record - failure - path variable validation error")
+    public void readSinglePersonalTrainingRecordFailurePathVariableUserIdValidationErrorAnd400BadRequestTest() throws Exception {
+        expectedResponse.setResponse(TRAINING_RECORD_NOT_FOUND, FALSE, null, ERROR);
+        Mockito.when(personalTrainingService.read(1L, 1L)).thenReturn(expectedResponse);
+
+        mockMvc.perform(MockMvcRequestBuilders
+                        .get("/users/abc/trainings/1"))
+                .andExpect(status().isBadRequest());
+                //TODO need to fix below issues
+//                .andExpect(jsonPath("$.message").value(expectedResponse.getMessage()))
+//                .andExpect(jsonPath("$.success").value(expectedResponse.isSuccess()))
+//                .andExpect(jsonPath("$.status").value(expectedResponse.getStatus().toString()))
+//                .andExpect(jsonPath("$.data").value(expectedResponse.getData()));
     }
 
     private void personalTrainingSetup() throws ParseException {

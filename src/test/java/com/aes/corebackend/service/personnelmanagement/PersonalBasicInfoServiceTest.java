@@ -66,7 +66,7 @@ public class PersonalBasicInfoServiceTest {
     }
 
     @Test
-    @DisplayName("read basic info record - success")
+    @DisplayName("create basic info record - success")
     public void createPersonalBasicInformationSuccessTest() {
         expectedResponse.setResponse(BASIC_INFORMATION_CREATE_SUCCESS, TRUE, null, SUCCESS);
 

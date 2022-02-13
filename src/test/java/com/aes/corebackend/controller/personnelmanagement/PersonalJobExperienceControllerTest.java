@@ -17,11 +17,13 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import static com.aes.corebackend.util.response.AjaxResponseStatus.ERROR;
 import static com.aes.corebackend.util.response.AjaxResponseStatus.SUCCESS;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -42,6 +44,7 @@ public class PersonalJobExperienceControllerTest {
     private PersonalJobExperienceDTO jobExperienceDTO = new PersonalJobExperienceDTO();
     private PersonalJobExperienceDTO jobExperienceDTO2 = new PersonalJobExperienceDTO();
     private APIResponse expectedResponse = APIResponse.getApiResponse();
+    private final DateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy");
 
     @BeforeEach
     public void setup() throws ParseException {
@@ -60,17 +63,15 @@ public class PersonalJobExperienceControllerTest {
         jobExperienceDTO.setId(1L);
         jobExperienceDTO.setEmployerName("REVE");
         jobExperienceDTO.setDesignation("SDE");
-
-        DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-        jobExperienceDTO.setStartDate(formatter.parse("12-03-2017"));
-        jobExperienceDTO.setEndDate(formatter.parse("12-12-2020"));
+        jobExperienceDTO.setStartDate(dateFormatter.parse("12-03-2017"));
+        jobExperienceDTO.setEndDate(dateFormatter.parse("12-12-2020"));
         jobExperienceDTO.setResponsibilities("development");
 
         jobExperienceDTO2.setId(2L);
         jobExperienceDTO2.setEmployerName("Nascenia");
         jobExperienceDTO2.setDesignation("JrDeveloper");
-        jobExperienceDTO2.setStartDate(formatter.parse("01-10-2015"));
-        jobExperienceDTO2.setEndDate(formatter.parse("12-02-2017"));
+        jobExperienceDTO2.setStartDate(dateFormatter.parse("01-10-2015"));
+        jobExperienceDTO2.setEndDate(dateFormatter.parse("12-02-2017"));
         jobExperienceDTO2.setResponsibilities("development");
     }
 
@@ -90,8 +91,35 @@ public class PersonalJobExperienceControllerTest {
 
         mockMvc.perform(mockRequest)
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.message").value(JOB_EXPERIENCE_CREATE_SUCCESS))
-                .andExpect(jsonPath("$.success").value(TRUE));
+                .andExpect(jsonPath("$.message").value(expectedResponse.getMessage()))
+                .andExpect(jsonPath("$.data").value(expectedResponse.getData()))
+                .andExpect(jsonPath("$.status").value(expectedResponse.getStatus().toString()))
+                .andExpect(jsonPath("$.success").value(expectedResponse.isSuccess()));
+    }
+
+    @Test
+    @DisplayName("create job experience record - failure - DTO validation error")
+    public void createJobExperienceFailureDTOValidationERRORAnd400BadRequestTest() throws Exception {
+        expectedResponse.setResponse(JOB_EXPERIENCE_CREATE_FAIL, FALSE, null, ERROR);
+        //TODO catch date parse error and respond
+//        jobExperienceDTO.setStartDate(dateFormatter.parse("12/03/2017"));
+        jobExperienceDTO.setDesignation("SDE1");
+        /** initialize service with expected response*/
+        Mockito.when(jobExperienceService.create(jobExperienceDTO, user.getId())).thenReturn(expectedResponse);
+
+        String jsonRequestPayload = om.writeValueAsString(jobExperienceDTO);
+        MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders
+                .post("/users/1/job-experiences")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(jsonRequestPayload);
+
+        mockMvc.perform(mockRequest)
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value(expectedResponse.getMessage()))
+                .andExpect(jsonPath("$.data").value(expectedResponse.getData()))
+                .andExpect(jsonPath("$.success").value(expectedResponse.isSuccess()))
+                .andExpect(jsonPath("$.status").value(expectedResponse.getStatus().toString()));
     }
 
     @Test
@@ -118,6 +146,30 @@ public class PersonalJobExperienceControllerTest {
     }
 
     @Test
+    @DisplayName("update job experience record - failure - DTO validation error")
+    public void updateJobExperienceFailureDTOValidationERRORAnd400BadRequestTest() throws Exception {
+        expectedResponse.setResponse(JOB_EXPERIENCE_UPDATE_FAIL, FALSE, null, ERROR);
+        jobExperienceDTO.setResponsibilities("design and architecting"); /** fix space issue*/
+        /** initialize service with expected response*/
+        Mockito.when(jobExperienceService.update(jobExperienceDTO, user.getId(), 1L)).thenReturn(expectedResponse);
+
+        String jsonRequestPayload = om.writeValueAsString(jobExperienceDTO);
+        MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders
+                .put("/users/1/job-experiences/1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(jsonRequestPayload);
+
+        mockMvc.perform(mockRequest)
+                .andExpect(status().isBadRequest())
+                //TODO need to fix message issue
+//                .andExpect(jsonPath("$.message").value(expectedResponse.getMessage()))
+                .andExpect(jsonPath("$.data").value(expectedResponse.getData()))
+                .andExpect(jsonPath("$.status").value(expectedResponse.getStatus().toString()))
+                .andExpect(jsonPath("$.success").value(expectedResponse.isSuccess()));
+    }
+
+    @Test
     @DisplayName("read single job experience record - success")
     public void readSingleJobExperienceRecordSuccessTest() throws Exception {
         expectedResponse.setResponse(JOB_EXPERIENCE_RECORD_FOUND, TRUE, jobExperienceDTO, SUCCESS);
@@ -135,6 +187,28 @@ public class PersonalJobExperienceControllerTest {
                 .andExpect(jsonPath("$.success").value(TRUE))
                 .andExpect(jsonPath("$.status").value(expectedResponse.getStatus().toString()))
                 .andExpect(jsonPath("$.data").value(jobExperienceDTO));
+    }
+
+    @Test
+    @DisplayName("read single job experience record - failure - path variable validation error")
+    public void readSingleJobExperienceRecordFailurePathVariableUserIdValidationErrorAnd400BadRequestTest() throws Exception {
+        expectedResponse.setResponse(JOB_EXPERIENCE_RECORD_NOT_FOUND, FALSE, null, ERROR);
+        /** initialize service with expected response*/
+        Mockito.when(jobExperienceService.read(user.getId(), 1L)).thenReturn(expectedResponse);
+
+        MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders
+                .get("/users/abc/job-experiences/1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON);
+
+        mockMvc.perform(mockRequest)
+                .andExpect(status().isBadRequest());
+//                .andExpect(jsonPath("$.message").value(expectedResponse.getMessage()))
+//                .andExpect(jsonPath("$.success").value(expectedResponse.isSuccess()))
+//                .andExpect(jsonPath("$.status").value(expectedResponse.getStatus().toString()))
+//                .andExpect(jsonPath("$.data").value(expectedResponse.getData()))
+//                .andDo(MockMvcResultHandlers.print());
+        //TODO catch and respond with validation error
     }
 
     @Test
@@ -160,5 +234,27 @@ public class PersonalJobExperienceControllerTest {
                 .andExpect(jsonPath("$.success").value(expectedResponse.isSuccess()))
                 .andExpect(jsonPath("$.status").value(expectedResponse.getStatus().toString()))
                 .andExpect(jsonPath("$.data").value(expectedResponse.getData()));
+    }
+
+    @Test
+    @DisplayName("read multiple job experience record - failure - path variable validation error")
+    public void readMultipleJobExperienceRecordsFailurePathVariableUserIdValidationErrorAnd400BadRequestTest() throws Exception {
+        expectedResponse.setResponse(JOB_EXPERIENCE_RECORD_NOT_FOUND, FALSE, null, ERROR);
+
+        /** initialize service with expected response*/
+        Mockito.when(jobExperienceService.read(user.getId())).thenReturn(expectedResponse);
+
+        MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders
+                .get("/users/1/job-experiences")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON);
+
+        mockMvc.perform(mockRequest)
+                .andExpect(status().isBadRequest());
+//                .andExpect(jsonPath("$.message").value(expectedResponse.getMessage()))
+//                .andExpect(jsonPath("$.success").value(expectedResponse.isSuccess()))
+//                .andExpect(jsonPath("$.status").value(expectedResponse.getStatus().toString()))
+//                .andExpect(jsonPath("$.data").value(expectedResponse.getData()));
+        //TODO catch and respond with validation error
     }
 }
