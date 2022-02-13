@@ -1,9 +1,8 @@
 package com.aes.corebackend.controller.personnelmanagement;
 
 import com.aes.corebackend.dto.personnelmanagement.*;
-import com.aes.corebackend.entity.User;
 import com.aes.corebackend.entity.personnelmanagement.*;
-import com.aes.corebackend.service.UserService;
+import com.aes.corebackend.service.usermanagement.UserService;
 import com.aes.corebackend.service.personnelmanagement.PersonalInformationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

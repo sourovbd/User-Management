@@ -1,11 +1,11 @@
 package com.aes.corebackend.controller.personnelmanagement;
 
 import com.aes.corebackend.dto.personnelmanagement.PersonalAddressInfoDTO;
-import com.aes.corebackend.entity.User;
+import com.aes.corebackend.entity.usermanagement.User;
 import com.aes.corebackend.entity.personnelmanagement.PersonalAddressInfo;
 import com.aes.corebackend.service.personnelmanagement.PersonalAddressService;
 import com.aes.corebackend.util.response.APIResponse;
-import com.aes.corebackend.util.response.PersonnelManagementAPIResponseDescription;
+import com.aes.corebackend.util.response.PMAPIResponseMessage;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -58,7 +58,7 @@ public class PersonalAddressInformationTest {
 
     @Test
     public void createAddressTest() throws Exception {
-        response.setMessage(PersonnelManagementAPIResponseDescription.ADDRESS_CREATE_SUCCESS);
+        response.setMessage(PMAPIResponseMessage.ADDRESS_CREATE_SUCCESS);
         response.setSuccess(true);
 
         /** initialize service with expected response*/
@@ -73,14 +73,14 @@ public class PersonalAddressInformationTest {
 
         mockMvc.perform(mockRequest)
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.message").value(PersonnelManagementAPIResponseDescription.ADDRESS_CREATE_SUCCESS))
+                .andExpect(jsonPath("$.message").value(PMAPIResponseMessage.ADDRESS_CREATE_SUCCESS))
                 .andExpect(jsonPath("$.success").value(true));
 
     }
 
     @Test
     public void updateAddressTest() throws Exception {
-        response.setMessage(PersonnelManagementAPIResponseDescription.ADDRESS_UPDATE_SUCCESS);
+        response.setMessage(PMAPIResponseMessage.ADDRESS_UPDATE_SUCCESS);
         response.setSuccess(true);
         addressInfoDTO.setPresentAddress("Gulshan");
 
@@ -96,7 +96,7 @@ public class PersonalAddressInformationTest {
 
         mockMvc.perform(mockRequest)
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.message").value(PersonnelManagementAPIResponseDescription.ADDRESS_UPDATE_SUCCESS))
+                .andExpect(jsonPath("$.message").value(PMAPIResponseMessage.ADDRESS_UPDATE_SUCCESS))
                 .andExpect(jsonPath("$.success").value(true));
 
     }
@@ -104,7 +104,7 @@ public class PersonalAddressInformationTest {
     @Test
     public void readAddressTest() throws Exception {
         PersonalAddressInfo addressEntity = PersonalAddressInfoDTO.getPersonalAddressInfoEntity(addressInfoDTO);
-        response.setMessage(PersonnelManagementAPIResponseDescription.ADDRESS_RECORD_FOUND);
+        response.setMessage(PMAPIResponseMessage.ADDRESS_RECORD_FOUND);
         response.setSuccess(true);
         response.setData(addressEntity);
 
@@ -121,7 +121,7 @@ public class PersonalAddressInformationTest {
         /** Call controller using request object */
         mockMvc.perform(mockRequest)
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.message").value(PersonnelManagementAPIResponseDescription.ADDRESS_RECORD_FOUND))
+                .andExpect(jsonPath("$.message").value(PMAPIResponseMessage.ADDRESS_RECORD_FOUND))
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.data").value(addressEntity));
     }
