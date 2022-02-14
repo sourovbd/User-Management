@@ -30,7 +30,7 @@ public class UserController {
 
     @PostMapping("/users")
     @PreAuthorize("hasAuthority('SYS_ADMIN')")
-    public ResponseEntity<?> create(@Valid @RequestBody UserDTO userDto, BindingResult result) {
+    public ResponseEntity<?> createUser(@Valid @RequestBody UserDTO userDto, BindingResult result) {
         if (result.hasErrors()) {
             return badRequest().body(prepareErrorResponse(result));
         }

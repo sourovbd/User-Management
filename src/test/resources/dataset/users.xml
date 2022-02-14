@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+    <user
+        id="1"
+        email_address="test@gmail.com"
+        designation="CTO"
+        employee_id="012615"
+        business_unit="AES"
+        department="Developmemt"
+        roles="EMPLOYEE"
+    />
+
+    <user
+            id="2"
+            email_address="test2@gmail.com"
+            designation="CTO"
+            employee_id="012616"
+            business_unit="AES"
+            department="Developmemt"
+            roles="EMPLOYEE"
+    />
+</dataset>
