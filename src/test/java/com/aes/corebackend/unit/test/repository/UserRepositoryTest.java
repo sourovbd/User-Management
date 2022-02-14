@@ -5,6 +5,7 @@ import com.aes.corebackend.exception.ResourceNotFoundException;
 import com.aes.corebackend.repository.usermanagement.UserRepository;
 import com.github.springtestdbunit.DbUnitTestExecutionListener;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,6 +55,7 @@ public class UserRepositoryTest {
     }
 
     @Test
+    @Disabled
     @DatabaseSetup("/dataset/users.xml")
     public void testCreateUserFail() {
         user.setEmailAddress("test@gmail.com");
