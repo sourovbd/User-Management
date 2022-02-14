@@ -1,49 +1,88 @@
 package com.aes.corebackend.unit.test.repository;
 
+import com.aes.corebackend.entity.usermanagement.User;
 import com.aes.corebackend.entity.usermanagement.UserCredential;
 import com.aes.corebackend.repository.usermanagement.UserCredentialRepository;
+import com.github.springtestdbunit.DbUnitTestExecutionListener;
+import com.github.springtestdbunit.annotation.DatabaseSetup;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.context.TestExecutionListeners;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
+import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
+import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 
 import java.util.Optional;
-
+@ExtendWith(SpringExtension.class)
+@DataJpaTest
+@TestExecutionListeners({
+        DependencyInjectionTestExecutionListener.class,
+        DirtiesContextTestExecutionListener.class,
+        TransactionalTestExecutionListener.class,
+        DbUnitTestExecutionListener.class
+})
 public class UserCredentialRepositoryTest {
-
-    @Mock
+    @Autowired
     private UserCredentialRepository userCredentialRepository;
 
-    private UserCredential userCredentialTest = new UserCredential(1L, "012580", "123@5Aa", true, "EMPLOYEE");
+    private static final UserCredential userCredential = UserCredential.builder()
+            .id(2)
+            .employeeId("012616")
+            .password("123@5Aa4")
+            .active(true)
+            .roles("EMPLOYEE")
+            .build();
 
-    @BeforeEach
-    public void setup() {
-
-        MockitoAnnotations.openMocks(this);
+    @Test
+    @DatabaseSetup("/dataset/users.xml")
+    @DatabaseSetup("/dataset/user_credentials.xml")
+    public void updateTestSuccess() throws Exception {
+        UserCredential savedCredential = userCredentialRepository.save(userCredential);
+        Assertions.assertThat(savedCredential.getId()).isGreaterThan(0);
+        Assertions.assertThat(savedCredential.getEmployeeId()).isEqualTo("012616");
+        Assertions.assertThat(savedCredential.isActive()).isEqualTo(true);
+        Assertions.assertThat(savedCredential.getRoles()).isEqualTo("EMPLOYEE");
     }
 
     @Test
-    public void saveTest() throws Exception {
-        Mockito.when(userCredentialRepository.save(userCredentialTest)).thenReturn(userCredentialTest);
-        assert userCredentialRepository.save(userCredentialTest).getId() == 1;
+    @DatabaseSetup("/dataset/users.xml")
+    @DatabaseSetup("/dataset/user_credentials.xml")
+    public void findByIdSuccessTest() throws Exception {
+        UserCredential userCredential = userCredentialRepository.findById(1L).orElse(null);
+        Assertions.assertThat(userCredential.getId()).isGreaterThan(0);
+        Assertions.assertThat(userCredential.getEmployeeId()).isEqualTo("012615");
+        Assertions.assertThat(userCredential.getRoles()).isEqualTo("EMPLOYEE");
+        Assertions.assertThat(userCredential.isActive()).isEqualTo(true);
     }
-
     @Test
-    public void findByIdTest() throws Exception {
-        Optional<UserCredential> userCredential = Optional.of(userCredentialTest);
-        Mockito.when(userCredentialRepository.findById(1L)).thenReturn(userCredential);
-
-        Optional<UserCredential> userCredentialRet = userCredentialRepository.findById(1L);
-        assert userCredentialRet.get().getEmployeeId().equals(userCredentialTest.getEmployeeId());
+    @DatabaseSetup("/dataset/users.xml")
+    @DatabaseSetup("/dataset/user_credentials.xml")
+    public void findByIdFailTest() throws Exception {
+        Optional<UserCredential> userCredential = userCredentialRepository.findById(2L);
+        Assertions.assertThat(userCredential).isEmpty();
     }
-
     @Test
-    public void findByEmployeeIdTest() throws Exception {
-        Optional<UserCredential> userCredential = Optional.of(userCredentialTest);
-        Mockito.when(userCredentialRepository.findByEmployeeId("012580")).thenReturn(userCredential);
-
-        Optional<UserCredential> resUserCredential = userCredentialRepository.findByEmployeeId("012580");
-        assert resUserCredential.get().getEmployeeId().equals(userCredentialTest.getEmployeeId());
+    @DatabaseSetup("/dataset/users.xml")
+    @DatabaseSetup("/dataset/user_credentials.xml")
+    public void findByEmployeeIdSuccessTest() throws Exception {
+        UserCredential userCredential = userCredentialRepository.findByEmployeeId("012615").orElse(null);
+        Assertions.assertThat(userCredential.getId()).isGreaterThan(0);
+        Assertions.assertThat(userCredential.getRoles()).isEqualTo("EMPLOYEE");
+        Assertions.assertThat(userCredential.isActive()).isEqualTo(true);
+    }
+    @Test
+    @DatabaseSetup("/dataset/users.xml")
+    @DatabaseSetup("/dataset/user_credentials.xml")
+    public void findByEmployeeFailTest() throws Exception {
+        Optional<UserCredential> userCredential = userCredentialRepository.findByEmployeeId("012616");
+        Assertions.assertThat(userCredential).isEmpty();
     }
 }

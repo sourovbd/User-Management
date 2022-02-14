@@ -8,10 +8,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.aes.corebackend.util.response.APIResponseStatus.ERROR;
 import static com.aes.corebackend.util.response.APIResponseStatus.SUCCESS;
@@ -69,6 +66,10 @@ public class APIResponse implements Serializable {
         }
         errors.add(msg);
         return this;
+    }
+    public void clear() {
+        if(Objects.nonNull(fieldsErrors))
+        fieldsErrors.clear();
     }
 
     public static APIResponse success(Object data) {
