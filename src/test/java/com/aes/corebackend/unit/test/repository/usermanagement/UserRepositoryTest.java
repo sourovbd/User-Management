@@ -1,4 +1,4 @@
-package com.aes.corebackend.unit.test.repository;
+package com.aes.corebackend.unit.test.repository.usermanagement;
 
 import com.aes.corebackend.entity.usermanagement.User;
 import com.aes.corebackend.exception.ResourceNotFoundException;

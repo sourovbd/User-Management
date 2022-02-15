@@ -1,4 +1,4 @@
-package com.aes.corebackend.unit.test.controller;
+package com.aes.corebackend.unit.test.controller.usermanagement;
 
 import com.aes.corebackend.controller.usermanagement.UserCredentialController;
 import com.aes.corebackend.dto.usermanagement.ForgotPasswordDTO;

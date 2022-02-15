@@ -1,4 +1,4 @@
-package com.aes.corebackend.unit.test.service;
+package com.aes.corebackend.unit.test.service.usermanagement;
 import com.aes.corebackend.dto.usermanagement.UserDTO;
 import com.aes.corebackend.entity.usermanagement.User;
 import com.aes.corebackend.entity.usermanagement.UserCredential;

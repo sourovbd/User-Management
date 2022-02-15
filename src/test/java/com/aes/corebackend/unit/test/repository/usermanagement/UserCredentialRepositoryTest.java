@@ -1,4 +1,4 @@
-package com.aes.corebackend.unit.test.repository;
+package com.aes.corebackend.unit.test.repository.usermanagement;
 
 import com.aes.corebackend.entity.usermanagement.User;
 import com.aes.corebackend.entity.usermanagement.UserCredential;
@@ -56,7 +56,7 @@ public class UserCredentialRepositoryTest {
     @DatabaseSetup("/dataset/users.xml")
     @DatabaseSetup("/dataset/user_credentials.xml")
     public void findByIdSuccessTest() throws Exception {
-        UserCredential userCredential = userCredentialRepository.findById(1L).orElse(null);
+        UserCredential userCredential = userCredentialRepository.findById(2L).orElse(null);
         Assertions.assertThat(userCredential.getId()).isGreaterThan(0);
         Assertions.assertThat(userCredential.getEmployeeId()).isEqualTo("012615");
         Assertions.assertThat(userCredential.getRoles()).isEqualTo("EMPLOYEE");
@@ -66,7 +66,7 @@ public class UserCredentialRepositoryTest {
     @DatabaseSetup("/dataset/users.xml")
     @DatabaseSetup("/dataset/user_credentials.xml")
     public void findByIdFailTest() throws Exception {
-        Optional<UserCredential> userCredential = userCredentialRepository.findById(2L);
+        Optional<UserCredential> userCredential = userCredentialRepository.findById(4L);
         Assertions.assertThat(userCredential).isEmpty();
     }
     @Test

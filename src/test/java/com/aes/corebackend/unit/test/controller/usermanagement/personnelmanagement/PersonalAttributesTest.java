@@ -1,4 +1,4 @@
-package com.aes.corebackend.unit.test.controller.personnelmanagement;
+package com.aes.corebackend.unit.test.controller.usermanagement.personnelmanagement;
 
 
 import com.aes.corebackend.controller.personnelmanagement.PersonalAttributesController;
