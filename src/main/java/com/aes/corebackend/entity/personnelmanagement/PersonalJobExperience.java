@@ -1,17 +1,15 @@
 package com.aes.corebackend.entity.personnelmanagement;
 
-
-import com.aes.corebackend.entity.User;
+import com.aes.corebackend.entity.usermanagement.User;
 import com.aes.corebackend.util.Constants;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
-
 import javax.persistence.*;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Data
 @Entity
@@ -29,13 +27,13 @@ public class PersonalJobExperience {
 
     @Column(name = "start_date")
     @DateTimeFormat(pattern = Constants.BD_DATE_FORMAT)
-    @Past(message = "Start date must be in the past")
-    private Date startDate;
+    @Past(message = "The start date must be in the past")
+    private LocalDate startDate;
 
     @Column(name = "end_date")
     @DateTimeFormat(pattern = Constants.BD_DATE_FORMAT)
-    @Past(message = "End date must be in the past")
-    private Date endDate;
+    @Past(message = "The end date must be in the past")
+    private LocalDate endDate;
 
     @Column(name = "designation")
     @Length(min = 0, max = 50, message = "Designation field can be at max 50 characters long")

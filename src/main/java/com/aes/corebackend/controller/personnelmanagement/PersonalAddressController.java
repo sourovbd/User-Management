@@ -21,7 +21,7 @@ public class PersonalAddressController {
     private final PersonalAddressService personalAddressService;
 
     @PostMapping(value = "/users/{userId}/personal-address")
-    @PreAuthorize("hasAuthority('EMPLOYEE')")
+    @PreAuthorize("hasAnyAuthority('EMPLOYEE', 'SYS_ADMIN')")
     public ResponseEntity<?> createPersonalAddress(@Valid @RequestBody PersonalAddressInfoDTO addressInfoDTO, BindingResult result, @PathVariable Long userId) {
         if (result.hasErrors()) {
             return badRequest().body(prepareErrorResponse(result));
@@ -31,7 +31,7 @@ public class PersonalAddressController {
     }
 
     @PutMapping(value = "/users/{userId}/personal-address")
-    @PreAuthorize("hasAuthority('EMPLOYEE')")
+    @PreAuthorize("hasAnyAuthority('EMPLOYEE', 'SYS_ADMIN')")
     public ResponseEntity<?> updatePersonalAddress(@Valid @RequestBody PersonalAddressInfoDTO personalAddressInfoDTO, BindingResult result, @PathVariable Long userId) {
         if (result.hasErrors()) {
             return badRequest().body(prepareErrorResponse(result));
@@ -41,7 +41,7 @@ public class PersonalAddressController {
     }
 
     @GetMapping(value = "/users/{userId}/personal-address")
-    @PreAuthorize("hasAuthority('EMPLOYEE')")
+    @PreAuthorize("hasAnyAuthority('EMPLOYEE', 'SYS_ADMIN')")
     public ResponseEntity<?> getPersonalAddress(@PathVariable Long userId) {
         APIResponse apiResponse = personalAddressService.read(userId);
         return apiResponse.isSuccess() ? ok(apiResponse) : badRequest().body(apiResponse);

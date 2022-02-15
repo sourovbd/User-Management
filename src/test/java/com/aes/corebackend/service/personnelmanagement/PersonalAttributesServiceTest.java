@@ -2,10 +2,10 @@ package com.aes.corebackend.service.personnelmanagement;
 
 import com.aes.corebackend.util.response.APIResponse;
 import com.aes.corebackend.dto.personnelmanagement.PersonalAttributesDTO;
-import com.aes.corebackend.entity.User;
+import com.aes.corebackend.entity.usermanagement.User;
 import com.aes.corebackend.entity.personnelmanagement.PersonalAttributes;
 import com.aes.corebackend.repository.personnelmanagement.PersonalAttributesRepository;
-import com.aes.corebackend.service.UserService;
+import com.aes.corebackend.service.usermanagement.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -16,10 +16,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import static com.aes.corebackend.util.response.AjaxResponseStatus.ERROR;
-import static com.aes.corebackend.util.response.AjaxResponseStatus.SUCCESS;
-import static com.aes.corebackend.util.response.PersonnelManagementAPIResponseDescription.*;
+import static com.aes.corebackend.util.response.PMAPIResponseMessage.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static com.aes.corebackend.util.response.APIResponseStatus.*;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest

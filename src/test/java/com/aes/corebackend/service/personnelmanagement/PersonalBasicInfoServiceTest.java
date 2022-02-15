@@ -2,11 +2,12 @@ package com.aes.corebackend.service.personnelmanagement;
 
 import com.aes.corebackend.util.response.APIResponse;
 import com.aes.corebackend.dto.personnelmanagement.PersonalBasicInfoDTO;
-import com.aes.corebackend.entity.User;
+import com.aes.corebackend.entity.usermanagement.User;
 import com.aes.corebackend.entity.personnelmanagement.PersonalBasicInfo;
 import com.aes.corebackend.enumeration.Gender;
 import com.aes.corebackend.repository.personnelmanagement.PersonalBasicInfoRepository;
-import com.aes.corebackend.service.UserService;
+import com.aes.corebackend.service.usermanagement.UserService;
+import com.aes.corebackend.util.DateUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,10 +20,9 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import static com.aes.corebackend.util.response.AjaxResponseStatus.ERROR;
-import static com.aes.corebackend.util.response.PersonnelManagementAPIResponseDescription.*;
+import static com.aes.corebackend.util.response.PMAPIResponseMessage.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static com.aes.corebackend.util.response.AjaxResponseStatus.SUCCESS;
+import static com.aes.corebackend.util.response.APIResponseStatus.*;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -55,13 +55,13 @@ public class PersonalBasicInfoServiceTest {
         personalBasicInfo.setId(1L);
         personalBasicInfo.setFirstName("jahangir");
         personalBasicInfo.setLastName("alam");
-        personalBasicInfo.setDateOfBirth(formatter.parse("12-09-1989"));
+        personalBasicInfo.setDateOfBirth(DateUtils.convertToLocalDate("12-09-1989"));
         personalBasicInfo.setGender(Gender.MALE);
 
         personalBasicInfoDTO.setId(1L);
         personalBasicInfoDTO.setFirstName("jahangir");
         personalBasicInfoDTO.setLastName("alam");
-        personalBasicInfoDTO.setDateOfBirth(formatter.parse("12-09-1989"));
+        personalBasicInfoDTO.setDateOfBirth("12-09-1989");
         personalBasicInfoDTO.setGender(Gender.MALE);
     }
 

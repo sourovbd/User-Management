@@ -21,7 +21,7 @@ public class PersonalTrainingController {
     private final PersonalTrainingService personalTrainingService;
 
     @PostMapping(value = "/users/{userId}/trainings")
-    @PreAuthorize("hasAuthority('EMPLOYEE')")
+    @PreAuthorize("hasAnyAuthority('EMPLOYEE', 'SYS_ADMIN')")
     public ResponseEntity<?> createPersonalTraining(@Valid @RequestBody PersonalTrainingDTO personalTrainingDTO, BindingResult result, @PathVariable Long userId) {
         if (result.hasErrors()) {
             return badRequest().body(prepareErrorResponse(result));
@@ -31,7 +31,7 @@ public class PersonalTrainingController {
     }
 
     @PutMapping(value = "/users/{userId}/trainings/{trainingId}")
-    @PreAuthorize("hasAuthority('EMPLOYEE')")
+    @PreAuthorize("hasAnyAuthority('EMPLOYEE', 'SYS_ADMIN')")
     public ResponseEntity<?> updatePersonalTraining(@Valid @RequestBody PersonalTrainingDTO personalTrainingDTO, BindingResult result, @PathVariable Long userId, @PathVariable Long trainingId) {
         if (result.hasErrors()) {
             return badRequest().body(prepareErrorResponse(result));
@@ -41,14 +41,14 @@ public class PersonalTrainingController {
     }
 
     @GetMapping(value = "/users/{userId}/trainings")
-    @PreAuthorize("hasAuthority('EMPLOYEE')")
+    @PreAuthorize("hasAnyAuthority('EMPLOYEE', 'SYS_ADMIN')")
     public ResponseEntity<?> getPersonalTrainings(@PathVariable Long userId) {
         APIResponse apiResponse = personalTrainingService.read(userId);
         return apiResponse.isSuccess() ? ok(apiResponse) : badRequest().body(apiResponse);
     }
 
     @GetMapping(value = "/users/{userId}/trainings/{trainingId}")
-    @PreAuthorize("hasAuthority('EMPLOYEE')")
+    @PreAuthorize("hasAnyAuthority('EMPLOYEE', 'SYS_ADMIN')")
     public ResponseEntity<?> getPersonalTraining(@PathVariable Long userId, @PathVariable Long trainingId) {
         APIResponse apiResponse = personalTrainingService.read(userId, trainingId);
         return apiResponse.isSuccess() ? ok(apiResponse) : badRequest().body(apiResponse);

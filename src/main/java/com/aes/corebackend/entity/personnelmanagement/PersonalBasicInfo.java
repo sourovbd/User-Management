@@ -1,6 +1,6 @@
 package com.aes.corebackend.entity.personnelmanagement;
 
-import com.aes.corebackend.entity.User;
+import com.aes.corebackend.entity.usermanagement.User;
 import com.aes.corebackend.enumeration.Gender;
 import com.aes.corebackend.util.Constants;
 import lombok.Data;
@@ -36,7 +36,7 @@ public class PersonalBasicInfo {
     @Column(name = "dateOfBirth")
     @DateTimeFormat(pattern = Constants.BD_DATE_FORMAT)
     @Past(message = "The date of birth must be in the past")
-    private Date dateOfBirth;
+    private LocalDate dateOfBirth;
 
     @Column(name = "gender")
     @Enumerated(EnumType.STRING)

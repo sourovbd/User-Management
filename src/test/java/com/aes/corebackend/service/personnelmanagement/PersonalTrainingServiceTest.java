@@ -1,11 +1,13 @@
 package com.aes.corebackend.service.personnelmanagement;
 
+
 import com.aes.corebackend.util.response.APIResponse;
 import com.aes.corebackend.dto.personnelmanagement.PersonalTrainingDTO;
-import com.aes.corebackend.entity.User;
+import com.aes.corebackend.entity.usermanagement.User;
 import com.aes.corebackend.entity.personnelmanagement.PersonalTrainingInfo;
 import com.aes.corebackend.repository.personnelmanagement.PersonalTrainingRepository;
-import com.aes.corebackend.service.UserService;
+import com.aes.corebackend.service.usermanagement.UserService;
+import com.aes.corebackend.util.DateUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,10 +21,9 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import static com.aes.corebackend.util.response.AjaxResponseStatus.ERROR;
-import static com.aes.corebackend.util.response.PersonnelManagementAPIResponseDescription.*;
+import static com.aes.corebackend.util.response.PMAPIResponseMessage.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static com.aes.corebackend.util.response.AjaxResponseStatus.SUCCESS;
+import static com.aes.corebackend.util.response.APIResponseStatus.*;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -56,23 +57,23 @@ public class PersonalTrainingServiceTest {
         personalTrainingDTO.setProgramName("TestProgram");
         personalTrainingDTO.setTrainingInstitute("TestInstitute");
         personalTrainingDTO.setDescription("TestDescription");
-        personalTrainingDTO.setStartDate(dateFormatter.parse("01-01-2022"));
-        personalTrainingDTO.setEndDate(dateFormatter.parse("31-01-2022"));
+        personalTrainingDTO.setStartDate("01-01-2022");
+        personalTrainingDTO.setEndDate("31-01-2022");
 
         personalTrainingInfo1.setId(1L);
         personalTrainingInfo1.setProgramName("Test program");
         personalTrainingInfo1.setTrainingInstitute("Test Institute");
         personalTrainingInfo1.setDescription("Test Description");
-        personalTrainingInfo1.setStartDate(dateFormatter.parse("01-01-2022"));
-        personalTrainingInfo1.setEndDate(dateFormatter.parse("31-01-2022"));
+        personalTrainingInfo1.setStartDate(DateUtils.convertToLocalDate("01-01-2022"));
+        personalTrainingInfo1.setEndDate(DateUtils.convertToLocalDate("31-01-2022"));
         personalTrainingInfo1.setUser(user);
 
         personalTrainingInfo2.setId(2L);
         personalTrainingInfo2.setProgramName("Test_02 program");
         personalTrainingInfo2.setTrainingInstitute("Test_02 Institute");
         personalTrainingInfo2.setDescription("Test_02 Description");
-        personalTrainingInfo2.setStartDate(dateFormatter.parse("01-02-2022"));
-        personalTrainingInfo2.setEndDate(dateFormatter.parse("28-02-2022"));
+        personalTrainingInfo2.setStartDate(DateUtils.convertToLocalDate("01-02-2022"));
+        personalTrainingInfo2.setEndDate(DateUtils.convertToLocalDate("28-02-2022"));
         personalTrainingInfo2.setUser(user);
     }
 

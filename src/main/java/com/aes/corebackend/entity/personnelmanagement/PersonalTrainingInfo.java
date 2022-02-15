@@ -1,7 +1,7 @@
 package com.aes.corebackend.entity.personnelmanagement;
 
 
-import com.aes.corebackend.entity.User;
+import com.aes.corebackend.entity.usermanagement.User;
 import com.aes.corebackend.util.Constants;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,6 +11,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.*;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
+import java.time.LocalDate;
 import java.util.Date;
 
 //Database definitions are written in the Entity
@@ -40,13 +41,13 @@ public class PersonalTrainingInfo {
 
     @Column(name = "start_date")
     @DateTimeFormat(pattern = Constants.BD_DATE_FORMAT)
-    @Past(message = "Start date must be in the past")
-    private Date startDate;
+    @Past(message = "The start date must be in the past")
+    private LocalDate startDate;
 
     @Column(name = "end_date")
     @DateTimeFormat(pattern = Constants.BD_DATE_FORMAT)
-    @Past(message = "End date must be in the past")
-    private Date endDate;
+    @Past(message = "The end date must be in the past")
+    private LocalDate endDate;
 
     @ManyToOne
     private User user;

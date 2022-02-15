@@ -2,10 +2,13 @@ package com.aes.corebackend.service.personnelmanagement;
 
 import com.aes.corebackend.util.response.APIResponse;
 import com.aes.corebackend.dto.personnelmanagement.PersonalJobExperienceDTO;
-import com.aes.corebackend.entity.User;
+import com.aes.corebackend.entity.usermanagement.User;
 import com.aes.corebackend.entity.personnelmanagement.PersonalJobExperience;
 import com.aes.corebackend.repository.personnelmanagement.PersonalJobExperienceRepository;
-import com.aes.corebackend.service.UserService;
+import com.aes.corebackend.service.usermanagement.UserService;
+import com.aes.corebackend.util.DateUtils;
+import org.hibernate.event.spi.SaveOrUpdateEvent;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,10 +21,10 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import static com.aes.corebackend.util.response.AjaxResponseStatus.ERROR;
-import static com.aes.corebackend.util.response.PersonnelManagementAPIResponseDescription.*;
+
+import static com.aes.corebackend.util.response.PMAPIResponseMessage.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static com.aes.corebackend.util.response.AjaxResponseStatus.SUCCESS;
+import static com.aes.corebackend.util.response.APIResponseStatus.*;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -44,6 +47,7 @@ public class PersonalJobExperienceServiceTest {
     private APIResponse expectedResponse = APIResponse.getApiResponse();
     private final DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
 
+    @BeforeEach
     private void setup() throws ParseException {
         user.setId(1L);
         user.setDesignation("agm");
@@ -55,29 +59,29 @@ public class PersonalJobExperienceServiceTest {
         personalJobExperience1.setId(1L);
         personalJobExperience1.setEmployerName("REVE");
         personalJobExperience1.setDesignation("SDE");
-        personalJobExperience1.setStartDate(formatter.parse("12-03-2017"));
-        personalJobExperience1.setEndDate(formatter.parse("12-12-2020"));
+        personalJobExperience1.setStartDate(DateUtils.convertToLocalDate("12-03-2017"));
+        personalJobExperience1.setEndDate(DateUtils.convertToLocalDate("12-12-2020"));
         personalJobExperience1.setResponsibilities("development");
 
         personalJobExperience2.setId(2L);
         personalJobExperience2.setEmployerName("Nascenia");
         personalJobExperience2.setDesignation("JrDeveloper");
-        personalJobExperience2.setStartDate(formatter.parse("01-10-2015"));
-        personalJobExperience2.setEndDate(formatter.parse("12-02-2017"));
+        personalJobExperience2.setStartDate(DateUtils.convertToLocalDate("01-10-2015"));
+        personalJobExperience2.setEndDate(DateUtils.convertToLocalDate("12-02-2017"));
         personalJobExperience2.setResponsibilities("development");
 
         personalJobExperienceDTO1.setId(1L);
         personalJobExperienceDTO1.setEmployerName("REVE");
         personalJobExperienceDTO1.setDesignation("SDE");
-        personalJobExperienceDTO1.setStartDate(formatter.parse("12-03-2017"));
-        personalJobExperienceDTO1.setEndDate(formatter.parse("12-12-2020"));
+        personalJobExperienceDTO1.setStartDate("12-03-2017");
+        personalJobExperienceDTO1.setEndDate("12-12-2020");
         personalJobExperienceDTO1.setResponsibilities("development");
 
         personalJobExperienceDTO2.setId(2L);
         personalJobExperienceDTO2.setEmployerName("Nascenia");
         personalJobExperienceDTO2.setDesignation("JrDeveloper");
-        personalJobExperienceDTO2.setStartDate(formatter.parse("01-10-2015"));
-        personalJobExperienceDTO2.setEndDate(formatter.parse("12-02-2017"));
+        personalJobExperienceDTO2.setStartDate("01-10-2015");
+        personalJobExperienceDTO2.setEndDate("12-02-2017");
         personalJobExperienceDTO2.setResponsibilities("development");
     }
 

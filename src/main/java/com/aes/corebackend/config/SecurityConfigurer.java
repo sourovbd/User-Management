@@ -2,7 +2,7 @@ package com.aes.corebackend.config;
 
 
 import com.aes.corebackend.filter.JwtRequestFilter;
-import com.aes.corebackend.service.CustomUserDetailsService;
+import com.aes.corebackend.service.springsecurity.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
