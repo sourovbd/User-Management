@@ -1,4 +1,4 @@
-package com.aes.corebackend.unit.test.controller.usermanagement.personnelmanagement;
+package com.aes.corebackend.unit.test.controller.personnelmanagement;
 
 import com.aes.corebackend.controller.personnelmanagement.PersonalEducationController;
 import com.aes.corebackend.util.response.APIResponse;
