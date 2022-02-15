@@ -12,7 +12,9 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 @Data
@@ -27,9 +29,8 @@ public class PersonalBasicInfoDTO {
     @Pattern(regexp = "^[a-zA-z]+$", message = "Last name field cannot have numeric or special characters")
     private String lastName;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, timezone = Constants.BD_TIMEZONE, pattern = Constants.BD_DATE_FORMAT)
-    @Past(message = "The date of birth must be in the past")
-    private Date dateOfBirth;
+    @Pattern(regexp = "^\\d{2}-\\d{2}-\\d{4}", message="Invalid date of birth")
+    private String dateOfBirth;
 
     @Enumerated(EnumType.STRING)
     private Gender gender;
@@ -42,7 +43,7 @@ public class PersonalBasicInfoDTO {
         basicInfoEntity.setFirstName(basicInfoDTO.getFirstName());
         basicInfoEntity.setLastName(basicInfoDTO.getLastName());
         basicInfoEntity.setGender(basicInfoDTO.getGender());
-        basicInfoEntity.setDateOfBirth(basicInfoDTO.getDateOfBirth());
+        basicInfoEntity.setDateOfBirth(convertToLocalDate(basicInfoDTO.getDateOfBirth()));
         return basicInfoEntity;
     }
 
@@ -51,7 +52,7 @@ public class PersonalBasicInfoDTO {
         personalBasicInfoDTO.setId(personalBasicInfo.getId());
         personalBasicInfoDTO.setFirstName(personalBasicInfo.getFirstName());
         personalBasicInfoDTO.setLastName(personalBasicInfo.getLastName());
-        personalBasicInfoDTO.setDateOfBirth(personalBasicInfo.getDateOfBirth());
+        personalBasicInfoDTO.setDateOfBirth(personalBasicInfo.getDateOfBirth().toString());
         personalBasicInfoDTO.setGender(personalBasicInfo.getGender());
         return personalBasicInfoDTO;
     }
@@ -59,8 +60,12 @@ public class PersonalBasicInfoDTO {
     public static PersonalBasicInfo updateEntityFromDTO(PersonalBasicInfo basicInfoEntity, PersonalBasicInfoDTO basicInfoDTO) {
         basicInfoEntity.setFirstName(basicInfoDTO.getFirstName());
         basicInfoEntity.setLastName(basicInfoDTO.getLastName());
-        basicInfoEntity.setDateOfBirth(basicInfoDTO.getDateOfBirth());
+        basicInfoEntity.setDateOfBirth(convertToLocalDate(basicInfoDTO.getDateOfBirth()));
         basicInfoEntity.setGender(basicInfoDTO.getGender());
         return basicInfoEntity;
+    }
+
+    public static LocalDate convertToLocalDate(String date) {
+        return LocalDate.parse(date, DateTimeFormatter.ofPattern(Constants.BD_DATE_FORMAT));
     }
 }

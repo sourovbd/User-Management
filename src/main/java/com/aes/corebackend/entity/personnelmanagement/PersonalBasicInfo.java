@@ -11,6 +11,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.*;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -35,7 +36,7 @@ public class PersonalBasicInfo {
     @Column(name = "dateOfBirth")
     @DateTimeFormat(pattern = Constants.BD_DATE_FORMAT)
     @Past(message = "The date of birth must be in the past")
-    private Date dateOfBirth;
+    private LocalDate dateOfBirth;
 
     @Column(name = "gender")
     @Enumerated(EnumType.STRING)

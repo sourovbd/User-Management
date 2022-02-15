@@ -20,13 +20,12 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import java.text.ParseException;
+
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static com.aes.corebackend.util.response.APIResponseStatus.*;
 import static com.aes.corebackend.util.response.PMAPIResponseMessage.*;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 
 public class PersonalBasicInformationControllerTest {
     @Autowired
@@ -58,17 +57,9 @@ public class PersonalBasicInformationControllerTest {
         user.setAddress(address);
         user.setEmployeeId("011273");
 
-        basicInfo.setId(1L);
-        basicInfo.setFirstName("jahangir");
-        basicInfo.setLastName("alam");
-        DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-        basicInfo.setDateOfBirth(formatter.parse("12-09-1989"));
-        basicInfo.setGender(Gender.MALE);
-        basicInfo.setUser(user);
-
         basicInfoDTO.setFirstName("jahangir");
         basicInfoDTO.setLastName("alam");
-        basicInfoDTO.setDateOfBirth(formatter.parse("12-09-1989"));
+        basicInfoDTO.setDateOfBirth("12-09-1989");
         basicInfoDTO.setGender(Gender.MALE);
     }
 

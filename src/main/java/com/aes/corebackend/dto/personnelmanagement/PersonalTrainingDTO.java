@@ -1,15 +1,11 @@
 package com.aes.corebackend.dto.personnelmanagement;
 
 import com.aes.corebackend.entity.personnelmanagement.PersonalTrainingInfo;
-import com.aes.corebackend.util.Constants;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
-import org.springframework.format.annotation.DateTimeFormat;
-
-import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
-import java.util.Date;
+
+import static com.aes.corebackend.util.DateUtils.convertToLocalDate;
 
 @Data
 public class PersonalTrainingDTO {
@@ -27,13 +23,11 @@ public class PersonalTrainingDTO {
     @Pattern(regexp = "^[a-zA-z0-9]+$", message = "Description field cannot have special characters")
     private String description;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, timezone = Constants.BD_TIMEZONE, pattern = Constants.BD_DATE_FORMAT)
-    @Past(message = "Start date must be in the past")
-    private Date startDate;
+    @Pattern(regexp = "^\\d{2}-\\d{2}-\\d{4}", message="Invalid start date")
+    private String startDate;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, timezone = Constants.BD_TIMEZONE, pattern = Constants.BD_DATE_FORMAT)
-    @Past(message = "End date must be in the past")
-    private Date endDate;
+    @Pattern(regexp = "^\\d{2}-\\d{2}-\\d{4}", message="Invalid end date")
+    private String endDate;
 
     public static PersonalTrainingInfo getPersonalTrainingEntity(PersonalTrainingDTO trainingDTO) {
         PersonalTrainingInfo personalTrainingInfo = new PersonalTrainingInfo();
@@ -41,8 +35,8 @@ public class PersonalTrainingDTO {
         personalTrainingInfo.setProgramName(trainingDTO.getProgramName());
         personalTrainingInfo.setTrainingInstitute(trainingDTO.getTrainingInstitute());
         personalTrainingInfo.setDescription(trainingDTO.getDescription());
-        personalTrainingInfo.setStartDate(trainingDTO.getStartDate());
-        personalTrainingInfo.setEndDate(trainingDTO.getEndDate());
+        personalTrainingInfo.setStartDate(convertToLocalDate(trainingDTO.getStartDate()));
+        personalTrainingInfo.setEndDate(convertToLocalDate(trainingDTO.getEndDate()));
         return personalTrainingInfo;
     }
 
@@ -52,8 +46,8 @@ public class PersonalTrainingDTO {
         personalTrainingDTO.setProgramName(trainingInfoEntity.getProgramName());
         personalTrainingDTO.setTrainingInstitute(trainingInfoEntity.getTrainingInstitute());
         personalTrainingDTO.setDescription(trainingInfoEntity.getDescription());
-        personalTrainingDTO.setStartDate(trainingInfoEntity.getStartDate());
-        personalTrainingDTO.setEndDate(trainingInfoEntity.getEndDate());
+        personalTrainingDTO.setStartDate(trainingInfoEntity.getStartDate().toString());
+        personalTrainingDTO.setEndDate(trainingInfoEntity.getEndDate().toString());
         return personalTrainingDTO;
     }
 }
