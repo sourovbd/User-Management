@@ -1,4 +1,4 @@
-package com.aes.corebackend.integration.test.usermanagement;
+package com.aes.corebackend.integration.test;
 
 import com.aes.corebackend.entity.usermanagement.User;
 import com.aes.corebackend.repository.usermanagement.UserCredentialRepository;

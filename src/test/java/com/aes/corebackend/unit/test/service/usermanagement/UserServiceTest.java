@@ -30,6 +30,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@SpringBootTest
 public class UserServiceTest {
     @InjectMocks
     private UserService userService;
@@ -52,6 +53,7 @@ public class UserServiceTest {
     public void setup() {
         MockitoAnnotations.openMocks(this);
     }
+
     @Test
     public void createUserTest() throws Exception {
         UserCredential userCredential = new UserCredential(1,"101","a1wq",true,"EMPLOYEE");

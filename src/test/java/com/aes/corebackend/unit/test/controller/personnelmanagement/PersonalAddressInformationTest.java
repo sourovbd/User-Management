@@ -1,4 +1,4 @@
-package com.aes.corebackend.unit.test.controller.usermanagement.personnelmanagement;
+package com.aes.corebackend.unit.test.controller.personnelmanagement;
 
 import com.aes.corebackend.controller.personnelmanagement.PersonalAddressController;
 import com.aes.corebackend.dto.personnelmanagement.PersonalAddressInfoDTO;
