@@ -32,15 +32,9 @@ public class AuthenticateController {
 
     private final JwtUtil jwtTokenUtil;
 
-    @GetMapping("/hello")
-    @PreAuthorize("hasAuthority('EMPLOYEE')")
-    public ResponseEntity<?> hello() {
-
-        return ResponseEntity.ok("Hello AES.");
-    }
-
     @PostMapping("/authenticate")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
+        /** Step 1: Authenticating username, password */
         try{
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(), authenticationRequest.getPassword()));
         } catch(BadCredentialsException e) {
@@ -48,6 +42,8 @@ public class AuthenticateController {
         }
         logger.info("username: "+authenticationRequest.getUsername());
         logger.info("password: "+authenticationRequest.getPassword());
+
+        /** Step 2: If authenticated then generating JWT to return as response. */
         final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
         final String jwt = jwtTokenUtil.generateToken(userDetails);
         return ResponseEntity.ok(new AuthenticationResponse(jwt));
