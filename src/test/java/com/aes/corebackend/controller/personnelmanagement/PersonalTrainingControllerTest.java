@@ -165,7 +165,7 @@ public class PersonalTrainingControllerTest {
     @Test
     @DisplayName("read single training record - success")
     public void readSinglePersonalTrainingRecordSuccessTest() throws Exception {
-        expectedResponse.setResponse(TRAINING_RECORD_FOUND, TRUE, personalTrainingInfo1, SUCCESS);
+        expectedResponse.setResponse(TRAINING_RECORD_FOUND, TRUE, personalTrainingDTO, SUCCESS);
         Mockito.when(personalTrainingService.read(1L, 1L)).thenReturn(expectedResponse);
 
         mockMvc.perform(MockMvcRequestBuilders

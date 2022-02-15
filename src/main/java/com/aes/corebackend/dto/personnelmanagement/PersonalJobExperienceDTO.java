@@ -5,7 +5,7 @@ import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 import javax.validation.constraints.Pattern;
 import java.io.Serializable;
-import static com.aes.corebackend.util.DateUtils.convertToLocalDate;
+import com.aes.corebackend.util.DateUtils;
 
 @Data
 public class PersonalJobExperienceDTO implements Serializable {
@@ -33,8 +33,8 @@ public class PersonalJobExperienceDTO implements Serializable {
         PersonalJobExperience personalJobExperience = new PersonalJobExperience();
         personalJobExperience.setId(experienceDTO.getId());
         personalJobExperience.setEmployerName(experienceDTO.getEmployerName());
-        personalJobExperience.setStartDate(convertToLocalDate(experienceDTO.getStartDate()));
-        personalJobExperience.setEndDate(convertToLocalDate(experienceDTO.getEndDate()));
+        personalJobExperience.setStartDate(DateUtils.convertToLocalDate(experienceDTO.getStartDate()));
+        personalJobExperience.setEndDate(DateUtils.convertToLocalDate(experienceDTO.getEndDate()));
         personalJobExperience.setDesignation(experienceDTO.getDesignation());
         personalJobExperience.setResponsibilities(experienceDTO.getResponsibilities());
         return personalJobExperience;
@@ -44,8 +44,8 @@ public class PersonalJobExperienceDTO implements Serializable {
         PersonalJobExperienceDTO jobExperienceDTO = new PersonalJobExperienceDTO();
         jobExperienceDTO.setId(jobExperience.getId());
         jobExperienceDTO.setEmployerName(jobExperience.getEmployerName());
-        jobExperienceDTO.setStartDate(jobExperience.getStartDate().toString());
-        jobExperienceDTO.setEndDate(jobExperience.getEndDate().toString());
+        jobExperienceDTO.setStartDate(DateUtils.convertLocalDateToString(jobExperience.getStartDate()));
+        jobExperienceDTO.setEndDate(DateUtils.convertLocalDateToString(jobExperience.getEndDate()));
         jobExperienceDTO.setDesignation(jobExperience.getDesignation());
         jobExperienceDTO.setResponsibilities(jobExperience.getResponsibilities());
         return jobExperienceDTO;

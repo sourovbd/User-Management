@@ -7,6 +7,8 @@ import com.aes.corebackend.entity.personnelmanagement.PersonalJobExperience;
 import com.aes.corebackend.repository.personnelmanagement.PersonalJobExperienceRepository;
 import com.aes.corebackend.service.usermanagement.UserService;
 import com.aes.corebackend.util.DateUtils;
+import org.hibernate.event.spi.SaveOrUpdateEvent;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -45,6 +47,7 @@ public class PersonalJobExperienceServiceTest {
     private APIResponse expectedResponse = APIResponse.getApiResponse();
     private final DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
 
+    @BeforeEach
     private void setup() throws ParseException {
         user.setId(1L);
         user.setDesignation("agm");

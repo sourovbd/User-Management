@@ -3,6 +3,7 @@ package com.aes.corebackend.dto.personnelmanagement;
 import com.aes.corebackend.entity.personnelmanagement.PersonalBasicInfo;
 import com.aes.corebackend.enumeration.Gender;
 import com.aes.corebackend.util.Constants;
+import com.aes.corebackend.util.DateUtils;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
@@ -43,7 +44,7 @@ public class PersonalBasicInfoDTO {
         basicInfoEntity.setFirstName(basicInfoDTO.getFirstName());
         basicInfoEntity.setLastName(basicInfoDTO.getLastName());
         basicInfoEntity.setGender(basicInfoDTO.getGender());
-        basicInfoEntity.setDateOfBirth(convertToLocalDate(basicInfoDTO.getDateOfBirth()));
+        basicInfoEntity.setDateOfBirth(DateUtils.convertToLocalDate(basicInfoDTO.getDateOfBirth()));
         return basicInfoEntity;
     }
 
@@ -52,7 +53,7 @@ public class PersonalBasicInfoDTO {
         personalBasicInfoDTO.setId(personalBasicInfo.getId());
         personalBasicInfoDTO.setFirstName(personalBasicInfo.getFirstName());
         personalBasicInfoDTO.setLastName(personalBasicInfo.getLastName());
-        personalBasicInfoDTO.setDateOfBirth(personalBasicInfo.getDateOfBirth().toString());
+        personalBasicInfoDTO.setDateOfBirth(DateUtils.convertLocalDateToString(personalBasicInfo.getDateOfBirth()));
         personalBasicInfoDTO.setGender(personalBasicInfo.getGender());
         return personalBasicInfoDTO;
     }
@@ -60,12 +61,8 @@ public class PersonalBasicInfoDTO {
     public static PersonalBasicInfo updateEntityFromDTO(PersonalBasicInfo basicInfoEntity, PersonalBasicInfoDTO basicInfoDTO) {
         basicInfoEntity.setFirstName(basicInfoDTO.getFirstName());
         basicInfoEntity.setLastName(basicInfoDTO.getLastName());
-        basicInfoEntity.setDateOfBirth(convertToLocalDate(basicInfoDTO.getDateOfBirth()));
+        basicInfoEntity.setDateOfBirth(DateUtils.convertToLocalDate(basicInfoDTO.getDateOfBirth()));
         basicInfoEntity.setGender(basicInfoDTO.getGender());
         return basicInfoEntity;
-    }
-
-    public static LocalDate convertToLocalDate(String date) {
-        return LocalDate.parse(date, DateTimeFormatter.ofPattern(Constants.BD_DATE_FORMAT));
     }
 }

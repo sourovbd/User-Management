@@ -5,7 +5,7 @@ import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 import javax.validation.constraints.Pattern;
 
-import static com.aes.corebackend.util.DateUtils.convertToLocalDate;
+import com.aes.corebackend.util.DateUtils;
 
 @Data
 public class PersonalTrainingDTO {
@@ -35,8 +35,8 @@ public class PersonalTrainingDTO {
         personalTrainingInfo.setProgramName(trainingDTO.getProgramName());
         personalTrainingInfo.setTrainingInstitute(trainingDTO.getTrainingInstitute());
         personalTrainingInfo.setDescription(trainingDTO.getDescription());
-        personalTrainingInfo.setStartDate(convertToLocalDate(trainingDTO.getStartDate()));
-        personalTrainingInfo.setEndDate(convertToLocalDate(trainingDTO.getEndDate()));
+        personalTrainingInfo.setStartDate(DateUtils.convertToLocalDate(trainingDTO.getStartDate()));
+        personalTrainingInfo.setEndDate(DateUtils.convertToLocalDate(trainingDTO.getEndDate()));
         return personalTrainingInfo;
     }
 
@@ -46,8 +46,8 @@ public class PersonalTrainingDTO {
         personalTrainingDTO.setProgramName(trainingInfoEntity.getProgramName());
         personalTrainingDTO.setTrainingInstitute(trainingInfoEntity.getTrainingInstitute());
         personalTrainingDTO.setDescription(trainingInfoEntity.getDescription());
-        personalTrainingDTO.setStartDate(trainingInfoEntity.getStartDate().toString());
-        personalTrainingDTO.setEndDate(trainingInfoEntity.getEndDate().toString());
+        personalTrainingDTO.setStartDate(DateUtils.convertLocalDateToString(trainingInfoEntity.getStartDate()));
+        personalTrainingDTO.setEndDate(DateUtils.convertLocalDateToString(trainingInfoEntity.getEndDate()));
         return personalTrainingDTO;
     }
 }
