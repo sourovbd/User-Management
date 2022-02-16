@@ -23,7 +23,7 @@ import static org.springframework.http.ResponseEntity.*;
 @Slf4j
 @Controller
 @RequiredArgsConstructor
-public class UserCredentialController {
+public class  UserCredentialController {
 
     private final UserCredentialService userCredentialService;
 
