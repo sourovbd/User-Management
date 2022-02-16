@@ -87,7 +87,7 @@ public class UserRepositoryTest {
         User user = userRepository.findById(1l).orElseThrow(ResourceNotFoundException::new);
 
         Assertions.assertThat(user.getId()).isEqualTo(1);
-        Assertions.assertThat(user.getEmployeeId()).isEqualTo("012615");
+        Assertions.assertThat(user.getEmployeeId()).isEqualTo("012517");
         Assertions.assertThat(user.getEmailAddress()).isEqualTo("test@gmail.com");
         Assertions.assertThat(user.getId()).isNotEqualTo(3);
         Assertions.assertThat(user.getEmployeeId()).isNotEqualTo("012617");
@@ -112,7 +112,7 @@ public class UserRepositoryTest {
 
         Assertions.assertThat(updatedUserFromDB.getId()).isEqualTo(1);
         Assertions.assertThat(updatedUserFromDB.getEmailAddress()).isEqualTo("tester@gmail.com");
-        Assertions.assertThat(updatedUserFromDB.getEmployeeId()).isEqualTo("012615");
+        Assertions.assertThat(updatedUserFromDB.getEmployeeId()).isEqualTo("012517");
         Assertions.assertThat(updatedUserFromDB.getEmailAddress()).isNotEqualTo("test@gmail.com");
 
 
