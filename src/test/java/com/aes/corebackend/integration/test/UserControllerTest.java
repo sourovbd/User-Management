@@ -2,6 +2,7 @@ package com.aes.corebackend.integration.test;
 
 import com.aes.corebackend.AescorebackendApplicationTests;
 import com.aes.corebackend.entity.usermanagement.User;
+import com.aes.corebackend.entity.usermanagement.UserCredential;
 import com.aes.corebackend.repository.usermanagement.UserCredentialRepository;
 import com.aes.corebackend.repository.usermanagement.UserRepository;
 import com.aes.corebackend.service.springsecurity.CustomUserDetailsService;
@@ -81,6 +82,8 @@ public class UserControllerTest {
     public void getAllUsers_success() throws Exception {
         List<User> users = userRepository.findAll();
         System.out.println("size: "+users.size());
+        List<UserCredential> userCredentialList = userCredentialRepository.findAll();
+        System.out.println("size: "+userCredentialList.size());
 
         mockMvc.perform(get("/users")
                         .header(HttpHeaders.AUTHORIZATION, "Bearer " + TOKEN)
