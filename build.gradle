@@ -56,11 +56,10 @@ dependencies {
 	compileOnly group: 'com.h2database', name: 'h2', version: '1.3.148'
 	testImplementation group: 'com.h2database', name: 'h2', version: '1.4.192'
 
-	/** DBUnit dependencies */
+	/** Testing dependencies */
 	testImplementation 'org.dbunit:dbunit:2.5.1'
 	/** For DbUnitTestExecutionListener.class */
 	testImplementation 'com.github.springtestdbunit:spring-test-dbunit:1.3.0'
-	// https://mvnrepository.com/artifact/org.assertj/assertj-core
 	testImplementation 'org.assertj:assertj-core:3.21.0'
 
 }
