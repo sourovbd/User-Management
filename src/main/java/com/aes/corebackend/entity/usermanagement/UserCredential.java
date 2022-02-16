@@ -20,7 +20,7 @@ public class UserCredential {
     @Column(name = "id", nullable = false)
     private long id;
 
-    @Column(name = "employeeId", nullable = false, unique = true)
+    @Column(name = "employee_id", nullable = false, unique = true)
     private String employeeId;
 
     @Column(name = "password")

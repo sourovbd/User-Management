@@ -1,4 +1,4 @@
-package com.aes.corebackend.unittest.controller;
+package com.aes.corebackend.unittest.controller.usermanagement;
 
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;

@@ -1,4 +1,4 @@
-package com.aes.corebackend.unittest.controller;
+package com.aes.corebackend.unittest.controller.usermanagement;
 
 import com.aes.corebackend.controller.usermanagement.UserController;
 import com.aes.corebackend.dto.usermanagement.UserDTO;
@@ -24,6 +24,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.List;
 
+import static com.aes.corebackend.util.response.UMAPIResponseMessage.USER_CREATION_FAILED;
 import static org.assertj.core.internal.bytebuddy.matcher.ElementMatchers.is;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.Mockito.mock;
@@ -83,6 +84,31 @@ public class UserControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message").value("user created successfully"));
 
+    }
+    @Test
+    public void emailValidationFailTest() throws Exception {
+        UserDTO userDto = new UserDTO();
+        userDto.setDesignation("agm");
+        userDto.setDepartment("accounts");
+        userDto.setEmailAddress("mdahad118@gmail.gem");
+        userDto.setBusinessUnit("a1polymar");
+        userDto.setEmployeeId("101");
+        userDto.setRoles("EMPLOYEE");
+        APIResponse responseDTO = APIResponse.getApiResponse();
+        responseDTO.setMessage(USER_CREATION_FAILED);
+        responseDTO.setSuccess(false);
+        responseDTO.setData(null);
+        Mockito.when(userService.create(userDto.dtoToEntity(userDto),userDto)).thenReturn(responseDTO);
+
+        String jsonRequest = om.writeValueAsString(userDto);
+        MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders
+                .post("/users")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(jsonRequest);
+        mockMvc.perform(mockRequest)
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.fieldsErrors").isNotEmpty());
     }
 
     @Test

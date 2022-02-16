@@ -1,4 +1,4 @@
-package com.aes.corebackend.unittest.service;
+package com.aes.corebackend.unittest.service.usermanagement;
 
 import com.aes.corebackend.dto.usermanagement.UserCredentialDTO;
 import com.aes.corebackend.entity.usermanagement.User;
@@ -9,11 +9,15 @@ import com.aes.corebackend.repository.usermanagement.UserRepository;
 import com.aes.corebackend.service.usermanagement.EmailSender;
 import com.aes.corebackend.service.usermanagement.UserCredentialService;
 import com.aes.corebackend.util.response.APIResponse;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;

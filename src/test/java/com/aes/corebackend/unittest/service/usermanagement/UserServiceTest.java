@@ -1,4 +1,4 @@
-package com.aes.corebackend.unittest.service;
+package com.aes.corebackend.unittest.service.usermanagement;
 import com.aes.corebackend.dto.usermanagement.UserDTO;
 import com.aes.corebackend.entity.usermanagement.User;
 import com.aes.corebackend.entity.usermanagement.UserCredential;
@@ -30,14 +30,16 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@ExtendWith(SpringExtension.class)
+@SpringBootTest
 public class UserServiceTest {
-    @InjectMocks
+    @Autowired
     private UserService userService;
 
-    @Mock
+    @MockBean
     private UserRepository userRepository;
 
-    @Mock
+    @MockBean
     private EmailSender emailSender;
 
     ObjectMapper om = new ObjectMapper();
@@ -47,11 +49,7 @@ public class UserServiceTest {
     User user_1 = createUser(1L,"abc@gmail.com","agm","101","a1polymar","accounts","EMPLOYEE",userCredential_1);
     User user_2 = createUser(2L,"abd@gmail.com","agm","102","a1polymar","accounts","EMPLOYEE",userCredential_2);
     User user_3 = createUser(3L,"abe@gmail.com","agm","103","a1polymar","accounts","EMPLOYEE",userCredential_3);
-
-    @BeforeEach
-    public void setup() {
-        MockitoAnnotations.openMocks(this);
-    }
+    
     @Test
     public void createUserTest() throws Exception {
         UserCredential userCredential = new UserCredential(1,"101","a1wq",true,"EMPLOYEE");

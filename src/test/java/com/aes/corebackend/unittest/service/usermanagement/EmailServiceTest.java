@@ -1,4 +1,4 @@
-package com.aes.corebackend.unittest.service;
+package com.aes.corebackend.unittest.service.usermanagement;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
