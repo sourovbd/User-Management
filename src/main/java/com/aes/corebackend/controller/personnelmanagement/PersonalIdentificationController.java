@@ -23,7 +23,7 @@ public class PersonalIdentificationController {
     private final PersonalIdentificationService service;
 
     @PostMapping(value = "/users/{userId}/identification-information")
-    @PreAuthorize("hasAuthority('EMPLOYEE')")
+    @PreAuthorize("hasAnyAuthority('EMPLOYEE', 'SYS_ADMIN')")
     public ResponseEntity<?> createAttributesInfo(@Valid @RequestBody PersonalIdentificationInfoDTO idDTO, BindingResult result, @PathVariable Long userId) {
         if (result.hasErrors()) {
             return badRequest().body(prepareErrorResponse(result));
@@ -34,7 +34,7 @@ public class PersonalIdentificationController {
     }
 
     @PutMapping(value = "/users/{userId}/identification-information")
-    @PreAuthorize("hasAuthority('EMPLOYEE')")
+    @PreAuthorize("hasAnyAuthority('EMPLOYEE', 'SYS_ADMIN')")
     public ResponseEntity<?> updateAttributesInfo(@Valid @RequestBody PersonalIdentificationInfoDTO idDTO, BindingResult result, @PathVariable Long userId) {
         if (result.hasErrors()) {
             return badRequest().body(prepareErrorResponse(result));
@@ -46,7 +46,7 @@ public class PersonalIdentificationController {
 
 
     @GetMapping(value = "/users/{userId}/identification-information")
-    @PreAuthorize("hasAuthority('EMPLOYEE')")
+    @PreAuthorize("hasAnyAuthority('EMPLOYEE', 'SYS_ADMIN')")
     public ResponseEntity<?> getAttributesInfo(@PathVariable Long userId) {
 
         APIResponse apiResponse = service.read(userId);

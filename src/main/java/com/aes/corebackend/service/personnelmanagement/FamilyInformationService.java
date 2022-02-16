@@ -34,9 +34,7 @@ public class FamilyInformationService {
         if (Objects.nonNull(user)) {
             /** convert DTO to Entity */
             if (this.create(familyInfoDTO, user)) {
-                apiResponse.setMessage(FAMILY_CREATE_SUCCESS);
-                apiResponse.setSuccess(TRUE);
-                apiResponse.setStatus(SUCCESS);
+                apiResponse.setResponse(FAMILY_CREATE_SUCCESS, TRUE, null, SUCCESS);
             } else {
                 apiResponse.setMessage(FAMILY_CREATE_FAIL);
             }
@@ -64,9 +62,7 @@ public class FamilyInformationService {
             PersonalFamilyInfo currentData = personalFamilyInfoRepository.findPersonalFamilyInfoByUserId(userId);
             if (Objects.nonNull(currentData)) { /** Check if record exists to update */
                 if (update(familyInfoDTO, currentData)) {
-                    apiResponse.setMessage(FAMILY_UPDATE_SUCCESS);
-                    apiResponse.setSuccess(TRUE);
-                    apiResponse.setStatus(SUCCESS);
+                    apiResponse.setResponse(FAMILY_UPDATE_SUCCESS, TRUE, null, SUCCESS);
                 } else {
                     apiResponse.setMessage(FAMILY_UPDATE_FAIL);
                 }
@@ -99,10 +95,7 @@ public class FamilyInformationService {
             /** If data is NonNull--> respond responstDTO with data */
             if (Objects.nonNull(familyInfo)) {
                 PersonalFamilyInfoDTO familyInfoDTO = PersonalFamilyInfoDTO.getPersonalFamilyDTO(familyInfo);
-                apiResponse.setMessage(FAMILY_RECORD_FOUND);
-                apiResponse.setSuccess(TRUE);
-                apiResponse.setData(familyInfoDTO);
-                apiResponse.setStatus(SUCCESS);
+                apiResponse.setResponse(FAMILY_RECORD_FOUND, TRUE, familyInfoDTO, SUCCESS);
             } else {
                 apiResponse.setMessage(FAMILY_RECORD_NOT_FOUND);
             }

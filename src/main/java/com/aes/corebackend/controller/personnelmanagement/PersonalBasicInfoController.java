@@ -21,7 +21,7 @@ public class PersonalBasicInfoController {
     private final PersonalBasicInformationService personalBasicInformationService;
 
     @PostMapping(value = "/users/{userId}/basic-information")
-    @PreAuthorize("hasAuthority('EMPLOYEE')")
+    @PreAuthorize("hasAnyAuthority('EMPLOYEE', 'SYS_ADMIN')")
     public ResponseEntity<?> createPersonalBasicInfo(@RequestBody @Valid PersonalBasicInfoDTO personalBasicInfoDTO, BindingResult result, @PathVariable Long userId) {
         if (result.hasErrors()) {
             return badRequest().body(prepareErrorResponse(result));
@@ -31,7 +31,7 @@ public class PersonalBasicInfoController {
     }
 
     @PutMapping(value = "/users/{userId}/basic-information")
-    @PreAuthorize("hasAuthority('EMPLOYEE')")
+    @PreAuthorize("hasAnyAuthority('EMPLOYEE', 'SYS_ADMIN')")
     public ResponseEntity<?> updatePersonalBasicInfo(@Valid @RequestBody PersonalBasicInfoDTO basicInfoDTO, BindingResult result, @PathVariable Long userId) {
         if (result.hasErrors()) {
             return badRequest().body(prepareErrorResponse(result));
@@ -41,7 +41,7 @@ public class PersonalBasicInfoController {
     }
 
     @GetMapping(value = "/users/{userId}/basic-information")
-    @PreAuthorize("hasAuthority('EMPLOYEE')")
+    @PreAuthorize("hasAnyAuthority('EMPLOYEE', 'SYS_ADMIN')")
     public ResponseEntity<?> getPersonalBasicInfo(@PathVariable Long userId) {
         APIResponse apiResponse = personalBasicInformationService.read(userId);
         return apiResponse.isSuccess() ? ok(apiResponse) : badRequest().body(apiResponse);

@@ -24,7 +24,7 @@ public class PersonalEducationController {
 
     @PostMapping(value = "/users/{userId}/education-information")
     @PreAuthorize("hasAnyAuthority('EMPLOYEE', 'SYS_ADMIN')")
-    public ResponseEntity<?> updatePersonalEducation(@RequestBody @Valid PersonalEducationDTO educationDTO, BindingResult result, @PathVariable Long userId) {
+    public ResponseEntity<?> createPersonalEducation(@RequestBody @Valid PersonalEducationDTO educationDTO, BindingResult result, @PathVariable Long userId) {
         if (result.hasErrors()) {
             return badRequest().body(prepareErrorResponse(result));
         }

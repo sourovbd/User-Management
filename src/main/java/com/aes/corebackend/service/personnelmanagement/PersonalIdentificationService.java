@@ -28,9 +28,7 @@ public class PersonalIdentificationService {
         User user = userService.getUserByUserId(userId);
         if (Objects.nonNull(user)) {
             if (create(idDTO, user)) {
-                apiResponse.setMessage(IDENTIFICATION_CREATE_SUCCESS);
-                apiResponse.setSuccess(TRUE);
-                apiResponse.setStatus(SUCCESS);
+                apiResponse.setResponse(IDENTIFICATION_CREATE_SUCCESS, TRUE, null, SUCCESS);
             } else {
                 apiResponse.setMessage(IDENTIFICATION_CREATE_FAIL);
             }
@@ -60,9 +58,7 @@ public class PersonalIdentificationService {
             PersonalIdentificationInfo currentData = repository.findPersonalIdentificationInfoByUserId(userId);
             if (Objects.nonNull(currentData)) {
                 if (this.update(idDTO, currentData)) {
-                    apiResponse.setMessage(IDENTIFICATION_UPDATE_SUCCESS);
-                    apiResponse.setSuccess(TRUE);
-                    apiResponse.setStatus(SUCCESS);
+                    apiResponse.setResponse(IDENTIFICATION_UPDATE_SUCCESS, TRUE, null, SUCCESS);
                 } else {
                     apiResponse.setMessage(IDENTIFICATION_UPDATE_FAIL);
                 }
@@ -95,10 +91,7 @@ public class PersonalIdentificationService {
             /** If data is NonNull--> respond responstDTO with data */
             if (Objects.nonNull(idInfo)) {
                 PersonalIdentificationInfoDTO idDTO = PersonalIdentificationInfoDTO.getPersonalIdentificationDTO(idInfo);
-                apiResponse.setMessage(IDENTIFICATION_RECORD_FOUND);
-                apiResponse.setSuccess(TRUE);
-                apiResponse.setData(idDTO);
-                apiResponse.setStatus(SUCCESS);
+                apiResponse.setResponse(IDENTIFICATION_RECORD_FOUND, TRUE, idDTO, SUCCESS);
             } else {
                 apiResponse.setMessage(IDENTIFICATION_RECORD_NOT_FOUND);
             }
