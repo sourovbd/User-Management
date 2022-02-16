@@ -3,6 +3,7 @@ package com.aes.corebackend.entity.usermanagement;
 import lombok.AllArgsConstructor;
 import com.aes.corebackend.entity.personnelmanagement.PersonalAddressInfo;
 import com.aes.corebackend.entity.personnelmanagement.PersonalBasicInfo;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import javax.persistence.*;
@@ -11,9 +12,11 @@ import javax.validation.constraints.Pattern;
 
 
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Table(name = "user")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
