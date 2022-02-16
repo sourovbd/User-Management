@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<dataset>
+    <personal_attributes
+            id="1"
+            birth_place="dhaka"
+            blood_group="O+"
+            nationality="Bangladeshi"
+            religion="Islam"
+            user_id="1"
+    />
+</dataset>

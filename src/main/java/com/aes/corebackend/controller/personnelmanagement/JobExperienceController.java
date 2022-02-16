@@ -22,7 +22,7 @@ public class JobExperienceController {
     private final PersonalJobExperienceService personalJobExperienceService;
 
     @PostMapping(value = "/users/{userId}/job-experiences")
-    @PreAuthorize("hasAuthority('EMPLOYEE')")
+    @PreAuthorize("hasAnyAuthority('EMPLOYEE', 'SYS_ADMIN')")
     public ResponseEntity<?> createJobExperience(@Valid @RequestBody PersonalJobExperienceDTO personalJobExperienceDTO, BindingResult result, @PathVariable Long userId) {
         if (result.hasErrors()) {
             return badRequest().body(prepareErrorResponse(result));
@@ -32,7 +32,7 @@ public class JobExperienceController {
     }
 
     @PutMapping(value = "/users/{userId}/job-experiences/{experienceId}")
-    @PreAuthorize("hasAuthority('EMPLOYEE')")
+    @PreAuthorize("hasAnyAuthority('EMPLOYEE', 'SYS_ADMIN')")
     public ResponseEntity<?> updatePersonalJobExperience(@Valid @RequestBody PersonalJobExperienceDTO personalJobExperienceDTO, BindingResult result, @PathVariable Long userId, @PathVariable Long experienceId) {
         if (result.hasErrors()) {
             return badRequest().body(prepareErrorResponse(result));
@@ -42,14 +42,14 @@ public class JobExperienceController {
     }
 
     @GetMapping(value = "/users/{userId}/job-experiences")
-    @PreAuthorize("hasAuthority('EMPLOYEE')")
+    @PreAuthorize("hasAnyAuthority('EMPLOYEE', 'SYS_ADMIN')")
     public ResponseEntity<?> getPersonalJobExperiences(@PathVariable Long userId) {
         APIResponse apiResponse = personalJobExperienceService.read(userId);
         return apiResponse.isSuccess() ? ok(apiResponse) : badRequest().body(apiResponse);
     }
 
     @GetMapping(value = "/users/{userId}/job-experiences/{experienceId}")
-    @PreAuthorize("hasAuthority('EMPLOYEE')")
+    @PreAuthorize("hasAnyAuthority('EMPLOYEE', 'SYS_ADMIN')")
     public ResponseEntity<?> getPersonalJobExperience(@PathVariable Long userId, @PathVariable Long experienceId) {
         APIResponse apiResponse = personalJobExperienceService.read(userId, experienceId);
         return apiResponse.isSuccess() ? ok(apiResponse) : badRequest().body(apiResponse);

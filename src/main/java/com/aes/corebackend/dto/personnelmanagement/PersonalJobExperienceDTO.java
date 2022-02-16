@@ -1,20 +1,11 @@
 package com.aes.corebackend.dto.personnelmanagement;
 
 import com.aes.corebackend.entity.personnelmanagement.PersonalJobExperience;
-import com.aes.corebackend.util.Constants;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
-import org.springframework.format.annotation.DateTimeFormat;
-
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
 import java.io.Serializable;
-import java.util.Date;
-import java.util.Locale;
-import java.util.TimeZone;
+import com.aes.corebackend.util.DateUtils;
 
 @Data
 public class PersonalJobExperienceDTO implements Serializable {
@@ -24,13 +15,11 @@ public class PersonalJobExperienceDTO implements Serializable {
     @Pattern(regexp = "^[a-zA-z0-9]+$", message = "Employer name field cannot have special characters")
     private String employerName;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, timezone = Constants.BD_TIMEZONE, pattern = Constants.BD_DATE_FORMAT)
-    @Past(message = "Start date must be in the past")
-    private Date startDate;
+    @Pattern(regexp = "^\\d{2}-\\d{2}-\\d{4}", message="Invalid start date")
+    private String startDate;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, timezone = Constants.BD_TIMEZONE, pattern = Constants.BD_DATE_FORMAT)
-    @Past(message = "End date must be in the past")
-    private Date endDate;
+    @Pattern(regexp = "^\\d{2}-\\d{2}-\\d{4}", message="Invalid end date")
+    private String endDate;
 
     @Length(min = 0, max = 50, message = "Designation field can be at max 50 characters long")
     @Pattern(regexp = "^[a-zA-z0-9]+$", message = "Designation field cannot have special characters")
@@ -44,8 +33,8 @@ public class PersonalJobExperienceDTO implements Serializable {
         PersonalJobExperience personalJobExperience = new PersonalJobExperience();
         personalJobExperience.setId(experienceDTO.getId());
         personalJobExperience.setEmployerName(experienceDTO.getEmployerName());
-        personalJobExperience.setStartDate(experienceDTO.getStartDate());
-        personalJobExperience.setEndDate(experienceDTO.getEndDate());
+        personalJobExperience.setStartDate(DateUtils.convertToLocalDate(experienceDTO.getStartDate()));
+        personalJobExperience.setEndDate(DateUtils.convertToLocalDate(experienceDTO.getEndDate()));
         personalJobExperience.setDesignation(experienceDTO.getDesignation());
         personalJobExperience.setResponsibilities(experienceDTO.getResponsibilities());
         return personalJobExperience;
@@ -55,8 +44,8 @@ public class PersonalJobExperienceDTO implements Serializable {
         PersonalJobExperienceDTO jobExperienceDTO = new PersonalJobExperienceDTO();
         jobExperienceDTO.setId(jobExperience.getId());
         jobExperienceDTO.setEmployerName(jobExperience.getEmployerName());
-        jobExperienceDTO.setStartDate(jobExperience.getStartDate());
-        jobExperienceDTO.setEndDate(jobExperience.getEndDate());
+        jobExperienceDTO.setStartDate(DateUtils.convertLocalDateToString(jobExperience.getStartDate()));
+        jobExperienceDTO.setEndDate(DateUtils.convertLocalDateToString(jobExperience.getEndDate()));
         jobExperienceDTO.setDesignation(jobExperience.getDesignation());
         jobExperienceDTO.setResponsibilities(jobExperience.getResponsibilities());
         return jobExperienceDTO;
