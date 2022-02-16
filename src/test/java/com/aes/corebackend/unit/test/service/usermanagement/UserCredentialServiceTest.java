@@ -32,24 +32,21 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static com.aes.corebackend.util.response.APIResponseStatus.SUCCESS;
 
+@ExtendWith(SpringExtension.class)
+@SpringBootTest
 public class UserCredentialServiceTest {
 
-    @InjectMocks
+    @Autowired
     private UserCredentialService userCredentialService;
 
-    @Mock
+    @MockBean
     private UserCredentialRepository userCredentialRepository;
 
-    @Mock
+    @MockBean
     private UserRepository userRepository;
 
-    @Mock
+    @MockBean
     private EmailSender emailSender;
-
-    @BeforeEach
-    public void setup() {
-        MockitoAnnotations.openMocks(this);
-    }
 
     private APIResponse expectedResponse = getApiResponse();
 
