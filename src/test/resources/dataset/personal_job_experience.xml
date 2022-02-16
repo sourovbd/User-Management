@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<dataset>
+    <personal_job_experience
+            id="1"
+            employer_name="REVE"
+            start_date="12-03-2017"
+            end_date="12-12-2020"
+            designation="SDE"
+            responsibilities="Development"
+            user_id="1"
+    />
+
+    <personal_job_experience
+            id="2"
+            employer_name="Nascenia"
+            start_date="12-10-2015"
+            end_date="12-03-2017"
+            designation="SDE"
+            responsibilities="Development"
+            user_id="1"
+    />
+</dataset>

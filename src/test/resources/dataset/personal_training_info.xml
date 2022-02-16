@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<dataset>
+    <personal_training_info
+            id="1"
+            program_name="Java"
+            institute_name="Coursera"
+            description="description"
+            start_date="12-03-2017"
+            end_date="12-12-2020"
+            user_id="1"
+    />
+
+    <personal_training_info
+            id="2"
+            program_name="Python"
+            institute_name="Coursera"
+            description="description"
+            start_date="12-03-2017"
+            end_date="12-12-2020"
+            user_id="1"
+    />
+</dataset>
