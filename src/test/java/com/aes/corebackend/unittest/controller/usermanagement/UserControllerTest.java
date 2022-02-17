@@ -25,9 +25,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import java.util.List;
 
 import static com.aes.corebackend.util.response.UMAPIResponseMessage.USER_CREATION_FAILED;
-import static org.assertj.core.internal.bytebuddy.matcher.ElementMatchers.is;
-import static org.hamcrest.Matchers.hasSize;
-import static org.mockito.Mockito.mock;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -85,6 +82,7 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$.message").value("user created successfully"));
 
     }
+
     @Test
     public void emailValidationFailTest() throws Exception {
         UserDTO userDto = new UserDTO();

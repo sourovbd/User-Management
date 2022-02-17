@@ -1,6 +1,8 @@
 package com.aes.corebackend.dto.usermanagement;
 
 import com.aes.corebackend.entity.usermanagement.User;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -9,6 +11,8 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
 @Data
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
 @Valid
 public class UserDTO {
