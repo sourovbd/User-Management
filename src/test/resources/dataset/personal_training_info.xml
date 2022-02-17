@@ -6,8 +6,8 @@
             program_name="Java"
             institute_name="Coursera"
             description="description"
-            start_date="12-03-2017"
-            end_date="12-12-2020"
+            start_date="2017-03-12"
+            end_date="2020-09-12"
             user_id="1"
     />
 
@@ -16,8 +16,8 @@
             program_name="Python"
             institute_name="Coursera"
             description="description"
-            start_date="12-03-2017"
-            end_date="12-12-2020"
+            start_date="2017-03-12"
+            end_date="2020-09-12"
             user_id="1"
     />
 </dataset>
