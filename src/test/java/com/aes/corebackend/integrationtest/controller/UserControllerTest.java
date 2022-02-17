@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.springtestdbunit.DbUnitTestExecutionListener;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,6 +79,7 @@ public class UserControllerTest {
         TOKEN = jwtTokenUtil.generateToken(userDetails);
     }
     @Test
+    @Disabled
     @DatabaseSetup("/dataset/users.xml")
     @DatabaseSetup("/dataset/user_credentials.xml")
     public void getAllUsers_success() throws Exception {
