@@ -13,11 +13,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.springtestdbunit.DbUnitTestExecutionListener;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import org.junit.jupiter.api.BeforeEach;
-<<<<<<< HEAD
-import org.junit.jupiter.api.Disabled;
-=======
 import org.junit.jupiter.api.DisplayName;
->>>>>>> e5760d8c432b097408dc1c2d98759c3ab079f3ad
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,16 +83,9 @@ public class UserControllerTest {
     }
 
     @Test
-<<<<<<< HEAD
-    @Disabled
-    @DatabaseSetup("/dataset/users_2.xml")
-    @DatabaseSetup("/dataset/user_credentials_2.xml")
-    public void getAllUsers_success() throws Exception {
-=======
     @DisplayName("GET /users - Fetch All Existing Users Success")
     @DatabaseSetup("/dataset/users.xml")
     public void getAllUsersTest() throws Exception {
->>>>>>> e5760d8c432b097408dc1c2d98759c3ab079f3ad
         List<User> users = userRepository.findAll();
         System.out.println("size: "+users.size());
         List<UserCredential> userCredentialList = userCredentialRepository.findAll();
