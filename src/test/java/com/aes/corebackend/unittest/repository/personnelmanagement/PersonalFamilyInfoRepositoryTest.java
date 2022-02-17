@@ -56,7 +56,6 @@ public class PersonalFamilyInfoRepositoryTest {
                 .user(user)
                 .build();
 
-        System.out.println("===>" + personalFamilyInfo.toString());
         personalFamilyInfoRepository.save(personalFamilyInfo);
 
         Assertions.assertThat(personalFamilyInfoRepository.getById(2L).getFathersName()).isEqualTo(personalFamilyInfo.getFathersName());

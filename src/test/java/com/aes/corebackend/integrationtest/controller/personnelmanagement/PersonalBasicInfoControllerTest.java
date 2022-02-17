@@ -1,8 +1,9 @@
 package com.aes.corebackend.integrationtest.controller.personnelmanagement;
 
-import com.aes.corebackend.dto.personnelmanagement.PersonalAttributesDTO;
-import com.aes.corebackend.entity.personnelmanagement.PersonalAttributes;
-import com.aes.corebackend.repository.personnelmanagement.PersonalAttributesRepository;
+import com.aes.corebackend.dto.personnelmanagement.PersonalBasicInfoDTO;
+import com.aes.corebackend.entity.personnelmanagement.PersonalBasicInfo;
+import com.aes.corebackend.enumeration.Gender;
+import com.aes.corebackend.repository.personnelmanagement.PersonalBasicInfoRepository;
 import com.aes.corebackend.service.springsecurity.CustomUserDetailsService;
 import com.aes.corebackend.util.JwtUtil;
 import com.aes.corebackend.util.response.APIResponse;
@@ -13,6 +14,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpHeaders;
@@ -29,10 +31,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import static com.aes.corebackend.util.response.APIResponseStatus.ERROR;
 import static com.aes.corebackend.util.response.APIResponseStatus.SUCCESS;
 import static com.aes.corebackend.util.response.PMAPIResponseMessage.*;
-import static com.aes.corebackend.util.response.PMAPIResponseMessage.TRUE;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(
@@ -46,7 +48,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 })
 @AutoConfigureMockMvc
 @TestPropertySource(locations = "classpath:application.properties")
-public class PersonalAttributesControllerTest {
+public class PersonalBasicInfoControllerTest {
 
     @Autowired
     public MockMvc mockMvc;
@@ -61,10 +63,10 @@ public class PersonalAttributesControllerTest {
     private CustomUserDetailsService userDetailsService;
 
     @Autowired
-    private PersonalAttributesRepository attributesRepository;
+    private PersonalBasicInfoRepository personalBasicInfoRepository;
 
     private APIResponse expectedResponse = APIResponse.getApiResponse();
-    private PersonalAttributesDTO attributesDTO = new PersonalAttributesDTO();
+    private PersonalBasicInfoDTO basicInfoDTO = new PersonalBasicInfoDTO();
 
     private static String USERNAME = "012518";
     private static String TOKEN = "";
@@ -75,22 +77,22 @@ public class PersonalAttributesControllerTest {
         userDetails = userDetailsService.loadUserByUsername(USERNAME);
         TOKEN = jwtTokenUtil.generateToken(userDetails);
 
-        attributesDTO.setReligion("Islam");
-        attributesDTO.setBirthPlace("Chittagong");
-        attributesDTO.setNationality("Bangladeshi");
-        attributesDTO.setBloodGroup("O+");
+        basicInfoDTO.setFirstName("jahangir");
+        basicInfoDTO.setLastName("alam");
+        basicInfoDTO.setDateOfBirth("12-09-1989");
+        basicInfoDTO.setGender(Gender.MALE);
     }
 
     @Test
     @DatabaseSetup("/dataset/personnel_management.xml")
-    public void createAttributesSuccessTest() throws Exception {
+    public void createBasicInfoSuccessTest() throws Exception {
 
-        expectedResponse.setResponse(ATTRIBUTES_CREATE_SUCCESS, TRUE, null, SUCCESS);
+        expectedResponse.setResponse(BASIC_INFORMATION_CREATE_SUCCESS, TRUE, null, SUCCESS);
 
-        mockMvc.perform(post("/users/2/attribute-information")
+        mockMvc.perform(post("/users/2/basic-information")
                         .header(HttpHeaders.AUTHORIZATION, "Bearer " + TOKEN)
                         .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                        .content(objectMapper.writeValueAsString(attributesDTO)))
+                        .content(objectMapper.writeValueAsString(basicInfoDTO)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message").value(expectedResponse.getMessage()))
                 .andExpect(jsonPath("$.success").value(expectedResponse.isSuccess()))
@@ -100,15 +102,14 @@ public class PersonalAttributesControllerTest {
 
     @Test
     @DatabaseSetup("/dataset/personnel_management.xml")
-    public void createAttributesFailedTest() throws Exception {
+    public void createBasicInfoFailedTest() throws Exception {
 
-        attributesDTO.setBloodGroup("O+");
-        expectedResponse.setResponse(ATTRIBUTES_CREATE_FAIL, FALSE, null, ERROR);
+        expectedResponse.setResponse(BASIC_INFORMATION_CREATE_FAIL, FALSE, null, ERROR);
 
-        mockMvc.perform(post("/users/1/attribute-information")
+        mockMvc.perform(post("/users/1/basic-information")
                         .header(HttpHeaders.AUTHORIZATION, "Bearer " + TOKEN)
                         .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                        .content(objectMapper.writeValueAsString(attributesDTO)))
+                        .content(objectMapper.writeValueAsString(basicInfoDTO)))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.message").value(expectedResponse.getMessage()))
                 .andExpect(jsonPath("$.success").value(expectedResponse.isSuccess()))
@@ -118,15 +119,16 @@ public class PersonalAttributesControllerTest {
 
     @Test
     @DatabaseSetup("/dataset/personnel_management.xml")
-    public void updateAttributesSuccessTest() throws Exception {
+    public void updateBasicInfoSuccessTest() throws Exception {
 
-        attributesDTO.setBloodGroup("AB+");
-        expectedResponse.setResponse(ATTRIBUTES_UPDATE_SUCCESS, TRUE, null, SUCCESS);
+        PersonalBasicInfoDTO infoDTO = PersonalBasicInfoDTO.getPersonalBasicInfoDTO(personalBasicInfoRepository.findPersonalBasicInfoByUserId(1L));
+        infoDTO.setFirstName("TestName");
+        expectedResponse.setResponse(BASIC_INFORMATION_UPDATE_SUCCESS, TRUE, null, SUCCESS);
 
-        mockMvc.perform(put("/users/1/attribute-information")
+        mockMvc.perform(put("/users/1/basic-information")
                         .header(HttpHeaders.AUTHORIZATION, "Bearer " + TOKEN)
                         .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                        .content(objectMapper.writeValueAsString(attributesDTO)))
+                        .content(objectMapper.writeValueAsString(infoDTO)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message").value(expectedResponse.getMessage()))
                 .andExpect(jsonPath("$.success").value(expectedResponse.isSuccess()))
@@ -134,14 +136,16 @@ public class PersonalAttributesControllerTest {
                 .andExpect(jsonPath("$.data").value(expectedResponse.getData()));
     }
 
+
     @Test
     @DatabaseSetup("/dataset/personnel_management.xml")
-    public void getAttributesSuccessTest() throws Exception {
+    public void getBasicInfoSuccessTest() throws Exception {
 
-        PersonalAttributes attributes = attributesRepository.findPersonalAttributesByUserId(1L);
-        expectedResponse.setResponse(ATTRIBUTES_RECORD_FOUND, TRUE, PersonalAttributesDTO.getPersonalAttributesDTO(attributes), SUCCESS);
+        PersonalBasicInfoDTO infoDTO = PersonalBasicInfoDTO.getPersonalBasicInfoDTO(personalBasicInfoRepository.findPersonalBasicInfoByUserId(1L));
 
-        mockMvc.perform(get("/users/1/attribute-information")
+        expectedResponse.setResponse(BASIC_INFORMATION_RECORD_FOUND, TRUE, infoDTO, SUCCESS);
+
+        mockMvc.perform(get("/users/1/basic-information")
                         .header(HttpHeaders.AUTHORIZATION, "Bearer " + TOKEN)
                         .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
@@ -151,13 +155,14 @@ public class PersonalAttributesControllerTest {
                 .andExpect(jsonPath("$.data").value(expectedResponse.getData()));
     }
 
+
     @Test
     @DatabaseSetup("/dataset/personnel_management.xml")
-    public void getPersonalAttributesNotFoundTest() throws Exception {
+    public void getBasicInfoNoRecordFoundTest() throws Exception {
 
-        expectedResponse.setResponse(ATTRIBUTES_RECORD_NOT_FOUND, FALSE, null, ERROR);
+        expectedResponse.setResponse(BASIC_INFORMATION_RECORD_NOT_FOUND, FALSE, null, ERROR);
 
-        mockMvc.perform(get("/users/2/attribute-information")
+        mockMvc.perform(get("/users/2/basic-information")
                         .header(HttpHeaders.AUTHORIZATION, "Bearer " + TOKEN)
                         .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isBadRequest())
@@ -166,5 +171,4 @@ public class PersonalAttributesControllerTest {
                 .andExpect(jsonPath("$.status").value(expectedResponse.getStatus().toString()))
                 .andExpect(jsonPath("$.data").value(expectedResponse.getData()));
     }
-
 }

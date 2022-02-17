@@ -1,6 +1,8 @@
 package com.aes.corebackend.integrationtest.controller.personnelmanagement;
 
+import com.aes.corebackend.dto.personnelmanagement.PersonalAttributesDTO;
 import com.aes.corebackend.dto.personnelmanagement.PersonalFamilyInfoDTO;
+import com.aes.corebackend.entity.personnelmanagement.PersonalAttributes;
 import com.aes.corebackend.entity.personnelmanagement.PersonalFamilyInfo;
 import com.aes.corebackend.repository.personnelmanagement.PersonalFamilyInfoRepository;
 import com.aes.corebackend.service.springsecurity.CustomUserDetailsService;
@@ -118,10 +120,12 @@ public class FamilyInformationControllerTest {
 
     @Test
     @DatabaseSetup("/dataset/personnel_management.xml")
-    public void updateAttributesSuccessTest() throws Exception {
+    public void updateFamilyInformationSuccessTest() throws Exception {
+
+        PersonalFamilyInfoDTO familyInfoDTO1 = PersonalFamilyInfoDTO.getPersonalFamilyDTO(familyInfoRepository.findPersonalFamilyInfoByUserId(1L));
+        familyInfoDTO1.setMothersName("NeelaManwar");
 
         expectedResponse.setResponse(FAMILY_UPDATE_SUCCESS, TRUE, null, SUCCESS);
-        familyDTO.setMothersName("Neela Manwar");
 
         mockMvc.perform(put("/users/1/family-information")
                         .header(HttpHeaders.AUTHORIZATION, "Bearer " + TOKEN)

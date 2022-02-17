@@ -45,6 +45,22 @@
             roles="ORG_SETUP"
     />
 
+    <personal_address_info
+            id="1"
+            present_address="Motijheel, Dhaka"
+            permanent_address="Shaymoli, Dhaka"
+            user_id="1"
+    />
+
+    <personal_basic_info
+            id="1"
+            first_name="Test"
+            last_name="Rahman"
+            date_of_birth="1990-01-01"
+            gender="MALE"
+            user_id="1"
+    />
+
     <personal_attributes
             id="1"
             birth_place="dhaka"
