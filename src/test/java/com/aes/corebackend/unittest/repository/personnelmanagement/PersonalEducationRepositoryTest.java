@@ -60,22 +60,6 @@ public class PersonalEducationRepositoryTest {
         Assertions.assertThat(personalEducationRepository.getById(3L).getInstitutionName()).isEqualTo(personalEducationInfo.getInstitutionName());
     }
 
-    /*
-    @Test
-    @DatabaseSetup("/dataset/personal_education_info.xml")
-    public void testCreatePersonalEducationFailed() {
-
-        personalEducationInfo.setId(null);
-        //personalEducationRepository.saveAndFlush(personalEducationInfo);
-        Exception exception = assertThrows(RuntimeException.class, () -> {
-            personalEducationRepository.saveAndFlush(personalEducationInfo);
-        });
-        System.out.println("====>" + exception.getMessage());
-        String expectedMessage = "detached entity passed to persist: com.aes.corebackend.entity.usermanagement.User; nested exception is org.hibernate.PersistentObjectException: detached entity passed to persist: com.aes.corebackend.entity.usermanagement.User";
-        //Assertions.assertThat(exception.getMessage().contains(expectedMessage)).isEqualTo(true);
-    }
-    */
-
     @Test
     @DatabaseSetup("/dataset/users.xml")
     @DatabaseSetup("/dataset/personal_education_info.xml")
