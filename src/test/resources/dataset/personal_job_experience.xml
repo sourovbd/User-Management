@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <dataset>
+    <user
+            id="1"
+            email_address="test@gmail.com"
+            designation="CTO"
+            employee_id="012517"
+            business_unit="AES"
+            department="Developmemt"
+            roles="EMPLOYEE"
+    />
+
     <personal_job_experience
             id="1"
             employer_name="REVE"
