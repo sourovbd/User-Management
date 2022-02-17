@@ -130,6 +130,7 @@ public class UserCredentialControllerTest {
                         .andExpect(status().isOk());
     }
     @Test
+    @Disabled
     //@DatabaseSetup("/dataset/user_credentials.xml")
     @DatabaseSetup("/dataset/users.xml")
     public void forgotPasswordTest() throws Exception {
