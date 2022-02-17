@@ -22,14 +22,12 @@ import org.springframework.http.MediaType;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 import org.springframework.test.web.servlet.MockMvc;
 
-import javax.transaction.Transactional;
 import java.util.List;
 
 import static com.aes.corebackend.util.response.UMAPIResponseMessage.USER_FETCH_OK;
@@ -80,8 +78,8 @@ public class UserControllerTest {
     }
     @Test
     @Disabled
-    @DatabaseSetup("/dataset/users.xml")
-    @DatabaseSetup("/dataset/user_credentials.xml")
+    @DatabaseSetup("/dataset/users_2.xml")
+    @DatabaseSetup("/dataset/user_credentials_2.xml")
     public void getAllUsers_success() throws Exception {
         List<User> users = userRepository.findAll();
         System.out.println("size: "+users.size());
