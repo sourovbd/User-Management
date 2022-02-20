@@ -48,12 +48,4 @@ public class User {
 
     @OneToOne(cascade = CascadeType.ALL)
     private UserCredential userCredential;
-
-    /** mappedBy value points to the relationship owner */
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
-    private PersonalBasicInfo basicInfo;
-
-    /** mappedBy value points to the relationship owner */
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
-    private PersonalAddressInfo address;
 }

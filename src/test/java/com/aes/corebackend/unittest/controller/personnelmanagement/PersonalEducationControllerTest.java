@@ -41,7 +41,7 @@ public class PersonalEducationControllerTest {
     private ObjectMapper om = new ObjectMapper();
     private APIResponse expectedResponse = APIResponse.getApiResponse();
 
-    private User user = new User(1L,"abc@gmail.com","agm","012580","a1polymar","accounts", null, null, null, null);
+    private User user = new User(1L,"abc@gmail.com","agm","012580","a1polymar","accounts", null, null);
     private PersonalEducationInfo personalEducationInfoSSC = new PersonalEducationInfo(1L, "SSC", "ABC High School", 5.00f, 4.90f, "2015", user);
     private PersonalEducationInfo personalEducationInfoHSC = new PersonalEducationInfo(2L, "HSC", "ABC College", 5.00f, 4.90f, "2017", user);
     private PersonalEducationInfo personalEducationInfoBSC = new PersonalEducationInfo(3L, "BSC", "ABC University", 4.00f, 3.90f, "2021", user);
