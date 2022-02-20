@@ -31,8 +31,6 @@ jobs:
         node-version: "14.x"
     - name: install maildev
       run: npm install -g maildev
-    - name: run maildev
-      run: maildev
     - name: Run maildev
       run: maildev & sleep 10
     - name: Build with Gradle
