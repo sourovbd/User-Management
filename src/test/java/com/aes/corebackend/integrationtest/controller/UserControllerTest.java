@@ -71,7 +71,7 @@ public class UserControllerTest {
     @Autowired
     private JwtUtil jwtTokenUtil;
 
-    private static String USERNAME = "012518";
+    private static String USERNAME = "012615";
     private static String TOKEN = "";
     private UserDetails userDetails;
 
@@ -81,15 +81,28 @@ public class UserControllerTest {
         System.out.println("username:  "+userDetails.getUsername());
         TOKEN = jwtTokenUtil.generateToken(userDetails);
     }
+    UserDTO createUserDto =  UserDTO.builder()
+            .businessUnit("a1polymer")
+            .department("accounts")
+            .designation("agm")
+            .emailAddress("xyz@gmail.com")
+            .employeeId("101")
+            .roles("EMPLOYEE,SYS_ADMIN")
+            .build();
 
+    UserDTO updateUserDto =  UserDTO
+            .builder()
+            .businessUnit("a1polymer")
+            .department("ACCOUNTS")
+            .designation("AGM")
+            .emailAddress("test@gmail.com")
+            .employeeId("012615")
+            .roles("EMPLOYEE,SYS_ADMIN")
+            .build();
     @Test
     @DisplayName("GET /users - Fetch All Existing Users Success")
     @DatabaseSetup("/dataset/users.xml")
     public void getAllUsersTest() throws Exception {
-        List<User> users = userRepository.findAll();
-        System.out.println("size: "+users.size());
-        List<UserCredential> userCredentialList = userCredentialRepository.findAll();
-        System.out.println("size: "+userCredentialList.size());
 
         mockMvc.perform(get("/users")
                         .header(HttpHeaders.AUTHORIZATION, "Bearer " + TOKEN)
@@ -103,42 +116,35 @@ public class UserControllerTest {
     @Test
     @DisplayName("POST /users - Create New User Success")
     @DatabaseSetup("/dataset/users.xml")
-    public void createUserTest() throws Exception {
-        UserDTO userDto =  UserDTO
-                .builder()
-                .businessUnit("a1polymer")
-                .department("accounts")
-                .designation("agm")
-                .emailAddress("xyz@gmail.com")
-                .employeeId("101")
-                .roles("EMPLOYEE,SYS_ADMIN")
-                .build();
+    public void createUserTestSucceed() throws Exception {
 
-        String jsonRequest = om.writeValueAsString(userDto);
+        String jsonRequest = om.writeValueAsString(createUserDto);
         mockMvc.perform(post("/users")
                         .header(HttpHeaders.AUTHORIZATION, "Bearer " + TOKEN)
                         .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                         .accept(MediaType.APPLICATION_JSON)
                         .content(jsonRequest))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.message").value(USER_CREATED_SUCCESSFULLY));
+                .andExpect(jsonPath("$.message").value(USER_CREATED_SUCCESSFULLY))
+                .andExpect(jsonPath("$.data.emailAddress").value("xyz@gmail.com"))
+                .andExpect(jsonPath("$.data.employeeId").value("101"));
     }
 
     @Test
     @DisplayName("GET /users - Create New User Success")
     @DatabaseSetup("/dataset/users.xml")
-    public void getUserDetailsTest() throws Exception {
+    public void getUserDetailsTestSucceed() throws Exception {
 
         mockMvc.perform(get("/users/1")
                         .header(HttpHeaders.AUTHORIZATION, "Bearer " + TOKEN)
                         .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.message").value("user found"))
+                .andExpect(jsonPath("$.message").value(USER_FOUND))
                 .andExpect(jsonPath("$.data.id").value(1L))
-                .andExpect(jsonPath("$.data.emailAddress").value("test2@gmail.com"))
+                .andExpect(jsonPath("$.data.emailAddress").value("test@gmail.com"))
                 .andExpect(jsonPath("$.data.designation").value("CTO"))
-                .andExpect(jsonPath("$.data.employeeId").value("012518"))
+                .andExpect(jsonPath("$.data.employeeId").value("012517"))
                 .andExpect(jsonPath("$.data.businessUnit").value("AES"))
                 .andExpect(jsonPath("$.data.department").value("Developmemt"))
                 .andExpect(jsonPath("$.data.roles").value("EMPLOYEE"))
@@ -147,20 +153,24 @@ public class UserControllerTest {
     }
 
     @Test
+    @DisplayName("GET /users - Create New User Failed")
+    @DatabaseSetup("/dataset/users.xml")
+    public void getUserDetailsTestFailed() throws Exception {
+
+        mockMvc.perform(get("/users/99")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + TOKEN)
+                        .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value(USER_NOT_FOUND));
+    }
+
+    @Test
     @DisplayName("PUT /users/{id} - Update Existing User Success")
     @DatabaseSetup("/dataset/users.xml")
-    public void updateUserById() throws Exception {
-        UserDTO userDto =  UserDTO
-                .builder()
-                .businessUnit("a1polymer")
-                .department("ACCOUNTS")
-                .designation("AGM")
-                .emailAddress("xyz@gmail.com")
-                .employeeId("012518")
-                .roles("EMPLOYEE,SYS_ADMIN")
-                .build();
+    public void updateUserByIdSucceed() throws Exception {
 
-        String jsonRequest = om.writeValueAsString(userDto);
+        String jsonRequest = om.writeValueAsString(updateUserDto);
         mockMvc.perform(put("/users/1")
                         .header(HttpHeaders.AUTHORIZATION, "Bearer " + TOKEN)
                         .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
@@ -169,12 +179,27 @@ public class UserControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message").value(USER_UPDATED_SUCCESSFULLY))
                 .andExpect(jsonPath("$.data.id").value(1L))
-                .andExpect(jsonPath("$.data.emailAddress").value("xyz@gmail.com"))
+                .andExpect(jsonPath("$.data.emailAddress").value("test@gmail.com"))
                 .andExpect(jsonPath("$.data.designation").value("AGM"))
-                .andExpect(jsonPath("$.data.employeeId").value("012518"))
+                .andExpect(jsonPath("$.data.employeeId").value("012615"))
                 .andExpect(jsonPath("$.data.businessUnit").value("a1polymer"))
                 .andExpect(jsonPath("$.data.department").value("ACCOUNTS"))
                 .andExpect(jsonPath("$.data.roles").value("EMPLOYEE,SYS_ADMIN"))
                 .andExpect(jsonPath("$.data.userCredential.active").value(true));
+    }
+
+    @Test
+    @DisplayName("PUT /users/{id} - Update Existing User Success")
+    @DatabaseSetup("/dataset/users.xml")
+    public void updateUserByIdFailed() throws Exception {
+
+        String jsonRequest = om.writeValueAsString(updateUserDto);
+        mockMvc.perform(put("/users/99")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + TOKEN)
+                        .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .content(jsonRequest))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value(USER_UPDATE_FAILED));;
     }
 }
