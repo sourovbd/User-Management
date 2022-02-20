@@ -131,24 +131,6 @@ public class UserControllerTest {
     }
 
     @Test
-    @DisplayName("POST /users - Create New User Success")
-    @DatabaseSetup("/dataset/users.xml")
-    public void createUserTestFailed() throws Exception {
-
-        createUserDto.setEmailAddress("test@gmail.com");
-        String jsonRequest = om.writeValueAsString(createUserDto);
-        mockMvc.perform(post("/users")
-                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + TOKEN)
-                        .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .content(jsonRequest))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.message").value(USER_CREATED_SUCCESSFULLY))
-                .andExpect(jsonPath("$.data.emailAddress").value("xyz@gmail.com"))
-                .andExpect(jsonPath("$.data.employeeId").value("101"));
-    }
-
-    @Test
     @DisplayName("GET /users - Create New User Success")
     @DatabaseSetup("/dataset/users.xml")
     public void getUserDetailsTestSucceed() throws Exception {
