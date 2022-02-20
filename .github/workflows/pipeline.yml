@@ -25,5 +25,7 @@ jobs:
       with:
         java-version: '17'
         distribution: 'temurin'
+    - name: Run mail dev server
+      run: sh ./scripts/run-mail-dev.sh
     - name: Build with Gradle
-      run: ./gradlew build
+        run: ./gradlew build
