@@ -117,7 +117,7 @@ public class UserCredentialControllerTest {
     @DatabaseSetup("/dataset/users.xml")
     public void forgotPasswordTest() throws Exception {
         ForgotPasswordDTO forgotPasswordDTO = new ForgotPasswordDTO();
-        forgotPasswordDTO.setEmailAddress("test2@gmail.com");
+        forgotPasswordDTO.setEmailAddress("ahad.alam@anwargroup.net");
         userCredentialService.generateAndSendTempPass(forgotPasswordDTO.getEmailAddress());
         mockMvc.perform(MockMvcRequestBuilders
                         .post("/users/forgot-password")
