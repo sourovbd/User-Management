@@ -113,13 +113,18 @@ public class UserCredentialControllerTest {
                         .andExpect(status().isOk());
     }
     @Test
-    @Disabled
     //@DatabaseSetup("/dataset/user_credentials_2.xml")
     @DatabaseSetup("/dataset/users_2.xml")
     public void forgotPasswordTest() throws Exception {
         ForgotPasswordDTO forgotPasswordDTO = new ForgotPasswordDTO();
         forgotPasswordDTO.setEmailAddress("test2@gmail.com");
         userCredentialService.generateAndSendTempPass(forgotPasswordDTO.getEmailAddress());
+        mockMvc.perform(MockMvcRequestBuilders
+                        .post("/users/forgot-password")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + TOKEN)
+                        .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                        .content(objectMapper.writeValueAsString(forgotPasswordDTO)))
+                .andExpect(status().isOk());
     }
 
 }
