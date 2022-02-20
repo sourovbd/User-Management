@@ -120,13 +120,14 @@ public class PersonalAttributesControllerTest {
     @DatabaseSetup("/dataset/personnel_management.xml")
     public void updateAttributesSuccessTest() throws Exception {
 
-        attributesDTO.setBloodGroup("AB+");
+        PersonalAttributesDTO existingAttributesDTO = PersonalAttributesDTO.getPersonalAttributesDTO(attributesRepository.findPersonalAttributesByUserId(1L));
+        existingAttributesDTO.setBloodGroup("AB+");
         expectedResponse.setResponse(ATTRIBUTES_UPDATE_SUCCESS, TRUE, null, SUCCESS);
 
         mockMvc.perform(put("/users/1/attribute-information")
                         .header(HttpHeaders.AUTHORIZATION, "Bearer " + TOKEN)
                         .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                        .content(objectMapper.writeValueAsString(attributesDTO)))
+                        .content(objectMapper.writeValueAsString(existingAttributesDTO)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message").value(expectedResponse.getMessage()))
                 .andExpect(jsonPath("$.success").value(expectedResponse.isSuccess()))

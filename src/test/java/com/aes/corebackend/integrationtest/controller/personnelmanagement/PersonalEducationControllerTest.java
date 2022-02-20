@@ -2,7 +2,6 @@ package com.aes.corebackend.integrationtest.controller.personnelmanagement;
 
 import com.aes.corebackend.dto.personnelmanagement.PersonalEducationDTO;
 import com.aes.corebackend.entity.personnelmanagement.PersonalEducationInfo;
-import com.aes.corebackend.entity.usermanagement.User;
 import com.aes.corebackend.repository.personnelmanagement.PersonalEducationRepository;
 import com.aes.corebackend.service.springsecurity.CustomUserDetailsService;
 import com.aes.corebackend.util.JwtUtil;
@@ -106,13 +105,14 @@ public class PersonalEducationControllerTest {
     @DatabaseSetup("/dataset/personnel_management.xml")
     public void updatePersonalEducationSuccessTest() throws Exception {
 
-        personalEducationDTO.setInstitutionName("ABC School");
+        PersonalEducationDTO existingEducationDTO = PersonalEducationDTO.getPersonalEducationDTO(educationRepository.findPersonalEducationInfoByIdAndUserId(1L, 1L));
+        existingEducationDTO.setInstitutionName("ABC High School");
         expectedResponse.setResponse(EDUCATION_UPDATE_SUCCESS, TRUE, null, SUCCESS);
 
         mockMvc.perform(put("/users/1/education-information/1")
                         .header(HttpHeaders.AUTHORIZATION, "Bearer " + TOKEN)
                         .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                        .content(objectMapper.writeValueAsString(personalEducationDTO)))
+                        .content(objectMapper.writeValueAsString(existingEducationDTO)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message").value(expectedResponse.getMessage()))
                 .andExpect(jsonPath("$.success").value(expectedResponse.isSuccess()))

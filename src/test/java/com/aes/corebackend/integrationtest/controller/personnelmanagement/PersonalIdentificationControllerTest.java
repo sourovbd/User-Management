@@ -94,8 +94,6 @@ public class PersonalIdentificationControllerTest {
                 .andExpect(jsonPath("$.success").value(expectedResponse.isSuccess()))
                 .andExpect(jsonPath("$.status").value(expectedResponse.getStatus().toString()))
                 .andExpect(jsonPath("$.data").value(expectedResponse.getData()));
-        System.out.println("ended===>1");
-        System.out.println("size===>" + identificationInfoRepository.findAll().size());
     }
 
     @Test

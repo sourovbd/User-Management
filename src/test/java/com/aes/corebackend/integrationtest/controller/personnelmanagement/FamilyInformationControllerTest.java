@@ -25,6 +25,7 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 
 import static com.aes.corebackend.util.response.APIResponseStatus.ERROR;
 import static com.aes.corebackend.util.response.APIResponseStatus.SUCCESS;
@@ -74,10 +75,10 @@ public class FamilyInformationControllerTest {
         userDetails = userDetailsService.loadUserByUsername(USERNAME);
         TOKEN = jwtTokenUtil.generateToken(userDetails);
 
-        familyDTO.setSpouseName("Arham Amani Ahmed");
-        familyDTO.setMothersName("Haseena Parveen Manwar");
-        familyDTO.setFathersName("Manwar Hossain");
+        familyDTO.setFathersName("Mr test");
+        familyDTO.setMothersName("Mrs Test");
         familyDTO.setMaritalStatus("Married");
+        familyDTO.setSpouseName("Test name");
     }
 
     @Test
@@ -120,15 +121,16 @@ public class FamilyInformationControllerTest {
     @DatabaseSetup("/dataset/personnel_management.xml")
     public void updateFamilyInfoSuccessTest() throws Exception {
 
-        PersonalFamilyInfoDTO existingFamilyInfoDTO = PersonalFamilyInfoDTO.getPersonalFamilyDTO(familyInfoRepository.findPersonalFamilyInfoByUserId(1L));
-        existingFamilyInfoDTO.setMothersName("NeelaManwar");
-
+        PersonalFamilyInfoDTO existingFamilyDTO = PersonalFamilyInfoDTO.getPersonalFamilyDTO(familyInfoRepository.findPersonalFamilyInfoByUserId(1L));
+        existingFamilyDTO.setMaritalStatus("Married");
+        existingFamilyDTO.setSpouseName("Mrs Doe");
         expectedResponse.setResponse(FAMILY_UPDATE_SUCCESS, TRUE, null, SUCCESS);
 
         mockMvc.perform(put("/users/1/family-information")
                         .header(HttpHeaders.AUTHORIZATION, "Bearer " + TOKEN)
                         .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                        .content(objectMapper.writeValueAsString(familyDTO)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(existingFamilyDTO)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message").value(expectedResponse.getMessage()))
                 .andExpect(jsonPath("$.success").value(expectedResponse.isSuccess()))
