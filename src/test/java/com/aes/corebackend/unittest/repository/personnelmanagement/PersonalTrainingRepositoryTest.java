@@ -64,7 +64,7 @@ public class PersonalTrainingRepositoryTest {
         existingPersonalTrainingInfo.setProgramName("Python");
         personalTrainingRepository.save(existingPersonalTrainingInfo);
 
-        Assertions.assertThat(personalTrainingRepository.getById(1L).getProgramName()).isEqualTo("newEmployer");
+        Assertions.assertThat(personalTrainingRepository.getById(1L).getProgramName()).isEqualTo("Python");
     }
 
     @Test
