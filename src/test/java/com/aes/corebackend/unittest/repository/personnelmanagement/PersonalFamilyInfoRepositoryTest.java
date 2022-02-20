@@ -108,7 +108,7 @@ public class PersonalFamilyInfoRepositoryTest {
     @Test
     @DatabaseSetup("/dataset/users.xml")
     @DatabaseSetup("/dataset/personal_family_info.xml")
-    public void testFindPersonalIdentificationByUserIdSuccess() {
+    public void testFindPersonalFamilyInfoByUserIdSuccess() {
 
         User existingUser = userRepository.getById(1L);
         PersonalFamilyInfo existingFamilyInfo = personalFamilyInfoRepository.findPersonalFamilyInfoByUserId(existingUser.getId());
@@ -120,7 +120,7 @@ public class PersonalFamilyInfoRepositoryTest {
     @Test
     @DatabaseSetup("/dataset/users.xml")
     @DatabaseSetup("/dataset/personal_family_info.xml")
-    public void testFindPersonalIdentificationByUserIdNoRecordFound() {
+    public void testFindPersonalFamilyInfoByUserIdNoRecordFound() {
 
         PersonalFamilyInfo existingFamilyInfo = personalFamilyInfoRepository.findPersonalFamilyInfoByUserId(9999L);
 

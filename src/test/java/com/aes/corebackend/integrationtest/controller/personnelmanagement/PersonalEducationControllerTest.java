@@ -33,8 +33,7 @@ import static com.aes.corebackend.util.response.APIResponseStatus.SUCCESS;
 import static com.aes.corebackend.util.response.PMAPIResponseMessage.*;
 import static com.aes.corebackend.util.response.PMAPIResponseMessage.TRUE;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(
