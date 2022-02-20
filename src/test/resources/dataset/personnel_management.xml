@@ -102,4 +102,24 @@
             passing_year="2019"
             user_id="1"
     />
+
+    <personal_job_experience
+            id="1"
+            employer_name="REVE"
+            start_date="2017-03-12"
+            end_date="2020-09-12"
+            designation="SDE"
+            responsibilities="Development"
+            user_id="1"
+    />
+
+    <personal_job_experience
+            id="2"
+            employer_name="Nascenia"
+            start_date="2017-03-12"
+            end_date="2020-09-12"
+            designation="SDE"
+            responsibilities="Development"
+            user_id="1"
+    />
 </dataset>
