@@ -79,8 +79,7 @@ public class UserCredentialControllerTest {
     }
 
     @Test
-    //@DatabaseSetup("/dataset/user_credentials_2.xml")
-    @DatabaseSetup("/dataset/users_2.xml")
+    @DatabaseSetup("/dataset/users.xml")
     public void saveCredentialTest() throws Exception {
         UserCredentialDTO userCredentialDTO = new UserCredentialDTO();
         userCredentialDTO.setId(1L);
@@ -98,8 +97,7 @@ public class UserCredentialControllerTest {
     }
 
     @Test
-    //@DatabaseSetup("/dataset/user_credentials_2.xml")
-    @DatabaseSetup("/dataset/users_2.xml")
+    @DatabaseSetup("/dataset/users.xml")
     public void verifyCredentialTest() throws Exception {
         UserCredentialDTO userCredentialDTO = new UserCredentialDTO();
         userCredentialDTO.setId(2L);
@@ -116,8 +114,7 @@ public class UserCredentialControllerTest {
                         .andExpect(jsonPath("$.message").value(VALID_PASSWORD));
     }
     @Test
-    //@DatabaseSetup("/dataset/user_credentials_2.xml")
-    @DatabaseSetup("/dataset/users_2.xml")
+    @DatabaseSetup("/dataset/users.xml")
     public void forgotPasswordTest() throws Exception {
         ForgotPasswordDTO forgotPasswordDTO = new ForgotPasswordDTO();
         forgotPasswordDTO.setEmailAddress("test2@gmail.com");
