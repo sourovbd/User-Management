@@ -1,5 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataset>
+    <user_credential
+            id="1"
+            employee_id="012615"
+            password="$2a$12$XMG3cM8IzAtwe3NsWn/HRuWmvUJ3YNzDMOCEysSoonoDihx6Dsysi"
+            active="true"
+            roles="SYS_ADMIN"
+    />
+
+    <user_credential
+            id="2"
+            employee_id="012518"
+            password="$2a$12$tZLPGLFWrBMUg.k6u5.BlOvpCTm9YT9FOnoEwVIOchLigMVc2PR2G"
+            active="true"
+            roles="EMPLOYEE"
+    />
+
+    <user_credential
+            id="3"
+            employee_id="012517"
+            password="$2a$12$tZLPGLFWrBMUg.k6u5.BlOvpCTm9YT9FOnoEwVIOchLigMVc2PR2G"
+            active="true"
+            roles="ORG_SETUP"
+    />
+
+    <user
+            id="1"
+            email_address="test@gmail.com"
+            designation="CTO"
+            employee_id="012517"
+            business_unit="AES"
+            department="Developmemt"
+            roles="EMPLOYEE"
+            user_credential_id="1"
+    />
+
+    <user
+            id="2"
+            email_address="test2@gmail.com"
+            designation="CTO"
+            employee_id="012518"
+            business_unit="AES"
+            department="Developmemt"
+            roles="EMPLOYEE"
+            user_credential_id="2"
+    />
+
+</dataset>
+<!--
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
 
     <user_credential
             id="1"
@@ -37,4 +87,4 @@
         user_credential_id="2"
     />
 
-</dataset>
+</dataset>-->
