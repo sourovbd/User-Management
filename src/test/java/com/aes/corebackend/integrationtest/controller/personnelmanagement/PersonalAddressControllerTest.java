@@ -117,16 +117,16 @@ public class PersonalAddressControllerTest {
     @DatabaseSetup("/dataset/personnel_management.xml")
     public void updateAddressInfoFailedTest() throws Exception {
 
-        PersonalAddressInfoDTO addressInfoDTO1 = PersonalAddressInfoDTO.getPersonalAddressInfoDTO(addressInfoRepository.findPersonalAddressInfoByUserId(1L));
-        addressInfoDTO1.setPermanentAddress(addressInfoDTO.getPermanentAddress());
-        addressInfoDTO1.setPresentAddress(addressInfoDTO.getPresentAddress());
+        PersonalAddressInfoDTO existingAddressDTO = PersonalAddressInfoDTO.getPersonalAddressInfoDTO(addressInfoRepository.findPersonalAddressInfoByUserId(1L));
+        existingAddressDTO.setPermanentAddress(addressInfoDTO.getPermanentAddress());
+        existingAddressDTO.setPresentAddress(addressInfoDTO.getPresentAddress());
 
         expectedResponse.setResponse(ADDRESS_UPDATE_SUCCESS, TRUE, null, SUCCESS);
 
         mockMvc.perform(put("/users/1/personal-address")
                         .header(HttpHeaders.AUTHORIZATION, "Bearer " + TOKEN)
                         .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                        .content(objectMapper.writeValueAsString(addressInfoDTO1)))
+                        .content(objectMapper.writeValueAsString(existingAddressDTO)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message").value(expectedResponse.getMessage()))
                 .andExpect(jsonPath("$.success").value(expectedResponse.isSuccess()))
@@ -138,8 +138,8 @@ public class PersonalAddressControllerTest {
     @DatabaseSetup("/dataset/personnel_management.xml")
     public void getAddressInfoSuccessTest() throws Exception {
 
-        PersonalAddressInfoDTO addressInfoDTO1 = PersonalAddressInfoDTO.getPersonalAddressInfoDTO(addressInfoRepository.findPersonalAddressInfoByUserId(1L));
-        expectedResponse.setResponse(ADDRESS_RECORD_FOUND, TRUE, addressInfoDTO1, SUCCESS);
+        PersonalAddressInfoDTO existingAddressDTO = PersonalAddressInfoDTO.getPersonalAddressInfoDTO(addressInfoRepository.findPersonalAddressInfoByUserId(1L));
+        expectedResponse.setResponse(ADDRESS_RECORD_FOUND, TRUE, existingAddressDTO, SUCCESS);
 
         mockMvc.perform(get("/users/1/personal-address")
                         .header(HttpHeaders.AUTHORIZATION, "Bearer " + TOKEN)
@@ -154,7 +154,7 @@ public class PersonalAddressControllerTest {
 
     @Test
     @DatabaseSetup("/dataset/personnel_management.xml")
-    public void getAddressInfoFailedTest() throws Exception {
+    public void getAddressInfoNoRecordFoundTest() throws Exception {
 
         expectedResponse.setResponse(ADDRESS_RECORD_NOT_FOUND, FALSE, null, ERROR);
 

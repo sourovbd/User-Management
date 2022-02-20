@@ -140,8 +140,8 @@ public class PersonalIdentificationControllerTest {
     @DatabaseSetup("/dataset/personnel_management.xml")
     public void getIdentificationSuccessTest() throws Exception {
 
-        PersonalIdentificationInfo personalIdentificationInfo = identificationInfoRepository.findPersonalIdentificationInfoByUserId(1L);
-        expectedResponse.setResponse(IDENTIFICATION_RECORD_FOUND, TRUE, PersonalIdentificationInfoDTO.getPersonalIdentificationDTO(personalIdentificationInfo), SUCCESS);
+        PersonalIdentificationInfo existingIdentificationInfo = identificationInfoRepository.findPersonalIdentificationInfoByUserId(1L);
+        expectedResponse.setResponse(IDENTIFICATION_RECORD_FOUND, TRUE, PersonalIdentificationInfoDTO.getPersonalIdentificationDTO(existingIdentificationInfo), SUCCESS);
 
         mockMvc.perform(get("/users/1/identification-information")
                         .header(HttpHeaders.AUTHORIZATION, "Bearer " + TOKEN)

@@ -1,7 +1,6 @@
 package com.aes.corebackend.integrationtest.controller.personnelmanagement;
 
 import com.aes.corebackend.dto.personnelmanagement.PersonalBasicInfoDTO;
-import com.aes.corebackend.entity.personnelmanagement.PersonalBasicInfo;
 import com.aes.corebackend.enumeration.Gender;
 import com.aes.corebackend.repository.personnelmanagement.PersonalBasicInfoRepository;
 import com.aes.corebackend.service.springsecurity.CustomUserDetailsService;
@@ -14,7 +13,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpHeaders;
@@ -121,14 +119,14 @@ public class PersonalBasicInfoControllerTest {
     @DatabaseSetup("/dataset/personnel_management.xml")
     public void updateBasicInfoSuccessTest() throws Exception {
 
-        PersonalBasicInfoDTO infoDTO = PersonalBasicInfoDTO.getPersonalBasicInfoDTO(personalBasicInfoRepository.findPersonalBasicInfoByUserId(1L));
-        infoDTO.setFirstName("TestName");
+        PersonalBasicInfoDTO existingInfoDTO = PersonalBasicInfoDTO.getPersonalBasicInfoDTO(personalBasicInfoRepository.findPersonalBasicInfoByUserId(1L));
+        existingInfoDTO.setFirstName("TestName");
         expectedResponse.setResponse(BASIC_INFORMATION_UPDATE_SUCCESS, TRUE, null, SUCCESS);
 
         mockMvc.perform(put("/users/1/basic-information")
                         .header(HttpHeaders.AUTHORIZATION, "Bearer " + TOKEN)
                         .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                        .content(objectMapper.writeValueAsString(infoDTO)))
+                        .content(objectMapper.writeValueAsString(existingInfoDTO)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message").value(expectedResponse.getMessage()))
                 .andExpect(jsonPath("$.success").value(expectedResponse.isSuccess()))
@@ -141,9 +139,8 @@ public class PersonalBasicInfoControllerTest {
     @DatabaseSetup("/dataset/personnel_management.xml")
     public void getBasicInfoSuccessTest() throws Exception {
 
-        PersonalBasicInfoDTO infoDTO = PersonalBasicInfoDTO.getPersonalBasicInfoDTO(personalBasicInfoRepository.findPersonalBasicInfoByUserId(1L));
-
-        expectedResponse.setResponse(BASIC_INFORMATION_RECORD_FOUND, TRUE, infoDTO, SUCCESS);
+        PersonalBasicInfoDTO existingInfoDTO = PersonalBasicInfoDTO.getPersonalBasicInfoDTO(personalBasicInfoRepository.findPersonalBasicInfoByUserId(1L));
+        expectedResponse.setResponse(BASIC_INFORMATION_RECORD_FOUND, TRUE, existingInfoDTO, SUCCESS);
 
         mockMvc.perform(get("/users/1/basic-information")
                         .header(HttpHeaders.AUTHORIZATION, "Bearer " + TOKEN)

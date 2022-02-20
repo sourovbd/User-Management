@@ -73,11 +73,6 @@ public class PersonalEducationControllerTest {
     private APIResponse expectedResponse = APIResponse.getApiResponse();
     private PersonalEducationDTO personalEducationDTO = new PersonalEducationDTO();
 
-    private User user = new User(1L,"abc@gmail.com","agm","012580","a1polymar","accounts", null, null, null, null);
-    private PersonalEducationInfo personalEducationInfoSSC = new PersonalEducationInfo(1L, "SSC", "ABC High School", 5.00f, 4.90f, "2015", user);
-    private PersonalEducationInfo personalEducationInfoHSC = new PersonalEducationInfo(2L, "HSC", "ABC College", 5.00f, 4.90f, "2017", user);
-    private PersonalEducationInfo personalEducationInfoBSC = new PersonalEducationInfo(3L, "BSC", "ABC University", 4.00f, 3.90f, "2021", user);
-
     @BeforeEach
     public void setup() {
         userDetails = userDetailsService.loadUserByUsername(USERNAME);
@@ -127,7 +122,7 @@ public class PersonalEducationControllerTest {
 
     @Test
     @DatabaseSetup("/dataset/personnel_management.xml")
-    public void getPersonalEducationInformationListSuccessTest() throws Exception {
+    public void getPersonalEducationListSuccessTest() throws Exception {
 
         ArrayList<PersonalEducationInfo> educationInfos = educationRepository.findPersonalEducationInfoByUserId(1L);
         ArrayList<PersonalEducationDTO> educationDTOs = new ArrayList<>();
@@ -150,8 +145,8 @@ public class PersonalEducationControllerTest {
     @DatabaseSetup("/dataset/personnel_management.xml")
     public void getPersonalEducationSuccessTest() throws Exception {
 
-        PersonalEducationInfo educationInfo = educationRepository.findPersonalEducationInfoByIdAndUserId(1L, 1L);
-        expectedResponse.setResponse(EDUCATION_RECORD_FOUND, TRUE, PersonalEducationDTO.getPersonalEducationDTO(educationInfo), SUCCESS);
+        PersonalEducationInfo existingEducationInfo = educationRepository.findPersonalEducationInfoByIdAndUserId(1L, 1L);
+        expectedResponse.setResponse(EDUCATION_RECORD_FOUND, TRUE, PersonalEducationDTO.getPersonalEducationDTO(existingEducationInfo), SUCCESS);
 
         mockMvc.perform(get("/users/1/education-information/1")
                         .header(HttpHeaders.AUTHORIZATION, "Bearer " + TOKEN)
@@ -165,7 +160,7 @@ public class PersonalEducationControllerTest {
 
     @Test
     @DatabaseSetup("/dataset/personnel_management.xml")
-    public void getPersonalEducationNotFoundTest() throws Exception {
+    public void getPersonalEducationNoRecordFoundTest() throws Exception {
 
         expectedResponse.setResponse(EDUCATION_RECORD_NOT_FOUND, FALSE, null, ERROR);
 

@@ -138,8 +138,8 @@ public class PersonalAttributesControllerTest {
     @DatabaseSetup("/dataset/personnel_management.xml")
     public void getAttributesSuccessTest() throws Exception {
 
-        PersonalAttributes attributes = attributesRepository.findPersonalAttributesByUserId(1L);
-        expectedResponse.setResponse(ATTRIBUTES_RECORD_FOUND, TRUE, PersonalAttributesDTO.getPersonalAttributesDTO(attributes), SUCCESS);
+        PersonalAttributes existingAttributes = attributesRepository.findPersonalAttributesByUserId(1L);
+        expectedResponse.setResponse(ATTRIBUTES_RECORD_FOUND, TRUE, PersonalAttributesDTO.getPersonalAttributesDTO(existingAttributes), SUCCESS);
 
         mockMvc.perform(get("/users/1/attribute-information")
                         .header(HttpHeaders.AUTHORIZATION, "Bearer " + TOKEN)
@@ -153,7 +153,7 @@ public class PersonalAttributesControllerTest {
 
     @Test
     @DatabaseSetup("/dataset/personnel_management.xml")
-    public void getPersonalAttributesNotFoundTest() throws Exception {
+    public void getAttributesNotFoundTest() throws Exception {
 
         expectedResponse.setResponse(ATTRIBUTES_RECORD_NOT_FOUND, FALSE, null, ERROR);
 

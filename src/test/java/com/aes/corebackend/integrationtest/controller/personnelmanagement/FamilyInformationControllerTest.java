@@ -1,8 +1,6 @@
 package com.aes.corebackend.integrationtest.controller.personnelmanagement;
 
-import com.aes.corebackend.dto.personnelmanagement.PersonalAttributesDTO;
 import com.aes.corebackend.dto.personnelmanagement.PersonalFamilyInfoDTO;
-import com.aes.corebackend.entity.personnelmanagement.PersonalAttributes;
 import com.aes.corebackend.entity.personnelmanagement.PersonalFamilyInfo;
 import com.aes.corebackend.repository.personnelmanagement.PersonalFamilyInfoRepository;
 import com.aes.corebackend.service.springsecurity.CustomUserDetailsService;
@@ -84,7 +82,7 @@ public class FamilyInformationControllerTest {
 
     @Test
     @DatabaseSetup("/dataset/personnel_management.xml")
-    public void createFamilyInformationSuccessTest() throws Exception {
+    public void createFamilyInfoSuccessTest() throws Exception {
 
         expectedResponse.setResponse(FAMILY_CREATE_SUCCESS, TRUE, null, SUCCESS);
 
@@ -102,7 +100,7 @@ public class FamilyInformationControllerTest {
 
     @Test
     @DatabaseSetup("/dataset/personnel_management.xml")
-    public void createFamilyInformationFailedTest() throws Exception {
+    public void createFamilyInfoFailedTest() throws Exception {
 
         expectedResponse.setResponse(FAMILY_CREATE_FAIL, FALSE, null, ERROR);
 
@@ -120,10 +118,10 @@ public class FamilyInformationControllerTest {
 
     @Test
     @DatabaseSetup("/dataset/personnel_management.xml")
-    public void updateFamilyInformationSuccessTest() throws Exception {
+    public void updateFamilyInfoSuccessTest() throws Exception {
 
-        PersonalFamilyInfoDTO familyInfoDTO1 = PersonalFamilyInfoDTO.getPersonalFamilyDTO(familyInfoRepository.findPersonalFamilyInfoByUserId(1L));
-        familyInfoDTO1.setMothersName("NeelaManwar");
+        PersonalFamilyInfoDTO existingFamilyInfoDTO = PersonalFamilyInfoDTO.getPersonalFamilyDTO(familyInfoRepository.findPersonalFamilyInfoByUserId(1L));
+        existingFamilyInfoDTO.setMothersName("NeelaManwar");
 
         expectedResponse.setResponse(FAMILY_UPDATE_SUCCESS, TRUE, null, SUCCESS);
 
@@ -142,8 +140,8 @@ public class FamilyInformationControllerTest {
     @DatabaseSetup("/dataset/personnel_management.xml")
     public void getFamilyInfoSuccessTest() throws Exception {
 
-        PersonalFamilyInfo familyInfo = familyInfoRepository.findPersonalFamilyInfoByUserId(1L);
-        expectedResponse.setResponse(FAMILY_RECORD_FOUND, TRUE, PersonalFamilyInfoDTO.getPersonalFamilyDTO(familyInfo), SUCCESS);
+        PersonalFamilyInfo existingFamilyInfo = familyInfoRepository.findPersonalFamilyInfoByUserId(1L);
+        expectedResponse.setResponse(FAMILY_RECORD_FOUND, TRUE, PersonalFamilyInfoDTO.getPersonalFamilyDTO(existingFamilyInfo), SUCCESS);
 
         mockMvc.perform(get("/users/1/family-information")
                         .header(HttpHeaders.AUTHORIZATION, "Bearer " + TOKEN)
