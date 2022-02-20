@@ -37,8 +37,8 @@ public class UserCredentialRepositoryTest {
             .build();
 
     @Test
-    @DatabaseSetup("/dataset/user_credentials_2.xml")
-    @DatabaseSetup("/dataset/users_2.xml")
+    @DatabaseSetup("/dataset/user_credentials.xml")
+    @DatabaseSetup("/dataset/users.xml")
     public void updateTestSuccess() throws Exception {
         UserCredential savedCredential = userCredentialRepository.save(userCredential);
         Assertions.assertThat(savedCredential.getId()).isGreaterThan(0);
@@ -48,8 +48,8 @@ public class UserCredentialRepositoryTest {
     }
 
     @Test
-    @DatabaseSetup("/dataset/user_credentials_2.xml")
-    @DatabaseSetup("/dataset/users_2.xml")
+    @DatabaseSetup("/dataset/user_credentials.xml")
+    @DatabaseSetup("/dataset/users.xml")
     public void findByIdSuccessTest() throws Exception {
         UserCredential userCredential = userCredentialRepository.findById(2L).orElse(null);
         Assertions.assertThat(userCredential.getId()).isGreaterThan(0);
@@ -58,15 +58,15 @@ public class UserCredentialRepositoryTest {
         Assertions.assertThat(userCredential.isActive()).isEqualTo(true);
     }
     @Test
-    @DatabaseSetup("/dataset/user_credentials_2.xml")
-    @DatabaseSetup("/dataset/users_2.xml")
+    @DatabaseSetup("/dataset/user_credentials.xml")
+    @DatabaseSetup("/dataset/users.xml")
     public void findByIdFailTest() throws Exception {
         Optional<UserCredential> userCredential = userCredentialRepository.findById(5L);
         Assertions.assertThat(userCredential).isEmpty();
     }
     @Test
-    @DatabaseSetup("/dataset/user_credentials_2.xml")
-    @DatabaseSetup("/dataset/users_2.xml")
+    @DatabaseSetup("/dataset/user_credentials.xml")
+    @DatabaseSetup("/dataset/users.xml")
     public void findByEmployeeIdSuccessTest() throws Exception {
         UserCredential userCredential = userCredentialRepository.findByEmployeeId("012518").orElse(null);
         Assertions.assertThat(userCredential.getId()).isGreaterThan(0);
@@ -74,8 +74,8 @@ public class UserCredentialRepositoryTest {
         Assertions.assertThat(userCredential.isActive()).isEqualTo(true);
     }
     @Test
-    @DatabaseSetup("/dataset/user_credentials_2.xml")
-    @DatabaseSetup("/dataset/users_2.xml")
+    @DatabaseSetup("/dataset/user_credentials.xml")
+    @DatabaseSetup("/dataset/users.xml")
     public void findByEmployeeFailTest() throws Exception {
         Optional<UserCredential> userCredential = userCredentialRepository.findByEmployeeId("012616");
         Assertions.assertThat(userCredential).isEmpty();
