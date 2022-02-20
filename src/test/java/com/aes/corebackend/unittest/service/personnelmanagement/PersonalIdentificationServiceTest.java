@@ -63,11 +63,11 @@ public class PersonalIdentificationServiceTest {
 
         expectedResponse.setResponse(IDENTIFICATION_CREATE_SUCCESS, TRUE, null, SUCCESS);
         Mockito.when(userService.getUserByUserId(1L)).thenReturn(user);
-        Mockito.when(personalIdentificationRepository.save(personalIdentificationInfo))
+        Mockito.when(personalIdentificationRepository.save(PersonalIdentificationInfoDTO.getPersonalIdentificationEntity(personalIdentificationInfoDTO)))
                 .thenReturn(personalIdentificationInfo);
 
         APIResponse actualResponse = personalIdentificationService.create(personalIdentificationInfoDTO, 1L);
-        assertEquals(actualResponse, expectedResponse);
+        assertEquals(expectedResponse, actualResponse);
     }
 
     @Test
@@ -80,7 +80,7 @@ public class PersonalIdentificationServiceTest {
                 .thenThrow(new RuntimeException());
 
         APIResponse actualResponse = personalIdentificationService.create(personalIdentificationInfoDTO, 1L);
-        assertEquals(actualResponse, expectedResponse);
+        assertEquals(expectedResponse, actualResponse);
     }
 
     @Test
@@ -93,7 +93,7 @@ public class PersonalIdentificationServiceTest {
                 .thenReturn(personalIdentificationInfo);
 
         APIResponse actualResponse = personalIdentificationService.update(personalIdentificationInfoDTO, 1L);
-        assertEquals(actualResponse, expectedResponse);
+        assertEquals(expectedResponse, actualResponse);
     }
 
     @Test
@@ -108,7 +108,7 @@ public class PersonalIdentificationServiceTest {
                 .thenThrow(new RuntimeException());
 
         APIResponse actualResponse = personalIdentificationService.update(personalIdentificationInfoDTO, 1L);
-        assertEquals(actualResponse, expectedResponse);
+        assertEquals(expectedResponse, actualResponse);
     }
 
     @Test
@@ -121,7 +121,7 @@ public class PersonalIdentificationServiceTest {
                 .thenReturn(personalIdentificationInfo);
 
         APIResponse actualResponse = personalIdentificationService.read(1L);
-        assertEquals(actualResponse, expectedResponse);
+        assertEquals(expectedResponse, actualResponse);
     }
 
     @Test
@@ -134,6 +134,6 @@ public class PersonalIdentificationServiceTest {
                 .thenReturn(null);
 
         APIResponse actualResponse = personalIdentificationService.read(1L);
-        assertEquals(actualResponse, expectedResponse);
+        assertEquals(expectedResponse, actualResponse);
     }
 }
