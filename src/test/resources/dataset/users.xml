@@ -25,24 +25,25 @@
     />
 
     <user
-        id="1"
-        email_address="test@gmail.com"
-        designation="CTO"
-        employee_id="012517"
-        business_unit="AES"
-        department="Developmemt"
-        roles="EMPLOYEE"
+            id="1"
+            email_address="test@gmail.com"
+            designation="CTO"
+            employee_id="012517"
+            business_unit="AES"
+            department="Developmemt"
+            roles="EMPLOYEE"
+            user_credential_id="1"
     />
 
     <user
-        id="2"
-        email_address="test2@gmail.com"
-        designation="CTO"
-        employee_id="012518"
-        business_unit="AES"
-        department="Developmemt"
-        roles="EMPLOYEE"
-        user_credential_id="2"
+            id="2"
+            email_address="test2@gmail.com"
+            designation="CTO"
+            employee_id="012518"
+            business_unit="AES"
+            department="Developmemt"
+            roles="EMPLOYEE"
+            user_credential_id="2"
     />
 
 </dataset>
