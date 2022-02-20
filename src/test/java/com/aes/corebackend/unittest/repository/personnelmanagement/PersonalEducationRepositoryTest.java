@@ -38,8 +38,7 @@ public class PersonalEducationRepositoryTest {
     private UserRepository userRepository;
 
     @Test
-    @DatabaseSetup("/dataset/users.xml")
-    @DatabaseSetup("/dataset/personal_education_info.xml")
+    @DatabaseSetup("/dataset/personnel_management.xml")
     public void testCreatePersonalEducationSuccess() {
 
         User user = userRepository.getById(1L);
@@ -61,8 +60,7 @@ public class PersonalEducationRepositoryTest {
     }
 
     @Test
-    @DatabaseSetup("/dataset/users.xml")
-    @DatabaseSetup("/dataset/personal_education_info.xml")
+    @DatabaseSetup("/dataset/personnel_management.xml")
     public void testUpdatePersonalEducationSuccess() {
 
         PersonalEducationInfo existingEducationInfo = personalEducationRepository.getById(1L);
@@ -75,8 +73,7 @@ public class PersonalEducationRepositoryTest {
     }
 
     @Test
-    @DatabaseSetup("/dataset/users.xml")
-    @DatabaseSetup("/dataset/personal_education_info.xml")
+    @DatabaseSetup("/dataset/personnel_management.xml")
     public void testFindEducationListByUserIdSuccess() {
 
         ArrayList<PersonalEducationInfo> educationList = personalEducationRepository.findPersonalEducationInfoByUserId(1L);
@@ -85,8 +82,7 @@ public class PersonalEducationRepositoryTest {
     }
 
     @Test
-    @DatabaseSetup("/dataset/users.xml")
-    @DatabaseSetup("/dataset/personal_education_info.xml")
+    @DatabaseSetup("/dataset/personnel_management.xml")
     public void testFindEducationListByUserIdNoRecordFound() {
 
         ArrayList<PersonalEducationInfo> educationList = personalEducationRepository.findPersonalEducationInfoByUserId(9999L);
@@ -95,8 +91,7 @@ public class PersonalEducationRepositoryTest {
     }
 
     @Test
-    @DatabaseSetup("/dataset/users.xml")
-    @DatabaseSetup("/dataset/personal_education_info.xml")
+    @DatabaseSetup("/dataset/personnel_management.xml")
     public void testFindSingleEducationByIdAndUserIdSuccess() {
 
         PersonalEducationInfo personalEducationInfo = personalEducationRepository.findPersonalEducationInfoByIdAndUserId(1L, 1L);
@@ -107,8 +102,7 @@ public class PersonalEducationRepositoryTest {
     }
 
     @Test
-    @DatabaseSetup("/dataset/users.xml")
-    @DatabaseSetup("/dataset/personal_education_info.xml")
+    @DatabaseSetup("/dataset/personnel_management.xml")
     public void testFindSingleEducationByIdAndUserIdNoRecordFound() {
 
         PersonalEducationInfo personalEducationInfo = personalEducationRepository.findPersonalEducationInfoByIdAndUserId(9999L, 1L);
