@@ -44,7 +44,7 @@ public class UserRepositoryTest {
             .build();
 
     @Test
-    @DatabaseSetup("/dataset/users.xml")
+    @DatabaseSetup("/dataset/users_2.xml")
     public void testCreateUserSuccess() {
         User savedUser = userRepository.save(user);
 
@@ -56,14 +56,14 @@ public class UserRepositoryTest {
 
     @Test
     @Disabled
-    @DatabaseSetup("/dataset/users.xml")
+    @DatabaseSetup("/dataset/users_2.xml")
     public void testCreateUserFail() {
         user.setEmailAddress("test@gmail.com");
         User savedUser = userRepository.save(user);
     }
 
     @Test
-    @DatabaseSetup("/dataset/users.xml")
+    @DatabaseSetup("/dataset/users_2.xml")
     public void testGetAllUsersSuccess()  {
 
         List<User> users = userRepository.findAll();
@@ -72,7 +72,7 @@ public class UserRepositoryTest {
     }
 
     @Test
-    @DatabaseSetup("/dataset/users.xml")
+    @DatabaseSetup("/dataset/users_2.xml")
     public void testGetAllUsersFail()  {
 
         List<User> users = userRepository.findAll();
@@ -81,7 +81,7 @@ public class UserRepositoryTest {
     }
 
     @Test
-    @DatabaseSetup("/dataset/users.xml")
+    @DatabaseSetup("/dataset/users_2.xml")
     public void testGetUserDetailsSuccess()  {
 
         User user = userRepository.findById(1l).orElseThrow(ResourceNotFoundException::new);
@@ -95,7 +95,7 @@ public class UserRepositoryTest {
     }
 
     @Test
-    @DatabaseSetup("/dataset/users.xml")
+    @DatabaseSetup("/dataset/users_2.xml")
     public void testGetUserDetailsFail()  {
 
         Optional<User> user = userRepository.findById(5l);
@@ -103,7 +103,7 @@ public class UserRepositoryTest {
     }
 
     @Test
-    @DatabaseSetup("/dataset/users.xml")
+    @DatabaseSetup("/dataset/users_2.xml")
     public void testUpdateUserSuccess() {
 
         User existingUser = userRepository.findById(1l).get();
@@ -119,7 +119,7 @@ public class UserRepositoryTest {
     }
 
     @Test
-    @DatabaseSetup("/dataset/users.xml")
+    @DatabaseSetup("/dataset/users_2.xml")
     public void testUpdateUserFail() {
 
         Optional<User> existingUser = userRepository.findById(10l);
@@ -128,7 +128,7 @@ public class UserRepositoryTest {
     }
 
     @Test
-    @DatabaseSetup("/dataset/users.xml")
+    @DatabaseSetup("/dataset/users_2.xml")
     public void testSingleDeleteUserSuccess() {
 
         userRepository.deleteById(1l);
@@ -137,7 +137,7 @@ public class UserRepositoryTest {
     }
 
     @Test
-    @DatabaseSetup("/dataset/users.xml")
+    @DatabaseSetup("/dataset/users_2.xml")
     public void testSingleDeleteUserFail() {
 
         userRepository.deleteById(1l);
@@ -146,7 +146,7 @@ public class UserRepositoryTest {
     }
 
     @Test
-    @DatabaseSetup("/dataset/users.xml")
+    @DatabaseSetup("/dataset/users_2.xml")
     public void testFindByEmailAddressSuccess() {
 
         User user = userRepository.findByEmailAddress("test@gmail.com").orElseThrow(ResourceNotFoundException::new);
@@ -164,7 +164,7 @@ public class UserRepositoryTest {
     }
 
     @Test
-    @DatabaseSetup("/dataset/users.xml")
+    @DatabaseSetup("/dataset/users_2.xml")
     public void testFindByEmailAddressFail() {
 
         Optional<User> user = userRepository.findByEmailAddress("tester@gmail.com");

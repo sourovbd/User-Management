@@ -1,17 +1,12 @@
 package com.aes.corebackend.unittest.repository.usermanagement;
 
-import com.aes.corebackend.entity.usermanagement.User;
 import com.aes.corebackend.entity.usermanagement.UserCredential;
 import com.aes.corebackend.repository.usermanagement.UserCredentialRepository;
 import com.github.springtestdbunit.DbUnitTestExecutionListener;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.TestExecutionListeners;
@@ -34,7 +29,7 @@ public class UserCredentialRepositoryTest {
     private UserCredentialRepository userCredentialRepository;
 
     private static final UserCredential userCredential = UserCredential.builder()
-            .id(2)
+            .id(4)
             .employeeId("012616")
             .password("123@5Aa4")
             .active(true)
@@ -42,8 +37,8 @@ public class UserCredentialRepositoryTest {
             .build();
 
     @Test
-    @DatabaseSetup("/dataset/users.xml")
-    @DatabaseSetup("/dataset/user_credentials.xml")
+    @DatabaseSetup("/dataset/user_credentials_2.xml")
+    @DatabaseSetup("/dataset/users_2.xml")
     public void updateTestSuccess() throws Exception {
         UserCredential savedCredential = userCredentialRepository.save(userCredential);
         Assertions.assertThat(savedCredential.getId()).isGreaterThan(0);
@@ -53,34 +48,34 @@ public class UserCredentialRepositoryTest {
     }
 
     @Test
-    @DatabaseSetup("/dataset/users.xml")
-    @DatabaseSetup("/dataset/user_credentials.xml")
+    @DatabaseSetup("/dataset/user_credentials_2.xml")
+    @DatabaseSetup("/dataset/users_2.xml")
     public void findByIdSuccessTest() throws Exception {
         UserCredential userCredential = userCredentialRepository.findById(2L).orElse(null);
         Assertions.assertThat(userCredential.getId()).isGreaterThan(0);
-        Assertions.assertThat(userCredential.getEmployeeId()).isEqualTo("012615");
+        Assertions.assertThat(userCredential.getEmployeeId()).isEqualTo("012518");
         Assertions.assertThat(userCredential.getRoles()).isEqualTo("EMPLOYEE");
         Assertions.assertThat(userCredential.isActive()).isEqualTo(true);
     }
     @Test
-    @DatabaseSetup("/dataset/users.xml")
-    @DatabaseSetup("/dataset/user_credentials.xml")
+    @DatabaseSetup("/dataset/user_credentials_2.xml")
+    @DatabaseSetup("/dataset/users_2.xml")
     public void findByIdFailTest() throws Exception {
-        Optional<UserCredential> userCredential = userCredentialRepository.findById(4L);
+        Optional<UserCredential> userCredential = userCredentialRepository.findById(5L);
         Assertions.assertThat(userCredential).isEmpty();
     }
     @Test
-    @DatabaseSetup("/dataset/users.xml")
-    @DatabaseSetup("/dataset/user_credentials.xml")
+    @DatabaseSetup("/dataset/user_credentials_2.xml")
+    @DatabaseSetup("/dataset/users_2.xml")
     public void findByEmployeeIdSuccessTest() throws Exception {
-        UserCredential userCredential = userCredentialRepository.findByEmployeeId("012615").orElse(null);
+        UserCredential userCredential = userCredentialRepository.findByEmployeeId("012518").orElse(null);
         Assertions.assertThat(userCredential.getId()).isGreaterThan(0);
         Assertions.assertThat(userCredential.getRoles()).isEqualTo("EMPLOYEE");
         Assertions.assertThat(userCredential.isActive()).isEqualTo(true);
     }
     @Test
-    @DatabaseSetup("/dataset/users.xml")
-    @DatabaseSetup("/dataset/user_credentials.xml")
+    @DatabaseSetup("/dataset/user_credentials_2.xml")
+    @DatabaseSetup("/dataset/users_2.xml")
     public void findByEmployeeFailTest() throws Exception {
         Optional<UserCredential> userCredential = userCredentialRepository.findByEmployeeId("012616");
         Assertions.assertThat(userCredential).isEmpty();
