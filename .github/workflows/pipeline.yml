@@ -28,4 +28,4 @@ jobs:
     - name: Run maildev
       run: maildev & sleep 10
     - name: Build with Gradle
-        run: ./gradlew build
+      run: ./gradlew build
