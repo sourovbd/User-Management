@@ -29,6 +29,7 @@ import org.springframework.test.context.transaction.TransactionalTestExecutionLi
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import static com.aes.corebackend.util.response.UMAPIResponseMessage.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -92,7 +93,8 @@ public class UserCredentialControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(userCredentialDTO)))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.message").value(USER_CREDENTIAL_UPDATED_SUCCESSFULLY));
     }
 
     @Test
@@ -110,7 +112,8 @@ public class UserCredentialControllerTest {
                         .header(HttpHeaders.AUTHORIZATION, "Bearer " + TOKEN)
                         .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                         .content(objectMapper.writeValueAsString(userCredentialDTO)))
-                        .andExpect(status().isOk());
+                        .andExpect(status().isOk())
+                        .andExpect(jsonPath("$.message").value(VALID_PASSWORD));
     }
     @Test
     //@DatabaseSetup("/dataset/user_credentials_2.xml")
@@ -124,7 +127,8 @@ public class UserCredentialControllerTest {
                         .header(HttpHeaders.AUTHORIZATION, "Bearer " + TOKEN)
                         .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                         .content(objectMapper.writeValueAsString(forgotPasswordDTO)))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.message").value(NEW_PASSWORD_SENT));
     }
 
 }
