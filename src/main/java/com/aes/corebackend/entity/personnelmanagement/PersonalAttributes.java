@@ -5,8 +5,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
+import javax.validation.constraints.Pattern;
 
 @Entity
 @Data
@@ -20,15 +22,22 @@ public class PersonalAttributes {
     private Long id;
 
     @Column(name = "religion")
+    @Length(min = 3, max = 20, message = "Religion Field must be within 3 to 20 characters")
+    @Pattern(regexp = "^[a-zA-z]+$", message = "Religion Field cannot have numeric or special characters")
     private String religion;
 
     @Column(name = "bloodGroup")
+    @Pattern(regexp = "^(A|B|AB|O)[+-]$", message = "Blood Group: Invalid")
     private String bloodGroup;
 
     @Column(name = "birthPlace")
+    @Length(min = 0, max = 255, message = "Birth place: Character Length exceeds of 255")
+    @Pattern(regexp = "^[a-zA-z]+$", message = "Birth place: Field cannot have numeric or special characters")
     private String birthPlace;
 
     @Column(name = "nationality")
+    @Length(min = 0, max = 30, message = "Nationality: Character Length exceeds of 30")
+    @Pattern(regexp = "^[a-zA-z]+$", message = "Nationality: Field cannot have numeric or special characters")
     private String nationality;
 
     @OneToOne(cascade = CascadeType.ALL, optional = false) //@OneToOne defines a one-to-one relationship between 2 entities

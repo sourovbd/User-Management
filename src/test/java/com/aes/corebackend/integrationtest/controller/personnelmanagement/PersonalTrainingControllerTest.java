@@ -1,15 +1,16 @@
 package com.aes.corebackend.integrationtest.controller.personnelmanagement;
 
-import com.aes.corebackend.dto.personnelmanagement.PersonalFamilyInfoDTO;
-import com.aes.corebackend.entity.personnelmanagement.PersonalFamilyInfo;
-import com.aes.corebackend.repository.personnelmanagement.PersonalFamilyInfoRepository;
+import com.aes.corebackend.dto.personnelmanagement.PersonalTrainingDTO;
+import com.aes.corebackend.entity.personnelmanagement.PersonalTrainingInfo;
+import com.aes.corebackend.repository.personnelmanagement.PersonalTrainingRepository;
 import com.aes.corebackend.service.springsecurity.CustomUserDetailsService;
 import com.aes.corebackend.util.JwtUtil;
 import com.aes.corebackend.util.response.APIResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.springtestdbunit.DbUnitTestExecutionListener;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -25,7 +26,8 @@ import org.springframework.test.context.support.DirtiesContextTestExecutionListe
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static com.aes.corebackend.util.response.APIResponseStatus.ERROR;
+import java.util.ArrayList;
+
 import static com.aes.corebackend.util.response.APIResponseStatus.SUCCESS;
 import static com.aes.corebackend.util.response.PMAPIResponseMessage.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -44,8 +46,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 })
 @AutoConfigureMockMvc
 @TestPropertySource(locations = "classpath:application.properties")
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class FamilyInformationControllerTest {
+public class PersonalTrainingControllerTest {
 
     @Autowired
     public MockMvc mockMvc;
@@ -60,38 +61,57 @@ public class FamilyInformationControllerTest {
     private CustomUserDetailsService userDetailsService;
 
     @Autowired
-    private PersonalFamilyInfoRepository familyInfoRepository;
+    private PersonalTrainingRepository trainingRepository;
 
-    private static String USERNAME = "012518";
+    private static final String USERNAME = "012518";
     private static String TOKEN = "";
     private UserDetails userDetails;
 
     private APIResponse expectedResponse = APIResponse.getApiResponse();
-    private PersonalFamilyInfoDTO familyDTO = new PersonalFamilyInfoDTO();
+    private PersonalTrainingDTO trainingDTO = new PersonalTrainingDTO();
 
     @BeforeEach
     public void setup() {
         userDetails = userDetailsService.loadUserByUsername(USERNAME);
         TOKEN = jwtTokenUtil.generateToken(userDetails);
 
-        familyDTO.setFathersName("Mr test");
-        familyDTO.setMothersName("Mrs Test");
-        familyDTO.setMaritalStatus("Married");
-        familyDTO.setSpouseName("Test name");
+        trainingDTO.setProgramName("Java");
+        trainingDTO.setTrainingInstitute("Coursera");
+        trainingDTO.setDescription("LearnJava");
+        trainingDTO.setStartDate("01-01-2022");
+        trainingDTO.setEndDate("31-01-2022");
     }
 
     @Test
-    @Order(1)
     @DatabaseSetup("/dataset/personnel_management.xml")
-    public void createFamilyInfoSuccessTest() throws Exception {
+    public void createPersonalTrainingSuccessTest() throws Exception {
 
-        expectedResponse.setResponse(FAMILY_CREATE_SUCCESS, TRUE, null, SUCCESS);
+        expectedResponse.setResponse(TRAINING_CREATE_SUCCESS, TRUE, null, SUCCESS);
 
-        mockMvc.perform(post("/users/2/family-information")
+        mockMvc.perform(post("/users/2/trainings")
                         .header(HttpHeaders.AUTHORIZATION, "Bearer " + TOKEN)
                         .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(familyDTO)))
+                        .content(objectMapper.writeValueAsString(trainingDTO)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.message").value(expectedResponse.getMessage()))
+                .andExpect(jsonPath("$.success").value(expectedResponse.isSuccess()))
+                .andExpect(jsonPath("$.status").value(expectedResponse.getStatus().toString()))
+                .andExpect(jsonPath("$.data").value(expectedResponse.getData()));
+
+    }
+
+    @Test
+    @DatabaseSetup("/dataset/personnel_management.xml")
+    public void updatePersonalTrainingSuccessTest() throws Exception {
+
+        PersonalTrainingDTO existingTrainingDTO = PersonalTrainingDTO.getPersonalTrainingDTO(trainingRepository.findPersonalTrainingInfoByIdAndUserId(1L, 1L));
+        existingTrainingDTO.setDescription("TestDescription");
+        expectedResponse.setResponse(TRAINING_UPDATE_SUCCESS, TRUE, null, SUCCESS);
+
+        mockMvc.perform(put("/users/1/trainings/1")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + TOKEN)
+                        .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                        .content(objectMapper.writeValueAsString(existingTrainingDTO)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message").value(expectedResponse.getMessage()))
                 .andExpect(jsonPath("$.success").value(expectedResponse.isSuccess()))
@@ -100,55 +120,35 @@ public class FamilyInformationControllerTest {
     }
 
     @Test
-    @Order(2)
     @DatabaseSetup("/dataset/personnel_management.xml")
-    public void createFamilyInfoFailedTest() throws Exception {
+    public void getPersonalTrainingListSuccessTest() throws Exception {
 
-        expectedResponse.setResponse(FAMILY_CREATE_FAIL, FALSE, null, ERROR);
+        ArrayList<PersonalTrainingInfo> trainingInfos = trainingRepository.findPersonalTrainingInfosByUserId(1L);
+        ArrayList<PersonalTrainingDTO> trainingDTOS = new ArrayList<>();
+        trainingInfos.forEach(trainingInfo -> {
+            trainingDTOS.add(PersonalTrainingDTO.getPersonalTrainingDTO(trainingInfo));
+        });
 
-        mockMvc.perform(post("/users/1/family-information")
+        expectedResponse.setResponse(TRAINING_RECORDS_FOUND, TRUE, trainingDTOS, SUCCESS);
+
+        mockMvc.perform(get("/users/1/trainings")
                         .header(HttpHeaders.AUTHORIZATION, "Bearer " + TOKEN)
-                        .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(familyDTO)))
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message").value(expectedResponse.getMessage()))
-                .andExpect(jsonPath("$.success").value(expectedResponse.isSuccess()))
-                .andExpect(jsonPath("$.status").value(expectedResponse.getStatus().toString()))
-                .andExpect(jsonPath("$.data").value(expectedResponse.getData()));
-    }
-
-    @Test
-    @Order(3)
-    @DatabaseSetup("/dataset/personnel_management.xml")
-    public void updateFamilyInfoSuccessTest() throws Exception {
-
-        PersonalFamilyInfoDTO existingFamilyDTO = PersonalFamilyInfoDTO.getPersonalFamilyDTO(familyInfoRepository.findPersonalFamilyInfoByUserId(1L));
-        existingFamilyDTO.setMaritalStatus("Married");
-        existingFamilyDTO.setSpouseName("Mrs Doe");
-        expectedResponse.setResponse(FAMILY_UPDATE_SUCCESS, TRUE, null, SUCCESS);
-
-        mockMvc.perform(put("/users/1/family-information")
-                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + TOKEN)
-                        .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(existingFamilyDTO)))
+                        .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message").value(expectedResponse.getMessage()))
                 .andExpect(jsonPath("$.success").value(expectedResponse.isSuccess()))
-                .andExpect(jsonPath("$.status").value(expectedResponse.getStatus().toString()))
-                .andExpect(jsonPath("$.data").value(expectedResponse.getData()));
+                .andExpect(jsonPath("$.status").value(expectedResponse.getStatus().toString()));
+                //TODO compare data
     }
 
     @Test
-    @Order(4)
     @DatabaseSetup("/dataset/personnel_management.xml")
-    public void getFamilyInfoSuccessTest() throws Exception {
+    public void getSinglePersonalTrainingSuccessTest() throws Exception {
 
-        PersonalFamilyInfo existingFamilyInfo = familyInfoRepository.findPersonalFamilyInfoByUserId(1L);
-        expectedResponse.setResponse(FAMILY_RECORD_FOUND, TRUE, PersonalFamilyInfoDTO.getPersonalFamilyDTO(existingFamilyInfo), SUCCESS);
+        PersonalTrainingDTO existingTrainingDTO = PersonalTrainingDTO.getPersonalTrainingDTO(trainingRepository.findPersonalTrainingInfoByIdAndUserId(1L,1L));
+        expectedResponse.setResponse(TRAINING_RECORD_FOUND, TRUE, existingTrainingDTO, SUCCESS);
 
-        mockMvc.perform(get("/users/1/family-information")
+        mockMvc.perform(get("/users/1/trainings/1")
                         .header(HttpHeaders.AUTHORIZATION, "Bearer " + TOKEN)
                         .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
@@ -156,22 +156,6 @@ public class FamilyInformationControllerTest {
                 .andExpect(jsonPath("$.success").value(expectedResponse.isSuccess()))
                 .andExpect(jsonPath("$.status").value(expectedResponse.getStatus().toString()))
                 .andExpect(jsonPath("$.data").value(expectedResponse.getData()));
-    }
 
-    @Test
-    @Order(5)
-    @DatabaseSetup("/dataset/personnel_management.xml")
-    public void getFamilyInfoRecordNotFoundTest() throws Exception {
-
-        expectedResponse.setResponse(FAMILY_RECORD_NOT_FOUND, FALSE, null, ERROR);
-
-        mockMvc.perform(get("/users/2/family-information")
-                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + TOKEN)
-                        .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message").value(expectedResponse.getMessage()))
-                .andExpect(jsonPath("$.success").value(expectedResponse.isSuccess()))
-                .andExpect(jsonPath("$.status").value(expectedResponse.getStatus().toString()))
-                .andExpect(jsonPath("$.data").value(expectedResponse.getData()));
     }
 }

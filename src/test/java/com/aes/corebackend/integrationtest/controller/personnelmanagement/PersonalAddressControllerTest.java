@@ -1,8 +1,6 @@
 package com.aes.corebackend.integrationtest.controller.personnelmanagement;
 
 import com.aes.corebackend.dto.personnelmanagement.PersonalAddressInfoDTO;
-import com.aes.corebackend.entity.personnelmanagement.PersonalAddressInfo;
-import com.aes.corebackend.enumeration.Gender;
 import com.aes.corebackend.repository.personnelmanagement.PersonalAddressInfoRepository;
 import com.aes.corebackend.service.springsecurity.CustomUserDetailsService;
 import com.aes.corebackend.util.JwtUtil;

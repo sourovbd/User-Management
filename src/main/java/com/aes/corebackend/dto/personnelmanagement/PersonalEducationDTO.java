@@ -17,14 +17,14 @@ public class PersonalEducationDTO {
     @Pattern(regexp = "^([a-zA-Z]+\\s)*[a-zA-Z]+$", message = "Degree Name: Field cannot have numeric or special characters")
     private String degreeName;
 
-    @Length(min = 0, max = 50, message = "Degree Name: Field must less than 50 characters")
-    @Pattern(regexp = "^([a-zA-Z]+\\s)*[a-zA-Z]+$", message = "Degree Name: Field cannot have numeric or special characters")
+    @Length(min = 0, max = 50, message = "Institution Name: Field must less than 50 characters")
+    @Pattern(regexp = "^([a-zA-Z]+\\s)*[a-zA-Z]+$", message = "Institution Name: Field cannot have numeric or special characters")
     private String institutionName;
 
     @Max(value = 5, message = "Please convert GPA Scale to Maximum 5")
     private float gpaScale;
 
-    @Max(value = 5, message = "Please convert GPA Scale to Maximum 5")
+    @Max(value = 5, message = "Please convert CGPA Scale to Maximum 5")
     @Max(5)
     private float cgpa;
 
