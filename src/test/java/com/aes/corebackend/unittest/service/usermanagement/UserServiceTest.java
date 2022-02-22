@@ -133,7 +133,7 @@ public class UserServiceTest {
 
     @Test
     public void updateUserByIdFail() throws Exception {
-        User user_1_temp = new User(1L,"abc@gmail.com","dgm","0101","a1polymar","accounts","EMPLOYEE",userCredential_1, null, null);
+        User user_1_temp = new User(1L,"abc@gmail.com","dgm","0101","a1polymar","accounts","EMPLOYEE",userCredential_1);
         APIResponse responseDTO = new APIResponse();
         responseDTO.setMessage(USER_UPDATE_FAILED);
         responseDTO.setSuccess(false);

@@ -40,7 +40,7 @@ public class UserCredentialControllerTest {
 
     ObjectMapper om = new ObjectMapper();
 
-    private User user = new User(1L,"abc@gmail.com","agm","012580","a1polymar","accounts","EMPLOYEE", null, null, null);
+    private User user = new User(1L,"abc@gmail.com","agm","012580","a1polymar","accounts","EMPLOYEE", null);
     private UserCredential userCredentialTest = new UserCredential(1L, "012580", "123@5Aa7", true, "EMPLOYEE");
     private APIResponse expectedResponse = getApiResponse();
 
