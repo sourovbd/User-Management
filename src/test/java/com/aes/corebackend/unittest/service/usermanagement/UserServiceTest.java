@@ -28,6 +28,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import static com.aes.corebackend.util.response.UMAPIResponseMessage.USER_UPDATE_FAILED;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(SpringExtension.class)
@@ -100,6 +101,17 @@ public class UserServiceTest {
     }
 
     @Test
+    public void getUserDetailsFailedTest() throws Exception {
+        APIResponse responseDTO = new APIResponse();
+        responseDTO.setMessage("user not found");
+        responseDTO.setSuccess(false);
+        responseDTO.setData(null);
+        Mockito.when(userRepository.findById(4L)).thenReturn(Optional.ofNullable(null));
+        APIResponse returnedResponse = userService.read(4L);
+        assertEquals(returnedResponse.getData(),responseDTO.getData());
+    }
+
+    @Test
     public void updateUserById() throws Exception {
         User user_1_temp = new User(1L,"abc@gmail.com","dgm","0101","a1polymar","accounts","EMPLOYEE",userCredential_1);
         APIResponse responseDTO = new APIResponse();
@@ -115,6 +127,26 @@ public class UserServiceTest {
         userDto.setRoles("EMPLOYEE");
         Mockito.when(userRepository.findById(1L)).thenReturn(Optional.ofNullable(user_1));
         Mockito.when(userRepository.save(user_1_temp)).thenReturn(user_1_temp);
+        APIResponse returnedResponse = userService.update(userDto ,1L);
+        assertEquals(returnedResponse.getData(),responseDTO.getData());
+    }
+
+    @Test
+    public void updateUserByIdFail() throws Exception {
+        User user_1_temp = new User(1L,"abc@gmail.com","dgm","0101","a1polymar","accounts","EMPLOYEE",userCredential_1, null, null);
+        APIResponse responseDTO = new APIResponse();
+        responseDTO.setMessage(USER_UPDATE_FAILED);
+        responseDTO.setSuccess(false);
+        responseDTO.setData(user_1_temp);
+        UserDTO userDto = new UserDTO();
+        userDto.setDesignation("dgm");
+        userDto.setDepartment("accounts");
+        userDto.setEmailAddress("abc@gmail.com");
+        userDto.setBusinessUnit("a1polymar");
+        userDto.setEmployeeId("0101");
+        userDto.setRoles("EMPLOYEE");
+        Mockito.when(userRepository.findById(1L)).thenReturn(Optional.ofNullable(user_1));
+        Mockito.when(userRepository.save(Mockito.any(User.class))).thenReturn(null);
         APIResponse returnedResponse = userService.update(userDto ,1L);
         assertEquals(returnedResponse.getData(),responseDTO.getData());
     }

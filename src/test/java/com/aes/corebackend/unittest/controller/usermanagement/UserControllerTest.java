@@ -6,6 +6,7 @@ import com.aes.corebackend.entity.usermanagement.User;
 import com.aes.corebackend.entity.usermanagement.UserCredential;
 import com.aes.corebackend.service.usermanagement.UserService;
 import com.aes.corebackend.util.response.APIResponse;
+import com.aes.corebackend.util.response.APIResponseStatus;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,10 +25,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.List;
 
+import static com.aes.corebackend.util.response.APIResponseStatus.ERROR;
 import static com.aes.corebackend.util.response.UMAPIResponseMessage.USER_CREATION_FAILED;
-import static org.assertj.core.internal.bytebuddy.matcher.ElementMatchers.is;
-import static org.hamcrest.Matchers.hasSize;
-import static org.mockito.Mockito.mock;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -85,6 +84,7 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$.message").value("user created successfully"));
 
     }
+
     @Test
     public void emailValidationFailTest() throws Exception {
         UserDTO userDto = new UserDTO();
@@ -163,6 +163,21 @@ public class UserControllerTest {
     }
 
     @Test
+    public void getUserDetailsFailedTest() throws Exception {
+        APIResponse responseDTO =  new APIResponse();
+        responseDTO.setMessage("user not found");
+        responseDTO.setSuccess(false);
+        responseDTO.setData(null);
+        Mockito.when(userService.read(4L)).thenReturn(responseDTO);
+        mockMvc.perform(MockMvcRequestBuilders
+                        .get("/users/4")
+                        .header(HttpHeaders.AUTHORIZATION, "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIwMTI1MTkiLCJleHAiOjE2NDM4MTk4ODAsImlhdCI6MTY0Mzc4Mzg4MH0.5LF-tn-BGh20YpushocQv9pNLPaI1P_MDsxriO6w3zc")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("user not found"));
+    }
+
+    @Test
     public void updateUserById() throws Exception {
         User user_1_temp = new User(1L,"abc@gmail.com","dgm","0101","a1polymar","accounts","EMPLOYEE",userCredential_1);
         APIResponse responseDTO = new APIResponse();
@@ -186,6 +201,36 @@ public class UserControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonRequest);
         mockMvc.perform(mockRequest).andExpect(status().isOk());
+    }
+    @Test
+    public void updateUserByIdFail() throws Exception {
+        User user_1_temp = new User(1L,"abc@gmail.com","dgm","0101","a1polymar","accounts","EMPLOYEE",userCredential_1, null, null);
+        APIResponse responseDTO = new APIResponse();
+        responseDTO.setMessage(null);
+        responseDTO.setSuccess(false);
+        responseDTO.setData(null);
+        responseDTO.setStatus(ERROR);
+        UserDTO userDto = new UserDTO();
+        userDto.setId(1L);
+        userDto.setDesignation("");
+        userDto.setDepartment("accounts");
+        userDto.setEmailAddress("mdahad118@gmail.com");
+        userDto.setBusinessUnit("a1polymar");
+        userDto.setEmployeeId("101");
+        userDto.setRoles("EMPLOYEE");
+
+        Mockito.when(userService.update(userDto,1L)).thenReturn(responseDTO);
+
+        String jsonRequest = om.writeValueAsString(userDto);
+        MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders
+                .put("/users/1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(jsonRequest);
+        mockMvc.perform(mockRequest).andExpect(status().isBadRequest());
+                /*.andExpect(jsonPath("$.message").value(responseDTO.getMessage()))
+                .andExpect(jsonPath("$.success").value(responseDTO.isSuccess()))
+                .andExpect(jsonPath("$.status").value(responseDTO.getStatus().toString()))
+                .andExpect(jsonPath("$.data").value(responseDTO.getData()));*/
     }
     public User createUser(long id, String emailAddress, String designation, String employeeId, String businessUnit, String department, String roles, UserCredential userCredential) {
 

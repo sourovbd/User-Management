@@ -9,9 +9,9 @@ name: Java CI with Gradle
 
 on:
   push:
-    branches: [ dev, personnel_management, user_management ]
+    branches: [ dev, personnel_management, user_management, integration_test_user_management ]
   pull_request:
-    branches: [ dev, personnel_management, user_management ]
+    branches: [ dev, personnel_management, user_management, integration_test_user_management ]
 
 jobs:
   build:
@@ -25,5 +25,13 @@ jobs:
       with:
         java-version: '17'
         distribution: 'temurin'
+    - name: Use Node.js
+      uses: actions/setup-node@v2
+      with: 
+        node-version: "14.x"
+    - name: install maildev
+      run: npm install -g maildev
+    - name: Run maildev
+      run: maildev & sleep 10
     - name: Build with Gradle
       run: ./gradlew build
