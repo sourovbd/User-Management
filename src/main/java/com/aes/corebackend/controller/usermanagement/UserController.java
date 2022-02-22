@@ -1,6 +1,8 @@
 package com.aes.corebackend.controller.usermanagement;
 
 import com.aes.corebackend.dto.usermanagement.UserDTO;
+import com.aes.corebackend.entity.usermanagement.User;
+import com.aes.corebackend.entity.usermanagement.UserCredential;
 import com.aes.corebackend.service.usermanagement.UserService;
 import com.aes.corebackend.util.response.APIResponse;
 import lombok.RequiredArgsConstructor;
@@ -9,10 +11,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+
+import java.security.Principal;
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
 
 import static com.aes.corebackend.util.response.APIResponse.prepareErrorResponse;
 import static org.springframework.http.ResponseEntity.badRequest;
@@ -25,7 +34,9 @@ public class UserController {
 
     private final UserService userService;
 
-    /** static is used so that it only happens once */
+    /**
+     * static is used so that it only happens once
+     */
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
     @PostMapping("/users")
@@ -34,23 +45,39 @@ public class UserController {
         if (result.hasErrors()) {
             return badRequest().body(prepareErrorResponse(result));
         }
-        APIResponse apiResponse = userService.create(userDto.dtoToEntity(userDto),userDto);
+        APIResponse apiResponse = userService.create(userDto.dtoToEntity(userDto), userDto);
 
         return apiResponse.isSuccess() ? ok(apiResponse) : badRequest().body(apiResponse);
     }
 
     @PutMapping("/users/{id}")
     @PreAuthorize("hasAuthority('SYS_ADMIN')")
-    public ResponseEntity<?> updateUser(@RequestBody @Valid  UserDTO userDto, @PathVariable long id) {
-        APIResponse apiResponse = userService.update(userDto,id);
+    public ResponseEntity<?> updateUser(@RequestBody @Valid UserDTO userDto, @PathVariable long id) {
+        APIResponse apiResponse = userService.update(userDto, id);
         return apiResponse.isSuccess() ? ok(apiResponse) : badRequest().body(apiResponse);
     }
 
     @GetMapping("/users/{id}")
-    @PreAuthorize("hasAuthority('SYS_ADMIN')")
-    public ResponseEntity<?> getUserDetails(@PathVariable int id) {
+    @PreAuthorize("hasAnyAuthority('SYS_ADMIN', 'EMPLOYEE')")
+    public ResponseEntity<?> getUserDetails(@PathVariable int id, Authentication authentication) {
         APIResponse apiResponse = userService.read(id);
-        return apiResponse.isSuccess() ? ok(apiResponse) : badRequest().body(apiResponse);
+        User user = (User) apiResponse.getData();
+
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+
+        if (apiResponse.isSuccess()) {
+            if (Objects.nonNull(user)) {
+                boolean isSameUser = user.getEmployeeId().equals(userDetails.getUsername());
+                boolean isSysAdmin = userDetails.getAuthorities().stream().findAny().get().toString().equals("SYS_ADMIN");
+                if (!isSameUser && !isSysAdmin) {
+                    apiResponse = new APIResponse();
+                    apiResponse.setMessage("You don't have permission to view another users details.");
+                    return badRequest().body(apiResponse);
+                }
+                return ok(apiResponse);
+            }
+        }
+        return badRequest().body(apiResponse);
     }
 
     @GetMapping("/users")
