@@ -55,14 +55,6 @@ public class UserRepositoryTest {
     }
 
     @Test
-    @Disabled
-    @DatabaseSetup("/dataset/users.xml")
-    public void testCreateUserFail() {
-        user.setEmailAddress("test@gmail.com");
-        User savedUser = userRepository.save(user);
-    }
-
-    @Test
     @DatabaseSetup("/dataset/users.xml")
     public void testGetAllUsersSuccess()  {
 
