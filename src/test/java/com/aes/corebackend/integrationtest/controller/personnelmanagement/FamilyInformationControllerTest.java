@@ -24,7 +24,6 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 
 import static com.aes.corebackend.util.response.APIResponseStatus.ERROR;
 import static com.aes.corebackend.util.response.APIResponseStatus.SUCCESS;

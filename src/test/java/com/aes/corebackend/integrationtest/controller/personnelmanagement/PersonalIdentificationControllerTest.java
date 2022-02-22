@@ -37,15 +37,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
 )
-@AutoConfigureMockMvc
 @TestExecutionListeners({
         DependencyInjectionTestExecutionListener.class,
         DirtiesContextTestExecutionListener.class,
         TransactionalTestExecutionListener.class,
         DbUnitTestExecutionListener.class
 })
+@AutoConfigureMockMvc
 @TestPropertySource(locations = "classpath:application.properties")
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class PersonalIdentificationControllerTest {
 
     @Autowired
