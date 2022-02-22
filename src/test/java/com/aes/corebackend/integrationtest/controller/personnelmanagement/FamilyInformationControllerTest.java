@@ -9,8 +9,7 @@ import com.aes.corebackend.util.response.APIResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.springtestdbunit.DbUnitTestExecutionListener;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -46,6 +45,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 })
 @AutoConfigureMockMvc
 @TestPropertySource(locations = "classpath:application.properties")
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class FamilyInformationControllerTest {
 
     @Autowired
@@ -82,6 +82,7 @@ public class FamilyInformationControllerTest {
     }
 
     @Test
+    @Order(1)
     @DatabaseSetup("/dataset/personnel_management.xml")
     public void createFamilyInfoSuccessTest() throws Exception {
 
@@ -100,6 +101,7 @@ public class FamilyInformationControllerTest {
     }
 
     @Test
+    @Order(2)
     @DatabaseSetup("/dataset/personnel_management.xml")
     public void createFamilyInfoFailedTest() throws Exception {
 
@@ -118,6 +120,7 @@ public class FamilyInformationControllerTest {
     }
 
     @Test
+    @Order(3)
     @DatabaseSetup("/dataset/personnel_management.xml")
     public void updateFamilyInfoSuccessTest() throws Exception {
 
@@ -139,6 +142,7 @@ public class FamilyInformationControllerTest {
     }
 
     @Test
+    @Order(4)
     @DatabaseSetup("/dataset/personnel_management.xml")
     public void getFamilyInfoSuccessTest() throws Exception {
 
@@ -156,6 +160,7 @@ public class FamilyInformationControllerTest {
     }
 
     @Test
+    @Order(5)
     @DatabaseSetup("/dataset/personnel_management.xml")
     public void getFamilyInfoRecordNotFoundTest() throws Exception {
 
