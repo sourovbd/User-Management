@@ -36,7 +36,7 @@ import static com.aes.corebackend.util.response.UMAPIResponseMessage.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@ExtendWith({SpringExtension.class})
+@ExtendWith(SpringExtension.class)
 @SpringBootTest(
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
 )
@@ -86,7 +86,7 @@ public class UserControllerTest {
             .department("accounts")
             .designation("agm")
             .emailAddress("xyz@gmail.com")
-            .employeeId("101")
+            .employeeId("012610")
             .roles("EMPLOYEE,SYS_ADMIN")
             .build();
 
@@ -127,7 +127,7 @@ public class UserControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message").value(USER_CREATED_SUCCESSFULLY))
                 .andExpect(jsonPath("$.data.emailAddress").value("xyz@gmail.com"))
-                .andExpect(jsonPath("$.data.employeeId").value("101"));
+                .andExpect(jsonPath("$.data.employeeId").value("012610"));
     }
 
     @Test
