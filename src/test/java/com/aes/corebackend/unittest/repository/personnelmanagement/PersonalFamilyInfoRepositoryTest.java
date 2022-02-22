@@ -48,8 +48,8 @@ public class PersonalFamilyInfoRepositoryTest {
         User user = userRepository.getById(2L);
         PersonalFamilyInfo personalFamilyInfo = PersonalFamilyInfo.builder()
                 .id(2L)
-                .fathersName("Mr. Test")
-                .mothersName("Mrs. Test")
+                .fathersName("Mr Test")
+                .mothersName("Mrs Test")
                 .maritalStatus("Married")
                 .spouseName("Test")
                 .user(user)
@@ -73,8 +73,8 @@ public class PersonalFamilyInfoRepositoryTest {
         User user = userRepository.getById(1L);
         PersonalFamilyInfo personalFamilyInfo = PersonalFamilyInfo.builder()
                 .id(2L)
-                .fathersName("Mr. Test")
-                .mothersName("Mrs. Test")
+                .fathersName("Mr Test")
+                .mothersName("Mrs Test")
                 .maritalStatus("Married")
                 .spouseName("Test")
                 .user(user)
