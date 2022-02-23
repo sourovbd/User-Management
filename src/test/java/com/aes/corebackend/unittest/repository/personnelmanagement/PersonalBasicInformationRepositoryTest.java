@@ -41,8 +41,7 @@ public class PersonalBasicInformationRepositoryTest {
     private UserRepository userRepository;
 
     @Test
-    @DatabaseSetup("/dataset/users.xml")
-    @DatabaseSetup("/dataset/personal_basic_info.xml")
+    @DatabaseSetup("/dataset/data.xml")
     public void testCreatePersonalBasicInformationSuccess() {
         User user = userRepository.getById(2L);
         PersonalBasicInfo personalBasicInfo = PersonalBasicInfo.builder()
@@ -59,8 +58,7 @@ public class PersonalBasicInformationRepositoryTest {
     }
 
     @Test
-    @DatabaseSetup("/dataset/users.xml")
-    @DatabaseSetup("/dataset/personal_basic_info.xml")
+    @DatabaseSetup("/dataset/data.xml")
     public void testCreatePersonalBasicInformationFailedDuplicateUserId() {
         User user = userRepository.getById(1L);
         PersonalBasicInfo personalBasicInfo = PersonalBasicInfo.builder()
@@ -80,8 +78,7 @@ public class PersonalBasicInformationRepositoryTest {
     }
 
     @Test
-    @DatabaseSetup("/dataset/users.xml")
-    @DatabaseSetup("/dataset/personal_basic_info.xml")
+    @DatabaseSetup("/dataset/data.xml")
     public void testUpdatePersonalBasicInformationSuccess() {
 
         PersonalBasicInfo existingPersonalBasicInfo = personalBasicInfoRepository.getById(1L);
@@ -95,8 +92,7 @@ public class PersonalBasicInformationRepositoryTest {
     }
 
     @Test
-    @DatabaseSetup("/dataset/users.xml")
-    @DatabaseSetup("/dataset/personal_basic_info.xml")
+    @DatabaseSetup("/dataset/data.xml")
     public void testFindPersonalBasicInformationByUserIdSuccess() {
 
         User existingUser = userRepository.getById(1L);
@@ -106,8 +102,7 @@ public class PersonalBasicInformationRepositoryTest {
     }
 
     @Test
-    @DatabaseSetup("/dataset/users.xml")
-    @DatabaseSetup("/dataset/personal_basic_info.xml")
+    @DatabaseSetup("/dataset/data.xml")
     public void testFindPersonalBasicInformationByUserIdNoRecordFound() {
 
         PersonalBasicInfo existingPersonalBasicInfo = personalBasicInfoRepository.findPersonalBasicInfoByUserId(100L);

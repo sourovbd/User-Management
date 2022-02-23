@@ -82,7 +82,7 @@ public class PersonalAttributesControllerTest {
     }
 
     @Test
-    @DatabaseSetup("/dataset/personnel_management.xml")
+    @DatabaseSetup("/dataset/data.xml")
     public void createAttributesSuccessTest() throws Exception {
 
         expectedResponse.setResponse(ATTRIBUTES_CREATE_SUCCESS, TRUE, null, SUCCESS);
@@ -99,7 +99,7 @@ public class PersonalAttributesControllerTest {
     }
 
     @Test
-    @DatabaseSetup("/dataset/personnel_management.xml")
+    @DatabaseSetup("/dataset/data.xml")
     public void createAttributesFailedTest() throws Exception {
 
         attributesDTO.setBloodGroup("O+");
@@ -117,7 +117,7 @@ public class PersonalAttributesControllerTest {
     }
 
     @Test
-    @DatabaseSetup("/dataset/personnel_management.xml")
+    @DatabaseSetup("/dataset/data.xml")
     public void updateAttributesSuccessTest() throws Exception {
 
         PersonalAttributesDTO existingAttributesDTO = PersonalAttributesDTO.getPersonalAttributesDTO(attributesRepository.findPersonalAttributesByUserId(1L));
@@ -136,7 +136,7 @@ public class PersonalAttributesControllerTest {
     }
 
     @Test
-    @DatabaseSetup("/dataset/personnel_management.xml")
+    @DatabaseSetup("/dataset/data.xml")
     public void getAttributesSuccessTest() throws Exception {
 
         PersonalAttributes existingAttributes = attributesRepository.findPersonalAttributesByUserId(1L);
@@ -153,7 +153,7 @@ public class PersonalAttributesControllerTest {
     }
 
     @Test
-    @DatabaseSetup("/dataset/personnel_management.xml")
+    @DatabaseSetup("/dataset/data.xml")
     public void getAttributesNotFoundTest() throws Exception {
 
         expectedResponse.setResponse(ATTRIBUTES_RECORD_NOT_FOUND, FALSE, null, ERROR);

@@ -78,7 +78,7 @@ public class PersonalAddressControllerTest {
     }
 
     @Test
-    @DatabaseSetup("/dataset/personnel_management.xml")
+    @DatabaseSetup("/dataset/data.xml")
     public void createAddressInfoSuccessTest() throws Exception {
 
         expectedResponse.setResponse(ADDRESS_CREATE_SUCCESS, TRUE, null, SUCCESS);
@@ -95,7 +95,7 @@ public class PersonalAddressControllerTest {
     }
 
     @Test
-    @DatabaseSetup("/dataset/personnel_management.xml")
+    @DatabaseSetup("/dataset/data.xml")
     public void createAddressInfoFailedTest() throws Exception {
 
         expectedResponse.setResponse(ADDRESS_CREATE_FAIL, FALSE, null, ERROR);
@@ -112,7 +112,7 @@ public class PersonalAddressControllerTest {
     }
 
     @Test
-    @DatabaseSetup("/dataset/personnel_management.xml")
+    @DatabaseSetup("/dataset/data.xml")
     public void updateAddressInfoFailedTest() throws Exception {
 
         PersonalAddressInfoDTO existingAddressDTO = PersonalAddressInfoDTO.getPersonalAddressInfoDTO(addressInfoRepository.findPersonalAddressInfoByUserId(1L));
@@ -133,7 +133,7 @@ public class PersonalAddressControllerTest {
     }
 
     @Test
-    @DatabaseSetup("/dataset/personnel_management.xml")
+    @DatabaseSetup("/dataset/data.xml")
     public void getAddressInfoSuccessTest() throws Exception {
 
         PersonalAddressInfoDTO existingAddressDTO = PersonalAddressInfoDTO.getPersonalAddressInfoDTO(addressInfoRepository.findPersonalAddressInfoByUserId(1L));
@@ -151,7 +151,7 @@ public class PersonalAddressControllerTest {
 
 
     @Test
-    @DatabaseSetup("/dataset/personnel_management.xml")
+    @DatabaseSetup("/dataset/data.xml")
     public void getAddressInfoNoRecordFoundTest() throws Exception {
 
         expectedResponse.setResponse(ADDRESS_RECORD_NOT_FOUND, FALSE, null, ERROR);

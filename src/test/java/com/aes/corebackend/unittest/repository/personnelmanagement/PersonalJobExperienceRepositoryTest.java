@@ -36,8 +36,7 @@ public class PersonalJobExperienceRepositoryTest {
     private UserRepository userRepository;
 
     @Test
-    @DatabaseSetup("/dataset/users.xml")
-    @DatabaseSetup("/dataset/personal_job_experience.xml")
+    @DatabaseSetup("/dataset/data.xml")
     public void testCreatePersonalJobExperienceSuccess() {
 
         User user = userRepository.getById(1L);
@@ -55,8 +54,7 @@ public class PersonalJobExperienceRepositoryTest {
     }
 
     @Test
-    @DatabaseSetup("/dataset/users.xml")
-    @DatabaseSetup("/dataset/personal_job_experience.xml")
+    @DatabaseSetup("/dataset/data.xml")
     public void testUpdatePersonalJobExperienceSuccess() {
 
         PersonalJobExperience existingPersonalJobExperience = personalJobExperienceRepository.getById(1L);
@@ -67,8 +65,7 @@ public class PersonalJobExperienceRepositoryTest {
     }
 
     @Test
-    @DatabaseSetup("/dataset/users.xml")
-    @DatabaseSetup("/dataset/personal_job_experience.xml")
+    @DatabaseSetup("/dataset/data.xml")
     public void testFindPersonalJobExperienceListByUserIdSuccess() {
 
         ArrayList<PersonalJobExperience> jobExperienceList = personalJobExperienceRepository.findPersonalJobExperiencesByUserId(1L);
@@ -77,8 +74,7 @@ public class PersonalJobExperienceRepositoryTest {
     }
 
     @Test
-    @DatabaseSetup("/dataset/users.xml")
-    @DatabaseSetup("/dataset/personal_job_experience.xml")
+    @DatabaseSetup("/dataset/data.xml")
     public void testFindPersonalJobExperienceListByUserIdNoRecordFound() {
 
         ArrayList<PersonalJobExperience> jobExperienceList = personalJobExperienceRepository.findPersonalJobExperiencesByUserId(100L);
@@ -87,8 +83,7 @@ public class PersonalJobExperienceRepositoryTest {
     }
 
     @Test
-    @DatabaseSetup("/dataset/users.xml")
-    @DatabaseSetup("/dataset/personal_job_experience.xml")
+    @DatabaseSetup("/dataset/data.xml")
     public void testFindPersonalJobExperienceByIdAndUserIdSuccess() {
 
         PersonalJobExperience personalJobExperience = personalJobExperienceRepository.findPersonalJobExperienceByIdAndUserId(1L, 1L);
@@ -99,8 +94,7 @@ public class PersonalJobExperienceRepositoryTest {
     }
 
     @Test
-    @DatabaseSetup("/dataset/users.xml")
-    @DatabaseSetup("/dataset/personal_job_experience.xml")
+    @DatabaseSetup("/dataset/data.xml")
     public void testFindSinglePersonalJobExperienceByIdAndUserIdNoRecordFound() {
 
         PersonalJobExperience personalJobExperience = personalJobExperienceRepository.findPersonalJobExperienceByIdAndUserId(100L, 1L);

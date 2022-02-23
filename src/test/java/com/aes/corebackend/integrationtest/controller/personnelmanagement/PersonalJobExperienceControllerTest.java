@@ -121,7 +121,7 @@ public class PersonalJobExperienceControllerTest {
 
     @Test
     @DisplayName("job experience create - success")
-    @DatabaseSetup("/dataset/personnel_management.xml")
+    @DatabaseSetup("/dataset/data.xml")
     public void createJobExperienceSuccessTest() throws Exception {
 
         expectedResponse.setResponse(JOB_EXPERIENCE_CREATE_SUCCESS, TRUE, null, SUCCESS);
@@ -139,7 +139,7 @@ public class PersonalJobExperienceControllerTest {
 
     @Test
     @DisplayName("update job experience record - success")
-    @DatabaseSetup("/dataset/personnel_management.xml")
+    @DatabaseSetup("/dataset/data.xml")
     public void updateJobExperienceSuccessTest() throws Exception {
         PersonalJobExperienceDTO existingJobExperience = PersonalJobExperienceDTO.getPersonalJobExperienceDTO(personalJobExperienceRepository.findPersonalJobExperienceById(1L));
         existingJobExperience.setEmployerName("NewEmployerName");
@@ -159,7 +159,7 @@ public class PersonalJobExperienceControllerTest {
 
     @Test
     @DisplayName("read single job experience record - success")
-    @DatabaseSetup("/dataset/personnel_management.xml")
+    @DatabaseSetup("/dataset/data.xml")
     public void readSingleJobExperienceSuccessTest() throws Exception {
 
         PersonalJobExperienceDTO existingJobExperience = PersonalJobExperienceDTO.getPersonalJobExperienceDTO(personalJobExperienceRepository.findPersonalJobExperienceById(1L));
@@ -177,7 +177,7 @@ public class PersonalJobExperienceControllerTest {
 
     @Test
     @DisplayName("read multiple job experience record - success")
-    @DatabaseSetup("/dataset/personnel_management.xml")
+    @DatabaseSetup("/dataset/data.xml")
     public void readMultipleJobExperienceRecordsSuccessTest() throws Exception {
         ArrayList jobExperienceList = new ArrayList<>();
         jobExperienceList.add(jobExperienceDTO1);

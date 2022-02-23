@@ -82,7 +82,7 @@ public class PersonalBasicInfoControllerTest {
     }
 
     @Test
-    @DatabaseSetup("/dataset/personnel_management.xml")
+    @DatabaseSetup("/dataset/data.xml")
     public void createBasicInfoSuccessTest() throws Exception {
 
         expectedResponse.setResponse(BASIC_INFORMATION_CREATE_SUCCESS, TRUE, null, SUCCESS);
@@ -99,7 +99,7 @@ public class PersonalBasicInfoControllerTest {
     }
 
     @Test
-    @DatabaseSetup("/dataset/personnel_management.xml")
+    @DatabaseSetup("/dataset/data.xml")
     public void createBasicInfoFailedTest() throws Exception {
 
         expectedResponse.setResponse(BASIC_INFORMATION_CREATE_FAIL, FALSE, null, ERROR);
@@ -116,7 +116,7 @@ public class PersonalBasicInfoControllerTest {
     }
 
     @Test
-    @DatabaseSetup("/dataset/personnel_management.xml")
+    @DatabaseSetup("/dataset/data.xml")
     public void updateBasicInfoSuccessTest() throws Exception {
 
         PersonalBasicInfoDTO existingInfoDTO = PersonalBasicInfoDTO.getPersonalBasicInfoDTO(personalBasicInfoRepository.findPersonalBasicInfoByUserId(1L));
@@ -136,7 +136,7 @@ public class PersonalBasicInfoControllerTest {
 
 
     @Test
-    @DatabaseSetup("/dataset/personnel_management.xml")
+    @DatabaseSetup("/dataset/data.xml")
     public void getBasicInfoSuccessTest() throws Exception {
 
         PersonalBasicInfoDTO existingInfoDTO = PersonalBasicInfoDTO.getPersonalBasicInfoDTO(personalBasicInfoRepository.findPersonalBasicInfoByUserId(1L));
@@ -154,7 +154,7 @@ public class PersonalBasicInfoControllerTest {
 
 
     @Test
-    @DatabaseSetup("/dataset/personnel_management.xml")
+    @DatabaseSetup("/dataset/data.xml")
     public void getBasicInfoNoRecordFoundTest() throws Exception {
 
         expectedResponse.setResponse(BASIC_INFORMATION_RECORD_NOT_FOUND, FALSE, null, ERROR);

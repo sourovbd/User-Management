@@ -84,7 +84,7 @@ public class PersonalEducationControllerTest {
     }
 
     @Test
-    @DatabaseSetup("/dataset/personnel_management.xml")
+    @DatabaseSetup("/dataset/data.xml")
     public void createPersonalEducationSuccessTest() throws Exception {
 
         expectedResponse.setResponse(EDUCATION_CREATE_SUCCESS, TRUE, null, SUCCESS);
@@ -101,7 +101,7 @@ public class PersonalEducationControllerTest {
     }
 
     @Test
-    @DatabaseSetup("/dataset/personnel_management.xml")
+    @DatabaseSetup("/dataset/data.xml")
     public void updatePersonalEducationSuccessTest() throws Exception {
 
         PersonalEducationDTO existingEducationDTO = PersonalEducationDTO.getPersonalEducationDTO(educationRepository.findPersonalEducationInfoByIdAndUserId(1L, 1L));
@@ -120,7 +120,7 @@ public class PersonalEducationControllerTest {
     }
 
     @Test
-    @DatabaseSetup("/dataset/personnel_management.xml")
+    @DatabaseSetup("/dataset/data.xml")
     public void getPersonalEducationListSuccessTest() throws Exception {
 
         ArrayList<PersonalEducationInfo> educationInfos = educationRepository.findPersonalEducationInfoByUserId(1L);
@@ -141,7 +141,7 @@ public class PersonalEducationControllerTest {
     }
 
     @Test
-    @DatabaseSetup("/dataset/personnel_management.xml")
+    @DatabaseSetup("/dataset/data.xml")
     public void getPersonalEducationSuccessTest() throws Exception {
 
         PersonalEducationInfo existingEducationInfo = educationRepository.findPersonalEducationInfoByIdAndUserId(1L, 1L);
@@ -158,7 +158,7 @@ public class PersonalEducationControllerTest {
     }
 
     @Test
-    @DatabaseSetup("/dataset/personnel_management.xml")
+    @DatabaseSetup("/dataset/data.xml")
     public void getPersonalEducationNoRecordFoundTest() throws Exception {
 
         expectedResponse.setResponse(EDUCATION_RECORD_NOT_FOUND, FALSE, null, ERROR);

@@ -1,8 +1,6 @@
-package com.aes.corebackend.integrationtest.controller;
+package com.aes.corebackend.integrationtest.controller.usermanagement;
 
 import com.aes.corebackend.dto.usermanagement.UserDTO;
-import com.aes.corebackend.entity.usermanagement.User;
-import com.aes.corebackend.entity.usermanagement.UserCredential;
 import com.aes.corebackend.repository.usermanagement.UserCredentialRepository;
 import com.aes.corebackend.repository.usermanagement.UserRepository;
 import com.aes.corebackend.service.springsecurity.CustomUserDetailsService;
@@ -29,8 +27,6 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 import org.springframework.test.web.servlet.MockMvc;
-
-import java.util.List;
 
 import static com.aes.corebackend.util.response.UMAPIResponseMessage.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -101,7 +97,7 @@ public class UserControllerTest {
             .build();
     @Test
     @DisplayName("GET /users - Fetch All Existing Users Success")
-    @DatabaseSetup("/dataset/users.xml")
+    @DatabaseSetup("/dataset/data.xml")
     public void getAllUsersTest() throws Exception {
 
         mockMvc.perform(get("/users")
@@ -115,7 +111,7 @@ public class UserControllerTest {
 
     @Test
     @DisplayName("POST /users - Create New User Success")
-    @DatabaseSetup("/dataset/users.xml")
+    @DatabaseSetup("/dataset/data.xml")
     public void createUserTestSucceed() throws Exception {
 
         String jsonRequest = om.writeValueAsString(createUserDto);
@@ -132,7 +128,7 @@ public class UserControllerTest {
 
     @Test
     @DisplayName("GET /users - Fetch Single User Success")
-    @DatabaseSetup("/dataset/users.xml")
+    @DatabaseSetup("/dataset/data.xml")
     public void getUserDetailsTestSucceed() throws Exception {
 
         mockMvc.perform(get("/users/1")
@@ -144,7 +140,7 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$.data.id").value(1L))
                 .andExpect(jsonPath("$.data.emailAddress").value("test@gmail.com"))
                 .andExpect(jsonPath("$.data.designation").value("CTO"))
-                .andExpect(jsonPath("$.data.employeeId").value("012615"))
+                .andExpect(jsonPath("$.data.employeeId").value("012517"))
                 .andExpect(jsonPath("$.data.businessUnit").value("AES"))
                 .andExpect(jsonPath("$.data.department").value("Developmemt"))
                 .andExpect(jsonPath("$.data.roles").value("EMPLOYEE"))
@@ -154,7 +150,7 @@ public class UserControllerTest {
 
     @Test
     @DisplayName("GET /users - Fetch Single User Fail")
-    @DatabaseSetup("/dataset/users.xml")
+    @DatabaseSetup("/dataset/data.xml")
     public void getUserDetailsTestFail() throws Exception {
 
         mockMvc.perform(get("/users/99")
@@ -167,7 +163,7 @@ public class UserControllerTest {
 
     @Test
     @DisplayName("PUT /users/{id} - Update Existing User Success")
-    @DatabaseSetup("/dataset/users.xml")
+    @DatabaseSetup("/dataset/data.xml")
     public void updateUserByIdSucceed() throws Exception {
 
         String jsonRequest = om.writeValueAsString(updateUserDto);
@@ -190,7 +186,7 @@ public class UserControllerTest {
 
     @Test
     @DisplayName("PUT /users/{id} - Update Existing User Success")
-    @DatabaseSetup("/dataset/users.xml")
+    @DatabaseSetup("/dataset/data.xml")
     public void updateUserByIdFailed() throws Exception {
 
         String jsonRequest = om.writeValueAsString(updateUserDto);

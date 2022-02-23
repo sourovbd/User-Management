@@ -83,7 +83,7 @@ public class PersonalTrainingControllerTest {
     }
 
     @Test
-    @DatabaseSetup("/dataset/personnel_management.xml")
+    @DatabaseSetup("/dataset/data.xml")
     public void createPersonalTrainingSuccessTest() throws Exception {
 
         expectedResponse.setResponse(TRAINING_CREATE_SUCCESS, TRUE, null, SUCCESS);
@@ -101,7 +101,7 @@ public class PersonalTrainingControllerTest {
     }
 
     @Test
-    @DatabaseSetup("/dataset/personnel_management.xml")
+    @DatabaseSetup("/dataset/data.xml")
     public void updatePersonalTrainingSuccessTest() throws Exception {
 
         PersonalTrainingDTO existingTrainingDTO = PersonalTrainingDTO.getPersonalTrainingDTO(trainingRepository.findPersonalTrainingInfoByIdAndUserId(1L, 1L));
@@ -120,7 +120,7 @@ public class PersonalTrainingControllerTest {
     }
 
     @Test
-    @DatabaseSetup("/dataset/personnel_management.xml")
+    @DatabaseSetup("/dataset/data.xml")
     public void getPersonalTrainingListSuccessTest() throws Exception {
 
         ArrayList<PersonalTrainingInfo> trainingInfos = trainingRepository.findPersonalTrainingInfosByUserId(1L);
@@ -142,7 +142,7 @@ public class PersonalTrainingControllerTest {
     }
 
     @Test
-    @DatabaseSetup("/dataset/personnel_management.xml")
+    @DatabaseSetup("/dataset/data.xml")
     public void getSinglePersonalTrainingSuccessTest() throws Exception {
 
         PersonalTrainingDTO existingTrainingDTO = PersonalTrainingDTO.getPersonalTrainingDTO(trainingRepository.findPersonalTrainingInfoByIdAndUserId(1L,1L));

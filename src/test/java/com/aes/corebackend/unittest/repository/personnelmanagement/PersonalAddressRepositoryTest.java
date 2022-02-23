@@ -39,8 +39,7 @@ public class PersonalAddressRepositoryTest {
     private UserRepository userRepository;
 
     @Test
-    @DatabaseSetup("/dataset/users.xml")
-    @DatabaseSetup("/dataset/personal_address_info.xml")
+    @DatabaseSetup("/dataset/data.xml")
     public void testCreatePersonalAddressInformationSuccess() {
         User user = userRepository.getById(2L);
         PersonalAddressInfo personalAddressInfo = PersonalAddressInfo.builder()
@@ -55,8 +54,7 @@ public class PersonalAddressRepositoryTest {
     }
 
     @Test
-    @DatabaseSetup("/dataset/users.xml")
-    @DatabaseSetup("/dataset/personal_address_info.xml")
+    @DatabaseSetup("/dataset/data.xml")
     public void testCreatePersonalAddressInformationFailedDuplicateUserId() {
         User user = userRepository.getById(1L);
         PersonalAddressInfo personalAddressInfo = PersonalAddressInfo.builder()
@@ -75,8 +73,7 @@ public class PersonalAddressRepositoryTest {
     }
 
     @Test
-    @DatabaseSetup("/dataset/users.xml")
-    @DatabaseSetup("/dataset/personal_address_info.xml")
+    @DatabaseSetup("/dataset/data.xml")
     public void testUpdatePersonalBasicInformationSuccess() {
 
         PersonalAddressInfo existingPersonalAddressInfo = personalAddressInfoRepository.getById(1L);
@@ -87,8 +84,7 @@ public class PersonalAddressRepositoryTest {
     }
 
     @Test
-    @DatabaseSetup("/dataset/users.xml")
-    @DatabaseSetup("/dataset/personal_address_info.xml")
+    @DatabaseSetup("/dataset/data.xml")
     public void testFindPersonalBasicInformationByUserIdSuccess() {
 
         User existingUser = userRepository.getById(1L);
@@ -98,8 +94,7 @@ public class PersonalAddressRepositoryTest {
     }
 
     @Test
-    @DatabaseSetup("/dataset/users.xml")
-    @DatabaseSetup("/dataset/personal_address_info.xml")
+    @DatabaseSetup("/dataset/data.xml")
     public void testFindPersonalBasicInformationByUserIdNoRecordFound() {
 
         PersonalAddressInfo existingPersonalAddressInfo = personalAddressInfoRepository.findPersonalAddressInfoByUserId(100L);

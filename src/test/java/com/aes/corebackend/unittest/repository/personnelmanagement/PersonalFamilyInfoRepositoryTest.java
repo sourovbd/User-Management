@@ -42,7 +42,7 @@ public class PersonalFamilyInfoRepositoryTest {
 
     @Test
     @Order(1)
-    @DatabaseSetup("/dataset/personnel_management.xml")
+    @DatabaseSetup("/dataset/data.xml")
     public void testCreatePersonalFamilyInfoSuccess() {
 
         User user = userRepository.getById(2L);
@@ -63,7 +63,7 @@ public class PersonalFamilyInfoRepositoryTest {
 
     @Test
     @Order(2)
-    @DatabaseSetup("/dataset/personnel_management.xml")
+    @DatabaseSetup("/dataset/data.xml")
     public void testCreatePersonalFamilyInfoFailedDuplicateUserId() {
 
         /** this user has family information saved in DB,
@@ -89,7 +89,7 @@ public class PersonalFamilyInfoRepositoryTest {
     }
 
     @Test
-    @DatabaseSetup("/dataset/personnel_management.xml")
+    @DatabaseSetup("/dataset/data.xml")
     public void testUpdatePersonalFamilySuccess() {
 
         PersonalFamilyInfo existingFamilyInfo = personalFamilyInfoRepository.getById(1L);
@@ -103,7 +103,7 @@ public class PersonalFamilyInfoRepositoryTest {
     }
 
     @Test
-    @DatabaseSetup("/dataset/personnel_management.xml")
+    @DatabaseSetup("/dataset/data.xml")
     public void testFindPersonalFamilyInfoByUserIdSuccess() {
 
         User existingUser = userRepository.getById(1L);
@@ -114,7 +114,7 @@ public class PersonalFamilyInfoRepositoryTest {
     }
 
     @Test
-    @DatabaseSetup("/dataset/personnel_management.xml")
+    @DatabaseSetup("/dataset/data.xml")
     public void testFindPersonalFamilyInfoByUserIdNoRecordFound() {
 
         PersonalFamilyInfo existingFamilyInfo = personalFamilyInfoRepository.findPersonalFamilyInfoByUserId(9999L);

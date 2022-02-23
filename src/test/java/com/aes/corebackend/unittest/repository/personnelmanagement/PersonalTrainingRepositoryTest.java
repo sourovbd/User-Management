@@ -35,8 +35,7 @@ public class PersonalTrainingRepositoryTest {
     private UserRepository userRepository;
 
     @Test
-    @DatabaseSetup("/dataset/users.xml")
-    @DatabaseSetup("/dataset/personal_training_info.xml")
+    @DatabaseSetup("/dataset/data.xml")
     public void testCreatePersonalTrainingInformationSuccess() {
 
         User user = userRepository.getById(1L);
@@ -56,8 +55,7 @@ public class PersonalTrainingRepositoryTest {
     }
 
     @Test
-    @DatabaseSetup("/dataset/users.xml")
-    @DatabaseSetup("/dataset/personal_training_info.xml")
+    @DatabaseSetup("/dataset/data.xml")
     public void testUpdatePersonalTrainingInformationSuccess() {
 
         PersonalTrainingInfo existingPersonalTrainingInfo = personalTrainingRepository.getById(1L);
@@ -68,8 +66,7 @@ public class PersonalTrainingRepositoryTest {
     }
 
     @Test
-    @DatabaseSetup("/dataset/users.xml")
-    @DatabaseSetup("/dataset/personal_training_info.xml")
+    @DatabaseSetup("/dataset/data.xml")
     public void testFindPersonalTrainingInformationListByUserIdSuccess() {
 
         ArrayList<PersonalTrainingInfo> trainingList = personalTrainingRepository.findPersonalTrainingInfosByUserId(1L);
@@ -78,8 +75,7 @@ public class PersonalTrainingRepositoryTest {
     }
 
     @Test
-    @DatabaseSetup("/dataset/users.xml")
-    @DatabaseSetup("/dataset/personal_training_info.xml")
+    @DatabaseSetup("/dataset/data.xml")
     public void testFindPersonalTrainingInformationListByUserIdNoRecordFound() {
 
         ArrayList<PersonalTrainingInfo> trainingList = personalTrainingRepository.findPersonalTrainingInfosByUserId(100L);
@@ -88,8 +84,7 @@ public class PersonalTrainingRepositoryTest {
     }
 
     @Test
-    @DatabaseSetup("/dataset/users.xml")
-    @DatabaseSetup("/dataset/personal_training_info.xml")
+    @DatabaseSetup("/dataset/data.xml")
     public void testFindPersonalTrainingInformationByIdAndUserIdSuccess() {
 
         PersonalTrainingInfo personalTrainingInfo = personalTrainingRepository.findPersonalTrainingInfoByIdAndUserId(1L, 1L);
@@ -100,8 +95,7 @@ public class PersonalTrainingRepositoryTest {
     }
 
     @Test
-    @DatabaseSetup("/dataset/users.xml")
-    @DatabaseSetup("/dataset/personal_training_info.xml")
+    @DatabaseSetup("/dataset/data.xml")
     public void testFindSinglePersonalTrainingInformationByIdAndUserIdNoRecordFound() {
 
         PersonalTrainingInfo personalTrainingInfo = personalTrainingRepository.findPersonalTrainingInfoByIdAndUserId(100L, 1L);

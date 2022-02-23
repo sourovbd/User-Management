@@ -1,4 +1,4 @@
-package com.aes.corebackend.integrationtest.controller;
+package com.aes.corebackend.integrationtest.controller.usermanagement;
 
 import com.aes.corebackend.dto.usermanagement.ForgotPasswordDTO;
 import com.aes.corebackend.dto.usermanagement.UserCredentialDTO;
@@ -79,7 +79,7 @@ public class UserCredentialControllerTest {
     }
 
     @Test
-    @DatabaseSetup("/dataset/users.xml")
+    @DatabaseSetup("/dataset/data.xml")
     public void saveCredentialTest() throws Exception {
         UserCredentialDTO userCredentialDTO = new UserCredentialDTO();
         userCredentialDTO.setId(1L);
@@ -97,7 +97,7 @@ public class UserCredentialControllerTest {
     }
 
     @Test
-    @DatabaseSetup("/dataset/users.xml")
+    @DatabaseSetup("/dataset/data.xml")
     public void verifyCredentialTest() throws Exception {
         UserCredentialDTO userCredentialDTO = new UserCredentialDTO();
         userCredentialDTO.setId(2L);
@@ -114,7 +114,7 @@ public class UserCredentialControllerTest {
                         .andExpect(jsonPath("$.message").value(VALID_PASSWORD));
     }
     @Test
-    @DatabaseSetup("/dataset/users.xml")
+    @DatabaseSetup("/dataset/data.xml")
     public void forgotPasswordTest() throws Exception {
         ForgotPasswordDTO forgotPasswordDTO = new ForgotPasswordDTO();
         forgotPasswordDTO.setEmailAddress("test2@gmail.com");

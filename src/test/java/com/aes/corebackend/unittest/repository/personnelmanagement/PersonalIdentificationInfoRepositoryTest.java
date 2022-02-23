@@ -37,7 +37,7 @@ public class PersonalIdentificationInfoRepositoryTest {
     private UserRepository userRepository;
 
     @Test
-    @DatabaseSetup("/dataset/personnel_management.xml")
+    @DatabaseSetup("/dataset/data.xml")
     public void testCreatePersonalIdentificationSuccess() {
 
         User user = userRepository.getById(2L);
@@ -55,7 +55,7 @@ public class PersonalIdentificationInfoRepositoryTest {
     }
 
     @Test
-    @DatabaseSetup("/dataset/personnel_management.xml")
+    @DatabaseSetup("/dataset/data.xml")
     public void testCreatePersonalIdentificationFailedDuplicateUserId() {
 
         /** this user has identification information saved in DB,
@@ -79,7 +79,7 @@ public class PersonalIdentificationInfoRepositoryTest {
     }
 
     @Test
-    @DatabaseSetup("/dataset/personnel_management.xml")
+    @DatabaseSetup("/dataset/data.xml")
     public void testUpdatePersonalIdentificationSuccess() {
 
         PersonalIdentificationInfo existingIdentificationInfo = personalIdentificationInfoRepository.getById(1L);
@@ -93,7 +93,7 @@ public class PersonalIdentificationInfoRepositoryTest {
     }
 
     @Test
-    @DatabaseSetup("/dataset/personnel_management.xml")
+    @DatabaseSetup("/dataset/data.xml")
     public void testFindPersonalIdentificationByUserIdSuccess() {
 
         User existingUser = userRepository.getById(1L);
@@ -104,7 +104,7 @@ public class PersonalIdentificationInfoRepositoryTest {
     }
 
     @Test
-    @DatabaseSetup("/dataset/personnel_management.xml")
+    @DatabaseSetup("/dataset/data.xml")
     public void testFindPersonalIdentificationByUserIdNoUserFound() {
 
         PersonalIdentificationInfo existingIdentificationInfo = personalIdentificationInfoRepository.findPersonalIdentificationInfoByUserId(9999L);

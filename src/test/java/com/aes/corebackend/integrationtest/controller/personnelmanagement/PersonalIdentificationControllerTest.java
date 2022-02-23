@@ -79,7 +79,7 @@ public class PersonalIdentificationControllerTest {
     }
 
     @Test
-    @DatabaseSetup("/dataset/personnel_management.xml")
+    @DatabaseSetup("/dataset/data.xml")
     public void createIdentificationSuccessTest() throws Exception {
 
         expectedResponse.setResponse(IDENTIFICATION_CREATE_SUCCESS, TRUE, null, SUCCESS);
@@ -96,7 +96,7 @@ public class PersonalIdentificationControllerTest {
     }
 
     @Test
-    @DatabaseSetup("/dataset/personnel_management.xml")
+    @DatabaseSetup("/dataset/data.xml")
     public void createIdentificationFailedTest() throws Exception {
 
         expectedResponse.setResponse(IDENTIFICATION_CREATE_FAIL, FALSE, null, ERROR);
@@ -114,7 +114,7 @@ public class PersonalIdentificationControllerTest {
 
 
     @Test
-    @DatabaseSetup("/dataset/personnel_management.xml")
+    @DatabaseSetup("/dataset/data.xml")
     public void updateIdentificationSuccessTest() throws Exception {
 
         PersonalIdentificationInfo identificationInfo = identificationInfoRepository.findPersonalIdentificationInfoByUserId(1L);
@@ -134,7 +134,7 @@ public class PersonalIdentificationControllerTest {
     }
 
     @Test
-    @DatabaseSetup("/dataset/personnel_management.xml")
+    @DatabaseSetup("/dataset/data.xml")
     public void getIdentificationSuccessTest() throws Exception {
 
         PersonalIdentificationInfo existingIdentificationInfo = identificationInfoRepository.findPersonalIdentificationInfoByUserId(1L);
@@ -151,7 +151,7 @@ public class PersonalIdentificationControllerTest {
     }
 
     @Test
-    @DatabaseSetup("/dataset/personnel_management.xml")
+    @DatabaseSetup("/dataset/data.xml")
     public void getIdentificationRecordNotFoundTest() throws Exception {
 
         expectedResponse.setResponse(IDENTIFICATION_RECORD_NOT_FOUND, FALSE, null, ERROR);

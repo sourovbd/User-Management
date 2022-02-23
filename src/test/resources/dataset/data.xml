@@ -47,6 +47,16 @@
             user_credential_id="2"
     />
 
+    <user
+            id="3"
+            email_address="test3@gmail.com"
+            designation="CTO"
+            employee_id="012519"
+            business_unit="AES"
+            department="Developmemt"
+            roles="EMPLOYEE"
+    />
+
     <personal_address_info
             id="1"
             present_address="Motijheel, Dhaka"

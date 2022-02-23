@@ -82,7 +82,7 @@ public class FamilyInformationControllerTest {
 
     @Test
     @Order(1)
-    @DatabaseSetup("/dataset/personnel_management.xml")
+    @DatabaseSetup("/dataset/data.xml")
     public void createFamilyInfoSuccessTest() throws Exception {
 
         expectedResponse.setResponse(FAMILY_CREATE_SUCCESS, TRUE, null, SUCCESS);
@@ -101,7 +101,7 @@ public class FamilyInformationControllerTest {
 
     @Test
     @Order(2)
-    @DatabaseSetup("/dataset/personnel_management.xml")
+    @DatabaseSetup("/dataset/data.xml")
     public void createFamilyInfoFailedTest() throws Exception {
 
         expectedResponse.setResponse(FAMILY_CREATE_FAIL, FALSE, null, ERROR);
@@ -120,7 +120,7 @@ public class FamilyInformationControllerTest {
 
     @Test
     @Order(3)
-    @DatabaseSetup("/dataset/personnel_management.xml")
+    @DatabaseSetup("/dataset/data.xml")
     public void updateFamilyInfoSuccessTest() throws Exception {
 
         PersonalFamilyInfoDTO existingFamilyDTO = PersonalFamilyInfoDTO.getPersonalFamilyDTO(familyInfoRepository.findPersonalFamilyInfoByUserId(1L));
@@ -142,7 +142,7 @@ public class FamilyInformationControllerTest {
 
     @Test
     @Order(4)
-    @DatabaseSetup("/dataset/personnel_management.xml")
+    @DatabaseSetup("/dataset/data.xml")
     public void getFamilyInfoSuccessTest() throws Exception {
 
         PersonalFamilyInfo existingFamilyInfo = familyInfoRepository.findPersonalFamilyInfoByUserId(1L);
@@ -160,7 +160,7 @@ public class FamilyInformationControllerTest {
 
     @Test
     @Order(5)
-    @DatabaseSetup("/dataset/personnel_management.xml")
+    @DatabaseSetup("/dataset/data.xml")
     public void getFamilyInfoRecordNotFoundTest() throws Exception {
 
         expectedResponse.setResponse(FAMILY_RECORD_NOT_FOUND, FALSE, null, ERROR);
