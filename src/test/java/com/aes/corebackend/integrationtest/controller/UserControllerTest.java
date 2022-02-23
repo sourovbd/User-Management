@@ -131,7 +131,7 @@ public class UserControllerTest {
     }
 
     @Test
-    @DisplayName("GET /users - Create New User Success")
+    @DisplayName("GET /users - Fetch Single User Success")
     @DatabaseSetup("/dataset/users.xml")
     public void getUserDetailsTestSucceed() throws Exception {
 
@@ -144,7 +144,7 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$.data.id").value(1L))
                 .andExpect(jsonPath("$.data.emailAddress").value("test@gmail.com"))
                 .andExpect(jsonPath("$.data.designation").value("CTO"))
-                .andExpect(jsonPath("$.data.employeeId").value("012517"))
+                .andExpect(jsonPath("$.data.employeeId").value("012615"))
                 .andExpect(jsonPath("$.data.businessUnit").value("AES"))
                 .andExpect(jsonPath("$.data.department").value("Developmemt"))
                 .andExpect(jsonPath("$.data.roles").value("EMPLOYEE"))
@@ -153,9 +153,9 @@ public class UserControllerTest {
     }
 
     @Test
-    @DisplayName("GET /users - Create New User Failed")
+    @DisplayName("GET /users - Fetch Single User Fail")
     @DatabaseSetup("/dataset/users.xml")
-    public void getUserDetailsTestFailed() throws Exception {
+    public void getUserDetailsTestFail() throws Exception {
 
         mockMvc.perform(get("/users/99")
                         .header(HttpHeaders.AUTHORIZATION, "Bearer " + TOKEN)
