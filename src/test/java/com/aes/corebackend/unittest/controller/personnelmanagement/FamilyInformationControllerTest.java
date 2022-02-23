@@ -75,7 +75,7 @@ public class FamilyInformationControllerTest {
 
     @Test
     @DisplayName("Create family information - success")
-    public void createFamilyInformationSuccessTest() throws Exception {
+    public void createFamilyInfoSuccessTest() throws Exception {
 
         expectedResponse.setResponse(FAMILY_CREATE_SUCCESS, TRUE, null, SUCCESS);
         Mockito.when(service.create(familyDTO, user.getId())).thenReturn(expectedResponse); /** initialize service with expected response */
@@ -93,7 +93,7 @@ public class FamilyInformationControllerTest {
 
     @Test
     @DisplayName("Create family information - validation error - maritalStatus")
-    public void createFamilyInformationValidationErrorTest() throws Exception {
+    public void createFamilyInfoValidationErrorTest() throws Exception {
 
         String maritalStatusErrorMessage = "Marital Status: Field cannot have numeric or special characters";
         familyDTO.setMaritalStatus("M@rried");
@@ -113,7 +113,7 @@ public class FamilyInformationControllerTest {
 
     @Test
     @DisplayName("Update family information - success")
-    public void updateAttributesSuccessTest() throws Exception {
+    public void updateFamilyInfoSuccessTest() throws Exception {
 
         expectedResponse.setResponse(FAMILY_UPDATE_SUCCESS, TRUE, null, SUCCESS);
         familyDTO.setMothersName("Neela Manwar");
@@ -135,7 +135,7 @@ public class FamilyInformationControllerTest {
 
     @Test
     @DisplayName("Update family information - validation error - mothersName")
-    public void updateAttributesValidationErrorTest() throws Exception {
+    public void updateFamilyInfoValidationErrorTest() throws Exception {
 
         String motherNameErrorMessage = "Mother's Name: Field cannot have numeric or special characters";
         familyDTO.setMothersName("@bc");

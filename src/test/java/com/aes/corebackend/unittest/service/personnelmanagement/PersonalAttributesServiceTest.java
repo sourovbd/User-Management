@@ -34,7 +34,7 @@ public class PersonalAttributesServiceTest {
     @MockBean
     private UserService userService;
 
-    private User user = new User(1L,"abc@gmail.com","agm","012580","a1polymar","accounts", null, null, null, null);
+    private User user = new User(1L,"abc@gmail.com","agm","012580","a1polymar","accounts", null, null);
     private PersonalAttributes personalAttributes = new PersonalAttributes();
     private PersonalAttributesDTO personalAttributesDTO = new PersonalAttributesDTO();
     private APIResponse expectedResponse = APIResponse.getApiResponse();

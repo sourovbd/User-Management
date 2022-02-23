@@ -1,6 +1,8 @@
 package com.aes.corebackend.entity.personnelmanagement;
 
 import com.aes.corebackend.entity.usermanagement.User;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
@@ -11,6 +13,8 @@ import javax.validation.constraints.Pattern;
 @Entity
 @Data
 @NoArgsConstructor
+@Builder
+@AllArgsConstructor
 public class PersonalAddressInfo {
     @Id
     @Column(name = "id")

@@ -42,21 +42,19 @@ public class PersonalFamilyInfoRepositoryTest {
 
     @Test
     @Order(1)
-    @DatabaseSetup("/dataset/users.xml")
-    @DatabaseSetup("/dataset/personal_family_info.xml")
+    @DatabaseSetup("/dataset/personnel_management.xml")
     public void testCreatePersonalFamilyInfoSuccess() {
 
         User user = userRepository.getById(2L);
         PersonalFamilyInfo personalFamilyInfo = PersonalFamilyInfo.builder()
                 .id(2L)
-                .fathersName("Mr. Test")
-                .mothersName("Mrs. Test")
+                .fathersName("Mr Test")
+                .mothersName("Mrs Test")
                 .maritalStatus("Married")
                 .spouseName("Test")
                 .user(user)
                 .build();
 
-        System.out.println("===>" + personalFamilyInfo.toString());
         personalFamilyInfoRepository.save(personalFamilyInfo);
 
         Assertions.assertThat(personalFamilyInfoRepository.getById(2L).getFathersName()).isEqualTo(personalFamilyInfo.getFathersName());
@@ -65,8 +63,7 @@ public class PersonalFamilyInfoRepositoryTest {
 
     @Test
     @Order(2)
-    @DatabaseSetup("/dataset/users.xml")
-    @DatabaseSetup("/dataset/personal_family_info.xml")
+    @DatabaseSetup("/dataset/personnel_management.xml")
     public void testCreatePersonalFamilyInfoFailedDuplicateUserId() {
 
         /** this user has family information saved in DB,
@@ -76,8 +73,8 @@ public class PersonalFamilyInfoRepositoryTest {
         User user = userRepository.getById(1L);
         PersonalFamilyInfo personalFamilyInfo = PersonalFamilyInfo.builder()
                 .id(2L)
-                .fathersName("Mr. Test")
-                .mothersName("Mrs. Test")
+                .fathersName("Mr Test")
+                .mothersName("Mrs Test")
                 .maritalStatus("Married")
                 .spouseName("Test")
                 .user(user)
@@ -92,8 +89,7 @@ public class PersonalFamilyInfoRepositoryTest {
     }
 
     @Test
-    @DatabaseSetup("/dataset/users.xml")
-    @DatabaseSetup("/dataset/personal_family_info.xml")
+    @DatabaseSetup("/dataset/personnel_management.xml")
     public void testUpdatePersonalFamilySuccess() {
 
         PersonalFamilyInfo existingFamilyInfo = personalFamilyInfoRepository.getById(1L);
@@ -107,9 +103,8 @@ public class PersonalFamilyInfoRepositoryTest {
     }
 
     @Test
-    @DatabaseSetup("/dataset/users.xml")
-    @DatabaseSetup("/dataset/personal_family_info.xml")
-    public void testFindPersonalIdentificationByUserIdSuccess() {
+    @DatabaseSetup("/dataset/personnel_management.xml")
+    public void testFindPersonalFamilyInfoByUserIdSuccess() {
 
         User existingUser = userRepository.getById(1L);
         PersonalFamilyInfo existingFamilyInfo = personalFamilyInfoRepository.findPersonalFamilyInfoByUserId(existingUser.getId());
@@ -119,9 +114,8 @@ public class PersonalFamilyInfoRepositoryTest {
     }
 
     @Test
-    @DatabaseSetup("/dataset/users.xml")
-    @DatabaseSetup("/dataset/personal_family_info.xml")
-    public void testFindPersonalIdentificationByUserIdNoRecordFound() {
+    @DatabaseSetup("/dataset/personnel_management.xml")
+    public void testFindPersonalFamilyInfoByUserIdNoRecordFound() {
 
         PersonalFamilyInfo existingFamilyInfo = personalFamilyInfoRepository.findPersonalFamilyInfoByUserId(9999L);
 
