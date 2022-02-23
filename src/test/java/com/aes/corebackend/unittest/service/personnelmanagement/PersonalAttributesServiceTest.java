@@ -55,7 +55,7 @@ public class PersonalAttributesServiceTest {
     }
 
     @Test
-    @DisplayName("This is create - success")
+    @DisplayName("create attributes - success")
     public void createSuccessTest() {
 
         expectedResponse.setResponse(ATTRIBUTES_CREATE_SUCCESS, TRUE, null, SUCCESS);
@@ -68,7 +68,7 @@ public class PersonalAttributesServiceTest {
     }
 
     @Test
-    @DisplayName("This is create - failed")
+    @DisplayName("create attributes - failed")
     public void createFailedTest() {
 
         expectedResponse.setResponse(ATTRIBUTES_CREATE_FAIL, FALSE, null, ERROR);
@@ -81,7 +81,7 @@ public class PersonalAttributesServiceTest {
     }
 
     @Test
-    @DisplayName("This is update - success")
+    @DisplayName("update attributes - success")
     public void updateSuccessTest() {
 
         expectedResponse.setResponse(ATTRIBUTES_UPDATE_SUCCESS, TRUE, null, SUCCESS);
@@ -94,7 +94,7 @@ public class PersonalAttributesServiceTest {
     }
 
     @Test
-    @DisplayName("This is update - failed")
+    @DisplayName("update attributes - failed")
     public void updateFailedTest() {
 
         expectedResponse.setResponse(ATTRIBUTES_UPDATE_FAIL, FALSE, null, ERROR);
@@ -109,7 +109,7 @@ public class PersonalAttributesServiceTest {
     }
 
     @Test
-    @DisplayName("This is read - success")
+    @DisplayName("read attributes - success")
     public void readSuccessTest() {
 
         expectedResponse.setResponse(ATTRIBUTES_RECORD_FOUND, TRUE, PersonalAttributesDTO.getPersonalAttributesDTO(personalAttributes), SUCCESS);
@@ -122,7 +122,7 @@ public class PersonalAttributesServiceTest {
     }
 
     @Test
-    @DisplayName("This is read - failed")
+    @DisplayName("read attributes- failed")
     public void readFailedTest() {
 
         expectedResponse.setResponse(ATTRIBUTES_RECORD_NOT_FOUND, FALSE, null, ERROR);

@@ -58,7 +58,7 @@ public class PersonalIdentificationServiceTest {
     }
 
     @Test
-    @DisplayName("This is create - success")
+    @DisplayName("create identification info - success")
     public void createSuccessTest() {
 
         expectedResponse.setResponse(IDENTIFICATION_CREATE_SUCCESS, TRUE, null, SUCCESS);
@@ -71,7 +71,7 @@ public class PersonalIdentificationServiceTest {
     }
 
     @Test
-    @DisplayName("This is create - failed")
+    @DisplayName("create identification info - failed")
     public void createFailedTest() {
 
         expectedResponse.setResponse(IDENTIFICATION_CREATE_FAIL, FALSE, null, ERROR);
@@ -84,7 +84,7 @@ public class PersonalIdentificationServiceTest {
     }
 
     @Test
-    @DisplayName("This is update - success")
+    @DisplayName("update identification info - success")
     public void updateSuccessTest() {
 
         expectedResponse.setResponse(IDENTIFICATION_UPDATE_SUCCESS, TRUE, null, SUCCESS);
@@ -97,7 +97,7 @@ public class PersonalIdentificationServiceTest {
     }
 
     @Test
-    @DisplayName("This is update - failed")
+    @DisplayName("update identification info - failed")
     public void updateFailedTest() {
 
         expectedResponse.setResponse(IDENTIFICATION_UPDATE_FAIL, FALSE, null, ERROR);
@@ -112,7 +112,7 @@ public class PersonalIdentificationServiceTest {
     }
 
     @Test
-    @DisplayName("This is read - success")
+    @DisplayName("read identification info - success")
     public void readSuccessTest() {
 
         expectedResponse.setResponse(IDENTIFICATION_RECORD_FOUND, TRUE, PersonalIdentificationInfoDTO.getPersonalIdentificationDTO(personalIdentificationInfo), SUCCESS);
@@ -125,7 +125,7 @@ public class PersonalIdentificationServiceTest {
     }
 
     @Test
-    @DisplayName("This is read - failed")
+    @DisplayName("read identification info - failed")
     public void readFailedTest() {
 
         expectedResponse.setResponse(IDENTIFICATION_RECORD_NOT_FOUND, FALSE, null, ERROR);

@@ -53,7 +53,7 @@ public class PersonalEducationServiceTest {
     }
 
     @Test
-    @DisplayName("This is create - success")
+    @DisplayName("create education - success")
     public void createSuccessTest() {
 
         expectedResponse.setResponse(EDUCATION_CREATE_SUCCESS, TRUE, null, SUCCESS);
@@ -66,7 +66,7 @@ public class PersonalEducationServiceTest {
     }
 
     @Test
-    @DisplayName("This is create - failed")
+    @DisplayName("create education - failed")
     public void createFailedTest() {
 
         expectedResponse.setResponse(EDUCATION_CREATE_FAIL, FALSE, null, ERROR);
@@ -79,7 +79,7 @@ public class PersonalEducationServiceTest {
     }
 
     @Test
-    @DisplayName("This is update - success")
+    @DisplayName("update education - success")
     public void updateSuccessTest() {
 
         expectedResponse.setResponse(EDUCATION_UPDATE_SUCCESS, TRUE, null, SUCCESS);
@@ -92,7 +92,7 @@ public class PersonalEducationServiceTest {
     }
 
     @Test
-    @DisplayName("This is update - failed")
+    @DisplayName("update education - failed")
     public void updateFailedTest() {
 
         expectedResponse.setResponse(EDUCATION_UPDATE_FAIL, FALSE, null, ERROR);
@@ -107,7 +107,7 @@ public class PersonalEducationServiceTest {
     }
 
     @Test
-    @DisplayName("This is read - all education records for a user - success")
+    @DisplayName("read all education records for a user - success")
     public void readEducationListSuccessTest() {
 
         ArrayList<PersonalEducationInfo> educationInfoList = new ArrayList<>();
@@ -130,7 +130,7 @@ public class PersonalEducationServiceTest {
     }
 
     @Test
-    @DisplayName("This is read - all education records for a user - failed")
+    @DisplayName("read all education records for a user - failed")
     public void readEducationListFailedTest() {
 
         expectedResponse.setResponse(EDUCATION_RECORD_NOT_FOUND, FALSE, null, ERROR);
@@ -143,7 +143,7 @@ public class PersonalEducationServiceTest {
     }
 
     @Test
-    @DisplayName("This is read - a single record - success")
+    @DisplayName("read a single education record - success")
     public void readSuccessTest() {
 
         expectedResponse.setResponse(EDUCATION_RECORD_FOUND, TRUE, PersonalEducationDTO.getPersonalEducationDTO(personalEducationInfoSSC), SUCCESS);
@@ -156,7 +156,7 @@ public class PersonalEducationServiceTest {
     }
 
     @Test
-    @DisplayName("This is read - a single record - failed")
+    @DisplayName("read a single education record - failed")
     public void readFailedTest() {
 
         expectedResponse.setResponse(EDUCATION_RECORD_NOT_FOUND, FALSE, null, ERROR);
