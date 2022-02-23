@@ -26,14 +26,12 @@ public class UserService {
 
     private APIResponse apiResponse = getApiResponse();
 
-    public APIResponse create(User user, UserDTO userDto) {
+    public APIResponse create(UserDTO userDto) {
         UserCredential userCredential = new UserCredential();
         userCredential.setEmployeeId(userDto.getEmployeeId());
         userCredential.setRoles(userDto.getRoles());
         userCredential.setActive(true);
-        user.setUserCredential(userCredential);
-
-        User createdUser = userRepository.save(user);
+        User createdUser = userRepository.save(userDto.dtoToEntity(userDto));
         if (Objects.nonNull(createdUser)) {
             emailSender.send(userDto.dtoToEntity(userDto).getEmailAddress(),"This is a test email");
             apiResponse.setResponse(USER_CREATED_SUCCESSFULLY, TRUE, createdUser, SUCCESS);

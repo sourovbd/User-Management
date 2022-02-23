@@ -39,6 +39,7 @@ public class UserDTO {
     public User dtoToEntity(UserDTO userDTO){
 
         User user = new User();
+        user.setId(userDTO.getId());
         user.setEmployeeId(userDTO.getEmployeeId());
         user.setEmailAddress(userDTO.getEmailAddress());
         user.setBusinessUnit(userDTO.getBusinessUnit());
