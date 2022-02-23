@@ -33,7 +33,6 @@ public class FamilyInformationController {
 
     @PutMapping(value = "/users/{userId}/family-information")
     @PreAuthorize("hasAnyAuthority('EMPLOYEE', 'SYS_ADMIN')")
-
     public ResponseEntity<?> updateFamilyInfo(@Valid @RequestBody PersonalFamilyInfoDTO familyInfoDTO, BindingResult result, @PathVariable Long userId) {
         if (result.hasErrors()) {
             return badRequest().body(prepareErrorResponse(result));

@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<dataset>
+    <user_credential
+            id="1"
+            employee_id="012615"
+            password="$2a$12$XMG3cM8IzAtwe3NsWn/HRuWmvUJ3YNzDMOCEysSoonoDihx6Dsysi"
+            active="true"
+            roles="SYS_ADMIN"
+    />
+
+    <user_credential
+            id="2"
+            employee_id="012518"
+            password="$2a$12$tZLPGLFWrBMUg.k6u5.BlOvpCTm9YT9FOnoEwVIOchLigMVc2PR2G"
+            active="true"
+            roles="EMPLOYEE"
+    />
+
+    <user_credential
+            id="3"
+            employee_id="012517"
+            password="$2a$12$tZLPGLFWrBMUg.k6u5.BlOvpCTm9YT9FOnoEwVIOchLigMVc2PR2G"
+            active="true"
+            roles="ORG_SETUP"
+    />
+
+    <user
+            id="1"
+            email_address="test@gmail.com"
+            designation="CTO"
+            employee_id="012517"
+            business_unit="AES"
+            department="Developmemt"
+            roles="EMPLOYEE"
+            user_credential_id="1"
+    />
+
+    <user
+            id="2"
+            email_address="test2@gmail.com"
+            designation="CTO"
+            employee_id="012518"
+            business_unit="AES"
+            department="Developmemt"
+            roles="EMPLOYEE"
+            user_credential_id="2"
+    />
+
+    <user
+            id="3"
+            email_address="test3@gmail.com"
+            designation="CTO"
+            employee_id="012519"
+            business_unit="AES"
+            department="Developmemt"
+            roles="EMPLOYEE"
+    />
+
+    <personal_address_info
+            id="1"
+            present_address="Motijheel, Dhaka"
+            permanent_address="Shaymoli, Dhaka"
+            user_id="1"
+    />
+
+    <personal_basic_info
+            id="1"
+            first_name="Test"
+            last_name="Rahman"
+            date_of_birth="1990-01-01"
+            gender="MALE"
+            user_id="1"
+    />
+
+    <personal_attributes
+            id="1"
+            birth_place="dhaka"
+            blood_group="O+"
+            nationality="Bangladeshi"
+            religion="Islam"
+            user_id="1"
+    />
+
+    <personal_family_info
+            id="1"
+            fathers_name="Mr John Doe"
+            mothers_name="Mrs John Doe"
+            marital_status="Unmarried"
+            user_id="1"
+    />
+    <personal_identification_info
+            id="1"
+            e_tin="751983938333"
+            nationalid="1507359000"
+            user_id="1"
+    />
+    <personal_education_info
+            id="1"
+            cgpa="4.90"
+            degree_name="HSC"
+            gpa_scale="5.00"
+            institution_name="Test School"
+            passing_year="2015"
+            user_id="1"
+    />
+
+    <personal_education_info
+            id="2"
+            cgpa="3.50"
+            degree_name="BSc"
+            gpa_scale="4.00"
+            institution_name="Test University"
+            passing_year="2019"
+            user_id="1"
+    />
+
+    <personal_job_experience
+            id="1"
+            employer_name="REVE"
+            start_date="2017-03-12"
+            end_date="2020-09-12"
+            designation="SDE"
+            responsibilities="Development"
+            user_id="1"
+    />
+
+    <personal_job_experience
+            id="2"
+            employer_name="Nascenia"
+            start_date="2017-03-12"
+            end_date="2020-09-12"
+            designation="SDE"
+            responsibilities="Development"
+            user_id="1"
+    />
+
+    <personal_training_info
+            id="1"
+            program_name="Java"
+            institute_name="Coursera"
+            description="description"
+            start_date="2017-03-12"
+            end_date="2020-09-12"
+            user_id="1"
+    />
+
+    <personal_training_info
+            id="2"
+            program_name="Python"
+            institute_name="Coursera"
+            description="description"
+            start_date="2017-03-12"
+            end_date="2020-09-12"
+            user_id="1"
+    />
+</dataset>

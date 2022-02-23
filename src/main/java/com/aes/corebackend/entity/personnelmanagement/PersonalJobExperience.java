@@ -2,6 +2,8 @@ package com.aes.corebackend.entity.personnelmanagement;
 
 import com.aes.corebackend.entity.usermanagement.User;
 import com.aes.corebackend.util.Constants;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
@@ -14,6 +16,8 @@ import java.time.LocalDate;
 @Data
 @Entity
 @NoArgsConstructor
+@Builder
+@AllArgsConstructor
 public class PersonalJobExperience {
     @Id
     @Column(name = "id")

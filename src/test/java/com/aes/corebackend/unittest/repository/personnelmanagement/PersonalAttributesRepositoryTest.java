@@ -7,7 +7,6 @@ import com.aes.corebackend.repository.usermanagement.UserRepository;
 import com.github.springtestdbunit.DbUnitTestExecutionListener;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,8 +37,7 @@ public class PersonalAttributesRepositoryTest {
     private UserRepository userRepository;
 
     @Test
-    @DatabaseSetup("/dataset/users.xml")
-    @DatabaseSetup("/dataset/personal_attributes.xml")
+    @DatabaseSetup("/dataset/data.xml")
     public void testCreatePersonalAttributesSuccess() {
 
         User user = userRepository.getById(2L);
@@ -59,8 +57,7 @@ public class PersonalAttributesRepositoryTest {
     }
 
     @Test
-    @DatabaseSetup("/dataset/users.xml")
-    @DatabaseSetup("/dataset/personal_attributes.xml")
+    @DatabaseSetup("/dataset/data.xml")
     public void testCreatePersonalAttributesFailedDuplicateUserId() {
 
         /** this user has attributes saved in DB,
@@ -86,8 +83,7 @@ public class PersonalAttributesRepositoryTest {
     }
 
     @Test
-    @DatabaseSetup("/dataset/users.xml")
-    @DatabaseSetup("/dataset/personal_attributes.xml")
+    @DatabaseSetup("/dataset/data.xml")
     public void testUpdatePersonalAttributesSuccess() {
 
         PersonalAttributes existingAttributes = personalAttributesRepository.getById(1L);
@@ -103,8 +99,7 @@ public class PersonalAttributesRepositoryTest {
     }
 
     @Test
-    @DatabaseSetup("/dataset/users.xml")
-    @DatabaseSetup("/dataset/personal_attributes.xml")
+    @DatabaseSetup("/dataset/data.xml")
     public void testFindPersonalAttributesByUserIdSuccess() {
 
         User existingUser = userRepository.getById(1L);
@@ -115,8 +110,7 @@ public class PersonalAttributesRepositoryTest {
     }
 
     @Test
-    @DatabaseSetup("/dataset/users.xml")
-    @DatabaseSetup("/dataset/personal_attributes.xml")
+    @DatabaseSetup("/dataset/data.xml")
     public void testFindPersonalAttributesByUserIdNoRecordFound() {
 
         PersonalAttributes existingPersonalAttributes = personalAttributesRepository.findPersonalAttributesByUserId(9999L);

@@ -55,7 +55,7 @@ public class PersonalBasicInformationControllerTest {
         user.setDesignation("SDE");
         user.setDepartment("Development");
         user.setEmailAddress("jahangir.alam2@anwargroup.net");
-        user.setAddress(address);
+//        user.setAddress(address);
         user.setEmployeeId("011273");
 
         basicInfoDTO.setFirstName("jahangir");

@@ -179,7 +179,7 @@ public class UserControllerTest {
 
     @Test
     public void updateUserById() throws Exception {
-        User user_1_temp = new User(1L,"abc@gmail.com","dgm","0101","a1polymar","accounts","EMPLOYEE",userCredential_1, null, null);
+        User user_1_temp = new User(1L,"abc@gmail.com","dgm","0101","a1polymar","accounts","EMPLOYEE",userCredential_1);
         APIResponse responseDTO = new APIResponse();
         responseDTO.setMessage("user updated successfully");
         responseDTO.setSuccess(true);
@@ -204,7 +204,7 @@ public class UserControllerTest {
     }
     @Test
     public void updateUserByIdFail() throws Exception {
-        User user_1_temp = new User(1L,"abc@gmail.com","dgm","0101","a1polymar","accounts","EMPLOYEE",userCredential_1, null, null);
+        User user_1_temp = new User(1L,"abc@gmail.com","dgm","0101","a1polymar","accounts","EMPLOYEE",userCredential_1);
         APIResponse responseDTO = new APIResponse();
         responseDTO.setMessage(null);
         responseDTO.setSuccess(false);
@@ -234,7 +234,7 @@ public class UserControllerTest {
     }
     public User createUser(long id, String emailAddress, String designation, String employeeId, String businessUnit, String department, String roles, UserCredential userCredential) {
 
-        return new User(id, emailAddress, designation, employeeId, businessUnit, department, roles, userCredential, null, null);
+        return new User(id, emailAddress, designation, employeeId, businessUnit, department, roles, userCredential);
     }
 
 }

@@ -5,7 +5,6 @@ import com.aes.corebackend.exception.ResourceNotFoundException;
 import com.aes.corebackend.repository.usermanagement.UserRepository;
 import com.github.springtestdbunit.DbUnitTestExecutionListener;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +43,7 @@ public class UserRepositoryTest {
             .build();
 
     @Test
-    @DatabaseSetup("/dataset/users.xml")
+    @DatabaseSetup("/dataset/data.xml")
     public void testCreateUserSuccess() {
         User savedUser = userRepository.save(user);
 
@@ -55,16 +54,15 @@ public class UserRepositoryTest {
     }
 
     @Test
-    @DatabaseSetup("/dataset/users.xml")
+    @DatabaseSetup("/dataset/data.xml")
     public void testGetAllUsersSuccess()  {
 
         List<User> users = userRepository.findAll();
-
-        Assertions.assertThat(users.size()).isEqualTo(2);
+        Assertions.assertThat(users.size()).isEqualTo(3);
     }
 
     @Test
-    @DatabaseSetup("/dataset/users.xml")
+    @DatabaseSetup("/dataset/data.xml")
     public void testGetAllUsersFail()  {
 
         List<User> users = userRepository.findAll();
@@ -73,13 +71,13 @@ public class UserRepositoryTest {
     }
 
     @Test
-    @DatabaseSetup("/dataset/users.xml")
+    @DatabaseSetup("/dataset/data.xml")
     public void testGetUserDetailsSuccess()  {
 
         User user = userRepository.findById(1l).orElseThrow(ResourceNotFoundException::new);
 
         Assertions.assertThat(user.getId()).isEqualTo(1);
-        Assertions.assertThat(user.getEmployeeId()).isEqualTo("012615");
+        Assertions.assertThat(user.getEmployeeId()).isEqualTo("012517");
         Assertions.assertThat(user.getEmailAddress()).isEqualTo("test@gmail.com");
         Assertions.assertThat(user.getId()).isNotEqualTo(3);
         Assertions.assertThat(user.getEmployeeId()).isNotEqualTo("012617");
@@ -87,7 +85,7 @@ public class UserRepositoryTest {
     }
 
     @Test
-    @DatabaseSetup("/dataset/users.xml")
+    @DatabaseSetup("/dataset/data.xml")
     public void testGetUserDetailsFail()  {
 
         Optional<User> user = userRepository.findById(5l);
@@ -95,7 +93,7 @@ public class UserRepositoryTest {
     }
 
     @Test
-    @DatabaseSetup("/dataset/users.xml")
+    @DatabaseSetup("/dataset/data.xml")
     public void testUpdateUserSuccess() {
 
         User existingUser = userRepository.findById(1l).get();
@@ -104,14 +102,14 @@ public class UserRepositoryTest {
 
         Assertions.assertThat(updatedUserFromDB.getId()).isEqualTo(1);
         Assertions.assertThat(updatedUserFromDB.getEmailAddress()).isEqualTo("tester@gmail.com");
-        Assertions.assertThat(updatedUserFromDB.getEmployeeId()).isEqualTo("012615");
+        Assertions.assertThat(updatedUserFromDB.getEmployeeId()).isEqualTo("012517");
         Assertions.assertThat(updatedUserFromDB.getEmailAddress()).isNotEqualTo("test@gmail.com");
 
 
     }
 
     @Test
-    @DatabaseSetup("/dataset/users.xml")
+    @DatabaseSetup("/dataset/data.xml")
     public void testUpdateUserFail() {
 
         Optional<User> existingUser = userRepository.findById(10l);
@@ -120,25 +118,17 @@ public class UserRepositoryTest {
     }
 
     @Test
-    @DatabaseSetup("/dataset/users.xml")
+    @DatabaseSetup("/dataset/data.xml")
     public void testSingleDeleteUserSuccess() {
 
-        userRepository.deleteById(1l);
+        userRepository.deleteById(3l);
 
-        Assertions.assertThat(userRepository.findAll().size()).isEqualTo(1);
+        Assertions.assertThat(userRepository.findAll().size()).isEqualTo(2);
+        Assertions.assertThat(userRepository.findAll().size()).isNotEqualTo(3);
     }
 
     @Test
-    @DatabaseSetup("/dataset/users.xml")
-    public void testSingleDeleteUserFail() {
-
-        userRepository.deleteById(1l);
-
-        Assertions.assertThat(userRepository.findAll().size()).isNotEqualTo(2);
-    }
-
-    @Test
-    @DatabaseSetup("/dataset/users.xml")
+    @DatabaseSetup("/dataset/data.xml")
     public void testFindByEmailAddressSuccess() {
 
         User user = userRepository.findByEmailAddress("test@gmail.com").orElseThrow(ResourceNotFoundException::new);
@@ -156,7 +146,7 @@ public class UserRepositoryTest {
     }
 
     @Test
-    @DatabaseSetup("/dataset/users.xml")
+    @DatabaseSetup("/dataset/data.xml")
     public void testFindByEmailAddressFail() {
 
         Optional<User> user = userRepository.findByEmailAddress("tester@gmail.com");
