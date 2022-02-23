@@ -25,7 +25,7 @@ public class PersonalAttributesController {
 
     @PostMapping(value = "/users/{userId}/attribute-information")
     @PreAuthorize("hasAnyAuthority('EMPLOYEE', 'SYS_ADMIN')")
-    public ResponseEntity<?> createAttributesInfo(@Valid @RequestBody PersonalAttributesDTO attributesDTO, BindingResult result, @PathVariable Long userId) {
+    public ResponseEntity<?> createPersonalAttributes(@Valid @RequestBody PersonalAttributesDTO attributesDTO, BindingResult result, @PathVariable Long userId) {
         if (result.hasErrors()) {
             return badRequest().body(prepareErrorResponse(result));
         }
@@ -35,7 +35,7 @@ public class PersonalAttributesController {
 
     @PutMapping(value = "/users/{userId}/attribute-information")
     @PreAuthorize("hasAnyAuthority('EMPLOYEE', 'SYS_ADMIN')")
-    public ResponseEntity<?> updateAttributesInfo(@Valid @RequestBody PersonalAttributesDTO attributesDTO, BindingResult result, @PathVariable Long userId) {
+    public ResponseEntity<?> updatePersonalAttributes(@Valid @RequestBody PersonalAttributesDTO attributesDTO, BindingResult result, @PathVariable Long userId) {
         if (result.hasErrors()) {
             return badRequest().body(prepareErrorResponse(result));
         }
@@ -45,7 +45,7 @@ public class PersonalAttributesController {
 
     @GetMapping(value = "/users/{userId}/attribute-information")
     @PreAuthorize("hasAnyAuthority('EMPLOYEE', 'SYS_ADMIN')")
-    public ResponseEntity<?> getPersonalBasicInfo(@PathVariable Long userId) {
+    public ResponseEntity<?> getPersonalAttributes(@PathVariable Long userId) {
         APIResponse apiResponse =personalAttributesService.read(userId);
         return apiResponse.isSuccess() ? ok(apiResponse) : badRequest().body(apiResponse);
     }

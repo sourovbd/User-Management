@@ -61,7 +61,7 @@ public class FamilyInformationServiceTest {
     }
 
     @Test
-    @DisplayName("This is create - no user")
+    @DisplayName("create family info - no user found")
     public void createNoUserTest() {
 
         expectedResponse.setResponse(USER_NOT_FOUND, FALSE, null, ERROR);
@@ -72,7 +72,7 @@ public class FamilyInformationServiceTest {
     }
 
     @Test
-    @DisplayName("This is create - success")
+    @DisplayName("create family info - success")
     public void createSuccessTest() {
 
         expectedResponse.setResponse(FAMILY_CREATE_SUCCESS, TRUE, null, SUCCESS);
@@ -85,7 +85,7 @@ public class FamilyInformationServiceTest {
     }
 
     @Test
-    @DisplayName("This is create - failed")
+    @DisplayName("create family info - failed")
     public void createFailedTest() {
 
         expectedResponse.setResponse(FAMILY_CREATE_FAIL, FALSE, null, ERROR);
@@ -98,7 +98,7 @@ public class FamilyInformationServiceTest {
     }
 
     @Test
-    @DisplayName("This is update - success")
+    @DisplayName("update family info - success")
     public void updateSuccessTest() {
 
         expectedResponse.setResponse(FAMILY_UPDATE_SUCCESS, TRUE, null, SUCCESS);
@@ -111,7 +111,7 @@ public class FamilyInformationServiceTest {
     }
 
     @Test
-    @DisplayName("This is update - failed")
+    @DisplayName("update family info - failed")
     public void updateFailedTest() {
 
         expectedResponse.setResponse(FAMILY_UPDATE_FAIL, FALSE, null, ERROR);
@@ -125,7 +125,7 @@ public class FamilyInformationServiceTest {
     }
 
     @Test
-    @DisplayName("This is read - success")
+    @DisplayName("read family info - success")
     public void readSuccessTest() {
 
         expectedResponse.setResponse(FAMILY_RECORD_FOUND, TRUE, PersonalFamilyInfoDTO.getPersonalFamilyDTO(personalFamilyInfo), SUCCESS);
@@ -138,7 +138,7 @@ public class FamilyInformationServiceTest {
     }
 
     @Test
-    @DisplayName("This is read - failed")
+    @DisplayName("read family info - failed")
     public void readFailedTest() {
 
         expectedResponse.setResponse(FAMILY_RECORD_NOT_FOUND, FALSE, null, ERROR);
