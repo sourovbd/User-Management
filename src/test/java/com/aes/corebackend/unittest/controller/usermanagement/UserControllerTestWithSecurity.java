@@ -61,7 +61,7 @@ public class UserControllerTestWithSecurity {
     }
 
     @Test
-    @DatabaseSetup("/dataset/users.xml")
+    @DatabaseSetup("/dataset/data.xml")
     public void getUserDetailsSuccessTest() throws Exception
     {
         mockMvc.perform(get("/users/2")
@@ -72,7 +72,7 @@ public class UserControllerTestWithSecurity {
                 .andExpect(jsonPath("$.message").value("user found"));
     }
     @Test
-    @DatabaseSetup("/dataset/users.xml")
+    @DatabaseSetup("/dataset/data.xml")
     public void getUserDetailsFailedTest() throws Exception
     {
         mockMvc.perform(get("/users/1")
@@ -83,7 +83,7 @@ public class UserControllerTestWithSecurity {
                 .andExpect(jsonPath("$.message").value("You don't have permission to view another users details."));
     }
     @Test
-    @DatabaseSetup("/dataset/users.xml")
+    @DatabaseSetup("/dataset/data.xml")
     public void getAllUserForbiddenTest() throws Exception
     {
         mockMvc.perform(get("/users")
