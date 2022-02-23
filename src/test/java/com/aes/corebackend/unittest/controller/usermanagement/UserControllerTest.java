@@ -59,8 +59,6 @@ public class UserControllerTest {
 
     @Test
     public void createUserTest() throws Exception {
-        UserCredential userCredential = new UserCredential(1L, "101", "a1wq", true, "EMPLOYEE");
-        User user = createUser(1L,"mdahad118@gmail.com","agm","101","a1polymar","accounts","EMPLOYEE",userCredential);
         UserDTO userDto = new UserDTO();
         userDto.setDesignation("agm");
         userDto.setDepartment("accounts");
@@ -71,8 +69,8 @@ public class UserControllerTest {
         APIResponse responseDTO = APIResponse.getApiResponse();
         responseDTO.setMessage("user created successfully");
         responseDTO.setSuccess(true);
-        responseDTO.setData(user);
-        Mockito.when(userService.create(userDto.dtoToEntity(userDto),userDto)).thenReturn(responseDTO);
+        responseDTO.setData(userDto.dtoToEntity(userDto));
+        Mockito.when(userService.create(userDto)).thenReturn(responseDTO);
 
         String jsonRequest = om.writeValueAsString(userDto);
         MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders
@@ -99,7 +97,7 @@ public class UserControllerTest {
         responseDTO.setMessage(USER_CREATION_FAILED);
         responseDTO.setSuccess(false);
         responseDTO.setData(null);
-        Mockito.when(userService.create(userDto.dtoToEntity(userDto),userDto)).thenReturn(responseDTO);
+        Mockito.when(userService.create(userDto)).thenReturn(responseDTO);
 
         String jsonRequest = om.writeValueAsString(userDto);
         MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders

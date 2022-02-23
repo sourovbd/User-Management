@@ -53,27 +53,19 @@ public class UserServiceTest {
     
     @Test
     public void createUserTest() throws Exception {
-        UserCredential userCredential = new UserCredential(1,"101","a1wq",true,"EMPLOYEE");
-        User user = new User();
-        user.setId(1L);
-        user.setDesignation("agm");
-        user.setDepartment("accounts");
-        user.setEmailAddress("mdahad118@gmail.com");
-        user.setBusinessUnit("a1polymar");
-        user.setEmployeeId("101");
-        user.setRoles("EMPLOYEE");
-        user.setUserCredential(userCredential);
-
         UserDTO userDto = new UserDTO();
+        userDto.setId(1L);
         userDto.setDesignation("agm");
         userDto.setDepartment("accounts");
         userDto.setEmailAddress("mdahad118@gmail.com");
         userDto.setBusinessUnit("a1polymar");
         userDto.setEmployeeId("101");
         userDto.setRoles("EMPLOYEE");
-
-        Mockito.when(userRepository.save(user)).thenReturn(user);
-        APIResponse returnedResponse = userService.create(user,userDto);
+        UserCredential userCredential = new UserCredential(1,"101","a1wq",true,"EMPLOYEE");
+        User user = userDto.dtoToEntity(userDto);
+        user.setUserCredential(userCredential);
+        Mockito.when(userRepository.save(userDto.dtoToEntity(userDto))).thenReturn(user);
+        APIResponse returnedResponse = userService.create(userDto);
         assertEquals(returnedResponse.getData(),user);
     }
 
