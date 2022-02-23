@@ -122,7 +122,6 @@ public class UserControllerTest {
         Mockito.when(userService.read()).thenReturn(responseDTO);
         mockMvc.perform(MockMvcRequestBuilders
                         .get("/users")
-                        .header(HttpHeaders.AUTHORIZATION, "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIwMTI1MTkiLCJleHAiOjE2NDM4MTk4ODAsImlhdCI6MTY0Mzc4Mzg4MH0.5LF-tn-BGh20YpushocQv9pNLPaI1P_MDsxriO6w3zc")
                         .contentType(MediaType.APPLICATION_JSON))
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.message").value("user fetch ok"))
@@ -173,7 +172,6 @@ public class UserControllerTest {
         Mockito.when(userService.read(4L)).thenReturn(responseDTO);
         mockMvc.perform(MockMvcRequestBuilders
                         .get("/users/4")
-                        .header(HttpHeaders.AUTHORIZATION, "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIwMTI1MTkiLCJleHAiOjE2NDM4MTk4ODAsImlhdCI6MTY0Mzc4Mzg4MH0.5LF-tn-BGh20YpushocQv9pNLPaI1P_MDsxriO6w3zc")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.message").value("user not found"));
