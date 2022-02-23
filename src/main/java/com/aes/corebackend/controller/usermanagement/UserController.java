@@ -2,7 +2,6 @@ package com.aes.corebackend.controller.usermanagement;
 
 import com.aes.corebackend.dto.usermanagement.UserDTO;
 import com.aes.corebackend.entity.usermanagement.User;
-import com.aes.corebackend.entity.usermanagement.UserCredential;
 import com.aes.corebackend.service.usermanagement.UserService;
 import com.aes.corebackend.util.response.APIResponse;
 import lombok.RequiredArgsConstructor;
@@ -18,9 +17,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
-import java.security.Principal;
-import java.util.Collection;
-import java.util.List;
 import java.util.Objects;
 
 import static com.aes.corebackend.util.response.APIResponse.prepareErrorResponse;
@@ -60,9 +56,9 @@ public class UserController {
     @GetMapping("/users/{id}")
     @PreAuthorize("hasAnyAuthority('SYS_ADMIN', 'EMPLOYEE')")
     public ResponseEntity<?> getUserDetails(@PathVariable int id, Authentication authentication) {
+
         APIResponse apiResponse = userService.read(id);
         User user = (User) apiResponse.getData();
-
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 
         if (apiResponse.isSuccess()) {
