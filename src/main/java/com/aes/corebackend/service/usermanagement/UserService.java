@@ -7,6 +7,7 @@ import com.aes.corebackend.repository.usermanagement.UserRepository;
 import com.aes.corebackend.util.response.APIResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
@@ -26,12 +27,16 @@ public class UserService {
 
     private APIResponse apiResponse = getApiResponse();
 
-    public APIResponse create(UserDTO userDto) {
+    @Transactional(rollbackFor = Exception.class)
+    public APIResponse create(User user,UserDTO userDto) {
         UserCredential userCredential = new UserCredential();
         userCredential.setEmployeeId(userDto.getEmployeeId());
         userCredential.setRoles(userDto.getRoles());
         userCredential.setActive(true);
-        User createdUser = userRepository.save(userDto.dtoToEntity(userDto));
+
+        user.setUserCredential(userCredential);
+        User createdUser = userRepository.save(user);
+
         if (Objects.nonNull(createdUser)) {
             emailSender.send(userDto.dtoToEntity(userDto).getEmailAddress(),"This is a test email");
             apiResponse.setResponse(USER_CREATED_SUCCESSFULLY, TRUE, createdUser, SUCCESS);
