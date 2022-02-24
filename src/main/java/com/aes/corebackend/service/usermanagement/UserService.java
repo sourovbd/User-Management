@@ -7,6 +7,7 @@ import com.aes.corebackend.repository.usermanagement.UserRepository;
 import com.aes.corebackend.util.response.APIResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
@@ -26,6 +27,7 @@ public class UserService {
 
     private APIResponse apiResponse = getApiResponse();
 
+    @Transactional(rollbackFor = Exception.class)
     public APIResponse create(User user,UserDTO userDto) {
         UserCredential userCredential = new UserCredential();
         userCredential.setEmployeeId(userDto.getEmployeeId());
