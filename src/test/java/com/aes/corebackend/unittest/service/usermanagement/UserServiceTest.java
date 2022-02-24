@@ -50,22 +50,31 @@ public class UserServiceTest {
     User user_1 = createUser(1L,"abc@gmail.com","agm","101","a1polymar","accounts","EMPLOYEE",userCredential_1);
     User user_2 = createUser(2L,"abd@gmail.com","agm","102","a1polymar","accounts","EMPLOYEE",userCredential_2);
     User user_3 = createUser(3L,"abe@gmail.com","agm","103","a1polymar","accounts","EMPLOYEE",userCredential_3);
-    
+
     @Test
     public void createUserTest() throws Exception {
+        UserCredential userCredential = new UserCredential(1,"101","a1wq",true,"EMPLOYEE");
+        User user = new User();
+        user.setId(1L);
+        user.setDesignation("agm");
+        user.setDepartment("accounts");
+        user.setEmailAddress("mdahad118@gmail.com");
+        user.setBusinessUnit("a1polymar");
+        user.setEmployeeId("101");
+        user.setRoles("EMPLOYEE");
+        user.setUserCredential(userCredential);
         UserDTO userDto = new UserDTO();
-        userDto.setId(1L);
+
         userDto.setDesignation("agm");
         userDto.setDepartment("accounts");
         userDto.setEmailAddress("mdahad118@gmail.com");
         userDto.setBusinessUnit("a1polymar");
         userDto.setEmployeeId("101");
         userDto.setRoles("EMPLOYEE");
-        UserCredential userCredential = new UserCredential(1,"101","a1wq",true,"EMPLOYEE");
-        User user = userDto.dtoToEntity(userDto);
-        user.setUserCredential(userCredential);
-        Mockito.when(userRepository.save(userDto.dtoToEntity(userDto))).thenReturn(user);
-        APIResponse returnedResponse = userService.create(userDto);
+        // UserCredential userCredential = new UserCredential(1L,"101","a1wq",true,"EMPLOYEE");
+
+        Mockito.when(userRepository.save(user)).thenReturn(user);
+        APIResponse returnedResponse = userService.create(user,userDto);
         assertEquals(returnedResponse.getData(),user);
     }
 

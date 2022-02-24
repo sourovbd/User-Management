@@ -41,7 +41,7 @@ public class UserController {
         if (result.hasErrors()) {
             return badRequest().body(prepareErrorResponse(result));
         }
-        APIResponse apiResponse = userService.create(userDto);
+        APIResponse apiResponse = userService.create(userDto.dtoToEntity(userDto), userDto);
 
         return apiResponse.isSuccess() ? ok(apiResponse) : badRequest().body(apiResponse);
     }
