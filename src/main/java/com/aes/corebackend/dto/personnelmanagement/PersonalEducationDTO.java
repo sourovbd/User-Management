@@ -1,11 +1,9 @@
 package com.aes.corebackend.dto.personnelmanagement;
 
-import com.aes.corebackend.entity.personnelmanagement.PersonalAddressInfo;
 import com.aes.corebackend.entity.personnelmanagement.PersonalEducationInfo;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 
-import javax.persistence.Column;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Pattern;
 

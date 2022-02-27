@@ -3,9 +3,13 @@ package com.aes.corebackend.dto.personnelmanagement;
 import com.aes.corebackend.entity.personnelmanagement.PersonalTrainingInfo;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
+
+import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.Pattern;
 
 import com.aes.corebackend.util.DateUtils;
+
+import java.util.Objects;
 
 @Data
 public class PersonalTrainingDTO {
@@ -29,6 +33,13 @@ public class PersonalTrainingDTO {
     @Pattern(regexp = "^\\d{2}-\\d{2}-\\d{4}", message="Invalid end date")
     private String endDate;
 
+    @AssertTrue(message = "Invalid date range")
+    private boolean isValidDateRange() {
+
+        if (Objects.nonNull(startDate) && startDate.length()>0 && Objects.nonNull(endDate) && endDate.length()>0)
+            return DateUtils.convertToLocalDate(endDate).compareTo(DateUtils.convertToLocalDate(startDate)) >= 0;
+        else return true;
+    }
     public static PersonalTrainingInfo getPersonalTrainingEntity(PersonalTrainingDTO trainingDTO) {
         PersonalTrainingInfo personalTrainingInfo = new PersonalTrainingInfo();
         personalTrainingInfo.setId(trainingDTO.getId());

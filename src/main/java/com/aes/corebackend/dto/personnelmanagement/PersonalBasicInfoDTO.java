@@ -2,21 +2,13 @@ package com.aes.corebackend.dto.personnelmanagement;
 
 import com.aes.corebackend.entity.personnelmanagement.PersonalBasicInfo;
 import com.aes.corebackend.enumeration.Gender;
-import com.aes.corebackend.util.Constants;
 import com.aes.corebackend.util.DateUtils;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
 
 @Data
 public class PersonalBasicInfoDTO {
