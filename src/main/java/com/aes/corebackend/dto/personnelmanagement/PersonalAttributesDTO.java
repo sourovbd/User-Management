@@ -3,9 +3,7 @@ package com.aes.corebackend.dto.personnelmanagement;
 import com.aes.corebackend.entity.personnelmanagement.PersonalAttributes;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
-import org.springframework.web.bind.annotation.RequestBody;
 
-import javax.validation.Valid;
 import javax.validation.constraints.Pattern;
 
 @Data

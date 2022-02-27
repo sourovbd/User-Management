@@ -3,8 +3,12 @@ package com.aes.corebackend.dto.personnelmanagement;
 import com.aes.corebackend.entity.personnelmanagement.PersonalJobExperience;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
+
+import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.Pattern;
 import java.io.Serializable;
+import java.util.Objects;
+
 import com.aes.corebackend.util.DateUtils;
 
 @Data
@@ -28,6 +32,14 @@ public class PersonalJobExperienceDTO implements Serializable {
     @Length(min = 0, max = 255, message = "Responsibilities field can be at max 255 characters long")
     @Pattern(regexp = "^[a-zA-z]+$", message = "Responsibilities field cannot have numeric or special characters")
     private String responsibilities;
+
+    @AssertTrue(message = "Invalid date range")
+    private boolean isValidDateRange() {
+
+        if (Objects.nonNull(startDate) && startDate.length()>0 && Objects.nonNull(endDate) && endDate.length()>0)
+            return DateUtils.convertToLocalDate(endDate).compareTo(DateUtils.convertToLocalDate(startDate)) >= 0;
+        else return true;
+    }
 
     public static PersonalJobExperience getPersonalJobExperienceEntity(PersonalJobExperienceDTO experienceDTO) {
         PersonalJobExperience personalJobExperience = new PersonalJobExperience();
