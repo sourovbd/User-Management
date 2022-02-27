@@ -58,20 +58,8 @@ public class UserController {
     public ResponseEntity<?> getUserDetails(@PathVariable int id, Authentication authentication) {
 
         APIResponse apiResponse = userService.read(id);
-        User user = (User) apiResponse.getData();
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-
         if (apiResponse.isSuccess()) {
-            if (Objects.nonNull(user)) {
-                boolean isSameUser = user.getEmployeeId().equals(userDetails.getUsername());
-                boolean isSysAdmin = userDetails.getAuthorities().stream().findAny().get().toString().equals("SYS_ADMIN");
-                if (!isSameUser && !isSysAdmin) {
-                    apiResponse = new APIResponse();
-                    apiResponse.setMessage("You don't have permission to view another users details.");
-                    return badRequest().body(apiResponse);
-                }
-                return ok(apiResponse);
-            }
+            return ok(apiResponse);
         }
         return badRequest().body(apiResponse);
     }
