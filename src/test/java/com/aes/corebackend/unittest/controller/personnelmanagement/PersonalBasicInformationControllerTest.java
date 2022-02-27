@@ -8,6 +8,7 @@ import com.aes.corebackend.entity.personnelmanagement.PersonalBasicInfo;
 import com.aes.corebackend.enumeration.Gender;
 import com.aes.corebackend.service.personnelmanagement.PersonalBasicInformationService;
 import com.aes.corebackend.util.response.APIResponse;
+import com.aes.corebackend.validator.GlobalExceptionHandler;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -48,7 +49,10 @@ public class PersonalBasicInformationControllerTest {
     @BeforeEach
     public void setup() throws ParseException {
         MockitoAnnotations.openMocks(this);
-        mockMvc = MockMvcBuilders.standaloneSetup(basicInfoController).build();
+        mockMvc = MockMvcBuilders
+                .standaloneSetup(basicInfoController)
+                .setControllerAdvice(GlobalExceptionHandler.class)
+                .build();
 
         user.setId(1L);
         user.setBusinessUnit("AES");
