@@ -16,27 +16,22 @@ import static com.aes.corebackend.util.response.APIResponse.prepareErrorResponse
 import static org.springframework.http.ResponseEntity.badRequest;
 import static org.springframework.http.ResponseEntity.ok;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
 public class FamilyInformationController {
+
     private final FamilyInformationService familyInformationService;
 
     @PostMapping(value = "/users/{userId}/family-information")
     @PreAuthorize("hasAnyAuthority('EMPLOYEE', 'SYS_ADMIN')")
-    public ResponseEntity<?> createFamilyInfo(@Valid @RequestBody PersonalFamilyInfoDTO familyInfoDTO, BindingResult result, @PathVariable Long userId) {
-        if (result.hasErrors()) {
-            return badRequest().body(prepareErrorResponse(result));
-        }
+    public ResponseEntity<?> createFamilyInfo(@Valid @RequestBody PersonalFamilyInfoDTO familyInfoDTO, @PathVariable Long userId) {
         APIResponse apiResponse = familyInformationService.create(familyInfoDTO, userId);
         return apiResponse.isSuccess() ? ok(apiResponse) : badRequest().body(apiResponse);
     }
 
     @PutMapping(value = "/users/{userId}/family-information")
     @PreAuthorize("hasAnyAuthority('EMPLOYEE', 'SYS_ADMIN')")
-    public ResponseEntity<?> updateFamilyInfo(@Valid @RequestBody PersonalFamilyInfoDTO familyInfoDTO, BindingResult result, @PathVariable Long userId) {
-        if (result.hasErrors()) {
-            return badRequest().body(prepareErrorResponse(result));
-        }
+    public ResponseEntity<?> updateFamilyInfo(@Valid @RequestBody PersonalFamilyInfoDTO familyInfoDTO, @PathVariable Long userId) {
         APIResponse apiResponse = familyInformationService.update(familyInfoDTO, userId);
         return apiResponse.isSuccess() ? ok(apiResponse) : badRequest().body(apiResponse);
     }

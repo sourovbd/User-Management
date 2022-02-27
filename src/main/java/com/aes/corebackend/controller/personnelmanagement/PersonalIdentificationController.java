@@ -16,7 +16,7 @@ import static com.aes.corebackend.util.response.APIResponse.prepareErrorResponse
 import static org.springframework.http.ResponseEntity.badRequest;
 import static org.springframework.http.ResponseEntity.ok;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
 public class PersonalIdentificationController {
 
@@ -24,10 +24,7 @@ public class PersonalIdentificationController {
 
     @PostMapping(value = "/users/{userId}/identification-information")
     @PreAuthorize("hasAnyAuthority('EMPLOYEE', 'SYS_ADMIN')")
-    public ResponseEntity<?> createIdentificationInfo(@Valid @RequestBody PersonalIdentificationInfoDTO idDTO, BindingResult result, @PathVariable Long userId) {
-        if (result.hasErrors()) {
-            return badRequest().body(prepareErrorResponse(result));
-        }
+    public ResponseEntity<?> createIdentificationInfo(@Valid @RequestBody PersonalIdentificationInfoDTO idDTO, @PathVariable Long userId) {
 
         APIResponse apiResponse = service.create(idDTO, userId);
         return apiResponse.isSuccess() ? ok(apiResponse) : badRequest().body(apiResponse);
@@ -35,10 +32,7 @@ public class PersonalIdentificationController {
 
     @PutMapping(value = "/users/{userId}/identification-information")
     @PreAuthorize("hasAnyAuthority('EMPLOYEE', 'SYS_ADMIN')")
-    public ResponseEntity<?> updateIdentificationInfo(@Valid @RequestBody PersonalIdentificationInfoDTO idDTO, BindingResult result, @PathVariable Long userId) {
-        if (result.hasErrors()) {
-            return badRequest().body(prepareErrorResponse(result));
-        }
+    public ResponseEntity<?> updateIdentificationInfo(@Valid @RequestBody PersonalIdentificationInfoDTO idDTO, @PathVariable Long userId) {
 
         APIResponse apiResponse = service.update(idDTO, userId);
         return apiResponse.isSuccess() ? ok(apiResponse) : badRequest().body(apiResponse);

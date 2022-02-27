@@ -14,7 +14,7 @@ import static org.springframework.http.ResponseEntity.badRequest;
 import static org.springframework.http.ResponseEntity.ok;
 import static com.aes.corebackend.util.response.APIResponse.prepareErrorResponse;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
 public class PersonalBasicInfoController {
 
@@ -22,20 +22,16 @@ public class PersonalBasicInfoController {
 
     @PostMapping(value = "/users/{userId}/basic-information")
     @PreAuthorize("hasAnyAuthority('EMPLOYEE', 'SYS_ADMIN')")
-    public ResponseEntity<?> createPersonalBasicInfo(@RequestBody @Valid PersonalBasicInfoDTO personalBasicInfoDTO, BindingResult result, @PathVariable Long userId) {
-        if (result.hasErrors()) {
-            return badRequest().body(prepareErrorResponse(result));
-        }
+    public ResponseEntity<?> createPersonalBasicInfo(@RequestBody @Valid PersonalBasicInfoDTO personalBasicInfoDTO, @PathVariable Long userId) {
+
         APIResponse apiResponse = personalBasicInformationService.create(personalBasicInfoDTO, userId);
         return apiResponse.isSuccess() ? ok(apiResponse) : badRequest().body(apiResponse);
     }
 
     @PutMapping(value = "/users/{userId}/basic-information")
     @PreAuthorize("hasAnyAuthority('EMPLOYEE', 'SYS_ADMIN')")
-    public ResponseEntity<?> updatePersonalBasicInfo(@Valid @RequestBody PersonalBasicInfoDTO basicInfoDTO, BindingResult result, @PathVariable Long userId) {
-        if (result.hasErrors()) {
-            return badRequest().body(prepareErrorResponse(result));
-        }
+    public ResponseEntity<?> updatePersonalBasicInfo(@Valid @RequestBody PersonalBasicInfoDTO basicInfoDTO, @PathVariable Long userId) {
+
         APIResponse apiResponse = personalBasicInformationService.update(basicInfoDTO, userId);
         return apiResponse.isSuccess() ? ok(apiResponse) : badRequest().body(apiResponse);
     }
@@ -43,6 +39,7 @@ public class PersonalBasicInfoController {
     @GetMapping(value = "/users/{userId}/basic-information")
     @PreAuthorize("hasAnyAuthority('EMPLOYEE', 'SYS_ADMIN')")
     public ResponseEntity<?> getPersonalBasicInfo(@PathVariable Long userId) {
+
         APIResponse apiResponse = personalBasicInformationService.read(userId);
         return apiResponse.isSuccess() ? ok(apiResponse) : badRequest().body(apiResponse);
     }

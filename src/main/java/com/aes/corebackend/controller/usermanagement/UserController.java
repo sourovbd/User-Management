@@ -12,14 +12,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
 import java.util.Objects;
 
-import static com.aes.corebackend.util.response.APIResponse.prepareErrorResponse;
 import static org.springframework.http.ResponseEntity.badRequest;
 import static org.springframework.http.ResponseEntity.ok;
 
@@ -37,12 +35,8 @@ public class UserController {
 
     @PostMapping("/users")
     @PreAuthorize("hasAuthority('SYS_ADMIN')")
-    public ResponseEntity<?> createUser(@Valid @RequestBody UserDTO userDto, BindingResult result) {
-        if (result.hasErrors()) {
-            return badRequest().body(prepareErrorResponse(result));
-        }
+    public ResponseEntity<?> createUser(@Valid @RequestBody UserDTO userDto) {
         APIResponse apiResponse = userService.create(userDto.dtoToEntity(userDto), userDto);
-
         return apiResponse.isSuccess() ? ok(apiResponse) : badRequest().body(apiResponse);
     }
 

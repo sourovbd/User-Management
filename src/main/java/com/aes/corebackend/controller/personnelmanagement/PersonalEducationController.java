@@ -17,35 +17,32 @@ import static com.aes.corebackend.util.response.APIResponse.prepareErrorResponse
 import static org.springframework.http.ResponseEntity.badRequest;
 import static org.springframework.http.ResponseEntity.ok;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
 public class PersonalEducationController {
+
     private final PersonalEducationService service;
 
     @PostMapping(value = "/users/{userId}/education-information")
     @PreAuthorize("hasAnyAuthority('EMPLOYEE', 'SYS_ADMIN')")
-    public ResponseEntity<?> createPersonalEducation(@RequestBody @Valid PersonalEducationDTO educationDTO, BindingResult result, @PathVariable Long userId) {
-        if (result.hasErrors()) {
-            return badRequest().body(prepareErrorResponse(result));
-        }
+    public ResponseEntity<?> createPersonalEducation(@RequestBody @Valid PersonalEducationDTO educationDTO, @PathVariable Long userId) {
+
         APIResponse apiResponse = service.create(educationDTO, userId);
         return apiResponse.isSuccess() ? ok(apiResponse) : badRequest().body(apiResponse);
     }
 
     @PutMapping(value = "/users/{userId}/education-information/{educationId}")
     @PreAuthorize("hasAnyAuthority('EMPLOYEE', 'SYS_ADMIN')")
-    public ResponseEntity<?> updatePersonalEducation(@RequestBody @Valid PersonalEducationDTO educationDTO, BindingResult result, @PathVariable Long userId, @PathVariable Long educationId) {
-        if (result.hasErrors()) {
-            return badRequest().body(prepareErrorResponse(result));
-        }
+    public ResponseEntity<?> updatePersonalEducation(@RequestBody @Valid PersonalEducationDTO educationDTO, @PathVariable Long userId, @PathVariable Long educationId) {
+
         APIResponse apiResponse = service.update(educationDTO, userId, educationId);
         return apiResponse.isSuccess() ? ok(apiResponse) : badRequest().body(apiResponse);
     }
 
-
     @GetMapping(value = "/users/{userId}/education-information")
     @PreAuthorize("hasAnyAuthority('EMPLOYEE', 'SYS_ADMIN')")
     public ResponseEntity<?> getPersonalEducationInfomations(@PathVariable Long userId) {
+
         APIResponse apiResponse =service.read(userId);
         return apiResponse.isSuccess() ? ok(apiResponse) : badRequest().body(apiResponse);
     }
@@ -53,6 +50,7 @@ public class PersonalEducationController {
     @GetMapping(value = "/users/{userId}/education-information/{educationId}")
     @PreAuthorize("hasAnyAuthority('EMPLOYEE', 'SYS_ADMIN')")
     public ResponseEntity<?> getPersonalEducation(@PathVariable Long userId, @PathVariable Long educationId) {
+
         APIResponse apiResponse =service.read(userId, educationId);
         return apiResponse.isSuccess() ? ok(apiResponse) : badRequest().body(apiResponse);
     }

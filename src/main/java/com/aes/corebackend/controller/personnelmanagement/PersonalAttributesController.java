@@ -17,7 +17,7 @@ import static com.aes.corebackend.util.response.APIResponse.prepareErrorResponse
 import static org.springframework.http.ResponseEntity.badRequest;
 import static org.springframework.http.ResponseEntity.ok;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
 public class PersonalAttributesController {
 
@@ -25,20 +25,16 @@ public class PersonalAttributesController {
 
     @PostMapping(value = "/users/{userId}/attribute-information")
     @PreAuthorize("hasAnyAuthority('EMPLOYEE', 'SYS_ADMIN')")
-    public ResponseEntity<?> createPersonalAttributes(@Valid @RequestBody PersonalAttributesDTO attributesDTO, BindingResult result, @PathVariable Long userId) {
-        if (result.hasErrors()) {
-            return badRequest().body(prepareErrorResponse(result));
-        }
+    public ResponseEntity<?> createPersonalAttributes(@Valid @RequestBody PersonalAttributesDTO attributesDTO, @PathVariable Long userId) {
+
         APIResponse apiResponse = personalAttributesService.create(attributesDTO, userId);
         return apiResponse.isSuccess() ? ok(apiResponse) : badRequest().body(apiResponse);
     }
 
     @PutMapping(value = "/users/{userId}/attribute-information")
     @PreAuthorize("hasAnyAuthority('EMPLOYEE', 'SYS_ADMIN')")
-    public ResponseEntity<?> updatePersonalAttributes(@Valid @RequestBody PersonalAttributesDTO attributesDTO, BindingResult result, @PathVariable Long userId) {
-        if (result.hasErrors()) {
-            return badRequest().body(prepareErrorResponse(result));
-        }
+    public ResponseEntity<?> updatePersonalAttributes(@Valid @RequestBody PersonalAttributesDTO attributesDTO, @PathVariable Long userId) {
+
         APIResponse apiResponse = personalAttributesService.update(attributesDTO, userId);
         return apiResponse.isSuccess() ? ok(apiResponse) : badRequest().body(apiResponse);
     }
@@ -46,6 +42,7 @@ public class PersonalAttributesController {
     @GetMapping(value = "/users/{userId}/attribute-information")
     @PreAuthorize("hasAnyAuthority('EMPLOYEE', 'SYS_ADMIN')")
     public ResponseEntity<?> getPersonalAttributes(@PathVariable Long userId) {
+
         APIResponse apiResponse =personalAttributesService.read(userId);
         return apiResponse.isSuccess() ? ok(apiResponse) : badRequest().body(apiResponse);
     }
