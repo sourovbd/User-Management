@@ -3,6 +3,7 @@ package com.aes.corebackend.service.usermanagement;
 import com.aes.corebackend.dto.usermanagement.UserDTO;
 import com.aes.corebackend.entity.usermanagement.User;
 import com.aes.corebackend.entity.usermanagement.UserCredential;
+import com.aes.corebackend.service.permission.Identification;
 import com.aes.corebackend.repository.usermanagement.UserRepository;
 import com.aes.corebackend.util.response.APIResponse;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,8 @@ public class UserService {
     private final EmailSender emailSender;
 
     private APIResponse apiResponse = getApiResponse();
+
+    private final Identification identification;
 
     @Transactional(rollbackFor = Exception.class)
     public APIResponse create(User user,UserDTO userDto) {
@@ -64,10 +67,15 @@ public class UserService {
     }
 
     public APIResponse read(long id) {
-        apiResponse.setResponse(USER_NOT_FOUND, FALSE, NULL, ERROR);
         User existingUser = userRepository.findById(id).orElse(null);
-        if(Objects.nonNull(existingUser)) {
+        if(Objects.nonNull(existingUser) && identification.isAuthorized(existingUser)) {
             apiResponse.setResponse(USER_FOUND, TRUE, existingUser, SUCCESS);
+        }
+        else if(Objects.nonNull(existingUser)) {
+            apiResponse.setResponse(PERMISSION_DENIED, FALSE, NULL, ERROR);
+        }
+        else {
+            apiResponse.setResponse(USER_NOT_FOUND, FALSE, NULL, ERROR);
         }
         return apiResponse;
     }
@@ -75,7 +83,7 @@ public class UserService {
     public APIResponse read() {
         apiResponse.setResponse(NO_USER_EXISTS, FALSE, NULL, ERROR);
         List<User> existingUsers = userRepository.findAll();
-        if(Objects.nonNull(existingUsers)) {
+        if(Objects.nonNull(existingUsers) ) {
             apiResponse.setResponse(USER_FETCH_OK, TRUE, existingUsers, SUCCESS);
         }
         return apiResponse;
