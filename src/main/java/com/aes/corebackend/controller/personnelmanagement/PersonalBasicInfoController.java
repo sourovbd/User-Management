@@ -3,22 +3,25 @@ package com.aes.corebackend.controller.personnelmanagement;
 import com.aes.corebackend.dto.personnelmanagement.PersonalBasicInfoDTO;
 import com.aes.corebackend.service.personnelmanagement.PersonalBasicInformationService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import com.aes.corebackend.util.response.APIResponse;
 import static org.springframework.http.ResponseEntity.badRequest;
 import static org.springframework.http.ResponseEntity.ok;
-import static com.aes.corebackend.util.response.APIResponse.prepareErrorResponse;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 public class PersonalBasicInfoController {
 
     private final PersonalBasicInformationService personalBasicInformationService;
+
+    private static final Logger logger = LoggerFactory.getLogger(PersonalBasicInfoController.class);
 
     @PostMapping(value = "/users/{userId}/basic-information")
     @PreAuthorize("hasAnyAuthority('EMPLOYEE', 'SYS_ADMIN')")
