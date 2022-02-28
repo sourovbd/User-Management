@@ -7,6 +7,7 @@ import com.aes.corebackend.entity.usermanagement.User;
 import com.aes.corebackend.entity.usermanagement.UserCredential;
 import com.aes.corebackend.service.usermanagement.UserCredentialService;
 import com.aes.corebackend.util.response.APIResponse;
+import com.aes.corebackend.validator.GlobalExceptionHandler;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -49,6 +50,7 @@ public class UserCredentialControllerTest {
         MockitoAnnotations.openMocks(this);
         mockMvc = MockMvcBuilders
                 .standaloneSetup(userCredentialController)
+                .setControllerAdvice(GlobalExceptionHandler.class)
                 .build();
     }
 

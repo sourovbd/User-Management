@@ -7,6 +7,7 @@ import com.aes.corebackend.entity.usermanagement.UserCredential;
 import com.aes.corebackend.service.usermanagement.UserService;
 import com.aes.corebackend.util.response.APIResponse;
 import com.aes.corebackend.util.response.APIResponseStatus;
+import com.aes.corebackend.validator.GlobalExceptionHandler;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.BeforeEach;
@@ -54,6 +55,7 @@ public class UserControllerTest {
         MockitoAnnotations.openMocks(this);
         mockMvc = MockMvcBuilders
                 .standaloneSetup(userController)
+                .setControllerAdvice(GlobalExceptionHandler.class)
                 .build();
     }
 

@@ -7,6 +7,7 @@ import com.aes.corebackend.entity.usermanagement.User;
 import com.aes.corebackend.entity.personnelmanagement.PersonalTrainingInfo;
 import com.aes.corebackend.service.personnelmanagement.PersonalTrainingService;
 import com.aes.corebackend.util.DateUtils;
+import com.aes.corebackend.validator.GlobalExceptionHandler;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -55,6 +56,7 @@ public class PersonalTrainingControllerTest {
         MockitoAnnotations.openMocks(this);
         mockMvc = MockMvcBuilders
                 .standaloneSetup(personalTrainingController)
+                .setControllerAdvice(GlobalExceptionHandler.class)
                 .build();
         personalTrainingSetup();
     }

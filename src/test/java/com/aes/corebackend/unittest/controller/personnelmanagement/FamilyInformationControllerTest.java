@@ -7,6 +7,7 @@ import com.aes.corebackend.entity.usermanagement.User;
 import com.aes.corebackend.service.personnelmanagement.FamilyInformationService;
 
 import com.aes.corebackend.util.response.APIResponse;
+import com.aes.corebackend.validator.GlobalExceptionHandler;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -51,6 +52,7 @@ public class FamilyInformationControllerTest {
         MockitoAnnotations.openMocks(this);
         mockMvc = MockMvcBuilders
                 .standaloneSetup(controller)
+                .setControllerAdvice(GlobalExceptionHandler.class)
                 .build();
 
         user.setId(1L);
@@ -98,7 +100,7 @@ public class FamilyInformationControllerTest {
         String maritalStatusErrorMessage = "Marital Status: Field cannot have numeric or special characters";
         familyDTO.setMaritalStatus("M@rried");
         expectedResponse.setResponse(null, FALSE, null, ERROR);
-
+        System.out.println("expectedResponse.getMessage(): "+expectedResponse.getMessage());
         mockMvc.perform(post("/users/1/family-information")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)

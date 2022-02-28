@@ -6,6 +6,7 @@ import com.aes.corebackend.dto.personnelmanagement.PersonalEducationDTO;
 import com.aes.corebackend.entity.usermanagement.User;
 import com.aes.corebackend.entity.personnelmanagement.PersonalEducationInfo;
 import com.aes.corebackend.service.personnelmanagement.PersonalEducationService;
+import com.aes.corebackend.validator.GlobalExceptionHandler;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -52,6 +53,7 @@ public class PersonalEducationControllerTest {
         MockitoAnnotations.openMocks(this);
         mockMvc = MockMvcBuilders
                 .standaloneSetup(personalEducationController)
+                .setControllerAdvice(GlobalExceptionHandler.class)
                 .build();
 
         personalEducationDTO.setDegreeName("SSC");

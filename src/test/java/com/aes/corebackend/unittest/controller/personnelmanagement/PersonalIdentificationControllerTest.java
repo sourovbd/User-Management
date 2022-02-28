@@ -6,6 +6,7 @@ import com.aes.corebackend.dto.personnelmanagement.PersonalIdentificationInfoDTO
 import com.aes.corebackend.entity.usermanagement.User;
 import com.aes.corebackend.entity.personnelmanagement.PersonalIdentificationInfo;
 import com.aes.corebackend.service.personnelmanagement.PersonalIdentificationService;
+import com.aes.corebackend.validator.GlobalExceptionHandler;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -47,6 +48,7 @@ public class PersonalIdentificationControllerTest {
         MockitoAnnotations.openMocks(this);
         mockMvc = MockMvcBuilders
                 .standaloneSetup(controller)
+                .setControllerAdvice(GlobalExceptionHandler.class)
                 .build();
 
         user.setId(1L);
